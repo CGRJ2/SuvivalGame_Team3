@@ -15,12 +15,21 @@ public class MonsterView : MonoBehaviour
     [SerializeField] private AudioClip deathSound;
 
     // ===== 애니메이션 =====
+    public void PlayIdleAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Idle");
+    }
+    public void PlayRunAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Run");
+    }
     public void PlayAttackAnimation()
     {
         if (animator != null)
             animator.SetTrigger("Attack");
     }
-
     public void PlayHitEffect()
     {
         if (hitEffect != null)
@@ -29,7 +38,6 @@ public class MonsterView : MonoBehaviour
         if (audioSource != null && hitSound != null)
             audioSource.PlayOneShot(hitSound);
     }
-
     public void PlayDeathAnimation()
     {
         if (animator != null)
@@ -38,6 +46,8 @@ public class MonsterView : MonoBehaviour
         if (audioSource != null && deathSound != null)
             audioSource.PlayOneShot(deathSound);
     }
+
+    // ===== 사운드 =====
 
     public void PlaySound(AudioClip clip)
     {

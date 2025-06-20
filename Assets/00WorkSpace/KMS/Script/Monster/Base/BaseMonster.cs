@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class BaseMonster : MonoBehaviour
 {
@@ -12,7 +14,12 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected MonsterStateMachine stateMachine;
     protected MonsterView view;
-    public float detectionRange = 10f;
+
+    public UnityEvent OnDeadEvent;
+
+    protected bool isDead;
+    public bool IsDead => isDead;
+
 
 
     protected virtual void Awake()
@@ -41,8 +48,10 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void Die()
     {
+        if (isDead) return;
+        isDead = true;
         view.PlayDeathAnimation();
-        // 필요시 디스폰 등 추가
+        OnDeadEvent?.Invoke();
     }
 
     protected abstract void HandleState(); // 상태머신 상태 변경은 여기서
@@ -60,4 +69,9 @@ public abstract class BaseMonster : MonoBehaviour
     }
 
     public Transform GetTarget() => target;
+
+    public virtual void Move(Vector3 direction)
+    {
+        transform.position += direction * data.moveSpeed * Time.deltaTime;
+    }
 }
