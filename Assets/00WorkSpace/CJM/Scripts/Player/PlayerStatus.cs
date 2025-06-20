@@ -10,10 +10,21 @@ public class PlayerStatus : MonoBehaviour
     public ObservableProperty<int> Battery;
     private Dictionary<BodyPartTypes, BodyPart> bodyParts;
 
-    //인벤토리
+    //private Inventory inventory;
+    
     [field: SerializeField] public float MoveSpeed { get; set; }
     [field: SerializeField] public float RotateSpeed { get; set; }
 
+
+    public void InitPlayerData()
+    {
+
+    }
+
+    public void SavePlayerData()
+    {
+
+    }
 }
 public enum PlayerStateTypes
 {
@@ -21,5 +32,5 @@ public enum PlayerStateTypes
 }
 public enum BodyPartTypes
 {
-    Head, leftArm, rightArm, leftLeg, rightLeg
+    Head, Body, LeftArm, RightArm, LeftLeg, RightLeg
 }

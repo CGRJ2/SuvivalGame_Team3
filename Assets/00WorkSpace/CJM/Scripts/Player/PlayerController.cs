@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerStatus status;
-    [SerializeField] PlayerViewer view;
+    [SerializeField] PlayerView view;
     public Vector3 InputDir { get; private set; }
     public Vector3 MouseDir { get; private set; }
+    public Vector3 avatarForwardDir;
     private Vector2 currentRotation;
 
     [Header("Mouse Config")]
@@ -18,22 +15,35 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0, 90)] private float maxPitch;
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity = 1;
 
+    private InputAction freeCamAction;
     private InputAction runAction;
     private InputAction jumpAction;
     private InputAction attackAction;
 
+    private void Awake()
+    {
+        InputActionsInit();
+        //view.StateMachineInit(status.state);
+    }
+
     private void Update()
     {
-        view.Move(GetMoveDirection(), status.MoveSpeed);
-        view.SetAvatarRotation(GetMoveDirection(), status.RotateSpeed);
-        view.SetAimRotation(MouseDir, minPitch, maxPitch);
+        avatarForwardDir = view.SetAimRotation(MouseDir, minPitch, maxPitch);
+        view.Move(view.GetMoveDirection(InputDir), status.MoveSpeed);
+        view.SetAvatarRotation(view.GetMoveDirection(InputDir), status.RotateSpeed);
     }
 
     private void InputActionsInit()
     {
         // 플레이어 조작 맵
-        var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("PlayerActions");
+        var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
 
+        freeCamAction = playerControlMap.FindAction("FreeCamera");
+        freeCamAction.Enable();
+        freeCamAction.performed += HandleFreeCam;
+        freeCamAction.canceled += HandleFreeCam;
+
+/*
         // 달리기 액션
         runAction = playerControlMap.FindAction("Sprint");
         runAction.Enable();
@@ -51,24 +61,14 @@ public class PlayerController : MonoBehaviour
         jumpAction.Enable();
         jumpAction.performed += HandleJump;
         jumpAction.canceled += HandleJump;
-
-        
+*/
     }
 
-    
 
-    
 
-    public Vector3 GetMoveDirection()
-    {
-        Vector3 direction =
-            // 단위벡터 (1,0,0) * input.x { (-1~1,0,0) => -1~1 }
-            (transform.right * InputDir.x) +
-            // 단위벡터 (0,0,1) + input.z { (0, 0, -1~1) => -1~1 }
-            (transform.forward * InputDir.y);
 
-        return direction.normalized;
-    }
+
+
 
 
     public void OnMove(InputValue value)
@@ -82,6 +82,13 @@ public class PlayerController : MonoBehaviour
         MouseDir = mouseDir * mouseSensitivity;
     }
 
+    public void HandleFreeCam(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            view.freeCamActive = true;
+        else if (context.canceled)
+            view.freeCamActive = false;
+    }
 
     public void HandleSprint(InputAction.CallbackContext context)
     {
