@@ -51,7 +51,7 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (target == null) return false;
         float dist = Vector3.Distance(transform.position, target.position);
-        return dist < data.detectionRange; // detectionRange는 필요시 data에 추가
+        return dist < data.detectionRange;
     }
 
     public void SetTarget(Transform newTarget)
