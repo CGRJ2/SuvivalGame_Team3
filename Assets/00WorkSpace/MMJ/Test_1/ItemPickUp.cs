@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EquipmentType
+public class ItemPickUp : MonoBehaviour
 {
-    Weapon,
-    Armor,
-    Accessory
+    public Item Item;
 }
