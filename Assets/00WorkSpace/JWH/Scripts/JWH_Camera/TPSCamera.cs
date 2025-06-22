@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TpsCamera : MonoBehaviour
+[System.Serializable]
+public class TpsCamera : ICamera
 {
-    public Transform target;           // 플레이어
+    
+    public Transform playerTarget;           // 플레이어
     public Transform cameraTransform;  // 카메라
     public Vector3 offset = new Vector3(0, 3, -5); // 시야 위치
     public float rotationSpeed = 5f;
@@ -17,21 +19,51 @@ public class TpsCamera : MonoBehaviour
     public float minZoom = 2f;
     public float maxZoom = 10f;
 
-    void Start()
+
+    public Transform GetCameraTransform()
     {
-        currentZoom = offset.magnitude;
+        return cameraTransform;
     }
 
-    void LateUpdate()
+    public void InitializeCam(Transform tpsplayerTarget, Transform tpscameraTransform)
     {
-        if (target == null) return;
+        playerTarget = tpsplayerTarget;
+        cameraTransform = tpscameraTransform;
+        currentZoom = offset.magnitude; 
+        
+        yaw = tpsplayerTarget.eulerAngles.y;
+        pitch = 0f;
+    }
 
-        //회전
+    public void ActivateCam(Transform previousActiveCameraTransform)
+    {
+        if (cameraTransform != null)
+        {
+            Debug.Log("3인칭 카메라 활성화");
+        }
+    }
+
+    public void DeactivateCam()
+    {
+        if (cameraTransform != null)
+        {
+            Debug.Log("3인칭 카메라 비활성화");
+        }
+    }
+
+   
+
+    public void UpdateCam(Transform playerTarget)
+    {
+        if (playerTarget == null || cameraTransform == null) return;
+
+       
+        // 회전
         yaw += Input.GetAxis("Mouse X") * rotationSpeed;
         pitch -= Input.GetAxis("Mouse Y") * rotationSpeed;
         pitch = Mathf.Clamp(pitch, -40f, 85f);
 
-        //줌
+        // 줌
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         currentZoom -= scroll * zoomSpeed;
         currentZoom = Mathf.Clamp(currentZoom, minZoom, maxZoom);
@@ -39,9 +71,9 @@ public class TpsCamera : MonoBehaviour
         // 카메라 계산
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
         Vector3 zoomedOffset = rotation * new Vector3(0, offset.y, -currentZoom);
-        Vector3 desiredPosition = target.position + zoomedOffset;
+        Vector3 desiredPosition = playerTarget.position + zoomedOffset;
 
         cameraTransform.position = desiredPosition;
-        cameraTransform.LookAt(target.position);
+        cameraTransform.LookAt(playerTarget.position);
     }
 }
