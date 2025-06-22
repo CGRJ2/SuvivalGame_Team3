@@ -9,15 +9,15 @@ public class TpsCamera : ICamera
     public Transform playerTarget;           // 플레이어
     public Transform cameraTransform;  // 카메라
     public Vector3 offset = new Vector3(0, 3, -5); // 시야 위치
-    public float rotationSpeed = 5f;
+    private float rotationSpeed = 5f;
 
     private float yaw;
     private float pitch;
     private float currentZoom;
 
-    public float zoomSpeed = 2f;
-    public float minZoom = 2f;
-    public float maxZoom = 10f;
+    private float zoomSpeed = 2f;
+    private float minZoom = 2f;
+    private float maxZoom = 10f;
 
 
     public Transform GetCameraTransform()

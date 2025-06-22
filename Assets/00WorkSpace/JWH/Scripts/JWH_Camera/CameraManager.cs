@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public Transform playerTarget;    // 플레이어 Transform 
+    public Transform playerTargetCam;    // 플레이어 Transform 
     public Transform mainCameraTransform; // Main Camera의 Transform
 
     public TpsCamera tpsCamera;
@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
 
     void Awake()
     {
-        if (playerTarget == null)
+        if (playerTargetCam == null)
         {
             Debug.LogError("CameraManager: Player Target 할당오류");
         }
@@ -44,7 +44,7 @@ public class CameraManager : MonoBehaviour
         if (tpsCamera != null)
         {
             cameraStrategies.Add("TPS_View", tpsCamera);
-            tpsCamera.InitializeCam(playerTarget, mainCameraTransform);
+            tpsCamera.InitializeCam(playerTargetCam, mainCameraTransform);
         }
         else
         {
@@ -54,7 +54,7 @@ public class CameraManager : MonoBehaviour
         if (sideViewCamera != null)
         {
             cameraStrategies.Add("Side_View", sideViewCamera);
-            sideViewCamera.InitializeCam(playerTarget, mainCameraTransform);
+            sideViewCamera.InitializeCam(playerTargetCam, mainCameraTransform);
         }
         else
         {
@@ -76,7 +76,7 @@ public class CameraManager : MonoBehaviour
     {
         if (currentActiveCam != null)
         {
-            currentActiveCam.UpdateCam(playerTarget);
+            currentActiveCam.UpdateCam(playerTargetCam);
         }
     }
 
