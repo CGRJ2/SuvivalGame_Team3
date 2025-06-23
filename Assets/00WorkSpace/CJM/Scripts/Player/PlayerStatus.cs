@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
 {
-    public StateMachine<PlayerStateTypes> state;
+    //public StateMachine<PlayerStateTypes> state = new StateMachine<PlayerStateTypes>();
+    public StateMachine<PlayerMovementStateTypes> movementState = new StateMachine<PlayerMovementStateTypes>();
+
+
 
     public ObservableProperty<int> WillPower;
     public ObservableProperty<int> Battery;
@@ -13,7 +16,9 @@ public class PlayerStatus : MonoBehaviour
     //private Inventory inventory;
     
     [field: SerializeField] public float MoveSpeed { get; set; }
+    [field: SerializeField] public float SprintSpeed { get; set; }
     [field: SerializeField] public float RotateSpeed { get; set; }
+    [field: SerializeField] public float JumpForce { get; set; }
 
 
     public void InitPlayerData()
@@ -26,9 +31,14 @@ public class PlayerStatus : MonoBehaviour
 
     }
 }
+public enum PlayerMovementStateTypes
+{
+    Idle, Move, Sprint, Jump, Fall, Crouch // 구르기 추가 필요 
+}
+
 public enum PlayerStateTypes
 {
-    Idle, Move, Run, Exhausted, Attack, Damaged, Dead
+    Idle, Attack, Damaged, Dead //Exhausted,
 }
 public enum BodyPartTypes
 {
