@@ -55,20 +55,16 @@ public class MonsterManager : MonoBehaviour
         {
             for (int i = 0; i < spawnInfo.count; i++)
             {
-                SpawnMonster(spawnInfo.monsterPrefab);
+                Vector3 spawnPos = spawnInfo.spawnPosition != Vector3.zero
+                    ? spawnInfo.spawnPosition
+                    : GetRandomSpawnPosition();
+
+                var monster = MonsterFactory.Instance.SpawnMonster(spawnInfo.monsterData, spawnPos);
+                if (monster != null)
+                    RegisterMonster(monster);
             }
         }
     }
-
-    // 몬스터 생성 (랜덤)
-    private void SpawnMonster(BaseMonster prefab)
-    {
-        int rand = Random.Range(0, spawnPoints.Length);
-        Transform spawnPos = spawnPoints[rand];
-        BaseMonster monster = Instantiate(prefab, spawnPos.position, spawnPos.rotation);
-        RegisterMonster(monster);
-    }
-
     // 몬스터 생성 시작 시간
     public void StartWaveTimed(int waveIndex)
     {
@@ -76,7 +72,6 @@ public class MonsterManager : MonoBehaviour
         currentWave = waveIndex;
 
         WaveData data = waveDataList[waveIndex];
-
         foreach (var spawnInfo in data.spawnInfos)
         {
             StartCoroutine(SpawnMonstersOverTime(spawnInfo));
@@ -84,18 +79,32 @@ public class MonsterManager : MonoBehaviour
     }
 
     // 생성 지연 시간
-    private IEnumerator SpawnMonstersOverTime(WaveSpawnInfo spawnInfo)
+    private IEnumerator SpawnMonstersOverTime(WaveSpawnInfo info)
     {
-        for (int i = 0; i < spawnInfo.count; i++)
+        for (int i = 0; i < info.count; i++)
         {
-            SpawnMonster(spawnInfo.monsterPrefab, spawnInfo.spawnPosition);
-            yield return new WaitForSeconds(spawnInfo.spawnDelay);
+            Vector3 spawnPos = info.spawnPosition != Vector3.zero
+                ? info.spawnPosition
+                : GetRandomSpawnPosition();
+
+            var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, spawnPos);
+            if (monster != null)
+                RegisterMonster(monster);
+
+            yield return new WaitForSeconds(info.spawnDelay);
         }
     }
-    // 몬스터 생성 (지정위치 EX : 보스, 주인, 고양이)
-    private void SpawnMonster(BaseMonster prefab, Vector3 position)
+
+    // 랜덤 생성
+    private Vector3 GetRandomSpawnPosition()
     {
-        BaseMonster monster = Instantiate(prefab, position, Quaternion.identity);
-        RegisterMonster(monster);
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogWarning("[MonsterManager] 스폰 포인트가 비어있음");
+            return transform.position; // fallback
+        }
+
+        int index = Random.Range(0, spawnPoints.Length);
+        return spawnPoints[index].position;
     }
 }

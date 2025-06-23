@@ -10,11 +10,15 @@ public abstract class BaseMonster : MonoBehaviour
     public BaseMonsterData data;
 
     protected float currentHP;
-    protected Transform target;
+    protected float moveSpeed;
+    protected float attackPower;
+    protected float attackCooldown;
+    protected float detectionRange;
+    protected MonsterTargetType targetType;
 
+    protected Transform target;
     protected MonsterStateMachine stateMachine;
     protected MonsterView view;
-
     public UnityEvent OnDeadEvent;
 
     protected bool isDead;
@@ -24,7 +28,6 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void Awake()
     {
-        currentHP = data.maxHP;
         stateMachine = new MonsterStateMachine(this);
         view = GetComponent<MonsterView>();
     }
@@ -73,5 +76,19 @@ public abstract class BaseMonster : MonoBehaviour
     public virtual void Move(Vector3 direction)
     {
         transform.position += direction * data.moveSpeed * Time.deltaTime;
+    }
+
+    public virtual void SetData(BaseMonsterData newData)
+    {
+        data = newData;
+
+        currentHP = data.maxHP;
+        moveSpeed = data.moveSpeed;
+        attackPower = data.attackPower;
+        attackCooldown = data.attackCooldown;
+        detectionRange = data.detectionRange;
+        targetType = data.targetType;
+
+        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료");
     }
 }
