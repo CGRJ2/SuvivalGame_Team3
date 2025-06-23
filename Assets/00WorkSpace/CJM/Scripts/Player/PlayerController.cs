@@ -3,29 +3,31 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] PlayerStatus status;
-    [SerializeField] PlayerView view;
+    public PlayerStatus Status { get; private set; }
+    public PlayerView View { get; private set; }
     public Vector3 InputDir { get; private set; }
-    public Vector2 MouseDir { get; private set; }
+    public Vector2 MouseInputDir { get; private set; }
     public Vector3 avatarForwardDir;
     private Vector2 currentRotation;
 
-    [Header("Mouse Config")]
-    [SerializeField][Range(-90, 0)] private float minPitch;
-    [SerializeField][Range(0, 90)] private float maxPitch;
-    [SerializeField][Range(0.1f, 2)] private float mouseSensitivity = 1;
+    
 
-    private InputAction freeCamAction;
+    private InputAction AimingAction;
     private InputAction sprintAction;
     private InputAction jumpAction;
     private InputAction crouchAction;
     private InputAction attackAction;
+    private InputAction freeCamAction;
 
     //Vector3 moveDir;
 
+    bool isMoveInput;
     bool isSprintInput;
     bool isJumpInput;
-    bool isAiming;
+    bool isCrouchInput;
+    bool isAimingInput;
+    bool isFreeCamModInput;
+    bool isAttackInput;
 
 
     private void Awake() => Init();
@@ -33,53 +35,39 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        HandleMove();
-        /*view.SetAimRotation(MouseDir, minPitch, maxPitch);
-        view.moveDir = view.GetMoveDirection(InputDir);
-        status.movementState.Update();
-        // 점프 키 입력이 있다면 점프
-        if (isJumpInput)
-        {
-            status.movementState.ChangeState(status.movementState.stateDic[PlayerMovementStateTypes.Jump]);
-        }
-        // 이동 키 입력이 없다면 정지 상태
-        else if (view.moveDir != Vector3.zero)
-        {
-            status.movementState.ChangeState(status.movementState.stateDic[PlayerMovementStateTypes.Move]);
-            view.animator.SetFloat("MoveX", InputDir.x);
-            view.animator.SetFloat("MoveZ", InputDir.z);
-        }
+        HandleSight();
 
-        // 아무것도 해당 안하면 => Idle
-        else
-        {
-            status.movementState.ChangeState(status.movementState.stateDic[PlayerMovementStateTypes.Idle]);
-        }*/
+        UpdateStateCondition();
+
+
     }
 
     private void FixedUpdate()
     {
-        /*view.Move(status.MoveSpeed);
-        view.SetAvatarRotation(status.RotateSpeed);*/
+        HandleMove();
     }
 
     private void OnDestroy() => InputActionsDelete();
 
     private void Init()
     {
+        Status = GetComponent<PlayerStatus>();
+        View = GetComponent<PlayerView>();
+        Status.Init();
         InputActionsInit();
         StateMachineInit();
     }
 
     public void StateMachineInit()
     {
-        status.movementState.stateDic.Add(PlayerMovementStateTypes.Idle, new Movement_Idle(view));
-        status.movementState.stateDic.Add(PlayerMovementStateTypes.Move, new Movement_Move(view));
-        status.movementState.stateDic.Add(PlayerMovementStateTypes.Sprint, new Movement_Sprint(view));
-        status.movementState.stateDic.Add(PlayerMovementStateTypes.Jump, new Movement_Jump(view));
-        status.movementState.stateDic.Add(PlayerMovementStateTypes.Fall, new Movement_Fall(view));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Idle, new Player_Idle(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Move, new Player_Move(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Sprint, new Player_Sprint(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Jump, new Player_Jump(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
 
-        status.movementState.CurState = status.movementState.stateDic[PlayerMovementStateTypes.Idle];
+        Status.stateMachine.CurState = Status.stateMachine.stateDic[PlayerStateTypes.Idle];
     }
 
     private void InputActionsInit()
@@ -87,10 +75,17 @@ public class PlayerController : MonoBehaviour
         // 플레이어 조작 맵
         var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
 
-        freeCamAction = playerControlMap.FindAction("FreeCamera");
+        // 자유 카메라
+        freeCamAction = playerControlMap.FindAction("FreeCamMod");
         freeCamAction.Enable();
-        freeCamAction.performed += HandleFreeCam;
+        freeCamAction.started += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
+
+        // 조준 (포커싱)
+        AimingAction = playerControlMap.FindAction("Aiming");
+        AimingAction.Enable();
+        AimingAction.performed += HandleAiming;
+        AimingAction.canceled += HandleAiming;
 
 
         // 달리기 액션
@@ -107,10 +102,10 @@ public class PlayerController : MonoBehaviour
 
 
         // 앉기 액션
-        //crouchAction = playerControlMap.FindAction("Crouch");
-        //crouchAction.Enable();
-        //crouchAction.performed += HandleCrouch;
-        //crouchAction.canceled += HandleCrouch;
+        crouchAction = playerControlMap.FindAction("Crouch");
+        crouchAction.Enable();
+        crouchAction.performed += HandleCrouch;
+        crouchAction.canceled += HandleCrouch;
 
         // 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
@@ -121,8 +116,8 @@ public class PlayerController : MonoBehaviour
 
     private void InputActionsDelete()
     {
-        freeCamAction.performed -= HandleFreeCam;
-        freeCamAction.canceled -= HandleFreeCam;
+        AimingAction.performed -= HandleAiming;
+        AimingAction.canceled -= HandleAiming;
 
         sprintAction.performed -= HandleSprint;
         sprintAction.canceled -= HandleSprint;
@@ -135,9 +130,57 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public void HandleMove()
+    {
+        float moveSpeed;
+        if (isSprintInput) moveSpeed = Status.SprintSpeed;
+        else moveSpeed = Status.MoveSpeed;
+
+        Vector3 getMoveDir;
+
+        if (isFreeCamModInput)
+            getMoveDir = View.GetMoveDirection(InputDir,true);
+        else
+            getMoveDir = View.GetMoveDirection(InputDir);
+
+        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
+        View.moveDir = moveVec;
+        View.facingDir = moveVec;
+
+        if (InputDir != Vector3.zero)
+        {
+            View.animator.SetBool("IsMove", true);
+            isMoveInput = true;
+        }
+        else
+        {
+            View.animator.SetBool("IsMove", false);
+            isMoveInput = false;
+        }
+    }
+
+    public void HandleSight()
+    {
+        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
+
+        Vector3 avatarDir;
+        if (isFreeCamModInput) avatarDir = View.facingDir;
+        //else if (isAimingInput) avatarDir = View.moveDir;
+        else avatarDir = camRotateDir;
+
+        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
+
+        // Aim 상태일 때만.
+        if (isAimingInput)
+        {
+            View.animator.SetFloat("MoveX", InputDir.x);
+            View.animator.SetFloat("MoveZ", InputDir.y);
+        }
+    }
 
 
 
+    #region InputAction 처리
     public void OnMove(InputValue value)
     {
         InputDir = value.Get<Vector2>();
@@ -147,115 +190,114 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 mouseDir = value.Get<Vector2>();
         mouseDir.y *= -1;
-        MouseDir = mouseDir * mouseSensitivity;
+        MouseInputDir = mouseDir * Status.MouseSensitivity;
     }
 
     public void HandleFreeCam(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
+            isFreeCamModInput = true;
+            View.FreeCamSet(true);
+        }
+            
+        else if (context.canceled)
+            isFreeCamModInput = false;
+    }
+
+    public void HandleAiming(InputAction.CallbackContext context)
+    {
         if (context.performed)
         {
-            //view.FreeCamSet(true);
-            view.isAiming = true;
-            view.animator.SetBool("IsAiming", true);
+            isAimingInput = true;
+            View.animator.SetBool("IsAiming", true);
         }
         else if (context.canceled)
         {
-            //view.FreeCamSet(false);
-            view.isAiming = false;
-            view.animator.SetBool("IsAiming", false);
-        }
-    }
-
-    public void HandleMove()
-    {
-        Vector3 camRotateDir = view.SetAimRotation(MouseDir, minPitch, maxPitch);
-
-        float moveSpeed = status.MoveSpeed;
-
-        Vector3 moveDir = view.SetMove(InputDir, moveSpeed);
-
-        // 이거 조건들만 따로 빼서 관리해줘야함. 0623 오늘 하자
-        if (view.cc.isGrounded)
-        {
-            if (moveDir != Vector3.zero)
-            {
-                status.movementState.ChangeState(status.movementState.stateDic[PlayerMovementStateTypes.Move]);
-            }
-            else
-            {
-                status.movementState.ChangeState(status.movementState.stateDic[PlayerMovementStateTypes.Idle]);
-            }
-        }
-        
-
-        Vector3 avatarDir;
-        if (view.isAiming) avatarDir = camRotateDir;
-        else avatarDir = moveDir;
-
-        view.SetAvatarRotation(avatarDir, status.RotateSpeed);
-
-        // Aim 상태일 때만.
-        if (view.isAiming)
-        {
-            view.animator.SetFloat("MoveX", InputDir.x);
-            view.animator.SetFloat("MoveZ", InputDir.y);
+            isAimingInput = false;
+            View.animator.SetBool("IsAiming", false);
         }
     }
 
     public void HandleSprint(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
             isSprintInput = true;
-            view.animator.SetBool("IsSprint", true);
-        }
         else if (context.canceled)
-        {
             isSprintInput = false;
-            view.animator.SetBool("IsSprint", false);
-        }
     }
     public void HandleJump(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
-            //isJumpCut = false;
             isJumpInput = true;
-            view.Jump(status.JumpForce);
-            view.animator.SetTrigger("Jump");
-            // 임시 테스트 용도
-
-        }
         if (context.canceled)
-        {
-            //isJumpCut = true;
             isJumpInput = false;
-        }
+    }
+
+    public void HandleCrouch(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            isCrouchInput = true;
+        if (context.canceled)
+            isCrouchInput = false;
     }
 
     public void HandleAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
+            isAttackInput = true;
+        if (context.canceled)
+            isAttackInput = false;
+    }
+
+    #endregion
+
+    // InputFlag들에 따른 상태 전환 총괄
+    public void UpdateStateCondition()
+    {
+        // 바닥 상태라면
+        if (View.cc.isGrounded)
         {
-            /*AttackDir = mouseWorldPos - (Vector2)transform.position;
-            // 접지 상태(&& Fall상태 예외처리) => 일반 공격
-            if (colliderState.isGrounded && stateMachine.CurState != stateMachine.stateDic[PlayerStateTypes.Fall])
+            // => Attack
+            if (isAttackInput)
             {
-                if (stateMachine.CurState is Player_Attack attackState)
-                {
-                    attackState.AttackPlayByIndex();
-                }
-                else
-                {
-                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
-                }
-
-            }*/
-            // 공중 상태 => 점프 공격
-            /*if (isJumping)
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+            }
+            // => Jump
+            else if (isJumpInput)
+            {
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+            }
+            // => Sprint
+            else if (isSprintInput)
+            {
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+            }
+            // => Move
+            else if (isMoveInput)
+            {
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Move]);
+            }
+            // => Idle
+            else
             {
 
-            }*/
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Idle]);
+            }
         }
+        else
+        {
+            Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Fall]);
+        }
+    }
+
+    public void LoadPlayerData(PlayerStatus status)
+    {
+
+    }
+
+    public void SavePlayerData(PlayerStatus status)
+    {
+
     }
 }

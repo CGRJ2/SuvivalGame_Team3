@@ -12,6 +12,6 @@ public class AnimationEventController : MonoBehaviour
 
     public void JumpTop()
     {
-        ps.movementState.ChangeState(ps.movementState.stateDic[PlayerMovementStateTypes.Fall]);
+        ps.stateMachine.ChangeState(ps.stateMachine.stateDic[PlayerStateTypes.Fall]);
     }
 }

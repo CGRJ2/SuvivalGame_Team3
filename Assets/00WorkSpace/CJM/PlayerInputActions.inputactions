@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "FreeCamera",
+                    "name": "Aiming",
                     "type": "Button",
                     "id": "155f9edc-f063-4d8a-86a1-d4711a521c62",
                     "expectedControlType": "",
@@ -72,6 +72,15 @@
                     "name": "Interaction",
                     "type": "Button",
                     "id": "0557a02b-a0b2-456a-9e0c-44d426b6530a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FreeCamMod",
+                    "type": "Button",
+                    "id": "1f75a792-721e-4118-aa3f-cebe22dddd00",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -207,7 +216,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "FreeCamera",
+                    "action": "Aiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -252,6 +261,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8695a638-1eda-4b6a-aeee-adeeb80faafe",
+                    "path": "<Keyboard>/leftAlt",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FreeCamMod",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
