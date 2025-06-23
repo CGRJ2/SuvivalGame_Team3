@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
         // 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
-        attackAction.started += HandleAttack;
+        attackAction.performed += HandleAttack;
         attackAction.canceled += HandleAttack;
     }
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
         crouchAction.performed -= HandleCrouch;
         crouchAction.canceled -= HandleCrouch;
 
-        attackAction.started -= HandleAttack;
+        attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
     }
 
@@ -176,8 +176,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 avatarDir;
         if (isFreeCamModInput) avatarDir = View.facingDir;
-        //else if (isAimingInput) avatarDir = View.moveDir;
-        else avatarDir = camRotateDir;
+        else if (!isMoveInput) avatarDir = camRotateDir; // 정지 시, 프리캠 모드가 아니라면 아바타가 플레이어의 화면을 향해 응시
+        else avatarDir = View.moveDir;
 
         View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
 
