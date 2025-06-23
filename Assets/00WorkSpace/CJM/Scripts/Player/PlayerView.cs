@@ -13,7 +13,6 @@ public class PlayerView : MonoBehaviour
     public Vector3 moveDir;
     public Vector3 facingDir;
 
-    public ColliderController cc;
 
     [SerializeField] Vector3 freeCamForward;
     [SerializeField] Vector3 freeCamRight;
@@ -21,7 +20,6 @@ public class PlayerView : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        cc = GetComponent<ColliderController>();
         animator = avatar.GetComponent<Animator>();
     }
 

@@ -113,7 +113,8 @@ public class Player_Jump : PlayerState
     public override void Enter()
     {
         base.Enter();
-        pc.View.animator.SetTrigger("Jump");
+        //pc.View.animator.SetTrigger("Jump");
+        pc.View.animator.Play("JumpStart");
         pc.View.Jump(pc.Status.JumpForce);
     }
 
@@ -135,6 +136,7 @@ public class Player_Fall : PlayerState
     {
         base.Enter();
         Debug.Log("EnterFall");
+        pc.View.animator.Play("JumpStart");
         pc.View.animator.SetBool("IsFalling", true);
     }
     
@@ -161,12 +163,14 @@ public class Player_Crouch : PlayerState
     {
         base.Enter();
         pc.View.animator.SetBool("IsCrouch", true);
+        pc.Cc.SetColliderCrouch();
     }
 
     public override void Exit()
     {
         base.Exit();
         pc.View.animator.SetBool("IsCrouch", false);
+        pc.Cc.SetColliderDefault();
     }
     public override void Update()
     {

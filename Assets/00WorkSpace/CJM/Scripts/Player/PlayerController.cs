@@ -5,12 +5,14 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerStatus Status { get; private set; }
     public PlayerView View { get; private set; }
+    public ColliderController Cc { get; private set; }
+
     public Vector3 InputDir { get; private set; }
     public Vector2 MouseInputDir { get; private set; }
     public Vector3 avatarForwardDir;
     private Vector2 currentRotation;
 
-    
+
 
     private InputAction AimingAction;
     private InputAction sprintAction;
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour
     bool isMoveInput;
     bool isSprintInput;
     bool isJumpInput;
-    bool isCrouchInput;
+    bool isCrouchToggle;
     bool isAimingInput;
     bool isFreeCamModInput;
     bool isAttackInput;
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
+        Cc = GetComponent<ColliderController>();
         Status.Init();
         InputActionsInit();
         StateMachineInit();
@@ -141,7 +144,7 @@ public class PlayerController : MonoBehaviour
     {
         float moveSpeed;
         if (isSprintInput) moveSpeed = Status.SprintSpeed;
-        else if (isCrouchInput) moveSpeed = Status.CrouchSpeed;
+        else if (isCrouchToggle) moveSpeed = Status.CrouchSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
@@ -245,9 +248,18 @@ public class PlayerController : MonoBehaviour
     public void HandleCrouch(InputAction.CallbackContext context)
     {
         if (context.performed)
-            isCrouchInput = true;
-        if (context.canceled)
-            isCrouchInput = false;
+        {
+            if (!isCrouchToggle)
+                isCrouchToggle = true;
+            else
+            {
+                if (!Cc.GetIsHeadTouchedState())
+                {
+                    isCrouchToggle = false;
+                }
+            }
+        }
+            
     }
 
     public void HandleAttack(InputAction.CallbackContext context)
@@ -264,15 +276,16 @@ public class PlayerController : MonoBehaviour
     public void UpdateStateCondition()
     {
         // 바닥 상태라면
-        if (View.cc.isGrounded)
+        if (Cc.GetIsGroundState())
         {
             // => Attack
             if (isAttackInput)
             {
+                Debug.Log("Attack 고고");
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
             }
             // => Jump
-            else if (isJumpInput && !isCrouchInput)
+            else if (isJumpInput && !isCrouchToggle)
             {
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
             }
@@ -282,7 +295,7 @@ public class PlayerController : MonoBehaviour
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
             }
             // => Crouch
-            else if (isCrouchInput)
+            else if (isCrouchToggle)
             {
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
