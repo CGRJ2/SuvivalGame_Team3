@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: TestMonster
   m_EditorClassIdentifier: 
   monsterName: "\uACF5\uB8E1 \uC7A5\uB09C\uAC10"
-  monsterType: 1
+  monsterType: 0
+  monsterSubType: 0
   maxHP: 100
   moveSpeed: 10
   attackCooldown: 10
   attackPower: 20
   detectionRange: 41.83
   targetType: 0
-  dropItemPrefab: {fileID: 0}
-  prefab: {fileID: 0}
+  dropItemPrefab: {fileID: 3696422763688937324, guid: e52946f2e2dd0e34bb3915747452d655, type: 3}
+  prefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
