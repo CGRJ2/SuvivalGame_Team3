@@ -34,7 +34,7 @@ public class StalkerSleepState : BaseState
             player = cols[0].gameObject;
             // 플레이어가 Run 상태인지 체크 (예: PlayerController에 isRunning 변수)
             var playerController = player.GetComponent<PlayerController>();
-            if (playerController != null && playerController.IsRunning)
+            if (true/*playerController != null && playerController.IsRunning*/)
             {
                 runDetectTime += Time.deltaTime;
 

@@ -44,7 +44,7 @@ public class StalkerStateController : MonoBehaviour
         stateMachine.stateDic.Add(StalkerStateType.Attack, attackState);
 
         // 최초 상태 지정
-        stateMachine.CurState = new ObservableProperty<BaseState>(idleState);
+        stateMachine.CurState = idleState;
         idleState.Enter(); // 최초 진입
     }
     void Update()
