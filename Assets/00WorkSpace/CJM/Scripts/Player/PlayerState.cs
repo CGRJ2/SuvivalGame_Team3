@@ -150,6 +150,30 @@ public class Player_Fall : PlayerState
     }
 }
 
+public class Player_Crouch : PlayerState
+{
+    public Player_Crouch(PlayerController pc) : base(pc)
+    {
+
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        pc.View.animator.SetBool("IsCrouch", true);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        pc.View.animator.SetBool("IsCrouch", false);
+    }
+    public override void Update()
+    {
+        base.Update();
+    }
+}
+
 public class Player_Attack : PlayerState
 {
     public Player_Attack(PlayerController pc) : base(pc)

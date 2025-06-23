@@ -639,6 +639,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   FxPrefab: {fileID: 0}
   moveDir: {x: 0, y: 0, z: 0}
+  facingDir: {x: 0, y: 0, z: 0}
   cc: {fileID: 0}
   freeCamForward: {x: 0, y: 0, z: 0}
   freeCamRight: {x: 0, y: 0, z: 0}
@@ -658,6 +659,7 @@ MonoBehaviour:
   battery_Init: 100
   moveSpeed_Init: 5
   sprintSpeed_Init: 8
+  crouchSpeed_Init: 3
   rotateSpeed_Init: 10
   jumpForce_Init: 8
   mouseSensitivity_Init: 0.3
@@ -667,6 +669,7 @@ MonoBehaviour:
     _value: 0
   <MoveSpeed>k__BackingField: 0
   <SprintSpeed>k__BackingField: 0
+  <CrouchSpeed>k__BackingField: 0
   <RotateSpeed>k__BackingField: 0
   <JumpForce>k__BackingField: 0
   <CurWillPower>k__BackingField: 0

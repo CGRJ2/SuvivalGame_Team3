@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
         Status.stateMachine.stateDic.Add(PlayerStateTypes.Sprint, new Player_Sprint(this));
         Status.stateMachine.stateDic.Add(PlayerStateTypes.Jump, new Player_Jump(this));
         Status.stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
+        Status.stateMachine.stateDic.Add(PlayerStateTypes.Crouch, new Player_Crouch(this));
         Status.stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
 
         Status.stateMachine.CurState = Status.stateMachine.stateDic[PlayerStateTypes.Idle];
@@ -116,6 +117,9 @@ public class PlayerController : MonoBehaviour
 
     private void InputActionsDelete()
     {
+        freeCamAction.started -= HandleFreeCam;
+        freeCamAction.canceled -= HandleFreeCam;
+
         AimingAction.performed -= HandleAiming;
         AimingAction.canceled -= HandleAiming;
 
@@ -124,6 +128,9 @@ public class PlayerController : MonoBehaviour
 
         jumpAction.performed -= HandleJump;
         jumpAction.canceled -= HandleJump;
+
+        crouchAction.performed -= HandleCrouch;
+        crouchAction.canceled -= HandleCrouch;
 
         attackAction.started -= HandleAttack;
         attackAction.canceled -= HandleAttack;
@@ -134,6 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         float moveSpeed;
         if (isSprintInput) moveSpeed = Status.SprintSpeed;
+        else if (isCrouchInput) moveSpeed = Status.CrouchSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
@@ -264,7 +272,7 @@ public class PlayerController : MonoBehaviour
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
             }
             // => Jump
-            else if (isJumpInput)
+            else if (isJumpInput && !isCrouchInput)
             {
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
             }
@@ -272,6 +280,11 @@ public class PlayerController : MonoBehaviour
             else if (isSprintInput)
             {
                 Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+            }
+            // => Crouch
+            else if (isCrouchInput)
+            {
+                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
             else if (isMoveInput)

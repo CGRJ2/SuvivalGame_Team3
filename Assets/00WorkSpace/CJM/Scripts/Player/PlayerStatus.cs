@@ -11,6 +11,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private int battery_Init;
     [SerializeField] private float moveSpeed_Init;
     [SerializeField] private float sprintSpeed_Init;
+    [SerializeField] private float crouchSpeed_Init;
     [SerializeField] private float rotateSpeed_Init;
     [SerializeField] private float jumpForce_Init;
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity_Init;
@@ -26,6 +27,7 @@ public class PlayerStatus : MonoBehaviour
 
     [field: SerializeField, Header("현재 플레이어 정보")] public float MoveSpeed { get; set; }
     [field: SerializeField] public float SprintSpeed { get; set; }
+    [field: SerializeField] public float CrouchSpeed { get; set; }
     [field: SerializeField] public float RotateSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
 
@@ -57,6 +59,7 @@ public class PlayerStatus : MonoBehaviour
 
         MoveSpeed = moveSpeed_Init;
         SprintSpeed = sprintSpeed_Init;
+        CrouchSpeed = crouchSpeed_Init;
         RotateSpeed = rotateSpeed_Init;
         JumpForce = jumpForce_Init;
 

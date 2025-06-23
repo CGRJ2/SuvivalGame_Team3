@@ -76,7 +76,6 @@ public class PlayerView : MonoBehaviour
         cameraFocusTransform.localEulerAngles = new Vector3(currentRotation.y, currentEuler.y, currentEuler.z);
 
         Vector3 rotateDirVector = cameraFocusTransform.forward;
-        Debug.Log(rotateDirVector);
         rotateDirVector.y = 0;
         return rotateDirVector.normalized;
     }
