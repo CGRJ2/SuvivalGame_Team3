@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class AnimationEventController : MonoBehaviour
 {
-    PlayerStatus ps;
+    PlayerController pc;
     private void Start()
     {
-        ps = GetComponentInParent<PlayerStatus>();
+        pc = GetComponentInParent<PlayerController>();
     }
+
 
     public void JumpTop()
     {
-        ps.stateMachine.ChangeState(ps.stateMachine.stateDic[PlayerStateTypes.Fall]);
+        pc.Status.stateMachine.ChangeState(pc.Status.stateMachine.stateDic[PlayerStateTypes.Fall]);
+    }
+
+    // 애니메이션 이벤트
+    public void AttackHitTime()
+    {
+        pc.Attack();
+    }
+
+    // 애니메이션 이벤트
+    public void AttackMotionOver()
+    {
+        Debug.Log("이벤트");
     }
 }

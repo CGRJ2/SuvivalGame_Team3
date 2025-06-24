@@ -3,14 +3,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [field: SerializeField] public float AttackCoolTime { get; private set; }
+    public bool isAttacking;
+
     public PlayerStatus Status { get; private set; }
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
 
     public Vector3 InputDir { get; private set; }
     public Vector2 MouseInputDir { get; private set; }
-    public Vector3 avatarForwardDir;
-    private Vector2 currentRotation;
 
     [SerializeField] Transform[] TPS_Cameras;
     int currentZoomIndex = 1;
@@ -34,16 +35,26 @@ public class PlayerController : MonoBehaviour
     bool isAttackInput;
 
 
+
     private void Awake() => Init();
 
-
+    public Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
+    public float SmoothTime = 0.1f; // 보간 속도
+    private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
     private void Update()
     {
         HandleSight();
 
         UpdateStateCondition();
 
+        Status.stateMachine.Update();
 
+        SmoothDir = Vector2.SmoothDamp(
+            SmoothDir,
+            InputDir,
+            ref smoothVelocity,
+            SmoothTime
+        );
     }
 
     private void FixedUpdate()
@@ -88,11 +99,11 @@ public class PlayerController : MonoBehaviour
         freeCamAction.started += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
 
-        // 조준 (포커싱)
+        /*// 조준 (포커싱)
         AimingAction = playerControlMap.FindAction("Aiming");
         AimingAction.Enable();
         AimingAction.performed += HandleAiming;
-        AimingAction.canceled += HandleAiming;
+        AimingAction.canceled += HandleAiming;*/
 
 
         // 달리기 액션
@@ -117,7 +128,7 @@ public class PlayerController : MonoBehaviour
         // 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
-        attackAction.performed += HandleAttack;
+        attackAction.started += HandleAttack;
         attackAction.canceled += HandleAttack;
     }
 
@@ -126,8 +137,8 @@ public class PlayerController : MonoBehaviour
         freeCamAction.started -= HandleFreeCam;
         freeCamAction.canceled -= HandleFreeCam;
 
-        AimingAction.performed -= HandleAiming;
-        AimingAction.canceled -= HandleAiming;
+        /*AimingAction.performed -= HandleAiming;
+        AimingAction.canceled -= HandleAiming;*/
 
         sprintAction.performed -= HandleSprint;
         sprintAction.canceled -= HandleSprint;
@@ -178,17 +189,19 @@ public class PlayerController : MonoBehaviour
         Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
 
         Vector3 avatarDir;
+        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
         if (isFreeCamModInput) avatarDir = View.facingDir;
-        else if (!isMoveInput) avatarDir = camRotateDir; // 정지 시, 프리캠 모드가 아니라면 아바타가 플레이어의 화면을 향해 응시
+        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
+        else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
         else avatarDir = View.moveDir;
 
         View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
 
-        // Aim 상태일 때만.
-        if (isAimingInput)
+        // Attack 상태일 때만.
+        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
         {
-            View.animator.SetFloat("MoveX", InputDir.x);
-            View.animator.SetFloat("MoveZ", InputDir.y);
+            View.animator.SetFloat("MoveX", SmoothDir.x);
+            View.animator.SetFloat("MoveZ", SmoothDir.y);
         }
     }
 
@@ -249,7 +262,7 @@ public class PlayerController : MonoBehaviour
             isFreeCamModInput = false;
     }
 
-    public void HandleAiming(InputAction.CallbackContext context)
+    /*public void HandleAiming(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -261,7 +274,7 @@ public class PlayerController : MonoBehaviour
             isAimingInput = false;
             View.animator.SetBool("IsAiming", false);
         }
-    }
+    }*/
 
     public void HandleSprint(InputAction.CallbackContext context)
     {
@@ -297,7 +310,7 @@ public class PlayerController : MonoBehaviour
 
     public void HandleAttack(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.started)
             isAttackInput = true;
         if (context.canceled)
             isAttackInput = false;
@@ -310,31 +323,37 @@ public class PlayerController : MonoBehaviour
         isCrouchToggle = value;
     }
 
-    // 상태 전환 가능 여부 체크
-
     // InputFlag들에 따른 상태 전환 총괄
     public void UpdateStateCondition()
     {
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
-            // => Attack
-            if (isAttackInput)
+            // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
+            if ( isAttackInput || isAttacking )
             {
-                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                {
+                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                }
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
                 else
                 {
-                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                    return;
                 }
             }
             // => Jump
             else if (isJumpInput)
             {
-                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                if (IsCurrentState(PlayerStateTypes.Attack))
+                {
+                    return;
+                }
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
@@ -347,7 +366,11 @@ public class PlayerController : MonoBehaviour
             // => Sprint
             else if (isSprintInput)
             {
-                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                if (IsCurrentState(PlayerStateTypes.Attack))
+                {
+                    return;
+                }
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
@@ -360,7 +383,8 @@ public class PlayerController : MonoBehaviour
             // => Crouch
             else if (isCrouchToggle)
             {
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
+                else Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
             else if (isMoveInput)
@@ -379,6 +403,27 @@ public class PlayerController : MonoBehaviour
             Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Fall]);
         }
     }
+
+    public bool IsCurrentState(PlayerStateTypes state)
+    {
+        return Status.stateMachine.CurState == Status.stateMachine.stateDic[state];
+    }
+
+    public void Attack()
+    {
+        IDamagable[] damagables = Cc.GetDamagablesInRange();
+
+        if (damagables == null) return;
+
+        foreach (IDamagable damagable in damagables)
+        {
+            damagable.TakeDamage(Status.Damage);
+        }
+    }
+
+   
+
+
 
     public void LoadPlayerData(PlayerStatus status)
     {

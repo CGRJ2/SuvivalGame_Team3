@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
-
 public class ColliderController : MonoBehaviour
 {
-    [SerializeField]private bool isGrounded;
-    [SerializeField]private bool isHeadTouched;
+    [SerializeField] Transform avatar;
+    private bool isGrounded;
+    private bool isHeadTouched;
     CapsuleCollider movementCollid;
     Vector3 defaultCenter_MC;
     float defaultHeight_MC;
-    
+
     [SerializeField] LayerMask collisionLayerMask;
 
     [Header("Ground Collision Set")]
@@ -19,6 +20,12 @@ public class ColliderController : MonoBehaviour
     [SerializeField] float rayRadius_Head;
     [SerializeField] float offsetY_Head;
     [SerializeField] float distance_Head;
+
+    [Header("Attack Range Set")]
+    [SerializeField] LayerMask attackableLayerMask;
+    [SerializeField] float rayRadius_Attack;
+    [SerializeField] Vector3 offset_Attack;
+    IDamagable[] damagablesInRange;
 
     [Header("Crouching Collider Set")]
     [SerializeField] Vector3 crouchCenter_MC;
@@ -35,6 +42,7 @@ public class ColliderController : MonoBehaviour
     {
         GroundCheck();
         HeadCheck();
+        AttackRangeCheck();
     }
 
     public void GroundCheck()
@@ -65,6 +73,25 @@ public class ColliderController : MonoBehaviour
         {
             isHeadTouched = false;
         }
+    }
+
+    public void AttackRangeCheck()
+    {
+        Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;
+
+        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Attack, attackableLayerMask);
+        List<IDamagable> damagables = new List<IDamagable>();
+
+        foreach (Collider col in cols)
+        {
+            damagables.Add(col.GetComponent<IDamagable>());
+        }
+        this.damagablesInRange = damagables.ToArray();
+    }
+
+    public IDamagable[] GetDamagablesInRange()
+    {
+        return damagablesInRange;
     }
 
     public void SetColliderCrouch()
@@ -115,7 +142,7 @@ public class ColliderController : MonoBehaviour
         Gizmos.DrawLine(origin + Vector3.forward * radius, endPoint + Vector3.forward * radius);
         Gizmos.DrawLine(origin + Vector3.back * radius, endPoint + Vector3.back * radius);
         //////////////////////////////////////////////////////////////////////////////////////
-        
+
         /// 헤드 체크용 Sphere 레이
         // 기본 설정
         Vector3 originH = transform.position + Vector3.up * offsetY_Head;
@@ -138,6 +165,14 @@ public class ColliderController : MonoBehaviour
         Gizmos.DrawLine(originH + Vector3.left * radiusH, endPointH + Vector3.left * radiusH);
         Gizmos.DrawLine(originH + Vector3.forward * radiusH, endPointH + Vector3.forward * radiusH);
         Gizmos.DrawLine(originH + Vector3.back * radiusH, endPointH + Vector3.back * radiusH);
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+
+        /// 공격 범위
+        // Gizmos 색상 지정
+        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        Vector3 origin_Attack = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;
+        Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }
 
 }

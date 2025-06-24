@@ -9,6 +9,7 @@ public class PlayerStatus : MonoBehaviour
     [Header("초기값 세팅")]////////////////////////
     [SerializeField] private int willPower_Init;
     [SerializeField] private int battery_Init;
+    [SerializeField] private int damage_Init;
     [SerializeField] private float moveSpeed_Init;
     [SerializeField] private float sprintSpeed_Init;
     [SerializeField] private float crouchSpeed_Init;
@@ -31,8 +32,13 @@ public class PlayerStatus : MonoBehaviour
     [field: SerializeField] public float RotateSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
 
+    [field: SerializeField] public int Damage { get; set; }
+
+
     [field: SerializeField] public int CurWillPower { get; private set; } 
     [field: SerializeField] public int CurBattery { get; private set; } 
+
+
 
     [Header("마우스 감도")]
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
@@ -57,6 +63,7 @@ public class PlayerStatus : MonoBehaviour
 
         MouseSensitivity = mouseSensitivity_Init;
 
+        Damage = damage_Init;
         MoveSpeed = moveSpeed_Init;
         SprintSpeed = sprintSpeed_Init;
         CrouchSpeed = crouchSpeed_Init;
@@ -78,6 +85,8 @@ public class PlayerStatus : MonoBehaviour
         // CurBattery필드 삭제 후 UI로 표기
         CurBattery = Battery.Value;
     }
+
+    
 
 }
 public enum PlayerStateTypes

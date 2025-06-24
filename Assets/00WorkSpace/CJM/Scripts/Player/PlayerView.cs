@@ -10,12 +10,12 @@ public class PlayerView : MonoBehaviour
 
     Rigidbody rb;
     Vector2 currentRotation;
-    public Vector3 moveDir;
-    public Vector3 facingDir;
+    [HideInInspector] public Vector3 moveDir;
+    [HideInInspector] public Vector3 facingDir;
 
 
-    [SerializeField] Vector3 freeCamForward;
-    [SerializeField] Vector3 freeCamRight;
+    Vector3 freeCamForward;
+    Vector3 freeCamRight;
 
     private void Start()
     {

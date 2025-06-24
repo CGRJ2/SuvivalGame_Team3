@@ -23,8 +23,6 @@ public class PlayerState : BaseState
 
     public override void Update()
     {
-        Debug.Log("up");
-
 
     }
 }
@@ -39,7 +37,7 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("idleEnter");
+        Debug.Log("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -51,7 +49,6 @@ public class Player_Idle : PlayerState
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("idleExit");
     }
 }
 
@@ -65,14 +62,13 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("moveEnter");
+        Debug.Log("EnterMove");
+
     }
-    
+
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("moveExit");
-        
     }
     public override void Update()
     {
@@ -113,15 +109,16 @@ public class Player_Jump : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //pc.View.animator.SetTrigger("Jump");
-        pc.View.animator.Play("JumpStart");
+        Debug.Log("EnterJump");
+        //pc.View.animator.Play("JumpStart");
+        pc.View.animator.SetBool("IsJump", true);
         pc.View.Jump(pc.Status.JumpForce);
     }
 
     public override void Exit()
     {
         base.Exit();
-
+        pc.View.animator.SetBool("IsJump", false);
     }
 }
 
@@ -135,15 +132,13 @@ public class Player_Fall : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("EnterFall");
-        pc.View.animator.Play("JumpStart");
+        //pc.View.animator.Play("JumpStart");
         pc.View.animator.SetBool("IsFalling", true);
     }
     
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("ExitFall");
         pc.View.animator.SetBool("IsFalling", false);
     }
     public override void Update()
@@ -181,6 +176,7 @@ public class Player_Crouch : PlayerState
 
 public class Player_Attack : PlayerState
 {
+    float attackCoolTime = 0;
     public Player_Attack(PlayerController pc) : base(pc)
     {
 
@@ -190,17 +186,26 @@ public class Player_Attack : PlayerState
     {
         base.Enter();
         Debug.Log("EnterAttack");
-        pc.View.animator.SetTrigger("Attack");
+
+        attackCoolTime = 0;
+        pc.isAttacking = true;
+        pc.View.animator.SetBool("IsAttack", true);
     }
 
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("ExitAttack");
+        pc.View.animator.SetBool("IsAttack", false);
+        pc.isAttacking = false;
     }
     public override void Update()
     {
         base.Update();
+        attackCoolTime += Time.deltaTime;
+        if (attackCoolTime > pc.AttackCoolTime)
+        {
+            pc.isAttacking = false;
+        }
     }
 }
 
