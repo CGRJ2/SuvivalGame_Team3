@@ -72,7 +72,7 @@ public class Slot : MonoBehaviour,
         }
     }
 
-    private void ClearSlot()
+    public void ClearSlot()
     {
         item = null;
         itemCount = 0;
