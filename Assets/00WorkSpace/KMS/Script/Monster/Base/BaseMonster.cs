@@ -24,6 +24,16 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterView view;
     public UnityEvent OnDeadEvent;
 
+    //소리 감지
+    [SerializeField] protected float alertLevel = 0f;
+    [SerializeField] protected float alertDecayRate = 5f;
+    [SerializeField] protected float alertThreshold_Search = 10f;
+    [SerializeField] protected float alertThreshold_Alert = 20f;
+
+    //소리 감지의 급속도 변화 제어용
+    private float alertCooldownTimer = 0f;
+    [SerializeField] private float alertCooldownThreshold = 2f;
+
     protected bool isDead;
     public bool IsDead => isDead;
 
@@ -39,6 +49,7 @@ public abstract class BaseMonster : MonoBehaviour
     {
         stateMachine.Update();
         HandleState(); // 자식이 override 가능
+        UpdateAlert();
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -151,5 +162,40 @@ public abstract class BaseMonster : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void IncreaseAlert(float amount)
+    {
+        alertLevel += amount;
+        alertLevel = Mathf.Clamp(alertLevel, 0, 100);
+    }
+
+    private MonsterPerceptionState EvaluateAlertState()
+    {
+        if (alertLevel >= alertThreshold_Alert) return MonsterPerceptionState.Alert;
+        if (alertLevel >= alertThreshold_Search) return MonsterPerceptionState.Search;
+        return MonsterPerceptionState.Idle;
+    }
+
+    protected void UpdateAlert()
+    {
+        if (alertLevel > 0f)
+            alertLevel -= alertDecayRate * Time.deltaTime;
+
+        MonsterPerceptionState newState = EvaluateAlertState();
+
+        if (newState != perceptionState)
+        {
+            alertCooldownTimer += Time.deltaTime;
+            if (alertCooldownTimer >= alertCooldownThreshold)
+            {
+                SetPerceptionState(newState);
+                alertCooldownTimer = 0f;
+            }
+        }
+        else
+        {
+            alertCooldownTimer = 0f;
+        }
     }
 }
