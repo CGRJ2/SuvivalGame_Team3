@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private InputAction crouchAction;
     private InputAction attackAction;
     private InputAction freeCamAction;
+    private InputAction interactAction;
 
     //Vector3 moveDir;
 
@@ -93,11 +94,16 @@ public class PlayerController : MonoBehaviour
         // 플레이어 조작 맵
         var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
 
-        // 자유 카메라
+        // 1. 자유 카메라
         freeCamAction = playerControlMap.FindAction("FreeCamMod");
         freeCamAction.Enable();
         freeCamAction.started += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
+
+        // 2. 상호 작용
+        interactAction = playerControlMap.FindAction("Interaction");
+        interactAction.Enable();
+        interactAction.started += HandleInteract;
 
         /*// 조준 (포커싱)
         AimingAction = playerControlMap.FindAction("Aiming");
@@ -106,26 +112,26 @@ public class PlayerController : MonoBehaviour
         AimingAction.canceled += HandleAiming;*/
 
 
-        // 달리기 액션
+        // 3. 달리기 액션
         sprintAction = playerControlMap.FindAction("Sprint");
         sprintAction.Enable();
         sprintAction.performed += HandleSprint;
         sprintAction.canceled += HandleSprint;
 
-        // 점프 액션
+        // 4. 점프 액션
         jumpAction = playerControlMap.FindAction("Jump");
         jumpAction.Enable();
         jumpAction.performed += HandleJump;
         jumpAction.canceled += HandleJump;
 
 
-        // 앉기 액션
+        // 5. 앉기 액션
         crouchAction = playerControlMap.FindAction("Crouch");
         crouchAction.Enable();
         crouchAction.performed += HandleCrouch;
         crouchAction.canceled += HandleCrouch;
 
-        // 공격 액션
+        // 6. 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
         attackAction.started += HandleAttack;
@@ -134,21 +140,30 @@ public class PlayerController : MonoBehaviour
 
     private void InputActionsDelete()
     {
+        // 1. 자유 카메라
         freeCamAction.started -= HandleFreeCam;
         freeCamAction.canceled -= HandleFreeCam;
+
+        // 2. 상호작용
+        interactAction.started -= HandleInteract;
 
         /*AimingAction.performed -= HandleAiming;
         AimingAction.canceled -= HandleAiming;*/
 
+        // 3. 달리기 액션
         sprintAction.performed -= HandleSprint;
         sprintAction.canceled -= HandleSprint;
 
+
+        // 4. 점프 액션
         jumpAction.performed -= HandleJump;
         jumpAction.canceled -= HandleJump;
 
+        // 5. 앉기 액션
         crouchAction.performed -= HandleCrouch;
         crouchAction.canceled -= HandleCrouch;
-
+        
+        // 6. 공격 액션
         attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
     }
@@ -316,6 +331,12 @@ public class PlayerController : MonoBehaviour
             isAttackInput = false;
     }
 
+    public void HandleInteract(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Interact();
+    }
+
     #endregion
 
     public void CrouchToggleChange(bool value)
@@ -412,8 +433,8 @@ public class PlayerController : MonoBehaviour
     public void Attack()
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
-
-        if (damagables == null) return;
+        Debug.Log(damagables.Length);
+        if (damagables.Length < 1) return;
 
         foreach (IDamagable damagable in damagables)
         {
@@ -421,6 +442,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Interact()
+    {
+        IInteractable interactable = Cc.InteractableObj;
+
+        if (interactable != null) 
+            interactable.Interact();
+    }
    
 
 
