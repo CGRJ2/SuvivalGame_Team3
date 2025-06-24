@@ -10,12 +10,11 @@ public class InventoryTabs : MonoBehaviour
     public GameObject systemPanel;
 
     [Header("ItemPanel")]
-    public GameObject itemMaterialPanel;
-    public GameObject itemUsePanel;
-    public GameObject itemWeaponPanel;
-    public GameObject itemSkillPanel;
-    public GameObject itemQuestPanel;
-
+    public GameObject materialItemPanel;
+    public GameObject useItemPanel;
+    public GameObject weaponItemPanel;
+    public GameObject functionItemPanel;
+    public GameObject questItemPanel;
     public void ShowMap()
     {
         mapPanel.SetActive(true);
@@ -28,11 +27,11 @@ public class InventoryTabs : MonoBehaviour
         itemPanel.SetActive(true);
         systemPanel.SetActive(false);
 
-        if (itemMaterialPanel != null) itemMaterialPanel.SetActive(true);
-        if (itemUsePanel != null) itemUsePanel.SetActive(false);
-        if (itemWeaponPanel != null) itemWeaponPanel.SetActive(false);
-        if (itemSkillPanel != null) itemSkillPanel.SetActive(false);
-        if (itemQuestPanel != null) itemQuestPanel.SetActive(false);
+        if (materialItemPanel != null) materialItemPanel.SetActive(true);
+        if (useItemPanel != null) useItemPanel.SetActive(false);
+        if (weaponItemPanel != null) weaponItemPanel.SetActive(false);
+        if (functionItemPanel != null) functionItemPanel.SetActive(false);
+        if (questItemPanel != null) questItemPanel.SetActive(false);
     }
     public void ShowSystem()
     {

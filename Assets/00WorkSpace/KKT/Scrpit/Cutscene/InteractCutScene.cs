@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 
-public class InteractCunScene : MonoBehaviour
+public class InteractCutScene : MonoBehaviour
 {
     [Header("Core")]
     public PlayableDirector timeline;

@@ -332,7 +332,7 @@ Transform:
   m_GameObject: {fileID: 27486429}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.01, y: 4.58, z: 16.59}
+  m_LocalPosition: {x: -4.01, y: 4.58, z: 16.76}
   m_LocalScale: {x: 7, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2786,11 +2786,11 @@ MonoBehaviour:
   mapPanel: {fileID: 1828125408}
   itemPanel: {fileID: 1448235562}
   systemPanel: {fileID: 1338383025}
-  itemMaterialPanel: {fileID: 833803719}
-  itemUsePanel: {fileID: 470571077}
-  itemWeaponPanel: {fileID: 1798486277}
-  itemSkillPanel: {fileID: 1668325153}
-  itemQuestPanel: {fileID: 1087770065}
+  materialItemPanel: {fileID: 833803719}
+  useItemPanel: {fileID: 470571077}
+  weaponItemPanel: {fileID: 1798486277}
+  functionItemPanel: {fileID: 1668325153}
+  questItemPanel: {fileID: 1087770065}
 --- !u!114 &996307082
 MonoBehaviour:
   m_ObjectHideFlags: 0
