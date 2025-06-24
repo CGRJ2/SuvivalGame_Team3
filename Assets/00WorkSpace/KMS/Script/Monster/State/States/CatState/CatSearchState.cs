@@ -2,22 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatIdleState : IMonsterState
+public class CatSearchState : IMonsterState
 {
     private BaseMonster monster;
+    private float searchDuration = 4f;
+    private float timer = 0f;
 
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
-        monster.GetComponent<MonsterView>()?.PlayIdleAnimation();
-        Debug.Log($"[{monster.name}] CatIdle 상태 진입");
+        timer = 0f;
+        monster.GetComponent<MonsterView>()?.PlayIdleAnimation(); // 수색 애니메이션이 있다면 이걸로 교체
+        Debug.Log($"[{monster.name}] CatSearch 상태 진입");
     }
 
     public void Execute()
     {
+        timer += Time.deltaTime;
         bool canSeePlayer = monster.IsInSight();
 
-        // 감지 우선 (즉시 반응)
         if (monster.IsDead)
         {
             monster.StateMachine.ChangeState(new DeadState());
@@ -31,15 +34,15 @@ public class CatIdleState : IMonsterState
             return;
         }
 
-        if (monster.AlertLevel >= monster.AlertThreshold_Search)
+        if (timer >= searchDuration)
         {
-            monster.SetPerceptionState(MonsterPerceptionState.Search);
-            monster.StateMachine.ChangeState(new CatSearchState());
+            monster.SetPerceptionState(MonsterPerceptionState.Idle);
+            monster.StateMachine.ChangeState(new CatIdleState());
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] CatIdle 상태 종료");
+        Debug.Log($"[{monster.name}] CatSearch 상태 종료");
     }
 }

@@ -30,6 +30,7 @@ public abstract class BaseMonster : MonoBehaviour
     public float AlertLevel => alertLevel;
     [SerializeField] protected float alertDecayRate = 5f;
     [SerializeField] protected float alertThreshold_Search = 10f;
+    public float AlertThreshold_Search => alertThreshold_Search;
     [SerializeField] protected float alertThreshold_Alert = 20f;
 
     //소리 감지의 급속도 변화 제어용
