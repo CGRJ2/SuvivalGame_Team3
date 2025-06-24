@@ -11,6 +11,8 @@ public class Inventory : MonoBehaviour
     private GameObject go_inventoryBase;
     [SerializeField]
     private GameObject go_SlotsParent;
+    [SerializeField]
+    private GameObject go_Base; //Base_Outer 참조
     //슬롯들
     private Slot[] slots;
 
@@ -49,6 +51,7 @@ public class Inventory : MonoBehaviour
     private void CloseInventory()
     {
         go_inventoryBase.SetActive(false);
+        go_Base.SetActive(false); //툴팁을 띄운채로 인벤토리를 닫으면 툴팁이 유지되는 버그가 있어서 수정한 내용 
     }
 
     public void AcquireItem(Item _item, int _count = 1)
@@ -76,5 +79,7 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+
 
 }

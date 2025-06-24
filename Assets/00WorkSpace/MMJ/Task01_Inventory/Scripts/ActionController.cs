@@ -8,7 +8,7 @@ public class ActionController : MonoBehaviour
     [SerializeField]
     private float range; //습득거리
     private bool pickupActivated = false; //습득 가능할 시 true
-    private RaycastHit hitInfo; //충돌체 정도 저장
+    private RaycastHit hitInfo; //충돌체 정보 저장
 
     //아이템 레이어만 반응하도록 레이어마스크 설정
     [SerializeField]
