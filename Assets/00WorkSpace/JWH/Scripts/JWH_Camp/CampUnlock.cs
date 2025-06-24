@@ -12,12 +12,17 @@ public class CampUnlock : MonoBehaviour
         {
             if (data.level == level)
             {
-                //foreach (var item in data.itemsToUnlock)
-                //{
-                //    PlayerInventory.Instance.UnlockItem(item);
-                //}
+                foreach (var item in data.itemsToUnlock)
+                {
+                    Debug.Log($"{item.itemName} 아이템이 해제되었습니다.");
+                    //여따가 기능추가
+                    
+                }
+                return;
             }
         }
+
+       
     }
 }
 
@@ -25,6 +30,6 @@ public class CampUnlock : MonoBehaviour
 public class UnlockData
 {
     public int level;
-    //public List<ItemData> itemsToUnlock;
+    public List<Item> itemsToUnlock;
 }
 

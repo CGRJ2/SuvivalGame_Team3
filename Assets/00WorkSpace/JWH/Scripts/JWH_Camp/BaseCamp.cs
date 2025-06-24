@@ -12,6 +12,7 @@ public class BaseCamp : MonoBehaviour
         if (camplevel.TryLevelUp())
         {
             campunlock.UnlockItems(camplevel.CurrentLevel);
+            Debug.Log("캠프 업그레이드");
         }
     }
 }
