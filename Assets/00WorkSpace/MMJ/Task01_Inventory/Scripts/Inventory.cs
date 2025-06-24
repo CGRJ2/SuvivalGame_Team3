@@ -30,9 +30,6 @@ public class Inventory : MonoBehaviour
         
         slots = go_SlotsParent.GetComponentsInChildren<Slot>();
         quickSlots = go_QuickSlotParent.GetComponentsInChildren<Slot>();
-
-        Debug.Log("½½·Ô °¹¼ö : " + slots.Length);
-        Debug.Log("Äü½½·Ô °¹¼ö : " + quickSlots.Length);
     }
 
     private void Update()
