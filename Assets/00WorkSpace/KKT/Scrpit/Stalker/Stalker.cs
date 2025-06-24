@@ -80,7 +80,7 @@ public class Stalker : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 IDamagable target = other.GetComponent<IDamagable>();
-                target.TakeDamage(status.Damage);
+                //target.TakeDamage(status.Damage); 스토커는 데미지 안받습니다
                 break;
             }
         }
