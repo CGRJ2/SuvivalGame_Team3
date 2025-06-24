@@ -55,7 +55,7 @@ public class PlayerStatus : MonoBehaviour
     public bool isInvincible;
 
     [Header("조작 가능/불가 상태")]
-    public bool isControllable; // 고양이한테 물리거나 주인한테 잡힐 때 사용
+    public bool isControllLocked; // 고양이한테 물리거나 주인한테 잡힐 때 사용
 
 
 
