@@ -16,8 +16,8 @@ public class CatAI : BaseMonster
             if (pacifyTimer <= 0f)
                 isPacified = false;
 
-            if (!(stateMachine.CurrentState is IdleState))
-                stateMachine.ChangeState(new IdleState());
+            if (!(stateMachine.CurrentState is CatIdleState))
+                stateMachine.ChangeState(new CatIdleState());
             return;
         }
 

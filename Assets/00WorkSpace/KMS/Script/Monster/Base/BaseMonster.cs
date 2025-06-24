@@ -21,11 +21,13 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected Transform target;
     protected MonsterStateMachine stateMachine;
+    public MonsterStateMachine StateMachine => stateMachine;
     protected MonsterView view;
     public UnityEvent OnDeadEvent;
 
     //소리 감지
     [SerializeField] protected float alertLevel = 0f;
+    public float AlertLevel => alertLevel;
     [SerializeField] protected float alertDecayRate = 5f;
     [SerializeField] protected float alertThreshold_Search = 10f;
     [SerializeField] protected float alertThreshold_Alert = 20f;
