@@ -31,7 +31,6 @@ public class InteractableTest_Get : MonoBehaviour, IInteractable
         {
             if (CC.InteractableObj == this as IInteractable)
             {
-                Debug.Log("°°Àº³ð »èÁ¦");
                 CC.InteractableObj = null;
             }
             else return;

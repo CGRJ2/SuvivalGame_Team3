@@ -1,9 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
-    [field: SerializeField] public float AttackCoolTime { get; private set; }
+    //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public bool isAttacking;
 
     public PlayerStatus Status { get; private set; }
@@ -56,6 +58,12 @@ public class PlayerController : MonoBehaviour
             ref smoothVelocity,
             SmoothTime
         );
+
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TakeDamage(10);
+        }
     }
 
     private void FixedUpdate()
@@ -172,8 +180,8 @@ public class PlayerController : MonoBehaviour
     public void HandleMove()
     {
         float moveSpeed;
-        if (isCrouchToggle) moveSpeed = Status.CrouchSpeed;
-        else if (isSprintInput) moveSpeed = Status.SprintSpeed;
+        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
@@ -370,7 +378,7 @@ public class PlayerController : MonoBehaviour
             // => Jump
             else if (isJumpInput)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack))
+                if (isAttacking)
                 {
                     return;
                 }
@@ -387,7 +395,7 @@ public class PlayerController : MonoBehaviour
             // => Sprint
             else if (isSprintInput)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack))
+                if (isAttacking)
                 {
                     return;
                 }
@@ -404,7 +412,7 @@ public class PlayerController : MonoBehaviour
             // => Crouch
             else if (isCrouchToggle)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
+                if (isAttacking) return;
                 else Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
@@ -433,7 +441,7 @@ public class PlayerController : MonoBehaviour
     public void Attack()
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
-        Debug.Log(damagables.Length);
+
         if (damagables.Length < 1) return;
 
         foreach (IDamagable damagable in damagables)
@@ -462,4 +470,41 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+
+    public void TakeDamage(int damage)
+    {
+        // 무적 상태라면 return;
+        if (Status.isInvincible) return;
+        
+        // 활성 상태인 신체 부위 중 랜덤 선택
+        List<BodyPart> bodyPart = Status.GetBodyPartsList();
+        List<BodyPart> activeBodyPart = new List<BodyPart>();
+
+        foreach(BodyPart part in bodyPart)
+        {
+            // 활성 상태인 파츠들로 리스트 새로 생성
+            if (part.Activate.Value) 
+                activeBodyPart.Add(part);
+        }
+
+        // 부위 랜덤 데미지
+        int r = Random.Range(0, activeBodyPart.Count);
+        activeBodyPart[r].TakeDamage(damage);
+
+        Status.CheckCriticalState();
+        StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
+    }
+
+
+    public IEnumerator InvincibleRoutine(float time)
+    {
+        Status.isInvincible = true;
+        // TODO : 플레이어 피격 이펙트 or 셰이더 실행
+
+        yield return new WaitForSeconds(time);
+
+        Status.isInvincible = false;
+        // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
+    }
+
 }

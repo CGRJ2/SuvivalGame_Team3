@@ -32,7 +32,7 @@ public class ColliderController : MonoBehaviour
     [SerializeField] float rayRadius_Interact;
     [SerializeField] Vector3 offset_Interact;
     IInteractable[] interactablesInRange;*/
-    [field : Header("Current Interactable Object")] public IInteractable InteractableObj { get; set; }
+    public IInteractable InteractableObj { get; set; }
 
     [Header("Crouching Collider Set")]
     [SerializeField] Vector3 crouchCenter_MC;
