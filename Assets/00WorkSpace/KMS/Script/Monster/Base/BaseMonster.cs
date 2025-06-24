@@ -40,6 +40,10 @@ public abstract class BaseMonster : MonoBehaviour
     protected bool isDead;
     public bool IsDead => isDead;
 
+    // 넉백의 물리 작용
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private float stunTime = 0.5f;
+
 
 
     protected virtual void Awake()
@@ -58,7 +62,7 @@ public abstract class BaseMonster : MonoBehaviour
     public virtual void ReceiveDamage(float amount)
     {
         currentHP -= amount;
-        view.PlayHitEffect();
+        view.PlayMonsterHitEffect();
 
         if (currentHP <= 0)
         {
@@ -70,7 +74,7 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        view.PlayDeathAnimation();
+        view.PlayMonsterDeathAnimation();
         OnDeadEvent?.Invoke();
     }
 
@@ -202,5 +206,16 @@ public abstract class BaseMonster : MonoBehaviour
         {
             alertCooldownTimer = 0f;
         }
+    }
+
+    public void ApplyKnockback(Vector3 direction, float force)
+    {
+        if (rb == null) return;
+        rb.AddForce(direction.normalized * force, ForceMode.Impulse);
+        Debug.Log($"[Monster] 넉백 적용: {direction}, 힘: {force}");
+
+        // 공격 중이라면 상태 중단
+        var monster = GetComponent<BaseMonster>();
+        monster?.StateMachine?.ChangeState(new StaggerState(stunTime));
     }
 }

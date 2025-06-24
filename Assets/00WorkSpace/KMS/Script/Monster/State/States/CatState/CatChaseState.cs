@@ -18,7 +18,7 @@ public class CatChaseState : IMonsterState
         if (cat == null) return;
 
         target = cat.GetTarget();
-        cat.GetComponent<MonsterView>()?.PlayRunAnimation();
+        cat.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
         Debug.Log($"[{cat.name}] 상태: CatChase 진입");
 
         mentalTickTimer = 0f; // 진입 시 초기화
@@ -52,7 +52,7 @@ public class CatChaseState : IMonsterState
         float dist = Vector3.Distance(cat.transform.position, target.position);
         if (dist < 2f)
         {
-            cat.GetComponent<MonsterView>()?.PlayAttackAnimation();
+            cat.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
 

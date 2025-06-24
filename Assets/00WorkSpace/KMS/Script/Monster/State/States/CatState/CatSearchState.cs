@@ -12,7 +12,7 @@ public class CatSearchState : IMonsterState
     {
         this.monster = monster;
         timer = 0f;
-        monster.GetComponent<MonsterView>()?.PlayIdleAnimation(); // 수색 애니메이션이 있다면 이걸로 교체
+        monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation(); // 수색 애니메이션이 있다면 이걸로 교체
         Debug.Log($"[{monster.name}] CatSearch 상태 진입");
     }
 

@@ -15,7 +15,7 @@ public class Phase2AttackState : IMonsterState
         attackCooldown = monster.data.attackCooldown * 0.8f;
         timer = 0f;
 
-        monster.GetComponent<MonsterView>()?.PlayAttackAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         Debug.Log($"[{monster.name}] 상태: Phase2 Attack 진입 (속도 증가)");
     }
 

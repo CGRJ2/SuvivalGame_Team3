@@ -9,7 +9,7 @@ public class CatIdleState : IMonsterState
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
-        monster.GetComponent<MonsterView>()?.PlayIdleAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
         Debug.Log($"[{monster.name}] CatIdle 상태 진입");
     }
 

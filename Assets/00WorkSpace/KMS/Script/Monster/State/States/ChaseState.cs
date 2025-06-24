@@ -11,7 +11,7 @@ public class ChaseState : IMonsterState
     {
         this.monster = monster;
         target = monster.GetTarget();
-        monster.GetComponent<MonsterView>()?.PlayRunAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
         Debug.Log($"[{monster.name}] 상태: Chase 진입");
     }
 
@@ -29,7 +29,7 @@ public class ChaseState : IMonsterState
         float dist = Vector3.Distance(monster.transform.position, target.position);
         if (dist < 2f) // 공격 가능 거리 예시
         {
-            monster.GetComponent<MonsterView>()?.PlayAttackAnimation();
+            monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
 

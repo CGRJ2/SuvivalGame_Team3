@@ -19,7 +19,7 @@ public class CatPacifiedState : IMonsterState
         if (cat == null) return;
 
         timer = 0f;
-        cat.GetComponent<MonsterView>()?.PlayIdleAnimation();
+        cat.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
         Debug.Log($"[{cat.name}] 상태: CatPacified 진입 (무력화 {duration}초)");
     }
 

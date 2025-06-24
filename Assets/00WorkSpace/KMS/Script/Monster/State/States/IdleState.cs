@@ -13,7 +13,7 @@ public class IdleState : IMonsterState
         this.monster = monster;
         timer = 0f;
         idleTime = Random.Range(1f, 3f); // 대기 시간 랜덤
-        monster.GetComponent<MonsterView>()?.PlayIdleAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
         Debug.Log($"[{monster.name}] 상태: Idle 진입");
     }
 
