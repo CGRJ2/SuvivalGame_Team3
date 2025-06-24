@@ -48,7 +48,7 @@ KMS_MonsterBalancing
 
 ## 역할 분담
 김경태
-- 컷씬, 튜토리얼 및 UI/UX
+- 컷씬 및 UI/UX
 
 김민수
 - 적 시스템
