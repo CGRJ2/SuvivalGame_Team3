@@ -5,17 +5,18 @@ using UnityEngine.InputSystem;
 
 public class ToggleUI : MonoBehaviour
 {
-    public GameObject targetUI;
-    public InputAction toggleAction;
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            if (targetUI != null)
-            {
-                targetUI.SetActive(!targetUI.activeSelf);
-            }
+            bool isNowActive = UIController.Instance.commandPanel.activeSelf;
+            UIController.Instance.ShowCommand(!isNowActive);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            bool isNowActive = UIController.Instance.inventoryPanel.activeSelf;
+            UIController.Instance.ShowInventory(!isNowActive);
         }
     }
 }

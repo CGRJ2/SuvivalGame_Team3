@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class drawGizmos : MonoBehaviour
+public class drawShpereGizmos : MonoBehaviour
 {
     public float size;
     private void OnDrawGizmos()
