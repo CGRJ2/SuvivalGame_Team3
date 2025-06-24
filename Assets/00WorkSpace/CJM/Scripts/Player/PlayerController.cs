@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -147,14 +146,14 @@ public class PlayerController : MonoBehaviour
     public void HandleMove()
     {
         float moveSpeed;
-        if (isSprintInput) moveSpeed = Status.SprintSpeed;
-        else if (isCrouchToggle) moveSpeed = Status.CrouchSpeed;
+        if (isCrouchToggle) moveSpeed = Status.CrouchSpeed;
+        else if (isSprintInput) moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
 
         if (isFreeCamModInput)
-            getMoveDir = View.GetMoveDirection(InputDir,true);
+            getMoveDir = View.GetMoveDirection(InputDir, true);
         else
             getMoveDir = View.GetMoveDirection(InputDir);
 
@@ -245,7 +244,7 @@ public class PlayerController : MonoBehaviour
             isFreeCamModInput = true;
             View.FreeCamSet(true);
         }
-            
+
         else if (context.canceled)
             isFreeCamModInput = false;
     }
@@ -293,7 +292,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-            
+
     }
 
     public void HandleAttack(InputAction.CallbackContext context)
@@ -306,6 +305,13 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public void CrouchToggleChange(bool value)
+    {
+        isCrouchToggle = value;
+    }
+
+    // 상태 전환 가능 여부 체크
+
     // InputFlag들에 따른 상태 전환 총괄
     public void UpdateStateCondition()
     {
@@ -315,18 +321,41 @@ public class PlayerController : MonoBehaviour
             // => Attack
             if (isAttackInput)
             {
-                Debug.Log("Attack 고고");
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                {
+                    if (!Cc.GetIsHeadTouchedState())
+                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                }
+                else
+                {
+                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                }
             }
             // => Jump
-            else if (isJumpInput && !isCrouchToggle)
+            else if (isJumpInput)
             {
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                {
+                    if (!Cc.GetIsHeadTouchedState())
+                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+                }
+                else
+                {
+                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+                }
             }
             // => Sprint
             else if (isSprintInput)
             {
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+                if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Crouch])
+                {
+                    if (!Cc.GetIsHeadTouchedState())
+                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+                }
+                else
+                {
+                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+                }
             }
             // => Crouch
             else if (isCrouchToggle)

@@ -171,6 +171,7 @@ public class Player_Crouch : PlayerState
         base.Exit();
         pc.View.animator.SetBool("IsCrouch", false);
         pc.Cc.SetColliderDefault();
+        pc.CrouchToggleChange(false);
     }
     public override void Update()
     {
