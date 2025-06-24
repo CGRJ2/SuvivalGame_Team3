@@ -24,6 +24,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "ZoomInOut",
+                    "type": "Value",
+                    "id": "3ebd7173-46d3-41ca-9e1c-aa724d8bf676",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Aiming",
                     "type": "Button",
                     "id": "155f9edc-f063-4d8a-86a1-d4711a521c62",
@@ -272,6 +281,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "FreeCamMod",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b786be6-0f38-49a2-94cf-2e1f1240e955",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ZoomInOut",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

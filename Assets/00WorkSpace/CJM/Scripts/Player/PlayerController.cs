@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 avatarForwardDir;
     private Vector2 currentRotation;
 
+    [SerializeField] Transform[] TPS_Cameras;
+    int currentZoomIndex = 1;
 
 
     private InputAction AimingAction;
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
+
         Status.Init();
         InputActionsInit();
         StateMachineInit();
@@ -202,6 +206,36 @@ public class PlayerController : MonoBehaviour
         Vector2 mouseDir = value.Get<Vector2>();
         mouseDir.y *= -1;
         MouseInputDir = mouseDir * Status.MouseSensitivity;
+    }
+    public void OnZoomInOut(InputValue value)
+    {
+        Vector2 scroll = value.Get<Vector2>();
+        ZoomSet(scroll.y);
+    }
+    public void ZoomSet(float y)
+    {
+        if (y < 0)
+        {
+            if (currentZoomIndex < TPS_Cameras.Length - 1)
+            {
+                // 현재 카메라 끄기
+                TPS_Cameras[currentZoomIndex].gameObject.SetActive(false);
+
+                // 다음 단계 카메라 켜기
+                currentZoomIndex++;
+                TPS_Cameras[currentZoomIndex].gameObject.SetActive(true);
+            }
+        }
+        else if (y > 0)
+        {
+            if (currentZoomIndex > 0)
+            {
+                TPS_Cameras[currentZoomIndex].gameObject.SetActive(false);
+
+                currentZoomIndex--;
+                TPS_Cameras[currentZoomIndex].gameObject.SetActive(true);
+            }
+        }
     }
 
     public void HandleFreeCam(InputAction.CallbackContext context)
