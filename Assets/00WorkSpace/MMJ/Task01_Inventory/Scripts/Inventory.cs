@@ -12,14 +12,27 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private GameObject go_SlotsParent;
     [SerializeField]
+    private GameObject go_QuickSlotParent;
+
+    [SerializeField]
     private GameObject go_Base; //Base_Outer ÂüÁ¶
-    //½½·Ôµé
+    
+
+    //ÀÎº¥Åä¸® ½½·Ôµé
     private Slot[] slots;
+    //Äü½½·Ôµé
+    private Slot[] quickSlots;
+    private bool isNotPut;
 
 
     private void Start()
     {
+        
         slots = go_SlotsParent.GetComponentsInChildren<Slot>();
+        quickSlots = go_QuickSlotParent.GetComponentsInChildren<Slot>();
+
+        Debug.Log("½½·Ô °¹¼ö : " + slots.Length);
+        Debug.Log("Äü½½·Ô °¹¼ö : " + quickSlots.Length);
     }
 
     private void Update()
@@ -56,30 +69,45 @@ public class Inventory : MonoBehaviour
 
     public void AcquireItem(Item _item, int _count = 1)
     {
+        PutSlot(quickSlots, _item, _count);
+        if (isNotPut)
+        {
+            PutSlot(slots, _item, _count);
+        }
+
+        if (isNotPut)
+            Debug.Log("ÀÎº¥Åä¸®°¡ ²ËÃ¡¿Ë~");
+
+    }
+
+    private void PutSlot(Slot[] _slots, Item _item, int _count)
+    {
         if (Item.ItemType.Equipment != _item.itemType)
         {
-            for (int i = 0; i < slots.Length; i++)
+            for (int i = 0; i < _slots.Length; i++)
             {
-                if (slots[i].item != null)
+                if (_slots[i] != null && _slots[i].item != null)
                 {
-                    if (slots[i].item.itemName == _item.itemName)
+                    if (_slots[i].item.itemName == _item.itemName)
                     {
-                        slots[i].SetSlotCount(_count);
+                        _slots[i].SetSlotCount(_count);
+                        isNotPut = false;
                         return;
                     }
                 }
             }
         }
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
-            if (slots[i].item == null)
+            if (_slots[i] != null && _slots[i].item == null)
             {
-                slots[i].AddItem(_item, _count);
+                _slots[i].AddItem(_item, _count);
+                isNotPut = false;
                 return;
             }
         }
+
+        isNotPut = true;
     }
-
-
 
 }
