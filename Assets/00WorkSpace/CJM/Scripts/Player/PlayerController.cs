@@ -46,7 +46,17 @@ public class PlayerController : MonoBehaviour, IDamagable
     private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
     private void Update()
     {
-        HandleSight();
+        ///////////////////////////
+        /// 테스트
+        /// 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TakeDamage(10);
+        }
+        ///
+        /////////////////////////////
+        HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
+
 
         UpdateStateCondition();
 
@@ -58,16 +68,12 @@ public class PlayerController : MonoBehaviour, IDamagable
             ref smoothVelocity,
             SmoothTime
         );
-
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10);
-        }
     }
 
     private void FixedUpdate()
     {
+        if (!Status.isControllLocked) return;
+
         HandleMove();
     }
 
@@ -179,6 +185,9 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleMove()
     {
+        // 컨트롤 락 걸리면 이동 로직 중지
+        if (Status.isControllLocked) return;
+
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
         else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
@@ -217,6 +226,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
         else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
         else avatarDir = View.moveDir;
+
+        // 컨트롤 락 걸리면 아바타 회전은 정지
+        if (Status.isControllLocked) return;
 
         View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
 
@@ -355,6 +367,9 @@ public class PlayerController : MonoBehaviour, IDamagable
     // InputFlag들에 따른 상태 전환 총괄
     public void UpdateStateCondition()
     {
+        // 컨트롤 락 걸리면 상태 전환 로직 중지
+        if (Status.isControllLocked) return;
+
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
