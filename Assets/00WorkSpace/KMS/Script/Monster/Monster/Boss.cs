@@ -21,7 +21,7 @@ public class Boss : BaseMonster
             return;
         }
 
-        if (CanSeePlayer())
+        if (SetPerceptionState(MonsterPerceptionState.Alert))
         {
             stateMachine.ChangeState(new ChaseState());
         }

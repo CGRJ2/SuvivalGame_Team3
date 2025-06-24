@@ -101,12 +101,14 @@ public abstract class BaseMonster : MonoBehaviour
         Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료");
     }
 
-    public void SetPerceptionState(MonsterPerceptionState newState)
+    public bool SetPerceptionState(MonsterPerceptionState newState)
     {
-        if (perceptionState == newState) return;
+        if (perceptionState == newState)
+            return false;
 
         perceptionState = newState;
         UpdateSightParameters();
+        return true;
     }
 
     private void UpdateSightParameters() //임의 배정
