@@ -41,8 +41,8 @@ public class ActionController : MonoBehaviour
         {
             if (hitInfo.transform != null)
             {
-                Debug.Log(hitInfo.transform.GetComponent<ItemInstance>().Item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
-                theInventory.AcquireItem(hitInfo.transform.GetComponent<ItemInstance>().Item);
+                Debug.Log(hitInfo.transform.GetComponent<ItemInstance>().item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
+                theInventory.AcquireItem(hitInfo.transform.GetComponent<ItemInstance>().item);
 
                 Destroy(hitInfo.transform.gameObject);
                 InfoDisappear();
@@ -70,7 +70,7 @@ public class ActionController : MonoBehaviour
     { 
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemInstance>().Item.itemName + " »πµÊ " + "<color=yellow>" + "(E)" + "</color>";
+        actionText.text = hitInfo.transform.GetComponent<ItemInstance>().item.itemName + " »πµÊ " + "<color=yellow>" + "(E)" + "</color>";
     }
 
     private void InfoDisappear()

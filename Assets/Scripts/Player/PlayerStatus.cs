@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
@@ -26,8 +27,9 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity_Init;
     ///////////////////////////////////////////////
 
+    public Item item;
 
-    //private Inventory inventory;
+    public Inventory inventory;
 
 
     [Header("현재 플레이어 정보")] // 세이브 & 로드 가능

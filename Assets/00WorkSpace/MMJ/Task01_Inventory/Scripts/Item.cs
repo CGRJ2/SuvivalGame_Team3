@@ -19,4 +19,10 @@ public class Item : ScriptableObject
         Ingredient, // 재료
         ETC // 기타
     }
+
+    public void SpawnItem(Transform transform)
+    {
+        ItemInstance instance = Instantiate(itemPrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();
+        instance.item = this;
+    }
 }
