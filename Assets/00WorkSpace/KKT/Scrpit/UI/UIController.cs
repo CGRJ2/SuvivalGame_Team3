@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
@@ -15,6 +16,15 @@ public class UIController : MonoBehaviour
     }
 
     // ==== UI 오브젝트 연결 ====
+    [Header("Player Information")]
+    public GameObject playerInformation;
+
+    [Header("Time information")]
+    public GameObject timeInformation;
+
+    [Header("Quick Slot")]
+    public GameObject quickSlot;
+
     [Header("Location Notification")]
     public GameObject locationPanel;
     public TextMeshProUGUI locationText;
@@ -35,6 +45,9 @@ public class UIController : MonoBehaviour
 
     [Header("Command Panel")]
     public GameObject commandPanel;
+
+    [Header("Craft Panel")]
+    public GameObject craftPanel;
 
     [Header("Inventory Tabs")]
     public InventoryTabs inventoryTabs;
@@ -70,7 +83,7 @@ public class UIController : MonoBehaviour
             interactionPrompt.SetActive(isShow);
     }
 
-    // ==== 인벤토리/커맨드 On/Off ====
+    // ==== 인벤토리 On/Off ====
     public void ShowInventory(bool isShow)
     {
         if (inventoryPanel != null)
@@ -94,10 +107,40 @@ public class UIController : MonoBehaviour
             Debug.Log("마우스 비활성화");
         }
     }
+
+    // ==== 커맨드 On/Off ====
     public void ShowCommand(bool isShow)
     {
         if (commandPanel != null)
             commandPanel.SetActive(isShow);
+    }
+
+    // ==== 크래프트 On/Off ====
+    public void ShowCraftPanel(bool isShow)
+    {
+        if(craftPanel != null)
+        {
+            craftPanel.SetActive(isShow);
+        }
+
+        if (isShow)
+        {
+            if (playerInformation != null) playerInformation.SetActive(false);
+            if (quickSlot != null) quickSlot.SetActive(false);
+        }
+        else
+        {
+            if (playerInformation != null) playerInformation.SetActive(true);
+            if (quickSlot != null) quickSlot.SetActive(true);
+        }
+    }
+
+    public void CloseCraftWindow(bool isShow)
+    {
+        if (isShow)
+        {
+            craftPanel.SetActive(false);
+        }
     }
 
     // ... 필요시 UI별로 Show/Hide 함수 추가!
