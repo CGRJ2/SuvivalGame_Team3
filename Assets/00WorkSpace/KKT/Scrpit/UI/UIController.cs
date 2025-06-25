@@ -1,0 +1,104 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class UIController : MonoBehaviour
+{
+    public static UIController Instance { get; private set; }
+
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    // ==== UI 오브젝트 연결 ====
+    [Header("Location Notification")]
+    public GameObject locationPanel;
+    public TextMeshProUGUI locationText;
+
+    [Header("Collect Notification")]
+    public GameObject collectPanel;
+    public TextMeshProUGUI collectText;
+
+    [Header("System Notification")]
+    public GameObject systemPanel;
+    public TextMeshProUGUI systemText;
+
+    [Header("Interaction Prompt")]
+    public GameObject interactionPrompt;
+
+    [Header("Inventory Panel")]
+    public GameObject inventoryPanel;
+
+    [Header("Command Panel")]
+    public GameObject commandPanel;
+
+    [Header("Inventory Tabs")]
+    public InventoryTabs inventoryTabs;
+
+    // ... 필요하다면 추가로 더 선언
+
+    // ==== 알림 띄우기 ====
+    private Coroutine notificationRoutine;
+    public void ShowLocationNotification(string msg, float duration = 2f)
+    {
+        StartCoroutine(ShowAndHide(locationPanel, locationText, msg, duration));
+    }
+    public void ShowCollectNotification(string msg, float duration = 2f)
+    {
+        StartCoroutine(ShowAndHide(collectPanel, collectText, msg, duration));
+    }
+    public void ShowSystemNotification(string msg, float duration = 2f)
+    {
+        StartCoroutine(ShowAndHide(systemPanel, systemText, msg, duration));
+    }
+    private IEnumerator ShowAndHide(GameObject panel, TextMeshProUGUI text, string msg, float duration)
+    {
+        text.text = msg;
+        panel.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        panel.SetActive(false);
+    }
+
+    // ==== 상호작용 안내 On/Off ====
+    public void ShowInteractionPrompt(bool isShow)
+    {
+        if (interactionPrompt != null)
+            interactionPrompt.SetActive(isShow);
+    }
+
+    // ==== 인벤토리/커맨드 On/Off ====
+    public void ShowInventory(bool isShow)
+    {
+        if (inventoryPanel != null)
+        {
+            inventoryPanel.SetActive(isShow);
+        }
+
+        if (isShow)
+        {
+            Cursor.visible = true;
+            Debug.Log("마우스 활성화");
+            
+            if(inventoryTabs!=null)
+            {
+                inventoryTabs.ShowMap();
+            }
+        }
+        else
+        {
+            Cursor.visible = false;
+            Debug.Log("마우스 비활성화");
+        }
+    }
+    public void ShowCommand(bool isShow)
+    {
+        if (commandPanel != null)
+            commandPanel.SetActive(isShow);
+    }
+
+    // ... 필요시 UI별로 Show/Hide 함수 추가!
+}

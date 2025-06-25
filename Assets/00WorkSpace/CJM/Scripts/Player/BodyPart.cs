@@ -1,28 +1,64 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
+using Unity.VisualScripting;
 
-public class BodyPart : MonoBehaviour
+[System.Serializable]
+public class BodyPart : IDisposable
 {
-    [SerializeField]BodyPartTypes types;
-    public ObservableProperty<bool> Activate;
-    public ObservableProperty<int> Hp;
+    public BodyPartTypes type;
+    // 활성화 상태, 비활성화 시 체력회복 불가능, 1차회복 시 다시 활성화
+    public ObservableProperty<bool> Activate = new ObservableProperty<bool>(); 
+    public ObservableProperty<int> Hp = new ObservableProperty<int>();
+    private int MaxHp;
+    private Action<bool> deactiveEffectAction;
 
-    // 콜라이더 피격 판정 추가
-
-    public void InitParts()
+    public BodyPart(BodyPartTypes type, int maxHp, Action<bool> DeactiveEffectAction)
     {
+        Activate.Subscribe(DeactiveEffect);
+        
+        this.type = type;
+        this.MaxHp = maxHp;
+        this.deactiveEffectAction = DeactiveEffectAction;
+
+        Init();
+    }
+   
+    // 파츠 정보 초기화 & 파츠 교체 시 호출
+    public void Init()
+    {
+        Hp.Value = MaxHp;
         Activate.Value = true;
     }
 
-    public void TakeDamaged(int damage)
+    public void TakeDamage(int damage)
     {
-        Hp.Value -= damage;
-        if (Hp.Value <= 0)
+        if (Hp.Value - damage <= 0)
         {
+            Hp.Value = 0;
             Activate.Value = false;
         }
+        else Hp.Value -= damage;
     }
 
-    // 트리거로 해야할까? 내적을 통한 피격 판정 공부해오자.
+    public void Repair(int amount)
+    {
+        if (Hp.Value + amount > MaxHp) Hp.Value = MaxHp;
+        else Hp.Value += amount;
+    }
+
+    public void QuickRepair()
+    {
+        Hp.Value = 1;
+        Activate.Value = true;
+    }
+
+    private void DeactiveEffect(bool isActive)
+    {
+        if (!isActive)
+            deactiveEffectAction?.Invoke(isActive);
+    }
+
+    public void Dispose()
+    {
+        Activate.Unsubscribe(DeactiveEffect);
+    }
 }

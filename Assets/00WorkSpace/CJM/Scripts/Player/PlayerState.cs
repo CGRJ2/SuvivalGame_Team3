@@ -37,7 +37,7 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("EnterIdle");
+        //Debug.Log("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -62,7 +62,7 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("EnterMove");
+        //Debug.Log("EnterMove");
 
     }
 
@@ -109,8 +109,7 @@ public class Player_Jump : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("EnterJump");
-        //pc.View.animator.Play("JumpStart");
+        //Debug.Log("EnterJump");
         pc.View.animator.SetBool("IsJump", true);
         pc.View.Jump(pc.Status.JumpForce);
     }
@@ -132,7 +131,6 @@ public class Player_Fall : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //pc.View.animator.Play("JumpStart");
         pc.View.animator.SetBool("IsFalling", true);
     }
     
@@ -185,7 +183,7 @@ public class Player_Attack : PlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("EnterAttack");
+        //Debug.Log("EnterAttack");
 
         attackCoolTime = 0;
         pc.isAttacking = true;
@@ -202,7 +200,7 @@ public class Player_Attack : PlayerState
     {
         base.Update();
         attackCoolTime += Time.deltaTime;
-        if (attackCoolTime > pc.AttackCoolTime)
+        if (attackCoolTime > pc.Status.AttackCoolTime)
         {
             pc.isAttacking = false;
         }

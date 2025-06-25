@@ -1,9 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
-    [field: SerializeField] public float AttackCoolTime { get; private set; }
+    //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public bool isAttacking;
 
     public PlayerStatus Status { get; private set; }
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private InputAction crouchAction;
     private InputAction attackAction;
     private InputAction freeCamAction;
+    private InputAction interactAction;
 
     //Vector3 moveDir;
 
@@ -43,7 +46,17 @@ public class PlayerController : MonoBehaviour
     private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
     private void Update()
     {
-        HandleSight();
+        ///////////////////////////
+        /// 테스트
+        /// 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            TakeDamage(10);
+        }
+        ///
+        /////////////////////////////
+        HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
+
 
         UpdateStateCondition();
 
@@ -93,11 +106,16 @@ public class PlayerController : MonoBehaviour
         // 플레이어 조작 맵
         var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
 
-        // 자유 카메라
+        // 1. 자유 카메라
         freeCamAction = playerControlMap.FindAction("FreeCamMod");
         freeCamAction.Enable();
         freeCamAction.started += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
+
+        // 2. 상호 작용
+        interactAction = playerControlMap.FindAction("Interaction");
+        interactAction.Enable();
+        interactAction.started += HandleInteract;
 
         /*// 조준 (포커싱)
         AimingAction = playerControlMap.FindAction("Aiming");
@@ -106,26 +124,26 @@ public class PlayerController : MonoBehaviour
         AimingAction.canceled += HandleAiming;*/
 
 
-        // 달리기 액션
+        // 3. 달리기 액션
         sprintAction = playerControlMap.FindAction("Sprint");
         sprintAction.Enable();
         sprintAction.performed += HandleSprint;
         sprintAction.canceled += HandleSprint;
 
-        // 점프 액션
+        // 4. 점프 액션
         jumpAction = playerControlMap.FindAction("Jump");
         jumpAction.Enable();
         jumpAction.performed += HandleJump;
         jumpAction.canceled += HandleJump;
 
 
-        // 앉기 액션
+        // 5. 앉기 액션
         crouchAction = playerControlMap.FindAction("Crouch");
         crouchAction.Enable();
         crouchAction.performed += HandleCrouch;
         crouchAction.canceled += HandleCrouch;
 
-        // 공격 액션
+        // 6. 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
         attackAction.started += HandleAttack;
@@ -134,21 +152,30 @@ public class PlayerController : MonoBehaviour
 
     private void InputActionsDelete()
     {
+        // 1. 자유 카메라
         freeCamAction.started -= HandleFreeCam;
         freeCamAction.canceled -= HandleFreeCam;
+
+        // 2. 상호작용
+        interactAction.started -= HandleInteract;
 
         /*AimingAction.performed -= HandleAiming;
         AimingAction.canceled -= HandleAiming;*/
 
+        // 3. 달리기 액션
         sprintAction.performed -= HandleSprint;
         sprintAction.canceled -= HandleSprint;
 
+
+        // 4. 점프 액션
         jumpAction.performed -= HandleJump;
         jumpAction.canceled -= HandleJump;
 
+        // 5. 앉기 액션
         crouchAction.performed -= HandleCrouch;
         crouchAction.canceled -= HandleCrouch;
-
+        
+        // 6. 공격 액션
         attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
     }
@@ -156,9 +183,12 @@ public class PlayerController : MonoBehaviour
 
     public void HandleMove()
     {
+        // 컨트롤 락 걸리면 이동 로직 중지
+        if (Status.isControllLocked) return;
+
         float moveSpeed;
-        if (isCrouchToggle) moveSpeed = Status.CrouchSpeed;
-        else if (isSprintInput) moveSpeed = Status.SprintSpeed;
+        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
@@ -194,6 +224,9 @@ public class PlayerController : MonoBehaviour
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
         else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
         else avatarDir = View.moveDir;
+
+        // 컨트롤 락 걸리면 아바타 회전은 정지
+        if (Status.isControllLocked) return;
 
         View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
 
@@ -316,6 +349,12 @@ public class PlayerController : MonoBehaviour
             isAttackInput = false;
     }
 
+    public void HandleInteract(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Interact();
+    }
+
     #endregion
 
     public void CrouchToggleChange(bool value)
@@ -326,6 +365,13 @@ public class PlayerController : MonoBehaviour
     // InputFlag들에 따른 상태 전환 총괄
     public void UpdateStateCondition()
     {
+        // 컨트롤 락 걸리면 
+        if (Status.isControllLocked)
+        {
+            //View.animator
+            return;
+        }
+
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
@@ -349,7 +395,7 @@ public class PlayerController : MonoBehaviour
             // => Jump
             else if (isJumpInput)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack))
+                if (isAttacking)
                 {
                     return;
                 }
@@ -366,7 +412,7 @@ public class PlayerController : MonoBehaviour
             // => Sprint
             else if (isSprintInput)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack))
+                if (isAttacking)
                 {
                     return;
                 }
@@ -383,7 +429,7 @@ public class PlayerController : MonoBehaviour
             // => Crouch
             else if (isCrouchToggle)
             {
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
+                if (isAttacking) return;
                 else Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
@@ -413,7 +459,7 @@ public class PlayerController : MonoBehaviour
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
 
-        if (damagables == null) return;
+        if (damagables.Length < 1) return;
 
         foreach (IDamagable damagable in damagables)
         {
@@ -421,6 +467,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Interact()
+    {
+        IInteractable interactable = Cc.InteractableObj;
+
+        if (interactable != null) 
+            interactable.Interact();
+    }
    
 
 
@@ -434,4 +487,41 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+
+    public void TakeDamage(int damage)
+    {
+        // 무적 상태라면 return;
+        if (Status.isInvincible) return;
+        
+        // 활성 상태인 신체 부위 중 랜덤 선택
+        List<BodyPart> bodyPart = Status.GetBodyPartsList();
+        List<BodyPart> activeBodyPart = new List<BodyPart>();
+
+        foreach(BodyPart part in bodyPart)
+        {
+            // 활성 상태인 파츠들로 리스트 새로 생성
+            if (part.Activate.Value) 
+                activeBodyPart.Add(part);
+        }
+
+        // 부위 랜덤 데미지
+        int r = Random.Range(0, activeBodyPart.Count);
+        activeBodyPart[r].TakeDamage(damage);
+
+        Status.CheckCriticalState();
+        StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
+    }
+
+
+    public IEnumerator InvincibleRoutine(float time)
+    {
+        Status.isInvincible = true;
+        // TODO : 플레이어 피격 이펙트 or 셰이더 실행
+
+        yield return new WaitForSeconds(time);
+
+        Status.isInvincible = false;
+        // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
+    }
+
 }

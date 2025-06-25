@@ -25,6 +25,6 @@ public class AnimationEventController : MonoBehaviour
     // 애니메이션 이벤트
     public void AttackMotionOver()
     {
-        Debug.Log("이벤트");
+        //Debug.Log("이벤트");
     }
 }

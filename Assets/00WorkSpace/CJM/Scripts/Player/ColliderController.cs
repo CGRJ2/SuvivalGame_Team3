@@ -27,6 +27,13 @@ public class ColliderController : MonoBehaviour
     [SerializeField] Vector3 offset_Attack;
     IDamagable[] damagablesInRange;
 
+
+    /*[SerializeField] LayerMask interactableLayerMask;
+    [SerializeField] float rayRadius_Interact;
+    [SerializeField] Vector3 offset_Interact;
+    IInteractable[] interactablesInRange;*/
+    public IInteractable InteractableObj { get; set; }
+
     [Header("Crouching Collider Set")]
     [SerializeField] Vector3 crouchCenter_MC;
     [SerializeField] float crouchHeight_MC;
@@ -43,6 +50,7 @@ public class ColliderController : MonoBehaviour
         GroundCheck();
         HeadCheck();
         AttackRangeCheck();
+        //InteractRangeCheck();
     }
 
     public void GroundCheck()
@@ -88,11 +96,25 @@ public class ColliderController : MonoBehaviour
         }
         this.damagablesInRange = damagables.ToArray();
     }
+    /*public void InteractRangeCheck()
+    {
+        Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Interact.z + avatar.transform.up * offset_Interact.y + avatar.transform.right * offset_Interact.x;
+
+        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Interact, interactableLayerMask);
+        List<IInteractable> interactables = new List<IInteractable>();
+
+        foreach (Collider col in cols)
+        {
+            interactables.Add(col.GetComponent<IInteractable>());
+        }
+        this.interactablesInRange = interactables.ToArray();
+    }*/
 
     public IDamagable[] GetDamagablesInRange()
     {
         return damagablesInRange;
     }
+
 
     public void SetColliderCrouch()
     {
@@ -173,6 +195,13 @@ public class ColliderController : MonoBehaviour
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
         Vector3 origin_Attack = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
+
+
+        /*/// 상호작용 범위
+        // Gizmos 색상 지정
+        Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 초록색 투명
+        Vector3 origin_Interact = avatar.transform.position + avatar.transform.forward * offset_Interact.z + avatar.transform.up * offset_Interact.y + avatar.transform.right * offset_Interact.x;
+        Gizmos.DrawSphere(origin_Interact, rayRadius_Interact);*/
     }
 
 }
