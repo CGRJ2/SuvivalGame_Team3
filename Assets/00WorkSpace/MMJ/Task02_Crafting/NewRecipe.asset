@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef3865cbb9986143b000f5c527658b8, type: 3}
   m_Name: NewRecipe
   m_EditorClassIdentifier: 
-  recipeName: 
-  icon: {fileID: 0}
-  requiredItems: []
-  requiredCounts: 
-  resultItem: {fileID: 0}
+  recipeName: "\uD050\uBE0C\uC58C"
+  icon: {fileID: 21300000, guid: bd6b16de5b6062e458ce57c95c740087, type: 3}
+  requiredItems:
+  - {fileID: 11400000, guid: 6d056e53f36d8b6418d59e17fbd9836d, type: 2}
+  requiredCounts: 01000000
+  resultItem: {fileID: 11400000, guid: f2e4ed016088acb498bf3fa48eab8848, type: 2}
   resultCount: 1
