@@ -145,4 +145,56 @@ public class Inventory : MonoBehaviour
     public void OnClickIngredient() => ChangeTab(ItemType.Ingredient);
     public void OnClickFunctionTab() => ChangeTab(ItemType.Function);
     public void OnClickQuestTab() => ChangeTab(ItemType.Quest);
+
+
+    public bool HasRequiredItems(CraftingRecipe recipe)
+    {
+        Slot[] ingredientSlots = ingredientSlots = GetTargetSlotArray(ItemType.Ingredient);
+
+        for (int i = 0; i < recipe.requiredItems.Length; i++)
+        {
+            int requiredCount = recipe.requiredCounts[i];
+            int totalCount = 0;
+
+            foreach (Slot slot in ingredientSlots)
+            {
+                if (slot.item != null && slot.item == recipe.requiredItems[i])
+                {
+                    totalCount += slot.itemCount;
+                }
+            }
+
+            if (totalCount < requiredCount)
+                return false;
+        }
+
+        return true;
+    }
+
+    public void CraftItem(CraftingRecipe recipe)  // 크래프팅을 위한 테스트코드
+    {
+        // 재료 차감
+        for (int i = 0; i < recipe.requiredItems.Length; i++)
+        {
+            int remainToRemove = recipe.requiredCounts[i];
+            Slot[] slots = GetTargetSlotArray(recipe.requiredItems[i].itemType);
+
+            foreach (Slot slot in slots)
+            {
+                if (slot.item == recipe.requiredItems[i])
+                {
+                    int removed = slot.ReduceItem(remainToRemove); // 아래 함수 참고
+                    remainToRemove -= removed;
+
+                    if (remainToRemove <= 0)
+                        break;
+                }
+            }
+        }
+
+        // 결과물 추가
+        AcquireItem(recipe.resultItem, recipe.resultCount);
+    }
+
+
 }

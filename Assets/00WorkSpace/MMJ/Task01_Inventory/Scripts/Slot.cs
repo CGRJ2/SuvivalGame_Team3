@@ -183,4 +183,25 @@ public class Slot : MonoBehaviour,
     {
         theItemEffectDatabase.HideToolTip();
     }
+
+
+    public int ReduceItem(int amount) //크래프팅을 위한 테스트 코드
+    {
+        if (itemCount >= amount)
+        {
+            itemCount -= amount;
+            if (itemCount == 0) ClearSlot();
+            else SetSlotCount(0); // UI 갱신
+            return amount;
+        }
+        else
+        {
+            int removed = itemCount;
+            ClearSlot();
+            return removed;
+        }
+    }
+
+
+
 }
