@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour, IDamagable
     [SerializeField] Transform[] TPS_Cameras;
     int currentZoomIndex = 1;
 
-
     private InputAction AimingAction;
     private InputAction sprintAction;
     private InputAction jumpAction;
