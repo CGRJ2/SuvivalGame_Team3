@@ -14,6 +14,7 @@ public abstract class BaseMonster : MonoBehaviour
     protected float currentFOV;
     protected float currentDetectionRange;
     protected float attackRange;
+    private Vector3 originPosition;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
@@ -162,6 +163,7 @@ public abstract class BaseMonster : MonoBehaviour
         attackCooldown = data.attackCooldown;
         detectionRange = data.detectionRange;
         targetType = data.targetType;
+        originPosition = transform.position;
 
         UpdateSightParameters();
 
@@ -260,6 +262,30 @@ public abstract class BaseMonster : MonoBehaviour
         return stateFactory.CreateAttackState();
     }
 
+    protected virtual void InitTargetByType()
+    {
+        switch (targetType)
+        {
+            case MonsterTargetType.Player:
+                GameObject player = GameObject.FindWithTag("Player");
+                if (player != null)
+                    SetTarget(player.transform);
+                break;
+
+            case MonsterTargetType.Ally:
+                GameObject ally = GameObject.FindWithTag("Ally");
+                if (ally != null)
+                    SetTarget(ally.transform);
+                break;
+
+            case MonsterTargetType.None:
+                GameObject none = GameObject.FindWithTag("None");
+                if (none != null)
+                    SetTarget(none.transform);
+                break;
+        }
+    }
+
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
         Debug.Log($"[{name}] 상태 전이 시도 → {state}");
@@ -278,7 +304,5 @@ public abstract class BaseMonster : MonoBehaviour
         var monster = GetComponent<BaseMonster>();
         monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
-
-
 
 }

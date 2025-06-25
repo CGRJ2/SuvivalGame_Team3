@@ -15,6 +15,7 @@ public class MonsterPerceptionController
 
     private float cooldownTimer = 0f;
     private float cooldownThreshold;
+    private float perceptionInterval = 1f;
 
     public MonsterPerceptionState CurrentState { get; private set; } = MonsterPerceptionState.Idle;
 
@@ -33,40 +34,53 @@ public class MonsterPerceptionController
 
     public void Update()
     {
-        if (alertLevel > 0f)
-            alertLevel -= alertDecayRate * Time.deltaTime;
+        cooldownTimer += Time.deltaTime;
 
-        var newState = EvaluateAlertState();
-
-        if (newState != CurrentState)
-        {
-            cooldownTimer += Time.deltaTime;
-            if (cooldownTimer >= cooldownThreshold)
-            {
-                CurrentState = newState;
-                cooldownTimer = 0f;
-                OnPerceptionStateChanged?.Invoke(newState);
-            }
-        }
-        else
+        if (cooldownTimer >= perceptionInterval)
         {
             cooldownTimer = 0f;
+
+            if (owner.checkTargetVisible)
+            {
+                IncreaseAlert(10f); // 감지되었을 경우 Alert 상승
+            }
+            else
+            {
+                DecreaseAlert(); // 시간이 지나면 Alert 감소
+            }
+
+            EvaluatePerceptionState(); // 상태 전이 판단
         }
     }
 
     public void IncreaseAlert(float amount)
     {
-        alertLevel += amount;
-        alertLevel = Mathf.Clamp(alertLevel, 0, 100);
-        Debug.Log($"[Perception] Alert 증가 → {alertLevel:F1}");
+        alertLevel = Mathf.Min(100f, alertLevel + amount);
     }
 
-    private MonsterPerceptionState EvaluateAlertState()
+    private void DecreaseAlert()
     {
-        if (alertLevel >= thresholdHigh) return MonsterPerceptionState.Alert;
-        if (alertLevel >= thresholdMedium) return MonsterPerceptionState.Search;
-        if (alertLevel >= thresholdLow) return MonsterPerceptionState.Suspicious;
-        return MonsterPerceptionState.Idle;
+        alertLevel = Mathf.Max(0f, alertLevel - alertDecayRate);
+    }
+
+    private void EvaluatePerceptionState()
+    {
+        MonsterPerceptionState newState = owner.GetCurrentPerceptionState();
+
+        if (alertLevel >= owner.AlertThreshold_High)
+            newState = MonsterPerceptionState.Alert;
+        else if (alertLevel >= owner.AlertThreshold_Medium)
+            newState = MonsterPerceptionState.Search;
+        else if (alertLevel >= owner.AlertThreshold_Low)
+            newState = MonsterPerceptionState.Suspicious;
+        else
+            newState = MonsterPerceptionState.Idle;
+
+        if (newState != CurrentState)
+        {
+            CurrentState = newState;
+            OnPerceptionStateChanged?.Invoke(newState);
+        }
     }
 
     public float GetAlertLevel() => alertLevel;
