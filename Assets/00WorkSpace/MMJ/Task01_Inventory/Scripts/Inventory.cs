@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour
 
     private void PutSlot(Slot[] _slots, Item _item, int _count)
     {
-        if (Item.ItemType.Equipment != _item.itemType) // 장비 아닌 경우 스택 시도
+        if (ItemType.Equipment != _item.itemType) // 장비 아닌 경우 스택 시도
         {
             for (int i = 0; i < _slots.Length; i++) //모든 슬롯 순회
             {

@@ -49,7 +49,7 @@ public class Slot : MonoBehaviour,
         itemCount = _count;
         itemImage.sprite = item.itemImage;
 
-        if (item.itemType != Item.ItemType.Equipment)
+        if (item.itemType != ItemType.Equipment)
         {
             go_CountImage.SetActive(true);
             Text_Count.text = itemCount.ToString();
@@ -89,7 +89,7 @@ public class Slot : MonoBehaviour,
         {
             if (item != null)
             {
-                if (item.itemType == Item.ItemType.Equipment)
+                if (item.itemType == ItemType.Equipment)
                 {
                     //ÀåÂø
 
