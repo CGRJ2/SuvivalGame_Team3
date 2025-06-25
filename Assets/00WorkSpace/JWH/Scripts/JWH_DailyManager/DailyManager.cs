@@ -23,6 +23,8 @@ public class DailyManager : MonoBehaviour
     [SerializeField] private int maxDays = 14;
     public event Action<TimeSpan> OnTimeUpdated;// 외부용 이벤트
     public event Action<int> OnDayChanged;// 외부용 이벤트
+    //public ObservableProperty<TimeSpan> CurrentOnTimeProperty { get; private set; } = new();
+    //public ObservableProperty<int> CurrentOnDayProperty { get; private set; } = new();
 
     private float timecal;//누적시간관리아무튼중요함
 
@@ -36,6 +38,10 @@ public class DailyManager : MonoBehaviour
     {
         CurrentTime = new TimeSpan(9, 0, 0); // 시작 시간
         CurrentDay = 1;
+        //CurrentTime = CurrentTime.Add(TimeSpan.FromMinutes(1));
+        //CurrentOnTimeProperty.Value = CurrentTime;
+
+
         //UpdateDailyState(); // 초기 상태
     }
 
@@ -70,6 +76,8 @@ public class DailyManager : MonoBehaviour
         {
             CurrentDay++;
             OnDayChanged?.Invoke(CurrentDay);
+            //CurrentDay++;
+            //CurrentOnDayProperty.Value = CurrentDay;
         }
         else
         {
