@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.InputSystem;
 
-public class LocationCunScene : MonoBehaviour
+public class LocationCutScene : MonoBehaviour
 {
     public PlayableDirector timeline;
     public CinemachineVirtualCamera playerVcam;      // 플레이어 따라가는 vCam
@@ -17,6 +17,23 @@ public class LocationCunScene : MonoBehaviour
     public int normalPriority = 10;     // 평소 비활성화 값
 
     private bool played = false;
+
+    void OnTimelineStopped(PlayableDirector pd) // 타임라인 끝나고 자동 호출
+    {
+        timeline.stopped -= OnTimelineStopped;
+
+        // 컷씬 vCam 비활성화, 플레이어 vCam 활성화
+        cutsceneVcam.Priority = normalPriority;
+        playerVcam.Priority = playerPriority;
+
+        // input 복구
+        if (playerInput != null)
+        {
+            playerInput.enabled = true;
+        }
+
+        Debug.Log("Timeline 끝, 플레이어 카메라로 복귀!");
+    }
 
     void OnTriggerEnter(Collider other) // Player가 Trigger안에 들어오면 컷씬 시작
     {
@@ -40,22 +57,5 @@ public class LocationCunScene : MonoBehaviour
             timeline.Play();
             timeline.stopped += OnTimelineStopped;
         }
-    }
-
-    void OnTimelineStopped(PlayableDirector pd) // 타임라인 끝나고 자동 호출
-    {
-        timeline.stopped -= OnTimelineStopped;
-
-        // 컷씬 vCam 비활성화, 플레이어 vCam 활성화
-        cutsceneVcam.Priority = normalPriority;
-        playerVcam.Priority = playerPriority;
-
-        // input 복구
-        if (playerInput != null)
-        {
-            playerInput.enabled = true;
-        }
-
-        Debug.Log("Timeline 끝, 플레이어 카메라로 복귀!");
     }
 }
