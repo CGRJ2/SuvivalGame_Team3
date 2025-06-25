@@ -111,7 +111,11 @@ public abstract class BaseMonster : MonoBehaviour
 
     public virtual void Move(Vector3 direction)
     {
-        transform.position += direction * data.moveSpeed * Time.deltaTime;
+        if (rb != null)
+        {
+            Vector3 targetPosition = rb.position + direction * data.moveSpeed * Time.deltaTime;
+            rb.MovePosition(targetPosition); // 물리 반영 이동
+        }
     }
 
     public virtual void SetData(BaseMonsterData newData)
