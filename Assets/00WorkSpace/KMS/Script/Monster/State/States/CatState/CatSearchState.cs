@@ -6,43 +6,61 @@ public class CatSearchState : IMonsterState
 {
     private BaseMonster monster;
     private float searchDuration = 4f;
-    private float timer = 0f;
+    private float searchTimer = 0f;
 
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
-        timer = 0f;
-        monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation(); // 수색 애니메이션이 있다면 이걸로 교체
-        Debug.Log($"[{monster.name}] CatSearch 상태 진입");
+        searchTimer = 0f;
+
+        monster.SetPerceptionState(MonsterPerceptionState.Search);
+        monster.GetComponent<MonsterView>()?.PlayMonsterCautiousWalkAnimation(); // 느린 탐색 모션
+
+        Debug.Log($"[{monster.name}] 상태: CatSearch 진입");
     }
 
     public void Execute()
     {
-        timer += Time.deltaTime;
-        bool canSeePlayer = monster.IsInSight();
+        if (monster == null || monster.IsDead) return;
 
-        if (monster.IsDead)
+        searchTimer += Time.deltaTime;
+
+        // 플레이어를 다시 발견하면 경계도 상승
+        if (monster.checkTargetVisible)
         {
-            monster.StateMachine.ChangeState(new MonsterDeadState());
-            return;
+            monster.IncreaseAlert(10f);
         }
 
-        if (canSeePlayer)
+        // 대상이 아직 있는 경우, 서서히 접근
+        var target = monster.GetTarget();
+        if (target != null)
         {
-            monster.SetPerceptionState(MonsterPerceptionState.Alert);
-            monster.StateMachine.ChangeState(new MonsterChaseState());
-            return;
+            Vector3 toTarget = target.position - monster.transform.position;
+            toTarget.y = 0f;
+            monster.Move(toTarget.normalized * 0.5f); // 일반 이동보다 느리게
         }
 
-        if (timer >= searchDuration)
+        // 일정 시간 후 상태 전이 평가
+        if (searchTimer >= searchDuration)
         {
-            monster.SetPerceptionState(MonsterPerceptionState.Idle);
-            monster.StateMachine.ChangeState(new CatIdleState());
+            var current = monster.GetCurrentPerceptionState();
+            var next = monster.StateFactory.GetStateForPerception(current);
+
+            if (next != this)
+            {
+                monster.StateMachine.ChangeState(next);
+                Debug.Log($"[{monster.name}] CatSearch 종료 → {current} 상태 전이");
+            }
+            else
+            {
+                searchTimer = 0f;
+                Debug.Log($"[{monster.name}] CatSearch 상태 유지");
+            }
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] CatSearch 상태 종료");
+        Debug.Log($"[{monster.name}] 상태: CatSearch 종료");
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MonsterStaggerState : IMonsterState
 {
     private BaseMonster monster;
-    private float duration;
+    private readonly float duration;
     private float timer;
 
     public MonsterStaggerState(float duration)
@@ -18,23 +18,28 @@ public class MonsterStaggerState : IMonsterState
         this.monster = monster;
         timer = 0f;
 
+        monster.SetPerceptionState(MonsterPerceptionState.Suspicious); 
         monster.GetComponent<MonsterView>()?.PlayMonsterStaggerAnimation();
-        Debug.Log($"[{monster.name}] 상태: Stagger 진입 ({duration}초)");
+
+        Debug.Log($"[{monster.name}] 상태: Stagger 진입 ({duration:F1}초)");
     }
 
     public void Execute()
     {
-        timer += Time.deltaTime;
-
-        if (monster.IsDead)
+        if (monster == null || monster.IsDead)
         {
-            monster.StateMachine.ChangeState(new MonsterDeadState());
+            monster.StateMachine.ChangeState(new MonsterDeadState()); 
             return;
         }
 
+        timer += Time.deltaTime;
+
         if (timer >= duration)
         {
-            monster.StateMachine.ChangeState(new MonsterIdleState()); // 또는 이전 상태 복귀
+            var next = monster.StateFactory.GetStateForPerception(monster.GetCurrentPerceptionState());
+            monster.StateMachine.ChangeState(next);
+
+            Debug.Log($"[{monster.name}] Stagger 종료 → {monster.GetCurrentPerceptionState()} 상태 전이");
         }
     }
 

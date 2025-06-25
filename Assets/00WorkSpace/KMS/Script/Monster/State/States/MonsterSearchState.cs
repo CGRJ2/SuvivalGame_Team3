@@ -13,46 +13,54 @@ public class MonsterSearchState : IMonsterState
         this.monster = monster;
         searchTimer = 0f;
 
-        Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 진입");
         monster.SetPerceptionState(MonsterPerceptionState.Search);
-        //monster.StateMachine.SetAnimation("IsSearching", true); 
+        Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 진입");
+        // monster.StateMachine.SetAnimation("IsSearching", true);
     }
 
     public void Execute()
     {
         if (monster == null || monster.IsDead) return;
 
-        // 플레이어를 시야에 포착했는지 검사
-        if (monster.IsInSight())
+        // 시야 감지
+        if (monster.checkTargetVisible)
         {
-            monster.IncreaseAlert(10f); // 경계도 추가 상승
+            monster.IncreaseAlert(10f); // 탐색 중 발견 시 경계도 증가
         }
 
-        Vector3 toPlayer = monster.GetTarget().position - monster.transform.position;
-        toPlayer.y = 0;
-        monster.Move(toPlayer.normalized);
+        // 이동
+        if (monster.GetTarget() != null)
+        {
+            Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
+            toTarget.y = 0f;
+            monster.Move(toTarget.normalized);
+        }
 
-        // 일정 시간 후 경계도 수준에 따라 상태 전이
+        // 타이머 경과 시 상태 재평가
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchDuration)
         {
-            MonsterPerceptionState current = monster.EvaluateCurrentAlertState();
-            if (current == MonsterPerceptionState.Idle)
-            {
-                monster.StateMachine.ChangeState(monster.GetIdleState());
-            }
-            else if (current == MonsterPerceptionState.Alert)
-            {
-                monster.StateMachine.ChangeState(monster.GetAlertState());
-            }
+            var current = monster.GetCurrentPerceptionState();
+            var next = monster.StateFactory.GetStateForPerception(current);
 
-            // Suspicious는 유지 or 처리 방식에 따라 여기서 확장 가능
+            if (next != this)
+            {
+                monster.StateMachine.ChangeState(next);
+                Debug.Log($"[{monster.name}] 탐색 종료 → {current} 상태 전이");
+            }
+            else
+            {
+                // 상태 유지되면 타이머 초기화 (선택)
+                searchTimer = 0f;
+                Debug.Log($"[{monster.name}] 탐색 상태 유지");
+            }
         }
     }
 
     public void Exit()
     {
-        //monster.StateMachine.SetAnimation("IsSearching", false);
         Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 종료");
+        // monster.StateMachine.SetAnimation("IsSearching", false);
     }
 }
+

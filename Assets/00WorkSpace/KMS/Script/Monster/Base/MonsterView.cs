@@ -53,6 +53,18 @@ public class MonsterView : MonoBehaviour
             animator.SetTrigger("Stagger");
     }
 
+    public void PlayMonsterCautiousWalkAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("CautiousWalk");
+    }
+
+    public void PlayMonsterPacifyAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Pacify");
+    }
+
     // ===== »ç¿îµå =====
 
     public void PlaySound(AudioClip clip)

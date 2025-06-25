@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class MonsterSuspiciousState : IMonsterState
 {
     private BaseMonster monster;
@@ -13,7 +12,7 @@ public class MonsterSuspiciousState : IMonsterState
         this.monster = monster;
         suspicionTimer = 0f;
 
-        Debug.Log($"[MonsterSuspiciousState] {monster.name} 수상 상태 진입");
+        Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 진입");
         monster.SetPerceptionState(MonsterPerceptionState.Suspicious);
         //monster.StateMachine.SetAnimation("IsSuspicious", true);
     }
@@ -22,37 +21,26 @@ public class MonsterSuspiciousState : IMonsterState
     {
         if (monster == null || monster.IsDead) return;
 
-        // 플레이어가 보이면 경계도 상승
-        if (monster.IsInSight())
+        if (monster.checkTargetVisible) // ? 감지 로직 통일
         {
-            monster.IncreaseAlert(5f); // 작은 증가
+            monster.IncreaseAlert(5f); // ? 적은 수치 상승
         }
 
         suspicionTimer += Time.deltaTime;
 
         if (suspicionTimer >= suspicionDuration)
         {
-            MonsterPerceptionState current = monster.EvaluateCurrentAlertState();
+            MonsterPerceptionState current = monster.GetCurrentPerceptionState(); 
 
-            if (current == MonsterPerceptionState.Idle)
-            {
-                monster.StateMachine.ChangeState(monster.GetIdleState());
-            }
-            else if (current == MonsterPerceptionState.Search)
-            {
-                monster.StateMachine.ChangeState(monster.GetSearchState());
-            }
-            else if (current == MonsterPerceptionState.Alert)
-            {
-                monster.StateMachine.ChangeState(monster.GetAlertState());
-            }
+            IMonsterState nextState = monster.StateFactory.GetStateForPerception(current);
+            monster.StateMachine.ChangeState(nextState);
         }
     }
 
     public void Exit()
     {
+        Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 종료");
         //monster.StateMachine.SetAnimation("IsSuspicious", false);
-        Debug.Log($"[MonsterSuspiciousState] {monster.name} 수상 상태 종료");
     }
 }
 
