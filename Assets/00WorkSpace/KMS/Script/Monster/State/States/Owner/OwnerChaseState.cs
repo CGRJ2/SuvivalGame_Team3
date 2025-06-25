@@ -46,11 +46,11 @@ public class OwnerChaseState : IMonsterState
         monster.Move(toPlayer.normalized);
 
         // 공격 범위 도달 시 상태 전이
-       //if (monster.IsInAttackRange())
-       //{
-       //    Debug.Log($"[{monster.name}] 플레이어 도달 => 잡기 공격 상태 전이");
-       //    monster.StateMachine.ChangeState(monster.GetAttackState());
-       //}
+       if (monster.IsInAttackRange())
+       {
+           Debug.Log($"[{monster.name}] 플레이어 도달 => 잡기 공격 상태 전이");
+           monster.StateMachine.ChangeState(monster.GetAttackState());
+       }
     }
 
     public void Exit()

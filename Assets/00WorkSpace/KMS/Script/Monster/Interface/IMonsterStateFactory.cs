@@ -8,6 +8,7 @@ public interface IMonsterStateFactory
     IMonsterState CreateSuspiciousState();
     IMonsterState CreateSearchState();
     IMonsterState CreateAlertState();
+    IMonsterState CreateChaseState();
     IMonsterState CreateAttackState();
     IMonsterState CreateStaggerState(float stunTime);
 

@@ -242,6 +242,10 @@ public abstract class BaseMonster : MonoBehaviour
     {
         return stateFactory.CreateAttackState();
     }
+    public virtual IMonsterState GetAttackState()
+    {
+        return stateFactory.CreateAttackState();
+    }
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
@@ -261,6 +265,7 @@ public abstract class BaseMonster : MonoBehaviour
         var monster = GetComponent<BaseMonster>();
         monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
+
 
 
 }

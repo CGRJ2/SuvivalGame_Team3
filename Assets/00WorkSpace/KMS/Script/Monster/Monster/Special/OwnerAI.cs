@@ -12,13 +12,6 @@ public class OwnerAI : BaseMonster
 
     protected override void HandleState()
     {
-        if (IsDead)
-        {
-            if (!(StateMachine.CurrentState is OwnerDeadState))
-                StateMachine.ChangeState(new OwnerDeadState());
-            return;
-        }
-
         if (IsInAttackRange())
         {
             if (!(StateMachine.CurrentState is OwnerAttackState))
