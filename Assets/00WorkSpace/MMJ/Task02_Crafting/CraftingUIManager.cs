@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class CraftingUIManager : MonoBehaviour
 {
+    public static bool craftActivated = false;
+
+    [SerializeField] private GameObject go_CraftBase;
+
     [Header("좌측 레시피 목록")]
     public Transform recipeListParent;
     public GameObject recipeButtonPrefab;
@@ -26,6 +30,35 @@ public class CraftingUIManager : MonoBehaviour
         ShowRecipeList();
         craftButton.onClick.AddListener(OnClickCraft);
     }
+
+    private void Update()
+    {
+        TryOpenCraft();
+    }
+
+    void TryOpenCraft()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            craftActivated = !craftActivated;
+
+            if (craftActivated)
+                OpenCraft();
+            else
+                CloseCraft();
+        }
+    }
+
+    void OpenCraft()
+    {
+        go_CraftBase.SetActive(true);
+    }
+
+    void CloseCraft()
+    {
+        go_CraftBase?.SetActive(false);
+    }
+
 
     void ShowRecipeList()
     {
