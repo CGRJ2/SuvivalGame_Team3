@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &294827814583787912
+--- !u!1 &4657723517860894053
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5493265066573039897}
-  - component: {fileID: 687997756595422536}
-  - component: {fileID: 1436967150603050916}
-  - component: {fileID: 9109886517185233797}
-  - component: {fileID: 5739446431144908788}
-  - component: {fileID: 2286108488514513789}
-  - component: {fileID: -673372361686918679}
+  - component: {fileID: 7539350844664478779}
+  - component: {fileID: 4129197369222012560}
+  - component: {fileID: 6775958953842573466}
+  - component: {fileID: 5740211994241422110}
+  - component: {fileID: 4790471516286196339}
   m_Layer: 0
-  m_Name: TestMonsterKMS
-  m_TagString: Untagged
+  m_Name: TestPlayer
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5493265066573039897
+--- !u!4 &7539350844664478779
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
+  m_GameObject: {fileID: 4657723517860894053}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.41, y: 1, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &687997756595422536
+--- !u!33 &4129197369222012560
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
+  m_GameObject: {fileID: 4657723517860894053}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1436967150603050916
+--- !u!23 &6775958953842573466
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
+  m_GameObject: {fileID: 4657723517860894053}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -87,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9109886517185233797
+--- !u!65 &5740211994241422110
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
+  m_GameObject: {fileID: 4657723517860894053}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -108,56 +106,13 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5739446431144908788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bbf728b8cf202c4f8920320c4fec9c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  hitEffect: {fileID: 0}
-  audioSource: {fileID: 0}
-  attackSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  deathSound: {fileID: 0}
---- !u!114 &2286108488514513789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: cbb59d25bda64ea41930a12f3c7cce08, type: 2}
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  alertDecayRate: 5
-  cooldownTimer: 0
-  alertCooldownThreshold: 2
-  alertThreshold_Low: 20
-  alertThreshold_Medium: 50
-  alertThreshold_High: 80
-  actionRadius: 20
-  rb: {fileID: -673372361686918679}
-  stunTime: 0.5
---- !u!54 &-673372361686918679
+--- !u!54 &4790471516286196339
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294827814583787912}
+  m_GameObject: {fileID: 4657723517860894053}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0

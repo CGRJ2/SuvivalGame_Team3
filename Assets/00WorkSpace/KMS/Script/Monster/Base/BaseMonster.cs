@@ -41,7 +41,7 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] protected float alertThreshold_High = 80f;
 
     // 행동 반경
-    [SerializeField] protected float actionRadius = 20f; 
+    [SerializeField] protected float actionRadius = 20f;
     private Vector3 spawnPoint;
 
     public float AlertThreshold_Low => alertThreshold_Low;
@@ -146,10 +146,16 @@ public abstract class BaseMonster : MonoBehaviour
 
     public virtual void Move(Vector3 direction)
     {
+        Debug.Log($"[Move] 호출됨 - 방향: {direction}");
+
         if (rb != null)
         {
             Vector3 targetPosition = rb.position + (direction * data.moveSpeed * Time.deltaTime);
-            rb.MovePosition(targetPosition); // 물리 반영 이동
+            rb.MovePosition(targetPosition);
+        }
+        else
+        {
+            Debug.LogWarning("Rigidbody가 없습니다!");
         }
     }
 
@@ -305,4 +311,19 @@ public abstract class BaseMonster : MonoBehaviour
         monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
 
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (data == null) return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.eyeHeight, currentDetectionRange);
+
+        Vector3 forward = transform.forward;
+        Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
+        Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + rightLimit * currentDetectionRange);
+    }
 }

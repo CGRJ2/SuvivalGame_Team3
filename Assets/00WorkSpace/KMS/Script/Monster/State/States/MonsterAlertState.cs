@@ -37,9 +37,14 @@ public class MonsterAlertState : IMonsterState
         var target = monster.GetTarget();
         if (target != null)
         {
+            Debug.Log($"[AlertState] 타겟 위치 = {target.position}");
             Vector3 toTarget = target.position - monster.transform.position;
             toTarget.y = 0f;
             monster.Move(toTarget.normalized);
+        }
+        else
+        {
+            Debug.LogWarning("[AlertState] 타겟이 없습니다!");
         }
 
         // 공격 사거리 진입

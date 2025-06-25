@@ -15,7 +15,7 @@ public class MonsterSearchState : IMonsterState
 
         monster.SetPerceptionState(MonsterPerceptionState.Search);
         Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 진입");
-        // monster.StateMachine.SetAnimation("IsSearching", true);
+        //monster.StateMachine.SetAnimation("IsSearching", true);
     }
 
     public void Execute()

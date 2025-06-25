@@ -12,6 +12,19 @@ public class OwnerAI : BaseMonster
 
     protected override void HandleState()
     {
+        if (CheckTargetVisible())
+        {
+            var alertState = StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
+            if (stateMachine.CurrentState != alertState)
+                stateMachine.ChangeState(alertState);
+        }
+        else
+        {
+            var idleState = StateFactory.GetStateForPerception(MonsterPerceptionState.Idle);
+            if (stateMachine.CurrentState != idleState)
+                stateMachine.ChangeState(idleState);
+        }
+
         if (IsInAttackRange())
         {
             if (!(StateMachine.CurrentState is OwnerAttackState))
