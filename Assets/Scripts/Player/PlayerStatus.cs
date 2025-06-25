@@ -27,9 +27,6 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity_Init;
     ///////////////////////////////////////////////
 
-    public Item item;
-
-    public Inventory inventory;
 
 
     [Header("현재 플레이어 정보")] // 세이브 & 로드 가능
@@ -41,6 +38,10 @@ public class PlayerStatus : MonoBehaviour
     [field: SerializeField] public int Damage { get; set; }
 
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
+    
+
+    // 우선 캔버스에 직접 연결하지만, MVP 구조로 리팩토링 필요 (데이터 & UI & 로직 처리(상태 업데이트, Input처리 등)로 분리)
+    public Inventory inventory;
 
 
     [Header("신체 부위 데이터")]

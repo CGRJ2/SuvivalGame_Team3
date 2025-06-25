@@ -22,6 +22,11 @@ public class Item : ScriptableObject
         ETC // ±‚≈∏
     }
 
+    public virtual void Use()
+    {
+
+    }
+
     public void SpawnItem(Transform transform)
     {
         ItemInstance instance = Instantiate(itemPrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();

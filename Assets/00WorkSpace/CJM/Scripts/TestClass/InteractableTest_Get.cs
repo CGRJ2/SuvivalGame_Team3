@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class InteractableTest_Get : MonoBehaviour, IInteractable
 {
+    [SerializeField] Item item;
     public void Interact()
     {
         Debug.Log($"{gameObject.name} ¸¦ ÁÖ¿ü´Ù.");
+        item.SpawnItem(transform);
     }
 
     public void SetInteractableEnable()
