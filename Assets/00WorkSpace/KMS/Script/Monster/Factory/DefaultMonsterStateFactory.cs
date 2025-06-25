@@ -20,12 +20,13 @@ public class DefaultMonsterStateFactory : IMonsterStateFactory
         attackState = new MonsterAttackState();
     }
 
-    public IMonsterState CreateIdleState() => idleState;
-    public IMonsterState CreateSuspiciousState() => suspiciousState;
-    public IMonsterState CreateSearchState() => searchState;
-    public IMonsterState CreateAlertState() => alertState;
-    public IMonsterState CreateAttackState() => attackState;
-    public IMonsterState CreateStaggerState(float stunTime)
+    public virtual IMonsterState CreateIdleState() => idleState;
+    public virtual IMonsterState CreateSuspiciousState() => suspiciousState;
+    public virtual IMonsterState CreateSearchState() => searchState;
+    public virtual IMonsterState CreateAlertState() => alertState;
+    public virtual IMonsterState CreateAttackState() => attackState;
+    public virtual IMonsterState CreateChaseState() => searchState; 
+    public virtual IMonsterState CreateStaggerState(float stunTime)
     {
         return new MonsterStaggerState(stunTime); // 매번 새로 생성
     }

@@ -65,6 +65,12 @@ public class MonsterView : MonoBehaviour
             animator.SetTrigger("Pacify");
     }
 
+    public void PlayMonsterGrabThrowAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("GrabThrow");
+    }
+
     // ===== »ç¿îµå =====
 
     public void PlaySound(AudioClip clip)
