@@ -3,8 +3,8 @@ public class CatAI : BaseMonster
     protected override void Awake()
     {
         {
-            base.Awake();
             stateFactory = new CatMonsterStateFactory(this);
+            base.Awake();
         }
     }
     protected override void HandleState()

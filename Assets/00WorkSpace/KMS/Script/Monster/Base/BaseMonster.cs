@@ -78,6 +78,7 @@ public abstract class BaseMonster : MonoBehaviour
         alertThreshold_High
         );
 
+
         perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
 
 
@@ -94,6 +95,18 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (stateMachine == null)
+        {
+            Debug.LogError($"{name}의 stateMachine이 null입니다.");
+            return;
+        }
+
+        if (perceptionController == null)
+        {
+            Debug.LogError($"{name}의 perceptionController가 null입니다.");
+            return;
+        }
+
         stateMachine.Update();
         HandleState(); // 자식이 override 가능
         perceptionController.Update();

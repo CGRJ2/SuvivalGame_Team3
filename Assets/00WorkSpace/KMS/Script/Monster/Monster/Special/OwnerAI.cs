@@ -6,8 +6,8 @@ public class OwnerAI : BaseMonster
 {
     protected override void Awake()
     {
-        base.Awake();
         stateFactory = new OwnerStateFactory(this);
+        base.Awake();
     }
 
     protected override void HandleState()
