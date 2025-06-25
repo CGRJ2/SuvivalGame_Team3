@@ -8,13 +8,13 @@ public class Inventory : MonoBehaviour
     public static bool inventoryActivated = false;
 
     [SerializeField] private GameObject go_inventoryBase;
-    [SerializeField] private GameObject go_QuickSlotParent;
 
     [SerializeField] private GameObject go_EquipmentSlotsParent;
     [SerializeField] private GameObject go_UsedSlotsParent;
     [SerializeField] private GameObject go_IngredientSlotsParent;
     [SerializeField] private GameObject go_FunctionSlotsParent;
-    [SerializeField] private GameObject go_QuestSlotsParent;
+    [SerializeField] private GameObject go_QuestSlotsParent; 
+    [SerializeField] private GameObject go_QuickSlotsParent;
 
     [SerializeField] private GameObject go_Base; // Tooltip Base_Outer
 
@@ -36,7 +36,7 @@ public class Inventory : MonoBehaviour
         ingredientSlots = go_IngredientSlotsParent.GetComponentsInChildren<Slot>();
         functionSlots = go_FunctionSlotsParent.GetComponentsInChildren<Slot>();
         questSlots = go_QuestSlotsParent.GetComponentsInChildren<Slot>();
-        quickSlots = go_QuickSlotParent.GetComponentsInChildren<Slot>();
+        quickSlots = go_QuickSlotsParent.GetComponentsInChildren<Slot>();
 
         ChangeTab(ItemType.Equipment); // 초기 무기탭
     }
@@ -92,12 +92,8 @@ public class Inventory : MonoBehaviour
 
     public void AcquireItem(Item _item, int _count = 1)
     {
-        PutSlot(quickSlots, _item, _count); // 퀵슬롯 먼저 시도
-        if (isNotPut)
-        {
-            Slot[] targetSlots = GetTargetSlotArray(_item.itemType);
-            PutSlot(targetSlots, _item, _count);
-        }
+        Slot[] targetSlots = GetTargetSlotArray(_item.itemType); // 바로 타입별 슬롯으로
+        PutSlot(targetSlots, _item, _count);
 
         if (isNotPut)
             Debug.Log("인벤토리가 꽉찼습니다!");
@@ -120,22 +116,22 @@ public class Inventory : MonoBehaviour
     {
         if (Item.ItemType.Equipment != _item.itemType) // 장비 아닌 경우 스택 시도
         {
-            for (int i = 0; i < _slots.Length; i++)
+            for (int i = 0; i < _slots.Length; i++) //모든 슬롯 순회
             {
-                if (_slots[i].item != null && _slots[i].item.itemName == _item.itemName)
+                if (_slots[i].item != null && _slots[i].item.itemName == _item.itemName) //이름이 일치한다면
                 {
-                    _slots[i].SetSlotCount(_count);
+                    _slots[i].SetSlotCount(_count); //해당 슬롯 아이템의 카운트를 1 추가
                     isNotPut = false;
                     return;
                 }
             }
         }
         // 빈 슬롯 찾기
-        for (int i = 0; i < _slots.Length; i++)
+        for (int i = 0; i < _slots.Length; i++) // 모든 슬롯 순회
         {
-            if (_slots[i].item == null)
+            if (_slots[i].item == null) // 해당하는 이름이 없으면
             {
-                _slots[i].AddItem(_item, _count);
+                _slots[i].AddItem(_item, _count); // 아이템 인벤토리에 추가
                 isNotPut = false;
                 return;
             }
@@ -143,6 +139,7 @@ public class Inventory : MonoBehaviour
 
         isNotPut = true;
     }
+
     public void OnClickEquipmentTab() => ChangeTab(ItemType.Equipment);
     public void OnClickUsedTab() => ChangeTab(ItemType.Used);
     public void OnClickIngredient() => ChangeTab(ItemType.Ingredient);
