@@ -77,6 +77,8 @@ public abstract class BaseMonster : MonoBehaviour
         stateMachine.Update();
         HandleState(); // 자식이 override 가능
         UpdateAlert();
+
+        Debug.Log($"[DEBUG] alertLevel: {alertLevel:F1}, InSight: {IsInSight()}, perceptionState: {perceptionState}");
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -171,32 +173,57 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (target == null) return false;
 
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        Vector3 eyePosition = transform.position + Vector3.up * data.eyeHeight;
+        Vector3 directionToTarget = (target.position - eyePosition).normalized;
         float angle = Vector3.Angle(transform.forward, directionToTarget);
-
-        // 시야각 체크 (currentFOV는 절반각이므로 그대로 비교)
-        if (angle > currentFOV) return false;
-
-        // 시야 거리 + 장애물 체크
-        Vector3 eyePosition = transform.position + Vector3.up * data.eyeHeight; // 눈 위치 보정
         float distanceToTarget = Vector3.Distance(eyePosition, target.position);
 
-        if (distanceToTarget > currentDetectionRange) return false;
+        Debug.DrawRay(eyePosition, transform.forward * 5f, Color.red);     // forward 시야
+        Debug.DrawRay(eyePosition, directionToTarget * 5f, Color.green);   // 타겟 방향
 
-        // Raycast로 장애물 여부 확인
+        // 디버그 로그 추가
+        Debug.Log($"[SightCheck] angle: {angle:F1}, FOV: {currentFOV:F1}, distance: {distanceToTarget:F1}, range: {currentDetectionRange:F1}");
+
+        if (angle > currentFOV)
+        {
+            Debug.Log("[SightCheck] 실패: 시야각 벗어남");
+            return false;
+        }
+
+        if (distanceToTarget > currentDetectionRange)
+        {
+            Debug.Log("[SightCheck] 실패: 거리 초과");
+            return false;
+        }
+
         if (Physics.Raycast(eyePosition, directionToTarget, out RaycastHit hit, currentDetectionRange))
         {
+            Debug.Log($"[SightCheck] Raycast hit: {hit.transform.name}");
+
             if (hit.transform == target)
-                return true; // 시야 안에 있고, 가리는 물체 없음
+            {
+                Debug.Log("[SightCheck] 성공: 타겟 직접 감지됨");
+                return true;
+            }
+            else
+            {
+                Debug.Log("[SightCheck] 실패: 중간에 다른 오브젝트 감지됨");
+            }
+        }
+        else
+        {
+            Debug.Log("[SightCheck] 실패: Raycast가 아무것도 맞추지 못함");
         }
 
         return false;
     }
 
+
     public void IncreaseAlert(float amount)
     {
         alertLevel += amount;
         alertLevel = Mathf.Clamp(alertLevel, 0, 100);
+        Debug.Log($"[{name}] alertLevel 증가 → {alertLevel:F1}");
     }
 
     protected MonsterPerceptionState EvaluateAlertState()
@@ -225,6 +252,7 @@ public abstract class BaseMonster : MonoBehaviour
             alertCooldownTimer += Time.deltaTime;
             if (alertCooldownTimer >= alertCooldownThreshold)
             {
+                Debug.Log($"[{name}] 경계 상태 변경: {perceptionState} → {newState}");
                 SetPerceptionState(newState);
                 alertCooldownTimer = 0f;
 
@@ -241,6 +269,8 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (stateMachine == null) return;
 
+        Debug.Log($"[{name}] 상태 전이 시도 → {state}");
+
         switch (state)
         {
             case MonsterPerceptionState.Idle:
@@ -256,6 +286,8 @@ public abstract class BaseMonster : MonoBehaviour
                 stateMachine.ChangeState(alertState);
                 break;
         }
+
+        Debug.Log($"[MonsterSearchState] {name} 탐색 상태 진입");
     }
 
     public void ApplyKnockback(Vector3 direction, float force)

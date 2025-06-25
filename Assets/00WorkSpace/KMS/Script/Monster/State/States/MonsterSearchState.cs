@@ -28,6 +28,10 @@ public class MonsterSearchState : IMonsterState
             monster.IncreaseAlert(10f); // 경계도 추가 상승
         }
 
+        Vector3 toPlayer = monster.GetTarget().position - monster.transform.position;
+        toPlayer.y = 0;
+        monster.Move(toPlayer.normalized);
+
         // 일정 시간 후 경계도 수준에 따라 상태 전이
         searchTimer += Time.deltaTime;
         if (searchTimer >= searchDuration)
