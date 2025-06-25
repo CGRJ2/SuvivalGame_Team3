@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryView : MonoBehaviour
@@ -6,35 +7,32 @@ public class InventoryView : MonoBehaviour
 
     [SerializeField] private GameObject go_inventoryBase;
 
-    [SerializeField] private GameObject go_EquipmentSlotsParent;
-    [SerializeField] private GameObject go_UsedSlotsParent;
-    [SerializeField] private GameObject go_IngredientSlotsParent;
-    [SerializeField] private GameObject go_FunctionSlotsParent;
-    [SerializeField] private GameObject go_QuestSlotsParent;
-    [SerializeField] private GameObject go_QuickSlotsParent;
+    [SerializeField] private GameObject itemSlots;
 
-    [SerializeField] private GameObject go_Base; // Tooltip Base_Outer
+    private SlotView[] slots;
+  
 
-    private Slot[] equipmentSlots;
-    private Slot[] consumableSlots;
-    private Slot[] ingredientSlots;
-    private Slot[] functionSlots;
-    private Slot[] questSlots;
-    private Slot[] quickSlots;
-
-    private ItemType currentTab = ItemType.Equipment; // 기본 무기 탭
+    public ItemType currentTab; // 기본 무기 탭
 
     private void Start()
     {
-        equipmentSlots = go_EquipmentSlotsParent.GetComponentsInChildren<Slot>();
-        consumableSlots = go_UsedSlotsParent.GetComponentsInChildren<Slot>();
-        ingredientSlots = go_IngredientSlotsParent.GetComponentsInChildren<Slot>();
-        functionSlots = go_FunctionSlotsParent.GetComponentsInChildren<Slot>();
-        questSlots = go_QuestSlotsParent.GetComponentsInChildren<Slot>();
-        quickSlots = go_QuickSlotsParent.GetComponentsInChildren<Slot>();
+        UIManager.Instance.inventoryUI.inventoryView.Value = this;
 
-        ChangeTab_UI(ItemType.Equipment); // 초기 무기탭
+        slots = itemSlots.GetComponentsInChildren<SlotView>();
+
+        currentTab = ItemType.Equipment;
     }
+
+    public void UpdateInventorySlotView(List<SlotData> slotDatas)
+    {
+        // 데이터 넣어주기
+        for (int i = 0; i < slotDatas.Count; i++)
+        {
+            slots[i].slotData = slotDatas[i];
+            slots[i].SlotViewUpdate();
+        }
+    }
+
 
 
     public void TryOpenInventory()
@@ -55,35 +53,11 @@ public class InventoryView : MonoBehaviour
     private void CloseInventory()
     {
         go_inventoryBase.SetActive(false);
-        go_Base.SetActive(false);
     }
 
-    public void ChangeTab_UI(ItemType type)
-    {
-        currentTab = type;
-
-        go_EquipmentSlotsParent.SetActive(false);
-        go_UsedSlotsParent.SetActive(false);
-        go_IngredientSlotsParent.SetActive(false);
-        go_FunctionSlotsParent.SetActive(false);
-        go_QuestSlotsParent.SetActive(false);
-
-        switch (currentTab)
-        {
-            case ItemType.Equipment: go_EquipmentSlotsParent.SetActive(true); break;
-            case ItemType.Used: go_UsedSlotsParent.SetActive(true); break;
-            case ItemType.Ingredient: go_IngredientSlotsParent.SetActive(true); break;
-            case ItemType.Function: go_FunctionSlotsParent.SetActive(true); break;
-            case ItemType.Quest: go_QuestSlotsParent.SetActive(true); break;
-        }
-    }
-
-
-
-
-    public void OnClickEquipmentTab() => ChangeTab_UI(ItemType.Equipment);
-    public void OnClickUsedTab() => ChangeTab_UI(ItemType.Used);
-    public void OnClickIngredient() => ChangeTab_UI(ItemType.Ingredient);
-    public void OnClickFunctionTab() => ChangeTab_UI(ItemType.Function);
-    public void OnClickQuestTab() => ChangeTab_UI(ItemType.Quest);
+    public void OnClickEquipmentTab() => currentTab = ItemType.Equipment;
+    public void OnClickConsuableTab() => currentTab = ItemType.Used;
+    public void OnClickIngredient() => currentTab = ItemType.Ingredient;
+    public void OnClickFunctionTab() => currentTab = ItemType.Function;
+    public void OnClickQuestTab() => currentTab = ItemType.Quest;
 }

@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
 
 
-    private void Awake() => Init();
+    private void Start() => Init();
 
     public Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
     public float SmoothTime = 0.1f; // 보간 속도
@@ -370,7 +370,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void OpenInventory(InputAction.CallbackContext context)
     {
         if (context.started)
-            UIManager.Instance.InventoryPanel.GetComponent<InventoryView>().TryOpenInventory();
+            UIManager.Instance.inventoryUI.inventoryView.Value.TryOpenInventory();
     }
 
     #endregion

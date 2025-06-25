@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using static UnityEditor.Progress;
 
 public class InventoryModel
 {
@@ -7,7 +6,7 @@ public class InventoryModel
     List<SlotData> consumableSlots = new List<SlotData>();
     List<SlotData> equipmentSlots = new List<SlotData>();
     List<SlotData> functionSlots = new List<SlotData>();
-    public List<SlotData> questSlots = new List<SlotData>();
+    List<SlotData> questSlots = new List<SlotData>();
 
     int slotCount = 30;
 
@@ -25,13 +24,11 @@ public class InventoryModel
         }
     }
 
-
-    // 내가 받는 수량만큼 인벤토리에 다 넣을 수 있는지 여부를 반환 ---- Prensenter에서 호출
-    public bool CanAddItem(Item item, int count)
+    // 
+    public List<SlotData> GetCurrentTabSlots(ItemType tabType)
     {
-        ItemType type = item.itemType;
         List<SlotData> nowTab;
-        switch (type)
+        switch (tabType)
         {
             case ItemType.Ingredient:
                 nowTab = ingredientSlots;
@@ -51,29 +48,20 @@ public class InventoryModel
             default: nowTab = null; break;
         }
 
+        return nowTab;
+    }
+
+    // 내가 받는 수량만큼 인벤토리에 다 넣을 수 있는지 여부를 반환 ---- Prensenter에서 호출
+    public bool CanAddItem(Item item, int count)
+    {
+        List<SlotData> nowTab = GetCurrentTabSlots(item.itemType);
         return CanAddToInven(nowTab, item, count);
     }
 
     // 수량 안 적으면 한 개 추가
     public void AddItem(Item item, int count)
     {
-        ItemType type = item.itemType;
-        List<SlotData> nowTab;
-        switch (type)
-        {
-            case ItemType.Ingredient: nowTab = ingredientSlots;
-                break;
-            case ItemType.Used: nowTab = consumableSlots;
-                break;
-            case ItemType.Equipment: nowTab = equipmentSlots;
-                break;
-            case ItemType.Function: nowTab = functionSlots;
-                break;
-            case ItemType.Quest: nowTab = questSlots;
-                break;
-            default: nowTab = null; break;
-        }
-
+        List<SlotData> nowTab = GetCurrentTabSlots(item.itemType);
         AddToInven(nowTab, item, count);
     }
 
