@@ -11,7 +11,7 @@ public class ItemInstance : InteractableBase
         base.Interact();
 
         // 플레이어 인벤토리로 들어감
-        pc.Status.inventory.AcquireItem(item);
+        pc.Status.inventory.AddItem(item);
     }
 
     public override void SetInteractableEnable()

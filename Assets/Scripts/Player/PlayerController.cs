@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     private InputAction attackAction;
     private InputAction freeCamAction;
     private InputAction interactAction;
+    private InputAction inventoryOpenAction;
+    private InputAction inventoryOffAction;
 
     //Vector3 moveDir;
 
@@ -102,6 +104,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void InputActionsInit()
     {
+        // 조작 불가능 상태로 만들 때 액션들의 Enable 상태를 껐다 켜주는 식으로 진행하자
+
         // 플레이어 조작 맵
         var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
 
@@ -147,6 +151,12 @@ public class PlayerController : MonoBehaviour, IDamagable
         attackAction.Enable();
         attackAction.started += HandleAttack;
         attackAction.canceled += HandleAttack;
+
+        // 7. 인벤토리 열기(I)
+        inventoryOpenAction = playerControlMap.FindAction("Inventory");
+        inventoryOpenAction.Enable();
+        inventoryOpenAction.started += OpenInventory;
+
     }
 
     private void InputActionsDelete()
@@ -177,6 +187,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 6. 공격 액션
         attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
+
+        // 7. 인벤토리 열기(I)
+        attackAction.started -= OpenInventory;
     }
 
 
@@ -354,6 +367,12 @@ public class PlayerController : MonoBehaviour, IDamagable
             Interact();
     }
 
+    public void OpenInventory(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            UIManager.Instance.InventoryPanel.GetComponent<InventoryView>().TryOpenInventory();
+    }
+
     #endregion
 
     public void CrouchToggleChange(bool value)
@@ -474,7 +493,7 @@ public class PlayerController : MonoBehaviour, IDamagable
             interactable.Interact();
     }
    
-
+    
 
 
     public void LoadPlayerData(PlayerStatus status)

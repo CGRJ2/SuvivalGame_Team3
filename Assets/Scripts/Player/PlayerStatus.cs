@@ -41,7 +41,7 @@ public class PlayerStatus : MonoBehaviour
     
 
     // 우선 캔버스에 직접 연결하지만, MVP 구조로 리팩토링 필요 (데이터 & UI & 로직 처리(상태 업데이트, Input처리 등)로 분리)
-    public Inventory inventory;
+    public InventoryPresenter inventory;
 
 
     [Header("신체 부위 데이터")]
@@ -65,6 +65,7 @@ public class PlayerStatus : MonoBehaviour
     private void Update()
     {
         /// 테스트
+        //Debug.Log(inventory.model.questSlots[2].item);
     }
 
 
@@ -89,9 +90,12 @@ public class PlayerStatus : MonoBehaviour
         SprintSpeed = sprintSpeed_Init;
         JumpForce = jumpForce_Init;
 
-        // 인벤토리 기본 아이템만 있거나 전부 비우기.
+        
 
         BodySet();
+
+        // 인벤토리 초기화
+        inventory = new InventoryPresenter();
     }
 
     public void WillPowerChanged(int value)

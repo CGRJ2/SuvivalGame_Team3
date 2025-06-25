@@ -2819,7 +2819,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 191322137}
-  - component: {fileID: 191322138}
+  - component: {fileID: 191322139}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -2848,7 +2848,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &191322138
+--- !u!114 &191322139
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2857,7 +2857,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 191322136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d645f9461460fc46a4b47b148a363a1, type: 3}
+  m_Script: {fileID: 11500000, guid: a754cc177450ab940ad1c3ec3c17defb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   go_inventoryBase: {fileID: 1635204556}
@@ -4361,7 +4361,7 @@ PrefabInstance:
     - target: {fileID: 6286608767469336869, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: f2e4ed016088acb498bf3fa48eab8848, type: 2}
+      objectReference: {fileID: 11400000, guid: ddd099f43d0345d478e2c62229b0056d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4974,6 +4974,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7485093682603999526, guid: 6256819ee30f79a4b966b585d0020713, type: 3}
   m_PrefabInstance: {fileID: 532332625}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &535811291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 535811293}
+  - component: {fileID: 535811292}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &535811292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535811291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adacf4ea5022ba943b5f1501b6b86d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryPanel: {fileID: 191322136}
+--- !u!4 &535811293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535811291}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &539037617
 GameObject:
   m_ObjectHideFlags: 0
@@ -6009,7 +6054,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 191322138}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
         m_MethodName: OnClickQuestTab
         m_Mode: 1
@@ -8223,7 +8268,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 191322138}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
         m_MethodName: OnClickUsedTab
         m_Mode: 1
@@ -12318,7 +12363,7 @@ PrefabInstance:
     - target: {fileID: 1729228156934780109, guid: 9a490e04d89f7f943aa205713184197c, type: 3}
       propertyPath: inventory
       value: 
-      objectReference: {fileID: 191322138}
+      objectReference: {fileID: 0}
     - target: {fileID: 4241812337122138919, guid: 9a490e04d89f7f943aa205713184197c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -14217,7 +14262,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 191322138}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
         m_MethodName: OnClickIngredient
         m_Mode: 1
@@ -17991,7 +18036,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 191322138}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
         m_MethodName: OnClickEquipmentTab
         m_Mode: 1
@@ -18226,7 +18271,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 191322138}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
         m_MethodName: OnClickFunctionTab
         m_Mode: 1
@@ -20567,6 +20612,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7485093682603999526, guid: 6256819ee30f79a4b966b585d0020713, type: 3}
   m_PrefabInstance: {fileID: 2132696187}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2139602468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2139602470}
+  - component: {fileID: 2139602469}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2139602469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139602468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f33069c49ec0a4bb83e7518f43c6f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManager: {fileID: 535811292}
+--- !u!4 &2139602470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139602468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -20593,3 +20683,5 @@ SceneRoots:
   - {fileID: 106825706}
   - {fileID: 1632483505}
   - {fileID: 337113064}
+  - {fileID: 2139602470}
+  - {fileID: 535811293}
