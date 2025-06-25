@@ -10,9 +10,9 @@ public class InventoryView : MonoBehaviour
     [SerializeField] private GameObject itemSlots;
 
     private SlotView[] slots;
-  
 
-    public ItemType currentTab; // 기본 무기 탭
+
+    public ObservableProperty<ItemType> CurrentTab = new ObservableProperty<ItemType>();
 
     private void Start()
     {
@@ -20,7 +20,8 @@ public class InventoryView : MonoBehaviour
 
         slots = itemSlots.GetComponentsInChildren<SlotView>();
 
-        currentTab = ItemType.Equipment;
+        // 기본 무기 탭으로 설정
+        CurrentTab.Value = ItemType.Equipment;
     }
 
     public void UpdateInventorySlotView(List<SlotData> slotDatas)
@@ -33,7 +34,10 @@ public class InventoryView : MonoBehaviour
         }
     }
 
-
+    private void OnDestroy()
+    {
+        CurrentTab.UnsbscribeAll();
+    }
 
     public void TryOpenInventory()
     {
@@ -55,9 +59,9 @@ public class InventoryView : MonoBehaviour
         go_inventoryBase.SetActive(false);
     }
 
-    public void OnClickEquipmentTab() => currentTab = ItemType.Equipment;
-    public void OnClickConsuableTab() => currentTab = ItemType.Used;
-    public void OnClickIngredient() => currentTab = ItemType.Ingredient;
-    public void OnClickFunctionTab() => currentTab = ItemType.Function;
-    public void OnClickQuestTab() => currentTab = ItemType.Quest;
+    public void OnClickEquipmentTab() => CurrentTab.Value = ItemType.Equipment;
+    public void OnClickConsuableTab() => CurrentTab.Value = ItemType.Used;
+    public void OnClickIngredient() => CurrentTab.Value = ItemType.Ingredient;
+    public void OnClickFunctionTab() => CurrentTab.Value = ItemType.Function;
+    public void OnClickQuestTab() => CurrentTab.Value = ItemType.Quest;
 }

@@ -32,6 +32,7 @@ public class InventoryPresenter:IDisposable
     public void SetView(InventoryView view)
     {
         this.view = view;
+        view.CurrentTab.Subscribe(UpdateSlotsToCurrentTab);
     }
 
     public void AddItem(Item item, int count = 1)
@@ -56,9 +57,13 @@ public class InventoryPresenter:IDisposable
         // 2. 인벤토리 내부에서 드래그 앤 드롭이 발생했을 때
         // 3. 인벤토리가 활성화 되어있는 상태에서 아이템이 추가/제거되었을 때
         // view.뭐시기뭐시기
-        view.UpdateInventorySlotView(model.GetCurrentTabSlots(view.currentTab));
-
+        UpdateSlotsToCurrentTab(view.CurrentTab.Value);
     }
 
-    
+    public void UpdateSlotsToCurrentTab(ItemType tabType)
+    {
+        view.UpdateInventorySlotView(model.GetCurrentTabSlots(tabType));
+    }
+
+
 }

@@ -15,4 +15,5 @@ public class InventoryUI
 {
     public ObservableProperty<InventoryView> inventoryView = new ObservableProperty<InventoryView>();
     public SlotToolTip tooltip;
+    public DragSlotView dragSlotInstance;
 }

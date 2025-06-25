@@ -65,16 +65,19 @@ public class SlotView : MonoBehaviour,
         {
             if (slotData.item != null)
             {
-                if (slotData.item.itemType == ItemType.Equipment)
+                // 사용 효과 실행
+                if (slotData.item.itemType == ItemType.Used)
                 {
-                    //장착
+                    slotData.item.Use(this.slotData);
+                }
+                else
+                {
+                    slotData.item.Use();
 
                 }
-                else if (slotData.item.itemType == ItemType.Used)
-                {
-                    //소모
-                    Debug.Log(slotData.item.itemName + "을 사용했습니다");
-                }
+
+                // 아이템 사용한 슬롯 상태 업데이트
+                SlotViewUpdate();
             }
         }
     }
@@ -84,9 +87,10 @@ public class SlotView : MonoBehaviour,
     {
         if (slotData.item != null)
         {
-            DragSlotView.instance.dragSlot = this;
-            DragSlotView.instance.DragSetImage(itemSprite);
-            DragSlotView.instance.transform.position = eventData.position;
+            DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+            dragSlotInstance.slot = this;
+            dragSlotInstance.DragSetImage(itemSprite);
+            dragSlotInstance.transform.position = eventData.position;
         }
     }
 
@@ -95,48 +99,92 @@ public class SlotView : MonoBehaviour,
     {
         if (slotData.item != null)
         {
-            DragSlotView.instance.transform.position = eventData.position;
+            DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+
+            dragSlotInstance.transform.position = eventData.position;
         }
     }
 
     //IEndDragHandler - OnEndDrag - 드래그가 종료됐을 때 드래그 오브젝트에서 호출됩니다.
     public void OnEndDrag(PointerEventData eventData)
     {
-        DragSlotView.instance.DropClearImage();
-        DragSlotView.instance.dragSlot = null;
+        DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+
+        dragSlotInstance.DropClearImage();
+        dragSlotInstance.slot = null;
     }
 
     //IDropHandler - OnDrop - 드래그를 멈췄을 때 해당 오브젝트에서 호출됩니다.
     public void OnDrop(PointerEventData eventData)
     {
-        if (DragSlotView.instance.dragSlot == null) return;
+        DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
 
-        // 현재 들고 있던 아이템 슬롯 (지역변수로 임시 저장)
-        SlotView draggedSlot = DragSlotView.instance.dragSlot;
+        if (dragSlotInstance.slot == null) return;
+
         // 드랍이 이루어지는 슬롯 => this
 
-        if (draggedSlot == null) return;
+        if (dragSlotInstance.slot == null) return;
 
         // 아이템 데이터 일치 여부 검사
         // 같은 종류 아이템이라면 갯수 합치기
-        if (draggedSlot.slotData.item == this.slotData.item)
+        if (dragSlotInstance.slot.slotData.item == this.slotData.item)
         {
-
+            MergeSlotData(dragSlotInstance.slot.slotData, this.slotData);
         }
         // 다른 종류 아이템이라면 위치 변경
         else
         {
-            // slotData 교환
-            DragSlotView.instance.dragSlot.slotData = this.slotData;
-            this.slotData = draggedSlot.slotData;
-
-            // 각각 칸에서 view 업데이트
-            DragSlotView.instance.dragSlot.SlotViewUpdate();
-            this.SlotViewUpdate();
+            ChangeSlotData(dragSlotInstance.slot.slotData, this.slotData);
         }
+
+        dragSlotInstance.slot.SlotViewUpdate();
+        SlotViewUpdate();
     }
 
+    // 단순 자리 교체
+    public void ChangeSlotData(SlotData A, SlotData B)
+    {
+        Item tempItem = A.item;
+        int tempCount = A.currentCount;
+        int tempMaxCount = A.maxCount;
+        A.item = B.item;
+        A.currentCount = B.currentCount;
+        A.maxCount = B.maxCount;
+        B.item = tempItem;
+        B.currentCount = tempCount;
+        B.maxCount = tempMaxCount;
 
+        // 이걸로 두 슬롯 업데이트하고 마무리 할거야.
+    }
+
+    // 같은 아이템끼리 드래그 드랍 => 합쳐질 수 있는 수량만큼 합쳐지기
+    public void MergeSlotData(SlotData dragSlotData, SlotData dropSlotData)
+    {
+        // 드롭할 공간이 있다면
+        if (dropSlotData.currentCount < dropSlotData.maxCount)
+        {
+            int canAddCount = dropSlotData.maxCount - dropSlotData.currentCount;
+
+            // 드래그중인 아이템 개수를 합쳤을 때 최대 수량을 넘어간다면
+            if (dragSlotData.currentCount > canAddCount)
+            {
+                dropSlotData.currentCount = dropSlotData.maxCount;
+                dragSlotData.currentCount -= canAddCount;
+            }
+            // 드래그중인 아이템 개수를 모두 합칠 수 있을 때
+            else
+            {
+                dropSlotData.currentCount += dragSlotData.currentCount;
+                dragSlotData.CleanSlot();
+            }
+
+        }
+        // 내가 드롭하는 슬롯에 이미 최대 수량만큼 있다면
+        else
+        {
+            Debug.Log("아무일도 안생겨요");
+        }
+    }
     #endregion
 
     #region 마우스 커서를 올릴 때 Tooltip 표시 기능

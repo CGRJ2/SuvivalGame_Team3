@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using UnityEngine;
 public class InventoryModel
 {
     List<SlotData> ingredientSlots = new List<SlotData>();
@@ -105,11 +105,19 @@ public class InventoryModel
             // 같은 종류의 아이템이 인벤토리에 있으면
             if (sd.IsStackable(item))
             {
-                // 그 칸에 쌓을 수 있는 개수 만큼 추가
-                sd.AddItem(sd.GetStackableCount());
+                int stackableCount = sd.GetStackableCount();
 
-                // 쌓은 만큼 남은 수량 감소
-                remainCount -= sd.GetStackableCount();
+                if (remainCount < stackableCount)
+                {
+                    sd.AddItem(remainCount);
+                    remainCount = 0;
+                }
+                else
+                {
+                    // 그 칸에 쌓을 수 있는 개수 만큼 추가
+                    sd.AddItem(stackableCount);
+                    remainCount -= stackableCount;
+                }
             }
             // 빈칸이 있다면
             else if (sd.IsSlotEmpty())

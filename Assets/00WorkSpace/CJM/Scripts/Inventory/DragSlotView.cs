@@ -1,39 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DragSlotView : MonoBehaviour
 {
-    static public DragSlotView instance;
-
-    public SlotView dragSlot;
+    public SlotView slot;
 
     //아이템 이미지
     [SerializeField]
-    private Image imageItem;
+    private Image itemSprite;
 
-    private void Start()
+    private void Start() => Init();
+
+    public void Init()
     {
-        instance = this;
+        UIManager.Instance.inventoryUI.dragSlotInstance = this;
     }
 
     public void DragSetImage(Image _itemImage)
     {
-        imageItem.sprite = _itemImage.sprite;
+        itemSprite.sprite = _itemImage.sprite;
         SetColor(1);
     }
 
     public void DropClearImage()
     {
-        imageItem.sprite = null;
+        itemSprite.sprite = null;
         SetColor(0);
     }
 
     public void SetColor(float _alpha)
     {
-        Color color = imageItem.color;
+        Color color = itemSprite.color;
         color.a = _alpha;
-        imageItem.color = color;
+        itemSprite.color = color;
     }
 }
