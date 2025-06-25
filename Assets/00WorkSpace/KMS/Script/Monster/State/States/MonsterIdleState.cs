@@ -42,7 +42,7 @@ public class MonsterIdleState : IMonsterState
         float angleOffset = Mathf.Sin(timer * Mathf.PI / lookDuration) * 20f;
         Quaternion targetRotation = baseRotation * Quaternion.Euler(0f, angleOffset, 0f);
         monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, targetRotation, Time.deltaTime * 3f);
-
+        Debug.Log($"rotation: {monster.transform.rotation.eulerAngles.y}");
         // 일정 시간 뒤 상태 재전이
         if (timer >= lookDuration * 2f)
         {

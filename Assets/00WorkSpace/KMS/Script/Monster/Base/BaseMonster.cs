@@ -67,22 +67,11 @@ public abstract class BaseMonster : MonoBehaviour
     protected IMonsterStateFactory stateFactory;
     protected virtual void Awake()
     {
+
         stateMachine = new MonsterStateMachine(this);
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
-
-        perceptionController = new MonsterPerceptionController(
-        this,
-        alertDecayRate,
-        alertCooldownThreshold,
-        alertThreshold_Low,
-        alertThreshold_Medium,
-        alertThreshold_High
-        );
-
-
-        perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
 
 
         idleState = stateFactory.CreateIdleState();
@@ -90,6 +79,20 @@ public abstract class BaseMonster : MonoBehaviour
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
 
+
+        perceptionController = new MonsterPerceptionController(
+            this,
+            alertDecayRate,
+            alertCooldownThreshold,
+            alertThreshold_Low,
+            alertThreshold_Medium,
+            alertThreshold_High
+        );
+
+        perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
+
+
+        perceptionController.ForceSetState(MonsterPerceptionState.Idle);
     }
     protected virtual void Start()
     {

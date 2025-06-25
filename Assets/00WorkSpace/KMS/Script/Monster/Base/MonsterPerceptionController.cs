@@ -83,5 +83,11 @@ public class MonsterPerceptionController
         }
     }
 
+    public void ForceSetState(MonsterPerceptionState newState)
+    {
+        CurrentState = newState;
+        OnPerceptionStateChanged?.Invoke(newState);
+    }
+
     public float GetAlertLevel() => alertLevel;
 }
