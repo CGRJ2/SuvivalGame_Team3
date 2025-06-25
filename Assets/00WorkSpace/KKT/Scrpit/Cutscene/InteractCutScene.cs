@@ -5,16 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 
-public class InteractCunScene : MonoBehaviour
+public class InteractCutScene : MonoBehaviour
 {
     [Header("Core")]
     public PlayableDirector timeline;
     public CinemachineVirtualCamera playerVcam;
     public CinemachineVirtualCamera cutsceneVcam;
     public PlayerInput playerInput; // (Input System 쓴다면 Inspector에서 연결)
-
-    [Header("UI)")]
-    public GameObject interactionPrompt;
 
     [Header("Priorty)")]
     public int playerPriority = 20;
@@ -32,12 +29,8 @@ public class InteractCunScene : MonoBehaviour
         if (canInteract && !played && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             played = true;
-
-            // 상호작용 UI 끄끼
-            if (interactionPrompt != null)
-            {
-                interactionPrompt.SetActive(false);
-            }
+            
+            UIController.Instance.ShowInteractionPrompt(false);
 
             // 입력 차단
             if (playerInput != null) 
@@ -79,11 +72,7 @@ public class InteractCunScene : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canInteract = true;
-
-            if (interactionPrompt != null)
-            {
-                interactionPrompt.SetActive(true); // 트리거 진입 시 UI 보이기
-            }
+            UIController.Instance.ShowInteractionPrompt(true);
         }
     }
 
@@ -92,12 +81,7 @@ public class InteractCunScene : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canInteract = false;
-
-            if (interactionPrompt != null)
-            {
-                interactionPrompt.SetActive(false); // 트리거 진입 시 UI 보이기
-            }
-
+            UIController.Instance.ShowInteractionPrompt(false);
         }
     }
 }

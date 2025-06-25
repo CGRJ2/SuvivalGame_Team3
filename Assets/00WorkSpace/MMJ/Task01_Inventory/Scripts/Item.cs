@@ -17,6 +17,8 @@ public class Item : ScriptableObject
         Equipment, // 장비
         Used, // 소모품
         Ingredient, // 재료
+        Function, // 기능
+        Quest, //퀘스트
         ETC // 기타
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class MonsterStateMachine
 {
     private IMonsterState currentState;
+    public IMonsterState CurrentState => currentState;
     private BaseMonster monster;
 
     public MonsterStateMachine(BaseMonster owner)

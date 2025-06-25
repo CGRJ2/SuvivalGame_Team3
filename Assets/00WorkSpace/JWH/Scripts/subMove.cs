@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class subPlayerMovement : MonoBehaviour
+public class testPlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public BaseCamp camp;
 
     void Update()
     {
@@ -19,6 +20,11 @@ public class subPlayerMovement : MonoBehaviour
         if (direction.magnitude >= 0.1f)
         {
             transform.Translate(direction * moveSpeed * Time.deltaTime, Space.World);
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            camp.UpgradeCamp();
         }
     }
 }
