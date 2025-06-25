@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StaggerState : IMonsterState
+public class MonsterStaggerState : IMonsterState
 {
     private BaseMonster monster;
     private float duration;
     private float timer;
 
-    public StaggerState(float duration)
+    public MonsterStaggerState(float duration)
     {
         this.duration = duration;
     }
@@ -28,13 +28,13 @@ public class StaggerState : IMonsterState
 
         if (monster.IsDead)
         {
-            monster.StateMachine.ChangeState(new DeadState());
+            monster.StateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
         if (timer >= duration)
         {
-            monster.StateMachine.ChangeState(new IdleState()); // 또는 이전 상태 복귀
+            monster.StateMachine.ChangeState(new MonsterIdleState()); // 또는 이전 상태 복귀
         }
     }
 

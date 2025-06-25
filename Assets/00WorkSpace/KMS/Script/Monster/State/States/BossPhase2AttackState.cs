@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Phase2AttackState : IMonsterState
+public class BossPhase2AttackState : IMonsterState
 {
     private BaseMonster monster;
     private float attackCooldown;

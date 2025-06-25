@@ -29,7 +29,7 @@ public class CatPacifiedState : IMonsterState
 
         if (cat.IsDead)
         {
-            cat.StateMachine.ChangeState(new DeadState());
+            cat.StateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 

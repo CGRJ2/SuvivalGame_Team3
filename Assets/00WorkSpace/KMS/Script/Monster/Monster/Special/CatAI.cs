@@ -4,16 +4,16 @@ public class CatAI : BaseMonster
     {
         if (IsDead)
         {
-            if (!(stateMachine.CurrentState is DeadState))
-                stateMachine.ChangeState(new DeadState());
+            if (!(stateMachine.CurrentState is MonsterDeadState))
+                stateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
         if (IsInSight())
         {
             SetPerceptionState(MonsterPerceptionState.Alert);
-            if (!(stateMachine.CurrentState is ChaseState))
-                stateMachine.ChangeState(new ChaseState());
+            if (!(stateMachine.CurrentState is MonsterChaseState))
+                stateMachine.ChangeState(new MonsterChaseState());
         }
         else
         {

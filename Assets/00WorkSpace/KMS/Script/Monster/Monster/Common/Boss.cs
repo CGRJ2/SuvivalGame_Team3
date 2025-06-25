@@ -9,7 +9,7 @@ public class Boss : BaseMonster
     {
         if (currentHP <= 0)
         {
-            stateMachine.ChangeState(new DeadState());
+            stateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
@@ -17,17 +17,17 @@ public class Boss : BaseMonster
         if (currentHP < data.maxHP * 0.5f)
         {
             // 추후 Phase2 패턴으로 전환 가능
-            stateMachine.ChangeState(new Phase2AttackState()); // 예시
+            stateMachine.ChangeState(new BossPhase2AttackState()); // 예시
             return;
         }
 
         if (SetPerceptionState(MonsterPerceptionState.Alert))
         {
-            stateMachine.ChangeState(new ChaseState());
+            stateMachine.ChangeState(new MonsterChaseState());
         }
         else
         {
-            stateMachine.ChangeState(new IdleState());
+            stateMachine.ChangeState(new MonsterIdleState());
         }
     }
 }

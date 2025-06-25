@@ -23,14 +23,14 @@ public class CatSearchState : IMonsterState
 
         if (monster.IsDead)
         {
-            monster.StateMachine.ChangeState(new DeadState());
+            monster.StateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
         if (canSeePlayer)
         {
             monster.SetPerceptionState(MonsterPerceptionState.Alert);
-            monster.StateMachine.ChangeState(new ChaseState());
+            monster.StateMachine.ChangeState(new MonsterChaseState());
             return;
         }
 

@@ -20,18 +20,18 @@ public class CatIdleState : IMonsterState
         // 감지 우선 (즉시 반응)
         if (monster.IsDead)
         {
-            monster.StateMachine.ChangeState(new DeadState());
+            monster.StateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
         if (canSeePlayer)
         {
             monster.SetPerceptionState(MonsterPerceptionState.Alert);
-            monster.StateMachine.ChangeState(new ChaseState());
+            monster.StateMachine.ChangeState(new MonsterChaseState());
             return;
         }
 
-        if (monster.AlertLevel >= monster.AlertThreshold_Search)
+        if (monster.AlertLevel >= monster.AlertThreshold_Medium)
         {
             monster.SetPerceptionState(MonsterPerceptionState.Search);
             monster.StateMachine.ChangeState(new CatSearchState());

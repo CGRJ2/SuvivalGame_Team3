@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : IMonsterState
+public class MonsterAttackSatate : IMonsterState
 {
     private BaseMonster monster;
     private float attackCooldown;

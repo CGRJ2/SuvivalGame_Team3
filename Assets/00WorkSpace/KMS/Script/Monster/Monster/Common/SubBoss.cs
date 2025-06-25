@@ -9,17 +9,17 @@ public class SubBoss : BaseMonster
     {
         if (currentHP <= 0)
         {
-            stateMachine.ChangeState(new DeadState());
+            stateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
         if (SetPerceptionState(MonsterPerceptionState.Alert))
         {
-            stateMachine.ChangeState(new ChaseState());
+            stateMachine.ChangeState(new MonsterChaseState());
         }
         else
         {
-            stateMachine.ChangeState(new IdleState());
+            stateMachine.ChangeState(new MonsterIdleState());
         }
     }
 }

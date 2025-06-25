@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : IMonsterState
+public class MonsterIdleState : IMonsterState
 {
     private BaseMonster monster;
     private float idleTime;

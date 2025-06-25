@@ -25,15 +25,27 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterView view;
     public UnityEvent OnDeadEvent;
 
-    //소리 감지
+    private MonsterIdleState idleState;
+    private MonsterSuspiciousState suspiciousState;
+    private MonsterSearchState searchState;
+    private MonsterAlertState alertState;
+
+    // 경계도 수치 관련
     [SerializeField] protected float alertLevel = 0f;
     public float AlertLevel => alertLevel;
-    [SerializeField] protected float alertDecayRate = 5f;
-    [SerializeField] protected float alertThreshold_Search = 10f;
-    public float AlertThreshold_Search => alertThreshold_Search;
-    [SerializeField] protected float alertThreshold_Alert = 20f;
 
-    //소리 감지의 급속도 변화 제어용
+    [SerializeField] protected float alertDecayRate = 5f;
+
+    // 경계도 단계
+    [SerializeField] protected float alertThreshold_Low = 20f;
+    [SerializeField] protected float alertThreshold_Medium = 50f;
+    [SerializeField] protected float alertThreshold_High = 80f;
+
+    public float AlertThreshold_Low => alertThreshold_Low;
+    public float AlertThreshold_Medium => alertThreshold_Medium;
+    public float AlertThreshold_High => alertThreshold_High;
+
+    // 급격한 변화 방지용 쿨다운
     private float alertCooldownTimer = 0f;
     [SerializeField] private float alertCooldownThreshold = 2f;
 
@@ -44,12 +56,20 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
 
-
+    public IMonsterState GetIdleState() => idleState;
+    public IMonsterState GetAlertState() => alertState;
+    public IMonsterState GetSearchState() => searchState;
+    public IMonsterState GethsuspiciousStatetate() => suspiciousState;
 
     protected virtual void Awake()
     {
         stateMachine = new MonsterStateMachine(this);
         view = GetComponent<MonsterView>();
+
+        idleState = new MonsterIdleState();
+        suspiciousState = new MonsterSuspiciousState();
+        searchState = new MonsterSearchState();
+        alertState = new MonsterAlertState();
     }
 
     protected virtual void Update()
@@ -179,13 +199,20 @@ public abstract class BaseMonster : MonoBehaviour
         alertLevel = Mathf.Clamp(alertLevel, 0, 100);
     }
 
-    private MonsterPerceptionState EvaluateAlertState()
+    protected MonsterPerceptionState EvaluateAlertState()
     {
-        if (alertLevel >= alertThreshold_Alert) return MonsterPerceptionState.Alert;
-        if (alertLevel >= alertThreshold_Search) return MonsterPerceptionState.Search;
+        if (alertLevel >= alertThreshold_High)
+            return MonsterPerceptionState.Alert;
+        if (alertLevel >= alertThreshold_Medium)
+            return MonsterPerceptionState.Search;
+        if (alertLevel >= alertThreshold_Low)
+            return MonsterPerceptionState.Suspicious;
         return MonsterPerceptionState.Idle;
     }
-
+    public MonsterPerceptionState EvaluateCurrentAlertState()
+    {
+        return EvaluateAlertState();
+    }
     protected void UpdateAlert()
     {
         if (alertLevel > 0f)
@@ -200,11 +227,34 @@ public abstract class BaseMonster : MonoBehaviour
             {
                 SetPerceptionState(newState);
                 alertCooldownTimer = 0f;
+
+                ChangeStateAccordingToPerception(newState);
             }
         }
         else
         {
             alertCooldownTimer = 0f;
+        }
+    }
+
+    protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
+    {
+        if (stateMachine == null) return;
+
+        switch (state)
+        {
+            case MonsterPerceptionState.Idle:
+                stateMachine.ChangeState(idleState);
+                break;
+            case MonsterPerceptionState.Suspicious:
+                stateMachine.ChangeState(suspiciousState);
+                break;
+            case MonsterPerceptionState.Search:
+                stateMachine.ChangeState(searchState);
+                break;
+            case MonsterPerceptionState.Alert:
+                stateMachine.ChangeState(alertState);
+                break;
         }
     }
 
@@ -216,6 +266,6 @@ public abstract class BaseMonster : MonoBehaviour
 
         // 공격 중이라면 상태 중단
         var monster = GetComponent<BaseMonster>();
-        monster?.StateMachine?.ChangeState(new StaggerState(stunTime));
+        monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
 }

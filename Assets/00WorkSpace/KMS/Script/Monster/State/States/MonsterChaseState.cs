@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChaseState : IMonsterState
+public class MonsterChaseState : IMonsterState
 {
     private BaseMonster monster;
     private Transform target;
