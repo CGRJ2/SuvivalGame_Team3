@@ -44,9 +44,11 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] protected float actionRadius = 20f;
     private Vector3 spawnPoint;
 
+    public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
+    
 
     protected bool isDead;
     public bool IsDead => isDead;

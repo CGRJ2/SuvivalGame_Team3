@@ -71,6 +71,15 @@ public class MonsterAlertState : IMonsterState
                 Debug.Log($"[{monster.name}] Alert 상태 유지");
             }
         }
+
+        if (monster.AlertLevel < monster.AlertThreshold_Low)
+        {
+            monster.SetPerceptionState(MonsterPerceptionState.Idle);
+            var idleState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle);
+            monster.StateMachine.ChangeState(idleState);
+            Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
+            return;
+        }
     }
 
     public void Exit()

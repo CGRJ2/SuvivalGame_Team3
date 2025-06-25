@@ -27,7 +27,6 @@ public class MonsterIdleState : IMonsterState
 
     public void Execute()
     {
-        monster.transform.GetChild(0).Rotate(0f, 30f * Time.deltaTime, 0f);
 
         if (monster == null || monster.IsDead) return;
 
