@@ -14,7 +14,7 @@ public class AttackState : IMonsterState
         attackCooldown = monster.data.attackCooldown;
         timer = 0f;
 
-        monster.GetComponent<MonsterView>()?.PlayAttackAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         Debug.Log($"[{monster.name}] 상태: Attack 진입");
     }
 

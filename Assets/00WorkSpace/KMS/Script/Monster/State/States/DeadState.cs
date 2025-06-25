@@ -9,7 +9,7 @@ public class DeadState : IMonsterState
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
-        monster.GetComponent<MonsterView>()?.PlayDeathAnimation();
+        monster.GetComponent<MonsterView>()?.PlayMonsterDeathAnimation();
         Debug.Log($"[{monster.name}] 상태: Dead 진입");
     }
 
