@@ -5,9 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRecipe", menuName = "Crafting/Recipe")]
 public class CraftingRecipe : ScriptableObject
 {
-    public string recipeID;         //레시피ID
+    public string recipeName;       //레시피이름
+    public Sprite icon;             //레시피 이미지
+
+
     public Item[] requiredItems;    //필요한아이템
     public int[] requiredCounts;    //필요아이템수량
-    public Item outputItem;         //결과아이템
-    public int outputCount = 1;     //결과아이템수량
+
+
+    public Item resultItem;         //결과아이템
+    public int resultCount = 1;     //결과아이템수량
 }
