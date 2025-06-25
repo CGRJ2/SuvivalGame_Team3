@@ -32,7 +32,7 @@ public class ItemEffectDatabase : MonoBehaviour
 
     public void UseItem(Item _item)
     {
-        if (_item.itemType == Item.ItemType.Used) //소모품일때
+        if (_item.itemType == ItemType.Used) //소모품일때
         {
             for (int x = 0; x < itemEffects.Length; x++) //배열 탐색 , 아이템의 효과만큼
             {
