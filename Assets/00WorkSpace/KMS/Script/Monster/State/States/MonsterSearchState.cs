@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatSearchState : IMonsterState
+public class MonsterSearchState : IMonsterState
 {
     private BaseMonster monster;
-    private float searchDuration = 4f;
+    private float searchDuration = 5f;
     private float searchTimer = 0f;
 
     public void Enter(BaseMonster monster)
@@ -14,33 +14,30 @@ public class CatSearchState : IMonsterState
         searchTimer = 0f;
 
         monster.SetPerceptionState(MonsterPerceptionState.Search);
-        monster.GetComponent<MonsterView>()?.PlayMonsterCautiousWalkAnimation(); // 느린 탐색 모션
-
-        Debug.Log($"[{monster.name}] 상태: CatSearch 진입");
+        Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 진입");
+        // monster.StateMachine.SetAnimation("IsSearching", true);
     }
 
     public void Execute()
     {
         if (monster == null || monster.IsDead) return;
 
-        searchTimer += Time.deltaTime;
-
-        // 플레이어를 다시 발견하면 경계도 상승
+        // 시야 감지
         if (monster.checkTargetVisible)
         {
-            monster.IncreaseAlert(10f);
+            monster.IncreaseAlert(10f); // 탐색 중 발견 시 경계도 증가
         }
 
-        // 대상이 아직 있는 경우, 서서히 접근
-        var target = monster.GetTarget();
-        if (target != null)
+        // 이동
+        if (monster.GetTarget() != null)
         {
-            Vector3 toTarget = target.position - monster.transform.position;
+            Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
             toTarget.y = 0f;
-            monster.Move(toTarget.normalized * 0.5f); // 일반 이동보다 느리게
+            monster.Move(toTarget.normalized);
         }
 
-        // 일정 시간 후 상태 전이 평가
+        // 타이머 경과 시 상태 재평가
+        searchTimer += Time.deltaTime;
         if (searchTimer >= searchDuration)
         {
             var current = monster.GetCurrentPerceptionState();
@@ -49,18 +46,21 @@ public class CatSearchState : IMonsterState
             if (next != this)
             {
                 monster.StateMachine.ChangeState(next);
-                Debug.Log($"[{monster.name}] CatSearch 종료 → {current} 상태 전이");
+                Debug.Log($"[{monster.name}] 탐색 종료 → {current} 상태 전이");
             }
             else
             {
+                // 상태 유지되면 타이머 초기화 (선택)
                 searchTimer = 0f;
-                Debug.Log($"[{monster.name}] CatSearch 상태 유지");
+                Debug.Log($"[{monster.name}] 탐색 상태 유지");
             }
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: CatSearch 종료");
+        Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 종료");
+        // monster.StateMachine.SetAnimation("IsSearching", false);
     }
 }
+

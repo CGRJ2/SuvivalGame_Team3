@@ -20,6 +20,7 @@ public class BaseMonsterData : ScriptableObject
     public float moveSpeed;
     public float attackCooldown;
     public float attackPower;
+    public float attackRange;
 
     [Header("Å½Áö")]
     public float detectionRange;

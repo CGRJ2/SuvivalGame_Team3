@@ -1,31 +1,40 @@
 public class CatAI : BaseMonster
 {
+    protected override void Awake()
+    {
+        {
+            base.Awake();
+            stateFactory = new CatMonsterStateFactory(this);
+        }
+    }
     protected override void HandleState()
     {
         if (IsDead)
         {
-            if (!(stateMachine.CurrentState is DeadState))
-                stateMachine.ChangeState(new DeadState());
+            if (!(stateMachine.CurrentState is MonsterDeadState))
+                stateMachine.ChangeState(new MonsterDeadState());
             return;
         }
 
-        if (IsInSight())
+        // 고양이는 passively 관찰 => 시야 기반 감지
+        if (CheckTargetVisible())
         {
-            SetPerceptionState(MonsterPerceptionState.Alert);
-            if (!(stateMachine.CurrentState is ChaseState))
-                stateMachine.ChangeState(new ChaseState());
+            var alertState = StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
+            if (stateMachine.CurrentState != alertState)
+                stateMachine.ChangeState(alertState);
         }
         else
         {
-            SetPerceptionState(MonsterPerceptionState.Idle);
-            if (!(stateMachine.CurrentState is CatIdleState))
-                stateMachine.ChangeState(new CatIdleState());
+            var idleState = StateFactory.GetStateForPerception(MonsterPerceptionState.Idle);
+            if (stateMachine.CurrentState != idleState)
+                stateMachine.ChangeState(idleState);
         }
     }
-    
-    public void ApplyPacifyEffect(float duration) // 아이템 사용시의 무력화 시간을 담당
+
+    public void ApplyPacifyEffect(float duration)
     {
-        SetPerceptionState(MonsterPerceptionState.Idle);
+        // 외부 자극(아이템 등)으로 인해 무력화 상태 진입
+        SetPerceptionState(MonsterPerceptionState.Idle); // 혹은 Pacified 전용 Enum도 고려 가능
         StateMachine.ChangeState(new CatPacifiedState(duration));
     }
 }

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +13,7 @@ public abstract class BaseMonster : MonoBehaviour
     protected float detectionRange;
     protected float currentFOV;
     protected float currentDetectionRange;
+    protected float attackRange;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
@@ -25,17 +23,29 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterView view;
     public UnityEvent OnDeadEvent;
 
-    //소리 감지
-    [SerializeField] protected float alertLevel = 0f;
-    public float AlertLevel => alertLevel;
-    [SerializeField] protected float alertDecayRate = 5f;
-    [SerializeField] protected float alertThreshold_Search = 10f;
-    public float AlertThreshold_Search => alertThreshold_Search;
-    [SerializeField] protected float alertThreshold_Alert = 20f;
+    private IMonsterState idleState;
+    private IMonsterState suspiciousState;
+    private IMonsterState searchState;
+    private IMonsterState alertState;
 
-    //소리 감지의 급속도 변화 제어용
-    private float alertCooldownTimer = 0f;
+    // 경계도 수치 관련
+    [SerializeField] protected float alertDecayRate = 5f;
+    [SerializeField] private float cooldownTimer = 0f;
     [SerializeField] private float alertCooldownThreshold = 2f;
+    private MonsterPerceptionController perceptionController;
+
+    // 경계도 단계
+    [SerializeField] protected float alertThreshold_Low = 20f;
+    [SerializeField] protected float alertThreshold_Medium = 50f;
+    [SerializeField] protected float alertThreshold_High = 80f;
+
+    // 행동 반경
+    [SerializeField] protected float actionRadius = 20f; 
+    private Vector3 spawnPoint;
+
+    public float AlertThreshold_Low => alertThreshold_Low;
+    public float AlertThreshold_Medium => alertThreshold_Medium;
+    public float AlertThreshold_High => alertThreshold_High;
 
     protected bool isDead;
     public bool IsDead => isDead;
@@ -44,19 +54,49 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
 
+    public IMonsterState GetIdleState() => idleState;
+    public IMonsterState GetAlertState() => alertState;
+    public IMonsterState GetSearchState() => searchState;
+    public IMonsterState GetSuspiciousState() => suspiciousState;
 
+    private IMonsterSensor sensor;
 
+    protected IMonsterStateFactory stateFactory;
     protected virtual void Awake()
     {
         stateMachine = new MonsterStateMachine(this);
+        stateFactory = new DefaultMonsterStateFactory(this);
+        sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
+
+        perceptionController = new MonsterPerceptionController(
+        this,
+        alertDecayRate,
+        alertCooldownThreshold,
+        alertThreshold_Low,
+        alertThreshold_Medium,
+        alertThreshold_High
+        );
+
+        perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
+
+
+        idleState = stateFactory.CreateIdleState();
+        suspiciousState = stateFactory.CreateSuspiciousState();
+        searchState = stateFactory.CreateSearchState();
+        alertState = stateFactory.CreateAlertState();
+
+    }
+    protected virtual void Start()
+    {
+        spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
     }
 
     protected virtual void Update()
     {
         stateMachine.Update();
         HandleState(); // 자식이 override 가능
-        UpdateAlert();
+        perceptionController.Update();
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -74,8 +114,11 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+
         view.PlayMonsterDeathAnimation();
         OnDeadEvent?.Invoke();
+
+        stateMachine.ChangeState(new MonsterDeadState()); // 여기가 진입점
     }
 
     protected abstract void HandleState(); // 상태머신 상태 변경은 여기서
@@ -89,7 +132,11 @@ public abstract class BaseMonster : MonoBehaviour
 
     public virtual void Move(Vector3 direction)
     {
-        transform.position += direction * data.moveSpeed * Time.deltaTime;
+        if (rb != null)
+        {
+            Vector3 targetPosition = rb.position + (direction * data.moveSpeed * Time.deltaTime);
+            rb.MovePosition(targetPosition); // 물리 반영 이동
+        }
     }
 
     public virtual void SetData(BaseMonsterData newData)
@@ -108,6 +155,11 @@ public abstract class BaseMonster : MonoBehaviour
         Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료");
     }
 
+    public void SetSensor(IMonsterSensor newSensor)
+    {
+        sensor = newSensor;
+    }
+
     public bool SetPerceptionState(MonsterPerceptionState newState)
     {
         if (perceptionState == newState)
@@ -116,6 +168,30 @@ public abstract class BaseMonster : MonoBehaviour
         perceptionState = newState;
         UpdateSightParameters();
         return true;
+    }
+
+    public virtual bool IsInAttackRange()
+    {
+        if (target == null) return false;
+
+        Vector3 toTarget = target.position - transform.position;
+        toTarget.y = 0f;
+
+        float distance = toTarget.magnitude;
+        return distance <= data.attackRange;
+    }
+
+    public virtual bool IsOutsideDetectionRadius()
+    {
+        if (target == null) return true;
+
+        float distance = Vector3.Distance(transform.position, target.position);
+        return distance > currentDetectionRange;
+    }
+
+    public virtual bool IsOutsideActionRadius()
+    {
+        return Vector3.Distance(transform.position, spawnPoint) > actionRadius;
     }
 
     private void UpdateSightParameters() //임의 배정
@@ -147,65 +223,32 @@ public abstract class BaseMonster : MonoBehaviour
         currentDetectionRange = data.detectionRange * rangeMultiplier;
     }
 
-    public bool IsInSight()
+    protected bool CheckTargetVisible()
     {
-        if (target == null) return false;
-
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
-        float angle = Vector3.Angle(transform.forward, directionToTarget);
-
-        // 시야각 체크 (currentFOV는 절반각이므로 그대로 비교)
-        if (angle > currentFOV) return false;
-
-        // 시야 거리 + 장애물 체크
-        Vector3 eyePosition = transform.position + Vector3.up * data.eyeHeight; // 눈 위치 보정
-        float distanceToTarget = Vector3.Distance(eyePosition, target.position);
-
-        if (distanceToTarget > currentDetectionRange) return false;
-
-        // Raycast로 장애물 여부 확인
-        if (Physics.Raycast(eyePosition, directionToTarget, out RaycastHit hit, currentDetectionRange))
-        {
-            if (hit.transform == target)
-                return true; // 시야 안에 있고, 가리는 물체 없음
-        }
-
-        return false;
+        return sensor.IsTargetVisible(transform, target, currentDetectionRange, currentFOV, data.eyeHeight);
     }
+    public bool checkTargetVisible => CheckTargetVisible();
+    public MonsterPerceptionState GetCurrentPerceptionState()
+    {
+        return perceptionController.CurrentState;
+    }
+    public IMonsterStateFactory StateFactory => stateFactory;
 
     public void IncreaseAlert(float amount)
     {
-        alertLevel += amount;
-        alertLevel = Mathf.Clamp(alertLevel, 0, 100);
+        perceptionController.IncreaseAlert(amount);
+    }
+    public virtual IMonsterState CreateAttackState()
+    {
+        return stateFactory.CreateAttackState();
     }
 
-    private MonsterPerceptionState EvaluateAlertState()
+    protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
-        if (alertLevel >= alertThreshold_Alert) return MonsterPerceptionState.Alert;
-        if (alertLevel >= alertThreshold_Search) return MonsterPerceptionState.Search;
-        return MonsterPerceptionState.Idle;
-    }
-
-    protected void UpdateAlert()
-    {
-        if (alertLevel > 0f)
-            alertLevel -= alertDecayRate * Time.deltaTime;
-
-        MonsterPerceptionState newState = EvaluateAlertState();
-
-        if (newState != perceptionState)
-        {
-            alertCooldownTimer += Time.deltaTime;
-            if (alertCooldownTimer >= alertCooldownThreshold)
-            {
-                SetPerceptionState(newState);
-                alertCooldownTimer = 0f;
-            }
-        }
-        else
-        {
-            alertCooldownTimer = 0f;
-        }
+        Debug.Log($"[{name}] 상태 전이 시도 → {state}");
+        IMonsterState nextState = stateFactory.GetStateForPerception(state);
+        stateMachine.ChangeState(nextState);
+        Debug.Log($"[MonsterSearchState] {name} 탐색 상태 진입");
     }
 
     public void ApplyKnockback(Vector3 direction, float force)
@@ -216,6 +259,8 @@ public abstract class BaseMonster : MonoBehaviour
 
         // 공격 중이라면 상태 중단
         var monster = GetComponent<BaseMonster>();
-        monster?.StateMachine?.ChangeState(new StaggerState(stunTime));
+        monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
+
+
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CatIdleState : IMonsterState
+public class OwnerIdleState : IMonsterState
 {
     private BaseMonster monster;
     private float idleDuration;
@@ -12,14 +12,13 @@ public class CatIdleState : IMonsterState
     {
         this.monster = monster;
         idleTimer = 0f;
-        idleDuration = Random.Range(2f, 5f); // 고양이는 좀 오래 앉아 있음
+        idleDuration = Random.Range(1f, 3f); // 어린이라 가만히 있지를 못함.
 
         monster.SetPerceptionState(MonsterPerceptionState.Idle);
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
 
         Debug.Log($"[{monster.name}] 상태: CatIdle 진입 (대기 {idleDuration:F1}s)");
     }
-
     public void Execute()
     {
         if (monster == null || monster.IsDead) return;
@@ -29,7 +28,7 @@ public class CatIdleState : IMonsterState
         // 플레이어를 감지하면 경계도 상승
         if (monster.checkTargetVisible)
         {
-            monster.IncreaseAlert(8f); // 일반 몬스터보다 낮은 수치 상승
+            monster.IncreaseAlert(15f); //일반 몬스터보다 높은 수치 상승
         }
 
         // 시간이 지나면 상태 전이 판단
@@ -55,6 +54,6 @@ public class CatIdleState : IMonsterState
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: CatIdle 종료");
+        Debug.Log($"[{monster.name}] OwnerIdle 종료");
     }
 }

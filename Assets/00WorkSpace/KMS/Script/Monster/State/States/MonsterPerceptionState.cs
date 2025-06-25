@@ -5,6 +5,7 @@ using UnityEngine;
 public enum MonsterPerceptionState
 {
     Idle,
+    Suspicious,
     Search,
     Alert,
     Combat
