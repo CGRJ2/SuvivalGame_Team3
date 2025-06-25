@@ -19,12 +19,12 @@ MonoBehaviour:
   moveSpeed: 10
   attackCooldown: 10
   attackPower: 20
-  attackRange: 0
-  detectionRange: 20
-  baseFOV: 30
-  eyeHeight: 1.5
+  attackRange: 1.5
+  detectionRange: 10
+  baseFOV: 45
+  eyeHeight: 1
   targetType: 0
   dropItemPrefab: {fileID: 3696422763688937324, guid: e52946f2e2dd0e34bb3915747452d655, type: 3}
-  prefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
+  monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0

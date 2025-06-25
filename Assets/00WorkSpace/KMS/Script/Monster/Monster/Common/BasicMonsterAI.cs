@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class BasicMonsterAI : BaseMonster
 {
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     protected override void Start()
     {
         base.Start();
