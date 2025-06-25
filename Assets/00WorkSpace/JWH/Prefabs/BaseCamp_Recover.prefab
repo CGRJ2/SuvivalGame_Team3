@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1086237145828815690
+--- !u!1 &8551418798852635216
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5445063978576293978}
-  - component: {fileID: 5288194646041801926}
-  - component: {fileID: 8730884211518732785}
-  - component: {fileID: 8077891817723667086}
-  - component: {fileID: 7084868557187810208}
-  - component: {fileID: 8990587320160536268}
-  - component: {fileID: 7096344792516675217}
+  - component: {fileID: 2980695112402537586}
+  - component: {fileID: 2103259830602647968}
+  - component: {fileID: 7205940969549211980}
+  - component: {fileID: 970527413897621452}
+  - component: {fileID: 1688284296085673591}
   m_Layer: 0
-  m_Name: BaseCamp_UPgrade
+  m_Name: BaseCamp_Recover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5445063978576293978
+--- !u!4 &2980695112402537586
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
+  m_GameObject: {fileID: 8551418798852635216}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -4.28, y: 0.48194313, z: 0.31429124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5288194646041801926
+--- !u!33 &2103259830602647968
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
+  m_GameObject: {fileID: 8551418798852635216}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8730884211518732785
+--- !u!23 &7205940969549211980
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
+  m_GameObject: {fileID: 8551418798852635216}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -65,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b48cacb6d93ee534a9c70a682d47e6b5, type: 2}
+  - {fileID: 2100000, guid: 7f16fe46b789ae8409ea30a64d82cd54, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8077891817723667086
+--- !u!65 &970527413897621452
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
+  m_GameObject: {fileID: 8551418798852635216}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -102,56 +100,21 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7084868557187810208
+--- !u!114 &1688284296085673591
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
+  m_GameObject: {fileID: 8551418798852635216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 537ff1a3480944c41a2f8ce574223e26, type: 3}
+  m_Script: {fileID: 11500000, guid: cf3a060eba8e9cd47a4979d2ba7cfe8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camplevel: {fileID: 8990587320160536268}
-  campunlock: {fileID: 7096344792516675217}
---- !u!114 &8990587320160536268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c3297a18582f145a7aa5ee93577ebd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxLevel: 3
-  requirementsByLevel:
-  - Camplevel: 0
-    Campitem: {fileID: 0}
-    CampitemCount: 0
---- !u!114 &7096344792516675217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086237145828815690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 323552bac15e4974ab3898094f235874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unlockByLevel:
-  - level: 1
-    itemsToUnlock:
-    - {fileID: 11400000, guid: 245f39fc033e48746a572bc7a5950281, type: 2}
