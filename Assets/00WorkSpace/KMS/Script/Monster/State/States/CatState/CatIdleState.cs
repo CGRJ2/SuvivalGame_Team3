@@ -26,8 +26,7 @@ public class CatIdleState : IMonsterState
 
         if (canSeePlayer)
         {
-            monster.SetPerceptionState(MonsterPerceptionState.Alert);
-            monster.StateMachine.ChangeState(new MonsterChaseState());
+            monster.IncreaseAlert(100f);
             return;
         }
 
