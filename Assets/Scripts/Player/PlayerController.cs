@@ -370,7 +370,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void OpenInventory(InputAction.CallbackContext context)
     {
         if (context.started)
-            UIManager.Instance.inventoryUI.inventoryView.Value.TryOpenInventory();
+            UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
     }
 
     #endregion

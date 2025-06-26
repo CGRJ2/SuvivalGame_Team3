@@ -16,7 +16,7 @@ public class InventoryView : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.inventoryUI.inventoryView.Value = this;
+        UIManager.Instance.inventoryUI.inventoryView = this;
 
         slots = itemSlots.GetComponentsInChildren<SlotView>();
 

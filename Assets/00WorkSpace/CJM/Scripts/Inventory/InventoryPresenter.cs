@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryPresenter:IDisposable
+public class InventoryPresenter 
 {
     public InventoryModel model; // ==> DataField
 
@@ -14,12 +12,6 @@ public class InventoryPresenter:IDisposable
     public InventoryPresenter()
     {
         this.model = new InventoryModel();
-        UIManager.Instance.inventoryUI.inventoryView.Subscribe(SetView);
-    }
-
-    public void Dispose()
-    {
-        UIManager.Instance.inventoryUI.inventoryView.Unsubscribe(SetView);
     }
 
     // 로드용 함수
@@ -53,10 +45,10 @@ public class InventoryPresenter:IDisposable
 
     public void UpdateUI()
     {
+        if (view == null) SetView(UIManager.Instance.inventoryUI.inventoryView);
         // 1. 인벤토리를 열었을 때
         // 2. 인벤토리 내부에서 드래그 앤 드롭이 발생했을 때
         // 3. 인벤토리가 활성화 되어있는 상태에서 아이템이 추가/제거되었을 때
-        // view.뭐시기뭐시기
         UpdateSlotsToCurrentTab(view.CurrentTab.Value);
     }
 
