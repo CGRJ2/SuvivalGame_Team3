@@ -16,6 +16,7 @@ public abstract class BaseMonster : MonoBehaviour
     protected float currentDetectionRange;
     protected float attackRange;
     private Vector3 originPosition;
+    protected MonsterTypeStatData typeStat;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
@@ -124,6 +125,9 @@ public abstract class BaseMonster : MonoBehaviour
     {
         currentHP -= amount;
         view.PlayMonsterHitEffect();
+
+        float knockbackDistance = CalculateKnockbackDistance(); 
+        ApplyKnockback(knockbackDistance);
 
         if (currentHP <= 0)
         {
@@ -338,15 +342,19 @@ public abstract class BaseMonster : MonoBehaviour
         Debug.Log($"[MonsterSearchState] {name} 탐색 상태 진입");
     }
 
-    public void ApplyKnockback(Vector3 direction, float force)
+    public void ApplyKnockback(float distance)
     {
-        if (rb == null) return;
-        rb.AddForce(direction.normalized * force, ForceMode.Impulse);
-        Debug.Log($"[Monster] 넉백 적용: {direction}, 힘: {force}");
+        if (rb == null || target == null) return;
 
-        // 공격 중이라면 상태 중단
-        var monster = GetComponent<BaseMonster>();
-        monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
+        Vector3 direction = (transform.position - target.position).normalized;
+        Vector3 knockbackPos = transform.position + direction * distance;
+
+        rb.MovePosition(knockbackPos);
+        Debug.Log($"[Knockback] {name} 넉백 위치: {knockbackPos}");
+    }
+    public float CalculateKnockbackDistance()
+    {
+        return data.KnockbackDistance * typeStat.knockbackDistanceMultiplier;
     }
 
     public void ResetAlert()

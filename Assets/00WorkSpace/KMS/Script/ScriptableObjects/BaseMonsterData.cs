@@ -22,6 +22,10 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown;
 
+    [Header("³Ë¹é °ü·Ã")]
+    [SerializeField] private float knockbackDistance = 2f;
+ 
+
     [Header("Å½Áö")]
     [SerializeField] private float detectionRange;
     [SerializeField] private float baseFOV = 40f;
@@ -34,7 +38,7 @@ public class BaseMonsterData : ScriptableObject
     public float AttackPower => attackPower;
     public float AttackRange => attackRange;
     public float AttackCooldown => attackCooldown;
-
+    public float KnockbackDistance => knockbackDistance;
     public float DetectionRange => detectionRange;
     public float BaseFOV => baseFOV;
     public float EyeHeight => eyeHeight;
