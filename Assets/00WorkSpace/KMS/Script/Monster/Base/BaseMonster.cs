@@ -319,6 +319,11 @@ public abstract class BaseMonster : MonoBehaviour
         monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
 
+    public void ResetAlert()
+    {
+        perceptionController.ResetAlert();
+    }
+
     protected virtual void OnDrawGizmosSelected()
     {
         if (data == null) return;

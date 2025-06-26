@@ -32,8 +32,11 @@ public class MonsterPerceptionController
         this.thresholdHigh = high;
     }
 
+
     public void Update()
     {
+        Debug.Log($"[{owner.name}] perception 업데이트 중 - AlertLevel: {alertLevel}");
+
         cooldownTimer += Time.deltaTime;
 
         if (cooldownTimer >= perceptionInterval)
@@ -52,6 +55,8 @@ public class MonsterPerceptionController
             EvaluatePerceptionState(); // 상태 전이 판단
         }
     }
+
+    public float GetAlertLevel() => alertLevel;
 
     public void IncreaseAlert(float amount)
     {
@@ -88,6 +93,11 @@ public class MonsterPerceptionController
         CurrentState = newState;
         OnPerceptionStateChanged?.Invoke(newState);
     }
+    public void ResetAlert()
+    {
+        alertLevel = 0f;
+        EvaluatePerceptionState();
+    }
 
-    public float GetAlertLevel() => alertLevel;
+   
 }

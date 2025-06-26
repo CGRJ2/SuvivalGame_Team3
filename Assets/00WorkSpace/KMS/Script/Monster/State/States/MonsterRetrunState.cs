@@ -33,9 +33,12 @@ public class MonsterReturnState : IMonsterState
             monster.StateMachine.ChangeState(monster.GetIdleState());
         }
     }
-
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: Return 종료");
+        Debug.Log($"[{monster.name}] Return 종료 → 상태 초기화");
+
+        monster.ResetAlert();
+
+        monster.SetPerceptionState(MonsterPerceptionState.Idle);
     }
 }
