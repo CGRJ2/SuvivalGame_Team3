@@ -159,7 +159,7 @@ public abstract class BaseMonster : MonoBehaviour
 
         if (rb != null)
         {
-            Vector3 targetPosition = rb.position + (direction * data.moveSpeed * Time.deltaTime);
+            Vector3 targetPosition = rb.position + (direction * data.MoveSpeed * Time.deltaTime);
             rb.MovePosition(targetPosition);
         }
         else
@@ -172,12 +172,12 @@ public abstract class BaseMonster : MonoBehaviour
     {
         data = newData;
 
-        currentHP = data.maxHP;
-        moveSpeed = data.moveSpeed;
-        attackPower = data.attackPower;
-        attackCooldown = data.attackCooldown;
-        detectionRange = data.detectionRange;
-        targetType = data.targetType;
+        currentHP = data.MaxHP;
+        moveSpeed = data.MoveSpeed;
+        attackPower = data.AttackPower;
+        attackCooldown = data.AttackCooldown;
+        detectionRange = data.DetectionRange;
+        targetType = data.TargetType;
         originPosition = transform.position;
 
         UpdateSightParameters();
@@ -208,7 +208,7 @@ public abstract class BaseMonster : MonoBehaviour
         toTarget.y = 0f;
 
         float distance = toTarget.magnitude;
-        return distance <= data.attackRange;
+        return distance <= data.AttackRange;
     }
 
     public virtual bool IsOutsideDetectionRadius()
@@ -249,13 +249,13 @@ public abstract class BaseMonster : MonoBehaviour
                 break;
         }
 
-        currentFOV = data.baseFOV * fovMultiplier;
-        currentDetectionRange = data.detectionRange * rangeMultiplier;
+        currentFOV = data.BaseFOV * fovMultiplier;
+        currentDetectionRange = data.DetectionRange * rangeMultiplier;
     }
 
     protected bool CheckTargetVisible()
     {
-        return sensor.IsTargetVisible(transform, target, currentDetectionRange, currentFOV, data.eyeHeight);
+        return sensor.IsTargetVisible(transform, target, currentDetectionRange, currentFOV, data.EyeHeight);
     }
     public bool checkTargetVisible => CheckTargetVisible();
     public MonsterPerceptionState GetCurrentPerceptionState()
@@ -330,14 +330,14 @@ public abstract class BaseMonster : MonoBehaviour
         if (data == null) return;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.eyeHeight, currentDetectionRange);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.EyeHeight, currentDetectionRange);
 
         Vector3 forward = transform.forward;
         Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + rightLimit * currentDetectionRange);
     }
 }

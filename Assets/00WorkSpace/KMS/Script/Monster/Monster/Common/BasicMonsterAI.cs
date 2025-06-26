@@ -31,14 +31,14 @@ public class BasicMonsterAI : BaseMonster
         if (data == null) return;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.eyeHeight, currentDetectionRange);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.EyeHeight, currentDetectionRange);
 
         Vector3 forward = transform.forward;
         Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + rightLimit * currentDetectionRange);
     }
 }
