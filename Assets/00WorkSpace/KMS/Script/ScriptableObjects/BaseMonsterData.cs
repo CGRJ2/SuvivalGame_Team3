@@ -30,7 +30,7 @@ public class BaseMonsterData : ScriptableObject
 
     [Header("«¡∏Æ∆’")]
     public GameObject dropItemPrefab;
-    public GameObject prefab;
+    public GameObject monsterPrefab;
 
     [Header("±‚≈∏")]
     public Vector3 spawnPosition;

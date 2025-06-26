@@ -14,6 +14,7 @@ public abstract class BaseMonster : MonoBehaviour
     protected float currentFOV;
     protected float currentDetectionRange;
     protected float attackRange;
+    private Vector3 originPosition;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
@@ -40,12 +41,14 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] protected float alertThreshold_High = 80f;
 
     // 행동 반경
-    [SerializeField] protected float actionRadius = 20f; 
+    [SerializeField] protected float actionRadius = 20f;
     private Vector3 spawnPoint;
 
+    public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
+    
 
     protected bool isDead;
     public bool IsDead => isDead;
@@ -64,21 +67,11 @@ public abstract class BaseMonster : MonoBehaviour
     protected IMonsterStateFactory stateFactory;
     protected virtual void Awake()
     {
+
         stateMachine = new MonsterStateMachine(this);
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
-
-        perceptionController = new MonsterPerceptionController(
-        this,
-        alertDecayRate,
-        alertCooldownThreshold,
-        alertThreshold_Low,
-        alertThreshold_Medium,
-        alertThreshold_High
-        );
-
-        perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
 
 
         idleState = stateFactory.CreateIdleState();
@@ -86,6 +79,20 @@ public abstract class BaseMonster : MonoBehaviour
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
 
+
+        perceptionController = new MonsterPerceptionController(
+            this,
+            alertDecayRate,
+            alertCooldownThreshold,
+            alertThreshold_Low,
+            alertThreshold_Medium,
+            alertThreshold_High
+        );
+
+        perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
+
+
+        perceptionController.ForceSetState(MonsterPerceptionState.Idle);
     }
     protected virtual void Start()
     {
@@ -94,6 +101,18 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (stateMachine == null)
+        {
+            Debug.LogError($"{name}의 stateMachine이 null입니다.");
+            return;
+        }
+
+        if (perceptionController == null)
+        {
+            Debug.LogError($"{name}의 perceptionController가 null입니다.");
+            return;
+        }
+
         stateMachine.Update();
         HandleState(); // 자식이 override 가능
         perceptionController.Update();
@@ -132,10 +151,16 @@ public abstract class BaseMonster : MonoBehaviour
 
     public virtual void Move(Vector3 direction)
     {
+        Debug.Log($"[Move] 호출됨 - 방향: {direction}");
+
         if (rb != null)
         {
             Vector3 targetPosition = rb.position + (direction * data.moveSpeed * Time.deltaTime);
-            rb.MovePosition(targetPosition); // 물리 반영 이동
+            rb.MovePosition(targetPosition);
+        }
+        else
+        {
+            Debug.LogWarning("Rigidbody가 없습니다!");
         }
     }
 
@@ -149,6 +174,7 @@ public abstract class BaseMonster : MonoBehaviour
         attackCooldown = data.attackCooldown;
         detectionRange = data.detectionRange;
         targetType = data.targetType;
+        originPosition = transform.position;
 
         UpdateSightParameters();
 
@@ -242,6 +268,34 @@ public abstract class BaseMonster : MonoBehaviour
     {
         return stateFactory.CreateAttackState();
     }
+    public virtual IMonsterState GetAttackState()
+    {
+        return stateFactory.CreateAttackState();
+    }
+
+    protected virtual void InitTargetByType()
+    {
+        switch (targetType)
+        {
+            case MonsterTargetType.Player:
+                GameObject player = GameObject.FindWithTag("Player");
+                if (player != null)
+                    SetTarget(player.transform);
+                break;
+
+            case MonsterTargetType.Ally:
+                GameObject ally = GameObject.FindWithTag("Ally");
+                if (ally != null)
+                    SetTarget(ally.transform);
+                break;
+
+            case MonsterTargetType.None:
+                GameObject none = GameObject.FindWithTag("None");
+                if (none != null)
+                    SetTarget(none.transform);
+                break;
+        }
+    }
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
@@ -262,5 +316,19 @@ public abstract class BaseMonster : MonoBehaviour
         monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
     }
 
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (data == null) return;
 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.eyeHeight, currentDetectionRange);
+
+        Vector3 forward = transform.forward;
+        Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
+        Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + rightLimit * currentDetectionRange);
+    }
 }

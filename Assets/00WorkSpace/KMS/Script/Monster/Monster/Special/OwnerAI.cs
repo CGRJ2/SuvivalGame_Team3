@@ -6,17 +6,23 @@ public class OwnerAI : BaseMonster
 {
     protected override void Awake()
     {
-        base.Awake();
         stateFactory = new OwnerStateFactory(this);
+        base.Awake();
     }
 
     protected override void HandleState()
     {
-        if (IsDead)
+        if (CheckTargetVisible())
         {
-            if (!(StateMachine.CurrentState is OwnerDeadState))
-                StateMachine.ChangeState(new OwnerDeadState());
-            return;
+            var alertState = StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
+            if (stateMachine.CurrentState != alertState)
+                stateMachine.ChangeState(alertState);
+        }
+        else
+        {
+            var idleState = StateFactory.GetStateForPerception(MonsterPerceptionState.Idle);
+            if (stateMachine.CurrentState != idleState)
+                stateMachine.ChangeState(idleState);
         }
 
         if (IsInAttackRange())

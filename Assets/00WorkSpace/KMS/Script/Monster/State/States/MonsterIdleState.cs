@@ -4,57 +4,56 @@ using UnityEngine;
 public class MonsterIdleState : IMonsterState
 {
     private BaseMonster monster;
-    private float idleTime;
     private float timer;
+    private float direction = 1f;
+    private float lookDuration = 2f;
+    private float rotateSpeed = 30f;
+    private Quaternion baseRotation;
 
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
         timer = 0f;
-        idleTime = Random.Range(1f, 3f); // 랜덤 대기
+        direction = 1f;
+        lookDuration = Random.Range(1.5f, 3f);
+
+        baseRotation = monster.transform.rotation;
 
         monster.SetPerceptionState(MonsterPerceptionState.Idle);
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
 
-        Debug.Log($"[{monster.name}] 상태: Idle 진입 (대기 {idleTime:F1}s)");
+        Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");
     }
 
     public void Execute()
     {
+
         if (monster == null || monster.IsDead) return;
 
-        // 플레이어가 보이면 경계도 상승
+        // 플레이어 감지
         if (monster.checkTargetVisible)
         {
             monster.IncreaseAlert(10f);
         }
 
         timer += Time.deltaTime;
-        if (timer >= idleTime)
-        {
-            var currentState = monster.GetCurrentPerceptionState();
-            var nextState = monster.StateFactory.GetStateForPerception(currentState);
 
-            // 현재 Idle 상태인데 상태 변화가 감지되었을 경우 전이
-            if (nextState != this)
-            {
-                monster.StateMachine.ChangeState(nextState);
-                Debug.Log($"[{monster.name}] Idle 시간 경과 → {currentState} 상태 전이");
-            }
-            else
-            {
-                // 재랜덤 타이머 갱신
-                timer = 0f;
-                idleTime = Random.Range(1f, 3f);
-                Debug.Log($"[{monster.name}] Idle 유지 (새 idleTime: {idleTime:F1}s)");
-            }
+        // 회전: 기준에서 좌우로 +-20도 사이로 왕복 회전
+        float angleOffset = Mathf.Sin(timer * Mathf.PI / lookDuration) * 20f;
+        Quaternion targetRotation = baseRotation * Quaternion.Euler(0f, angleOffset, 0f);
+        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, targetRotation, Time.deltaTime * 3f);
+        Debug.Log($"rotation: {monster.transform.rotation.eulerAngles.y}");
+        // 일정 시간 뒤 상태 재전이
+        if (timer >= lookDuration * 2f)
+        {
+            timer = 0f;
+            lookDuration = Random.Range(1.5f, 3f);
+            Debug.Log($"[{monster.name}] 좌우 회전 루프 반복");
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: Idle 종료");
+        Debug.Log($"[{monster.name}] 상태: Idle 종료 (회전 초기화)");
     }
 }
-
-

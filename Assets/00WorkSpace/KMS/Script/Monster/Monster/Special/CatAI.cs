@@ -3,8 +3,8 @@ public class CatAI : BaseMonster
     protected override void Awake()
     {
         {
-            base.Awake();
             stateFactory = new CatMonsterStateFactory(this);
+            base.Awake();
         }
     }
     protected override void HandleState()
@@ -16,7 +16,6 @@ public class CatAI : BaseMonster
             return;
         }
 
-        // 고양이는 passively 관찰 => 시야 기반 감지
         if (CheckTargetVisible())
         {
             var alertState = StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);

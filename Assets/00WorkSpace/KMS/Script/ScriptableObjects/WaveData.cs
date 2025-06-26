@@ -9,4 +9,5 @@ public class WaveData : ScriptableObject
     public float spawnDelay;
     public int totalCount;
     public List<WaveSpawnInfo> spawnInfos;
+    public List<FixedSpawnInfo> fixedSpawns;
 }

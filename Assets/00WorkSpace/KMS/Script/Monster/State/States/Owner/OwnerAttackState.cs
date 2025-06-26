@@ -50,17 +50,17 @@ public class OwnerAttackState : IMonsterState
         throwDirection.y = 0.5f; // 위쪽 성분 추가
 
         // 플레이어에 IThrowable이 구현되어 있을 경우
-       //IThrowable throwable = target.GetComponent<IThrowable>();
-       //if (throwable != null)
-       //{
-       //    float throwForce = 7f; // 임의 값 (기획에 따라 조정)
-       //    throwable.ApplyThrow(throwDirection.normalized, throwForce);
-       //    Debug.Log($"[{monster.name}] 플레이어를 던짐 → 방향: {throwDirection.normalized}, 힘: {throwForce}");
-       //}
-       //else
-       //{
-       //    Debug.LogWarning($"[{monster.name}] 대상에 IThrowable 미구현");
-       //}
+       IThrowable throwable = target.GetComponent<IThrowable>();
+       if (throwable != null)
+       {
+           float throwForce = 7f; // 임의 값 (기획에 따라 조정)
+           throwable.ApplyThrow(throwDirection.normalized, throwForce);
+           Debug.Log($"[{monster.name}] 플레이어를 던짐 → 방향: {throwDirection.normalized}, 힘: {throwForce}");
+       }
+       else
+       {
+           Debug.LogWarning($"[{monster.name}] 대상에 IThrowable 미구현");
+       }
     }
 
     public void Exit()

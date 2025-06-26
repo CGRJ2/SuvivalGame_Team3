@@ -27,22 +27,35 @@ public class MonsterAlertState : IMonsterState
             return;
         }
 
-        // 플레이어가 보이면 경계도 증가
-        if (monster.checkTargetVisible)
+        // 행동 반경 초과 시 추적 중단 → Idle 복귀
+        if (monster.IsOutsideActionRadius())
         {
-            monster.IncreaseAlert(15f); // 감지된 상태에서 추가 경계도 상승
+            Debug.Log($"[{monster.name}] 행동 반경 초과! Idle 상태로 복귀");
+            monster.StateMachine.ChangeState(monster.GetIdleState());
+            return;
         }
 
-        // 타겟 존재 시 추적
+        // 플레이어가 보이면 경계도 상승
+        if (monster.checkTargetVisible)
+        {
+            monster.IncreaseAlert(15f);
+        }
+
+        // 타겟 추적
         var target = monster.GetTarget();
         if (target != null)
         {
+            Debug.Log($"[AlertState] 타겟 위치 = {target.position}");
             Vector3 toTarget = target.position - monster.transform.position;
             toTarget.y = 0f;
             monster.Move(toTarget.normalized);
         }
+        else
+        {
+            Debug.LogWarning("[AlertState] 타겟이 없습니다!");
+        }
 
-        // 공격 사거리 진입
+        // 공격 사거리 도달 시 전투 상태 전이
         if (monster.IsInAttackRange())
         {
             var attackState = monster.CreateAttackState();
@@ -50,7 +63,7 @@ public class MonsterAlertState : IMonsterState
             return;
         }
 
-        // 일정 시간 지나면 상태 재평가
+        // 일정 시간 경과 시 상태 재평가
         alertTimer += Time.deltaTime;
         if (alertTimer >= maxAlertDuration)
         {
@@ -66,8 +79,17 @@ public class MonsterAlertState : IMonsterState
                 Debug.Log($"[{monster.name}] Alert 상태 유지");
             }
         }
-    }
 
+        // 경계도 하락 시 Idle로 전이
+        if (monster.AlertLevel < monster.AlertThreshold_Low)
+        {
+            monster.SetPerceptionState(MonsterPerceptionState.Idle);
+            var idleState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle);
+            monster.StateMachine.ChangeState(idleState);
+            Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
+            return;
+        }
+    }
     public void Exit()
     {
         Debug.Log($"[{monster.name}] 상태: Alert 종료");

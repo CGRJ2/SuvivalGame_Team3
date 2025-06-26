@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
-  m_Name: TestCatAI
+  m_Name: TsetOwner
   m_EditorClassIdentifier: 
-  monsterName: TestCat
-  monsterType: 2
-  monsterSubType: 3
-  maxHP: 10
-  moveSpeed: 3
+  monsterName: Owner
+  monsterType: 3
+  monsterSubType: 0
+  maxHP: 0
+  moveSpeed: 0
   attackCooldown: 0
   attackPower: 0
   attackRange: 0
-  detectionRange: 10
-  baseFOV: 180
-  eyeHeight: 1
+  detectionRange: 0
+  baseFOV: 40
+  eyeHeight: 1.5
   targetType: 0
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 5962036566243503757, guid: ae7f2c453787bc84392c9b9500fb628b, type: 3}
+  monsterPrefab: {fileID: 6459411826369040920, guid: f296becebbff7664ba7a4a844cce492b, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
-  useFixedPosition: 1
+  useFixedPosition: 0
