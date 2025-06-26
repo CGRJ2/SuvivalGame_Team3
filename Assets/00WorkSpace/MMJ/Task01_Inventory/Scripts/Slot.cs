@@ -24,7 +24,7 @@ public class Slot : MonoBehaviour,
     [SerializeField]
     private GameObject go_CountImage;
 
-    private ItemEffectDatabase theItemEffectDatabase;
+    //private ItemEffectDatabase theItemEffectDatabase;
     private SlotToolTip theSlot;
 
 
@@ -32,7 +32,7 @@ public class Slot : MonoBehaviour,
     void Start()
     {
 
-        theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
+        //theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
         originPos = transform.position;
     }
 
@@ -175,13 +175,13 @@ public class Slot : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData) //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     {
-        if (item != null)
-            theItemEffectDatabase.ShowToolTip(item, transform.position);
+        /*if (item != null)
+            theItemEffectDatabase.ShowToolTip(item, transform.position);*/
     }
 
     public void OnPointerExit(PointerEventData eventData) //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
     {
-        theItemEffectDatabase.HideToolTip();
+        //theItemEffectDatabase.HideToolTip();
     }
 
 
