@@ -37,6 +37,7 @@ public class BasicMonsterAI : BaseMonster
 
         Debug.Log($"[Gizmo] EyePos: {eyePos}, Range: {range}");
 
+        // 시야 감지 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(eyePos, range);
 
@@ -47,5 +48,12 @@ public class BasicMonsterAI : BaseMonster
         Gizmos.color = Color.red;
         Gizmos.DrawLine(eyePos, eyePos + leftLimit * range);
         Gizmos.DrawLine(eyePos, eyePos + rightLimit * range);
+
+        // 행동 반경 시각화
+        if (OriginPosition != Vector3.zero)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(OriginPosition, data.ActionRadius);
+        }
     }
 }
