@@ -149,7 +149,7 @@ public class Inventory : MonoBehaviour
 
     public bool HasRequiredItems(CraftingRecipe recipe)
     {
-        Slot[] ingredientSlots = ingredientSlots = GetTargetSlotArray(ItemType.Ingredient);
+        Slot[] ingredientSlots = GetTargetSlotArray(ItemType.Ingredient);
 
         for (int i = 0; i < recipe.requiredItems.Length; i++)
         {
@@ -158,7 +158,7 @@ public class Inventory : MonoBehaviour
 
             foreach (Slot slot in ingredientSlots)
             {
-                if (slot.item != null && slot.item == recipe.requiredItems[i])
+                if (slot.item != null && slot.item.itemName == recipe.requiredItems[i].itemName)
                 {
                     totalCount += slot.itemCount;
                 }
@@ -195,6 +195,18 @@ public class Inventory : MonoBehaviour
         // 결과물 추가
         AcquireItem(recipe.resultItem, recipe.resultCount);
     }
+    public int GetItemCount(Item item)
+    {
+        int count = 0;
+        Slot[] slots = GetTargetSlotArray(item.itemType);
 
+        foreach (Slot slot in slots)
+        {
+            if (slot.item != null && slot.item == item)
+                count += slot.itemCount;
+        }
+
+        return count;
+    }
 
 }

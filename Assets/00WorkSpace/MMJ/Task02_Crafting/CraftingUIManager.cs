@@ -1,6 +1,7 @@
-using UnityEngine;
+using UnityEngine; // 제작시간 수정본
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class CraftingUIManager : MonoBehaviour
 {
@@ -19,16 +20,25 @@ public class CraftingUIManager : MonoBehaviour
     public GameObject requiredSlotPrefab;
     public Button craftButton;
 
+    [Header("진행 바 UI")]
+    public Slider progressBar;  // 여기 Scrollbar 추가 (인스펙터에 연결 필요)
+
     [Header("기타")]
     public Inventory inventory;
     public List<CraftingRecipe> allRecipes;
 
     private CraftingRecipe selectedRecipe;
 
+    // 제작 진행 관련
+    private Coroutine craftingCoroutine = null;
+    private bool isCrafting = false;
+
     void Start()
     {
         ShowRecipeList();
         craftButton.onClick.AddListener(OnClickCraft);
+        craftButton.interactable = false; // 시작시 제작 버튼 비활성화
+        ResetProgressBar();
     }
 
     private void Update()
@@ -52,13 +62,15 @@ public class CraftingUIManager : MonoBehaviour
     void OpenCraft()
     {
         go_CraftBase.SetActive(true);
+        if (selectedRecipe != null)
+            SelectRecipe(selectedRecipe); // UI 다시 갱신
     }
 
     void CloseCraft()
     {
         go_CraftBase?.SetActive(false);
+        StopCrafting(); // 창 닫힐 때 제작 중단 처리
     }
-
 
     void ShowRecipeList()
     {
@@ -71,7 +83,8 @@ public class CraftingUIManager : MonoBehaviour
             go.GetComponentInChildren<Text>().text = recipe.recipeName;
             go.GetComponentInChildren<Image>().sprite = recipe.icon;
 
-            go.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(recipe));
+            CraftingRecipe tempRecipe = recipe; // 지역 변수로 복사
+            go.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(tempRecipe));
         }
     }
 
@@ -82,26 +95,102 @@ public class CraftingUIManager : MonoBehaviour
         iconImage.sprite = recipe.resultItem.itemImage;
         itemNameText.text = recipe.resultItem.itemName;
 
-        // 우측 재료 목록 표시
         foreach (Transform child in requiredListParent)
             Destroy(child.gameObject);
 
         for (int i = 0; i < recipe.requiredItems.Length; i++)
         {
+            Item input = recipe.requiredItems[i];
+            int required = recipe.requiredCounts[i];
+            int owned = inventory.GetItemCount(input);
+
             GameObject go = Instantiate(requiredSlotPrefab, requiredListParent);
-            go.GetComponentInChildren<Text>().text = $"{recipe.requiredItems[i].itemName} x {recipe.requiredCounts[i]}";
-            go.GetComponentInChildren<Image>().sprite = recipe.requiredItems[i].itemImage;
+
+            Text[] texts = go.GetComponentsInChildren<Text>();
+
+            if (texts.Length >= 2)
+            {
+                Text nameText = texts[0];
+                Text countText = texts[1];
+
+                nameText.text = input.itemName;
+                countText.text = $"{required} / {owned}";
+                countText.color = (owned >= required) ? Color.green : Color.red;
+            }
+            else
+            {
+                Debug.LogError("RequiredSlot 프리팹에는 Text 컴포넌트 2개가 있어야 합니다.");
+            }
+
+            Image itemImage = go.GetComponentInChildren<Image>();
+            if (itemImage != null)
+                itemImage.sprite = input.itemImage;
         }
 
-        craftButton.interactable = inventory.HasRequiredItems(recipe);
+        craftButton.interactable = inventory.HasRequiredItems(recipe) && !isCrafting; // 제작 중이면 버튼 비활성화
+        ResetProgressBar();
     }
 
     void OnClickCraft()
     {
         if (selectedRecipe == null) return;
         if (!inventory.HasRequiredItems(selectedRecipe)) return;
+        if (isCrafting) return; // 이미 제작 중이면 무시
 
-        inventory.CraftItem(selectedRecipe);
-        SelectRecipe(selectedRecipe); // UI 다시 갱신
+        // 제작 시작
+        craftingCoroutine = StartCoroutine(CraftingProcess(selectedRecipe));
+    }
+
+    IEnumerator CraftingProcess(CraftingRecipe recipe)
+    {
+        isCrafting = true;
+        craftButton.interactable = false;
+
+        float elapsed = 0f;
+        float duration = recipe.craftDuration;
+
+        while (elapsed < duration)
+        {
+            if (!go_CraftBase.activeSelf)
+            {
+                // 창 닫혔으면 제작 중단
+                StopCrafting();
+                yield break;
+            }
+
+            elapsed += Time.deltaTime;
+            progressBar.value = Mathf.Clamp01(elapsed / duration);
+
+            yield return null;
+        }
+
+        // 제작 완료: 아이템 지급 처리
+        inventory.CraftItem(recipe);
+        SelectRecipe(recipe); // UI 갱신
+
+        isCrafting = false;
+        craftButton.interactable = inventory.HasRequiredItems(recipe);
+        ResetProgressBar();
+
+        craftingCoroutine = null;
+    }
+
+    void StopCrafting()
+    {
+        if (craftingCoroutine != null)
+        {
+            StopCoroutine(craftingCoroutine);
+            craftingCoroutine = null;
+        }
+        isCrafting = false;
+        craftButton.interactable = inventory.HasRequiredItems(selectedRecipe);
+        ResetProgressBar();
+        Debug.Log("제작 중단");
+    }
+
+    void ResetProgressBar()
+    {
+        if (progressBar != null)
+            progressBar.value = 0f;
     }
 }
