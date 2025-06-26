@@ -14,6 +14,7 @@ public class BaseMonsterData : ScriptableObject
     public string monsterName;
     public MonsterType monsterType;
     public MonsterSubType monsterSubType;
+    public MonsterTypeStatData typeStatData;
 
     [Header("±‚∫ª Ω∫≈»")]
     [SerializeField] private float maxHP;

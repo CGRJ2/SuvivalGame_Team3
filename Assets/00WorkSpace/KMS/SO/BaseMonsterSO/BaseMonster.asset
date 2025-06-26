@@ -15,17 +15,19 @@ MonoBehaviour:
   monsterName: Balance
   monsterType: 0
   monsterSubType: 0
+  typeStatData: {fileID: 0}
   maxHP: 100
   moveSpeed: 2.5
   attackPower: 20
   attackRange: 3
   attackCooldown: 1
+  knockbackDistance: 2
   detectionRange: 30
   baseFOV: 180
-  eyeHeight: 1.2
+  eyeHeight: 1.5
   targetType: 0
   actionRadius: 20
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0

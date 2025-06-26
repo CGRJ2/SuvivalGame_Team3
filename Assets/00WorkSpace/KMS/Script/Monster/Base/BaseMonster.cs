@@ -136,6 +136,7 @@ public abstract class BaseMonster : MonoBehaviour
             Die();
         }
     }
+
     private void TryAttack()
     {
         if (target == null) return;
@@ -238,21 +239,6 @@ public abstract class BaseMonster : MonoBehaviour
         Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료 - HP:{hp} / ATK:{power}");
     }
 
-    public void SetData(BaseMonsterData data)
-    {
-        //var statData = MonsterStatDatabase.Instance?.GetBySubType(data.MonsterSubType);
-        //var stageData = StageManager.Instance?.CurrentScalingData;
-        //
-        //if (statData == null || stageData == null)
-        //{
-        //    Debug.LogWarning($"[SetData] 타입/스테이지 데이터가 없습니다 - 기본 배율 적용");
-        //    statData ??= ScriptableObject.CreateInstance<MonsterTypeStatData>();
-        //    stageData ??= ScriptableObject.CreateInstance<StageMonsterScalingData>();
-        //}
-        //
-        //SetData(data, statData, stageData);
-    }
-
     public void SetSensor(IMonsterSensor newSensor)
     {
         sensor = newSensor;
@@ -287,39 +273,39 @@ public abstract class BaseMonster : MonoBehaviour
         return distance > currentDetectionRange;
     }
 
-    public virtual bool IsOutsideActionRadius()
+    public bool IsOutsideActionRadius()
     {
-        return Vector3.Distance(transform.position, spawnPoint) > actionRadius;
+        return Vector3.Distance(originPosition, transform.position) > actionRadius;
     }
 
     private void UpdateSightParameters() //임의 배정
     {
-        float fovMultiplier = 1f;   //시야 배율
-        float rangeMultiplier = 1f; //탐지범위 배율
-
-        switch (perceptionState)
-        {
-            case MonsterPerceptionState.Idle: //대기 상태
-                fovMultiplier = 0.95f;
-                rangeMultiplier = 0.95f;
+       float fovMultiplier = 1f;   //시야 배율
+       float rangeMultiplier = 1f; //탐지범위 배율
+   
+       switch (perceptionState)
+       {
+           case MonsterPerceptionState.Idle: //대기 상태
+                fovMultiplier = 1f;
+               rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Search: //탐색 상태
-                fovMultiplier = 1.2f;
-                rangeMultiplier = 1.2f;
+           case MonsterPerceptionState.Search: //탐색 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Alert: //경계 상태
-                fovMultiplier = 1.5f;
-                rangeMultiplier = 1.5f;
+           case MonsterPerceptionState.Alert: //경계 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Combat: //전투 상태
-                fovMultiplier = 0.8f;
-                rangeMultiplier = 0.8f;
+           case MonsterPerceptionState.Combat: //전투 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-        }
-
-        currentFOV = data.BaseFOV * fovMultiplier;
-        currentDetectionRange = data.DetectionRange * rangeMultiplier;
-    }
+       }
+   
+       currentFOV = data.BaseFOV * fovMultiplier;
+       currentDetectionRange = data.DetectionRange * rangeMultiplier;
+   }
 
     protected bool CheckTargetVisible()
     {
@@ -367,6 +353,10 @@ public abstract class BaseMonster : MonoBehaviour
                     SetTarget(none.transform);
                 break;
         }
+    }
+    public void DecreaseAlert(float amount)
+    {
+        perceptionController?.DecreaseAlert(amount);
     }
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)

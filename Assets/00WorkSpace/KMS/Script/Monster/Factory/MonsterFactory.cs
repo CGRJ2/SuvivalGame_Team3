@@ -4,6 +4,10 @@ public class MonsterFactory : MonoBehaviour
 {
     public static MonsterFactory Instance { get; private set; }
 
+    [Header("Monster Factory Resources")]
+    [SerializeField] private MonsterTypeStatData statDatabase;
+    [SerializeField] private StageMonsterScalingData currentStageScaling;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -27,7 +31,23 @@ public class MonsterFactory : MonoBehaviour
 
         if (monster != null)
         {
-            monster.SetData(data);
+            var typeStat = data.typeStatData; 
+            var stageStat = currentStageScaling;
+
+            if (typeStat == null || stageStat == null)
+            {
+                Debug.LogWarning($"[MonsterFactory] 배율 정보가 없습니다. 기본값을 사용합니다.");
+
+                typeStat ??= ScriptableObject.CreateInstance<MonsterTypeStatData>();
+                typeStat.hpMultiplier = 1f;
+                typeStat.attackPowerMultiplier = 1f;
+                typeStat.moveSpeedMultiplier = 1f;
+                typeStat.knockbackDistanceMultiplier = 1f;
+
+                stageStat ??= ScriptableObject.CreateInstance<StageMonsterScalingData>();
+            }
+
+            monster.SetData(data, typeStat, stageStat);
             return monster;
         }
 

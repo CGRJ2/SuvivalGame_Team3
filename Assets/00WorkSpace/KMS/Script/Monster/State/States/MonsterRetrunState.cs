@@ -6,6 +6,9 @@ public class MonsterReturnState : IMonsterState
 {
     private BaseMonster monster;
 
+    private float returnTime = 0f;
+    private const float minReturnTime = 2f;
+
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
@@ -20,6 +23,10 @@ public class MonsterReturnState : IMonsterState
     {
         if (monster == null || monster.IsDead) return;
 
+        returnTime += Time.deltaTime;
+
+        monster.DecreaseAlert(50f * Time.deltaTime); //초당 50감소
+
         Vector3 toSpawn = monster.GetSpawnPoint() - monster.transform.position;
         toSpawn.y = 0f;
 
@@ -29,7 +36,14 @@ public class MonsterReturnState : IMonsterState
         }
         else
         {
-            Debug.Log($"[{monster.name}] 스폰지점 도착 → Idle 상태 전환");
+            if (returnTime < minReturnTime)
+            {
+                // 도착했지만 2초 채울 때까지 대기
+                monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
+                return;
+            }
+
+            Debug.Log($"[{monster.name}] 스폰지점 도착 + 안정화 완료 → Idle 상태 전환");
             monster.StateMachine.ChangeState(monster.GetIdleState());
         }
     }
@@ -41,4 +55,5 @@ public class MonsterReturnState : IMonsterState
 
         monster.SetPerceptionState(MonsterPerceptionState.Idle);
     }
+    // TODO: 리턴 상태 중 플레이어 감지 중단 제대로 작동하는지 검토
 }

@@ -30,15 +30,22 @@ public class BasicMonsterAI : BaseMonster
     {
         if (data == null) return;
 
+        Vector3 eyePos = transform.position + Vector3.up * data.EyeHeight;
+
+        float range = currentDetectionRange > 0.1f ? currentDetectionRange : 5f;
+        float fov = currentFOV > 0.1f ? currentFOV : 90f;
+
+        Debug.Log($"[Gizmo] EyePos: {eyePos}, Range: {range}");
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.EyeHeight, currentDetectionRange);
+        Gizmos.DrawWireSphere(eyePos, range);
 
         Vector3 forward = transform.forward;
-        Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
-        Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
+        Vector3 leftLimit = Quaternion.Euler(0, -fov / 2, 0) * forward;
+        Vector3 rightLimit = Quaternion.Euler(0, fov / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + leftLimit * range);
+        Gizmos.DrawLine(eyePos, eyePos + rightLimit * range);
     }
 }

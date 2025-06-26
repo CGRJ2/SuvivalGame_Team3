@@ -7,6 +7,7 @@ public class MonsterAlertState : IMonsterState
     private BaseMonster monster;
     private float alertTimer = 0f;
     private float returnTimer = 0f;
+    private bool isWaitingToReturn = false;
     private float returnDelay = 3f;
     private float maxAlertDuration = 6f;
 
@@ -32,21 +33,43 @@ public class MonsterAlertState : IMonsterState
         // 행동 반경 벗어나면 추적 중단 + 대기
         if (monster.IsOutsideActionRadius())
         {
+            if (!isWaitingToReturn)
+            {
+                isWaitingToReturn = true;
+                returnTimer = 0f;
+                Debug.Log($"[{monster.name}] 반경 이탈 - 복귀 대기 시작");
+            }
+
             returnTimer += Time.deltaTime;
 
             if (returnTimer >= returnDelay)
             {
-                Debug.Log($"[{monster.name}] 활동 반경 이탈 3초 초과 → Return 상태 전환");
+                Debug.Log($"[{monster.name}] 복귀 조건 충족 → ReturnState 전환");
                 monster.StateMachine.ChangeState(new MonsterReturnState());
-                return;
+                isWaitingToReturn = false;
             }
 
             monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
-            return;
+            return; // 여기서 경로 종료
         }
         else
         {
+            if (isWaitingToReturn)
+            {
+                Debug.Log($"[{monster.name}] 반경 복귀 → 복귀 대기 취소");
+            }
+
+            isWaitingToReturn = false;
             returnTimer = 0f;
+
+            // 이제 여기에서만 추적 이동 수행
+            var chasetarget = monster.GetTarget();
+            if (chasetarget != null)
+            {
+                Vector3 toTarget = chasetarget.position - monster.transform.position;
+                toTarget.y = 0f;
+                monster.Move(toTarget.normalized);
+            }
         }
 
         // 감지 → 경계도 상승

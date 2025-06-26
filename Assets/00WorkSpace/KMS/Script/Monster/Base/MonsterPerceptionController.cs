@@ -67,6 +67,10 @@ public class MonsterPerceptionController
     {
         alertLevel = Mathf.Max(0f, alertLevel - alertDecayRate);
     }
+    public void DecreaseAlert(float amount)
+    {
+        alertLevel = Mathf.Max(alertLevel - amount, 0f);
+    }
 
     private void EvaluatePerceptionState()
     {

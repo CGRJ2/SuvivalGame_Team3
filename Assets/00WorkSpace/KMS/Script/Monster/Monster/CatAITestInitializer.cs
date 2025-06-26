@@ -15,13 +15,13 @@ public class CatAITestInitializer : MonoBehaviour
             Debug.Log($"[Test] {name} 플레이어 타겟 지정 완료");
         }
 
-        if (monster.data != null)
-        {
-            monster.SetData(monster.data);
-        }
-        else
-        {
-            Debug.LogWarning($"[Test] {name}의 data가 설정되지 않았습니다.");
-        }
+        //if (monster.data != null)
+        //{
+        //    monster.SetData(monster.data);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning($"[Test] {name}의 data가 설정되지 않았습니다.");
+        //}
     }
 }
