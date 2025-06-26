@@ -6,9 +6,7 @@ using UnityEngine.InputSystem;
 public class CraftInteract : MonoBehaviour
 {
     private bool canInteract = false;
-    public PlayerController playerController;
     public UIController UIController;
-    public PlayerController PlayerController;
 
     public void Update()
     {
