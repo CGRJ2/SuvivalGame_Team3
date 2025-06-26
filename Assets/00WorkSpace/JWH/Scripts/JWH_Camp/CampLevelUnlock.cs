@@ -6,14 +6,14 @@ public class BaseCamp : MonoBehaviour, IInteractable
 {
     public CampLevel camplevel;
     public CampUnlock campunlock;
-    public CampRoomChecker roomChecker;
+    //public CampRoomChecker roomChecker;
 
     public void UpgradeCamp()
     {
         if (camplevel.TryLevelUp())
         {
-            var openedRooms = roomChecker.GetOpenedRoomIds();
-            campunlock.UnlockItems(camplevel.CurrentLevel, openedRooms);
+            //var openedRooms = roomChecker.GetOpenedRoomIds();
+            campunlock.UnlockItems(camplevel.CurrentLevel);//openedRooms
             Debug.Log("캠프 업그레이드");
         }
     }

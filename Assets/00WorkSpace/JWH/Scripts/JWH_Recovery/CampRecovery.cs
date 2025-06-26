@@ -15,6 +15,11 @@ public class CampRecovery : MonoBehaviour
             part.Repair(9999);
         }
 
+        //foreach (var part in player.Status.GetBodyPartsList())
+        //{
+        //    part.Init(); // 완전회복???
+        //}
+
         Debug.Log("BaseCampRecovery 플레이어회복");
 
     }
