@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public enum MonsterType { Normal, Boss, Cat, Onwer } // 메인 타입
-public enum MonsterSubType { Toy1, Toy2, Doll1, Doll2 } //임의 배정
+public enum MonsterSubType { Balance, Sensor, Tank, Nuker, Assassin } // 기획안 적용
 public enum MonsterTargetType { Player, Ally, None }
 // Player = 플레이어
 // Ally = 도우미(있을 경우 추적). 없을 경우: 플레이어 앞의 오브젝트를 추적하여 예상 이동 경로로 추적

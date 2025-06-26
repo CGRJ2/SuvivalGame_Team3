@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -168,21 +169,34 @@ public abstract class BaseMonster : MonoBehaviour
         }
     }
 
-    public virtual void SetData(BaseMonsterData newData)
+    public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
     {
         data = newData;
 
-        currentHP = data.MaxHP;
-        moveSpeed = data.MoveSpeed;
-        attackPower = data.AttackPower;
+        MonsterSubType subType = data.monsterSubType;
+
+        // base값
+        float baseHP = data.MaxHP;
+        float basePower = data.AttackPower;
+
+        // 배율 계산
+        float hp = baseHP * typeStat.hpMultiplier * stageStat.GetHpMultiplier(subType);
+        float power = basePower * typeStat.attackPowerMultiplier * stageStat.GetAttackMultiplier(subType);
+
+        // 실제 적용
+        currentHP = hp;
+        attackPower = power;
+        moveSpeed = data.MoveSpeed * typeStat.moveSpeedMultiplier;
+
         attackCooldown = data.AttackCooldown;
         detectionRange = data.DetectionRange;
+        attackRange = data.AttackRange;
         targetType = data.TargetType;
-        originPosition = transform.position;
 
+        originPosition = transform.position;
         UpdateSightParameters();
 
-        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료");
+        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료 - HP:{hp} / ATK:{power}");
     }
 
     public void SetSensor(IMonsterSensor newSensor)
