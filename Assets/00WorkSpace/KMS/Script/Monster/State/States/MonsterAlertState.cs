@@ -6,6 +6,8 @@ public class MonsterAlertState : IMonsterState
 {
     private BaseMonster monster;
     private float alertTimer = 0f;
+    private float returnTimer = 0f;
+    private float returnDelay = 3f;
     private float maxAlertDuration = 6f;
 
     public void Enter(BaseMonster monster)
@@ -27,15 +29,27 @@ public class MonsterAlertState : IMonsterState
             return;
         }
 
-        // 행동 반경 초과 시 추적 중단 → Idle 복귀
+        // 행동 반경 벗어나면 추적 중단 + 대기
         if (monster.IsOutsideActionRadius())
         {
-            Debug.Log($"[{monster.name}] 행동 반경 초과! → Return 상태 진입");
-            monster.StateMachine.ChangeState(new MonsterReturnState());
+            returnTimer += Time.deltaTime;
+
+            if (returnTimer >= returnDelay)
+            {
+                Debug.Log($"[{monster.name}] 활동 반경 이탈 3초 초과 → Return 상태 전환");
+                monster.StateMachine.ChangeState(new MonsterReturnState());
+                return;
+            }
+
+            monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
             return;
         }
+        else
+        {
+            returnTimer = 0f;
+        }
 
-        // 플레이어가 보이면 경계도 상승
+        // 감지 → 경계도 상승
         if (monster.checkTargetVisible)
         {
             monster.IncreaseAlert(15f);
@@ -45,17 +59,18 @@ public class MonsterAlertState : IMonsterState
         var target = monster.GetTarget();
         if (target != null)
         {
-            Debug.Log($"[AlertState] 타겟 위치 = {target.position}");
             Vector3 toTarget = target.position - monster.transform.position;
             toTarget.y = 0f;
             monster.Move(toTarget.normalized);
+
+            Debug.Log($"[AlertState] 타겟 위치 = {target.position}");
         }
         else
         {
             Debug.LogWarning("[AlertState] 타겟이 없습니다!");
         }
 
-        // 공격 사거리 도달 시 전투 상태 전이
+        // 공격 사거리 진입
         if (monster.IsInAttackRange())
         {
             var attackState = monster.CreateAttackState();
@@ -63,7 +78,7 @@ public class MonsterAlertState : IMonsterState
             return;
         }
 
-        // 일정 시간 경과 시 상태 재평가
+        // 상태 재평가
         alertTimer += Time.deltaTime;
         if (alertTimer >= maxAlertDuration)
         {
@@ -80,7 +95,7 @@ public class MonsterAlertState : IMonsterState
             }
         }
 
-        // 경계도 하락 시 Idle로 전이
+        // 경계도 하락 시 Idle 전이
         if (monster.AlertLevel < monster.AlertThreshold_Low)
         {
             monster.SetPerceptionState(MonsterPerceptionState.Idle);

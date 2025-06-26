@@ -72,6 +72,7 @@ public abstract class BaseMonster : MonoBehaviour
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
+        spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
 
 
         idleState = stateFactory.CreateIdleState();
@@ -96,7 +97,7 @@ public abstract class BaseMonster : MonoBehaviour
     }
     protected virtual void Start()
     {
-        spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
+        
     }
 
     protected virtual void Update()
