@@ -103,8 +103,10 @@ public class SlotView : MonoBehaviour,
                 }
             }
             // 퀵슬롯이 아닌 아이템 슬롯 우클릭(= 인벤토리 슬롯 우클릭) => 아이템 장착 or 사용
-            else if (slotData.item != null)
+            else
             {
+                if (slotData == null) return;
+                if (slotData.item == null) return;
                 // 장착 가능하면 장착(퀵슬롯 빈자리에 추가)
                 if (slotData.item.IsCanEquip())
                 {
@@ -132,6 +134,7 @@ public class SlotView : MonoBehaviour,
     //IBeginDragHandler - OnBeginDrag - 드래그가 시작되는 시점에 드래그 대상 오브젝트에서 호출됩니다.
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (slotData == null) return;
         if (slotData.item != null)
         {
             DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
@@ -320,6 +323,7 @@ public class SlotView : MonoBehaviour,
     //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (slotData == null) return;
         if (this is QuickSlot) return;
         if (slotData.item != null)
             UIManager.Instance.inventoryUI.tooltip.ShowToolTip(slotData.item, transform.position);
@@ -328,6 +332,7 @@ public class SlotView : MonoBehaviour,
     //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (slotData == null) return;
         if (this is QuickSlot) return;
 
         UIManager.Instance.inventoryUI.tooltip.HideToolTip();

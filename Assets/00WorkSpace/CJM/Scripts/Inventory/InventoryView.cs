@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InventoryView : MonoBehaviour
 {
@@ -70,4 +71,7 @@ public class InventoryView : MonoBehaviour
     public void OnClickIngredient() => CurrentTab.Value = ItemType.Ingredient;
     public void OnClickFunctionTab() => CurrentTab.Value = ItemType.Function;
     public void OnClickQuestTab() => CurrentTab.Value = ItemType.Quest;
+
+
+    
 }

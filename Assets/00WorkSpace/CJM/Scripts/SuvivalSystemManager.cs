@@ -67,9 +67,9 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
         {
             DecreaseRoutineStart();
         }
-
     }
     ////////////////////////////////////////////////////////////////////////
+    
     public void Init()
     {
         base.SingletonInit();
