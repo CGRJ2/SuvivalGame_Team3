@@ -29,9 +29,15 @@ public class InventoryView : MonoBehaviour
         // 데이터 넣어주기
         for (int i = 0; i < slotDatas.Count; i++)
         {
+            //slots[i].slotData 이거는 원본 맞음. SlotView에 붙어있는 slotData는 원본을 바로 참조한 필드인데,, 
             slots[i].slotData = slotDatas[i];
+            
+            // 모든 슬롯 뷰 업데이트
             slots[i].SlotViewUpdate();
         }
+
+        // 퀵슬롯들도 업데이트
+        UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
     }
 
     private void OnDestroy()

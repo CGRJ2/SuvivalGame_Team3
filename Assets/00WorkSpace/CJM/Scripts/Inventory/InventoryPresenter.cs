@@ -30,6 +30,7 @@ public class InventoryPresenter
     public void AddItem(Item item, int count = 1)
     {
         // 추가 가능한지 여부 판단
+
         if (model.CanAddItem(item, count))
         {
             model.AddItem(item, count);
@@ -56,6 +57,4 @@ public class InventoryPresenter
     {
         view.UpdateInventorySlotView(model.GetCurrentTabSlots(tabType));
     }
-
-
 }

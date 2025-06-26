@@ -16,4 +16,5 @@ public class InventoryUI
     public InventoryView inventoryView;
     public SlotToolTip tooltip;
     public DragSlotView dragSlotInstance;
+    public QuickSlotParent quickSlotParent;
 }

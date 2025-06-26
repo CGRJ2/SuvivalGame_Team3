@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     private InputAction interactAction;
     private InputAction inventoryOpenAction;
     private InputAction inventoryOffAction;
+    private InputAction quickSlotActions;
+
 
     //Vector3 moveDir;
 
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     bool isFreeCamModInput;
     bool isAttackInput;
 
+
+    
 
 
     private void Start() => Init();
@@ -157,6 +161,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         inventoryOpenAction.Enable();
         inventoryOpenAction.started += OpenInventory;
 
+        // 8. Äü½½·Ô ÇÖÅ°
+        quickSlotActions = playerControlMap.FindAction("QuickSlots");
+        quickSlotActions.Enable();
+        quickSlotActions.started += OnQuickSlotPerformed;
     }
 
     private void InputActionsDelete()
@@ -190,6 +198,10 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // 7. ÀÎº¥Åä¸® ¿­±â(I)
         attackAction.started -= OpenInventory;
+
+        // 8. Äü½½·Ô ÇÖÅ°
+        quickSlotActions.started -= OnQuickSlotPerformed;
+
     }
 
 
@@ -373,6 +385,23 @@ public class PlayerController : MonoBehaviour, IDamagable
             UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
     }
 
+    private void OnQuickSlotPerformed(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            // µðÁöÅÐ Å° °ª °Ë»ç (Keyboard.current.digit1Key.wasPressedThisFrame µî)
+            if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectQuickSlot(1);
+            if (Keyboard.current.digit2Key.wasPressedThisFrame) SelectQuickSlot(2);
+            if (Keyboard.current.digit3Key.wasPressedThisFrame) SelectQuickSlot(3);
+            if (Keyboard.current.digit4Key.wasPressedThisFrame) SelectQuickSlot(4);
+        }
+    }
+    private void SelectQuickSlot(int index)
+    {
+        Debug.Log($"Selected quick slot {index}");
+        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlotEffect(index);
+        // ¼Õ¿¡ µå´Â ¾ÆÀÌÅÛ ±³Ã¼
+    }
     #endregion
 
     public void CrouchToggleChange(bool value)

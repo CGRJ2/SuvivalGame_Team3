@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] UIManager uiManager;
-
+    [SerializeField] PlayerManager playerManager;
     private void Awake() => Init();
 
     private void Init()
@@ -19,6 +19,6 @@ public class GameManager : Singleton<GameManager>
     {
         // 초기화할 순서대로 나열
         uiManager.Init();
+        playerManager.Init();
     }
-
 }
