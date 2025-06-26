@@ -45,13 +45,19 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] protected float alertThreshold_High = 80f;
 
     // 행동 반경
-    [SerializeField] protected float actionRadius = 20f;
+    [SerializeField] protected float actionRadius = 10f;
     private Vector3 spawnPoint;
 
+    // 회전 관련
+    [SerializeField] private float rotationSpeed = 7f;
+
+    // 읽기 전용
     public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
+    public Vector3 OriginPosition => originPosition;
+    public float ActionRadius => actionRadius;
 
 
     protected bool isDead;
@@ -196,17 +202,29 @@ public abstract class BaseMonster : MonoBehaviour
 
     public virtual void Move(Vector3 direction)
     {
-        Debug.Log($"[Move] 호출됨 - 방향: {direction}");
-
-        if (rb != null)
-        {
-            Vector3 targetPosition = rb.position + (direction * data.MoveSpeed * Time.deltaTime);
-            rb.MovePosition(targetPosition);
-        }
-        else
+        if (rb == null)
         {
             Debug.LogWarning("Rigidbody가 없습니다!");
+            return;
         }
+
+        // 행동 반경 제한
+        if (IsOutsideActionRadius())
+        {
+            Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
+            return;
+        }
+
+        // 회전
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        // 이동
+        Vector3 targetPosition = rb.position + (direction * moveSpeed * Time.deltaTime);
+        rb.MovePosition(targetPosition);
     }
 
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
@@ -361,6 +379,12 @@ public abstract class BaseMonster : MonoBehaviour
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
+        if (stateMachine.CurrentState is MonsterReturnWaitState ||
+            stateMachine.CurrentState is MonsterReturnState)
+        {
+            Debug.Log($"[{name}] (Perception) Return 계열 상태에서는 상태 전이 무시");
+            return;
+        }
         Debug.Log($"[{name}] 상태 전이 시도 → {state}");
         IMonsterState nextState = stateFactory.GetStateForPerception(state);
         stateMachine.ChangeState(nextState);
@@ -391,16 +415,23 @@ public abstract class BaseMonster : MonoBehaviour
     {
         if (data == null) return;
 
+        // 시야 감지 범위 (기존 코드)
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.EyeHeight, currentDetectionRange);
+        Vector3 eyePos = transform.position + Vector3.up * data.EyeHeight;
+        Gizmos.DrawWireSphere(eyePos, currentDetectionRange);
 
+        // 행동 반경 (originPosition 기준)
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
+
+        // 눈 높이 시점에서 방향 각도 시각화
         Vector3 forward = transform.forward;
         Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + rightLimit * currentDetectionRange);
     }
 
 }
