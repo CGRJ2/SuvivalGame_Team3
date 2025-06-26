@@ -30,8 +30,8 @@ public class MonsterAlertState : IMonsterState
         // 행동 반경 초과 시 추적 중단 → Idle 복귀
         if (monster.IsOutsideActionRadius())
         {
-            Debug.Log($"[{monster.name}] 행동 반경 초과! Idle 상태로 복귀");
-            monster.StateMachine.ChangeState(monster.GetIdleState());
+            Debug.Log($"[{monster.name}] 행동 반경 초과! → Return 상태 진입");
+            monster.StateMachine.ChangeState(new MonsterReturnState());
             return;
         }
 

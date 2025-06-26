@@ -149,6 +149,9 @@ public abstract class BaseMonster : MonoBehaviour
 
     public Transform GetTarget() => target;
 
+    public Vector3 GetSpawnPoint() => spawnPoint;
+
+
     public virtual void Move(Vector3 direction)
     {
         Debug.Log($"[Move] »£√‚µ  - πÊ«‚: {direction}");
