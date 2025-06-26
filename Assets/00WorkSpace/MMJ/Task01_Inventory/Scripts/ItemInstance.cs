@@ -5,13 +5,20 @@ using UnityEngine;
 public class ItemInstance : InteractableBase
 {
     public Item item;
+    public int count;
+
+    public void InitInstance(Item item, int count)
+    {
+        this.item = item;
+        this.count = count;
+    }
 
     public override void Interact()
     {
         base.Interact();
 
         // 플레이어 인벤토리로 들어감
-        pc.Status.inventory.AddItem(item);
+        pc.Status.inventory.AddItem(item, count);
     }
 
     public override void SetInteractableEnable()

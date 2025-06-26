@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using static UnityEditor.Progress;
-
+using UnityEngine;
 public class InventoryModel
 {
     List<SlotData> ingredientSlots = new List<SlotData>();
     List<SlotData> consumableSlots = new List<SlotData>();
     List<SlotData> equipmentSlots = new List<SlotData>();
     List<SlotData> functionSlots = new List<SlotData>();
-    public List<SlotData> questSlots = new List<SlotData>();
+    List<SlotData> questSlots = new List<SlotData>();
 
     int slotCount = 30;
 
@@ -25,13 +24,11 @@ public class InventoryModel
         }
     }
 
-
-    // 내가 받는 수량만큼 인벤토리에 다 넣을 수 있는지 여부를 반환 ---- Prensenter에서 호출
-    public bool CanAddItem(Item item, int count)
+    // 
+    public List<SlotData> GetCurrentTabSlots(ItemType tabType)
     {
-        ItemType type = item.itemType;
         List<SlotData> nowTab;
-        switch (type)
+        switch (tabType)
         {
             case ItemType.Ingredient:
                 nowTab = ingredientSlots;
@@ -51,29 +48,20 @@ public class InventoryModel
             default: nowTab = null; break;
         }
 
+        return nowTab;
+    }
+
+    // 내가 받는 수량만큼 인벤토리에 다 넣을 수 있는지 여부를 반환 ---- Prensenter에서 호출
+    public bool CanAddItem(Item item, int count)
+    {
+        List<SlotData> nowTab = GetCurrentTabSlots(item.itemType);
         return CanAddToInven(nowTab, item, count);
     }
 
     // 수량 안 적으면 한 개 추가
     public void AddItem(Item item, int count)
     {
-        ItemType type = item.itemType;
-        List<SlotData> nowTab;
-        switch (type)
-        {
-            case ItemType.Ingredient: nowTab = ingredientSlots;
-                break;
-            case ItemType.Used: nowTab = consumableSlots;
-                break;
-            case ItemType.Equipment: nowTab = equipmentSlots;
-                break;
-            case ItemType.Function: nowTab = functionSlots;
-                break;
-            case ItemType.Quest: nowTab = questSlots;
-                break;
-            default: nowTab = null; break;
-        }
-
+        List<SlotData> nowTab = GetCurrentTabSlots(item.itemType);
         AddToInven(nowTab, item, count);
     }
 
@@ -117,11 +105,19 @@ public class InventoryModel
             // 같은 종류의 아이템이 인벤토리에 있으면
             if (sd.IsStackable(item))
             {
-                // 그 칸에 쌓을 수 있는 개수 만큼 추가
-                sd.AddItem(sd.GetStackableCount());
+                int stackableCount = sd.GetStackableCount();
 
-                // 쌓은 만큼 남은 수량 감소
-                remainCount -= sd.GetStackableCount();
+                if (remainCount < stackableCount)
+                {
+                    sd.AddItem(remainCount);
+                    remainCount = 0;
+                }
+                else
+                {
+                    // 그 칸에 쌓을 수 있는 개수 만큼 추가
+                    sd.AddItem(stackableCount);
+                    remainCount -= stackableCount;
+                }
             }
             // 빈칸이 있다면
             else if (sd.IsSlotEmpty())

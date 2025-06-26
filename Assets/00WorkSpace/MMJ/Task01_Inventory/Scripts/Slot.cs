@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static Item;
-public class Slot : MonoBehaviour, 
+public class Slot : MonoBehaviour,
     IPointerEnterHandler,           //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     IPointerExitHandler,            //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
     IPointerClickHandler,           //IPointerClickHandler - OnPointerClick - 동일 오브젝트에서 포인터를 누르고 뗄 때 호출됩니다.
@@ -30,21 +30,21 @@ public class Slot : MonoBehaviour,
 
 
     void Start()
-    { 
-        
+    {
+
         theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
         originPos = transform.position;
     }
 
     private void SetColor(float _alpha)
-    { 
+    {
         Color color = itemImage.color;
         color.a = _alpha;
         itemImage.color = color;
     }
 
     public void AddItem(Item _item, int _count = 1)
-    { 
+    {
         item = _item;
         itemCount = _count;
         itemImage.sprite = item.itemImage;
@@ -54,7 +54,7 @@ public class Slot : MonoBehaviour,
             go_CountImage.SetActive(true);
             Text_Count.text = itemCount.ToString();
         }
-        else 
+        else
         {
             Text_Count.text = "0";
             go_CountImage.SetActive(false);
@@ -175,8 +175,8 @@ public class Slot : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData) //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     {
-        if(item != null)
-        theItemEffectDatabase.ShowToolTip(item, transform.position);
+        if (item != null)
+            theItemEffectDatabase.ShowToolTip(item, transform.position);
     }
 
     public void OnPointerExit(PointerEventData eventData) //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
