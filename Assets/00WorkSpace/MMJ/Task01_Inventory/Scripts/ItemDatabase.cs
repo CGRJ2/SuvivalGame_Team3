@@ -13,11 +13,11 @@ public static class ItemDatabase
 
     public static Dictionary<string, Action> ConsumeEffectDic = new Dictionary<string, Action>()
     {
-        { "보조 배터리", () => PlayerManager.Instance.currentPlayerStatus.Battery.Value += 10},
+        { "보조 배터리", () => PlayerManager.Instance.instancePlayer.Status.Battery.Value += 10},
         { "장비A", () => Debug.Log("장비를 장착했다")},
         { "TestItem", () => Debug.Log("버그를 막아줬다.")},
-        { "아무튼포션", () => pm.currentPlayerStatus.WillPowerAdjust(10)},
-        { "아무튼 독약", () => pm.currentPlayerStatus.WillPowerAdjust(-10)},
+        { "아무튼포션", () => pm.instancePlayer.Status.WillPowerAdjust(10)},
+        { "아무튼 독약", () => pm.instancePlayer.Status.WillPowerAdjust(-10)},
         { "아무튼 캣잎", () => Debug.Log("손에 장착")},
         { "소비B", () => Debug.Log("B 냠냠")},
     };

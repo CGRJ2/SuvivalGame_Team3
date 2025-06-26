@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Init()
     {
+        PlayerManager.Instance.instancePlayer = this;
+
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
@@ -211,7 +213,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Status.isControllLocked) return;
 
         float moveSpeed;
-        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        if (Status.IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
         else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
@@ -246,7 +248,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
         if (isFreeCamModInput) avatarDir = View.facingDir;
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
-        else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
+        else if (!isMoveInput || Status.IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
         else avatarDir = View.moveDir;
 
         // 컨트롤 락 걸리면 아바타 회전은 정지
@@ -425,11 +427,11 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
             if ( isAttackInput || isAttacking )
             {
-                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                if ((Status.IsCurrentState(PlayerStateTypes.Idle) || Status.IsCurrentState(PlayerStateTypes.Move)))
                 {
                     Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
@@ -446,7 +448,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
@@ -463,7 +465,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
@@ -497,10 +499,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
     }
 
-    public bool IsCurrentState(PlayerStateTypes state)
-    {
-        return Status.stateMachine.CurState == Status.stateMachine.stateDic[state];
-    }
+    
 
     public void Attack()
     {
