@@ -83,8 +83,9 @@ public class CraftingUIManager : MonoBehaviour
             go.GetComponentInChildren<Text>().text = recipe.recipeName;
             go.GetComponentInChildren<Image>().sprite = recipe.icon;
 
-            CraftingRecipe tempRecipe = recipe; // 지역 변수로 복사
-            go.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(tempRecipe));
+            CraftingRecipe thisRecipe = recipe;
+
+            go.GetComponent<Button>().onClick.AddListener(() => SelectRecipe(thisRecipe));
         }
     }
 
@@ -125,6 +126,8 @@ public class CraftingUIManager : MonoBehaviour
             Image itemImage = go.GetComponentInChildren<Image>();
             if (itemImage != null)
                 itemImage.sprite = input.itemImage;
+
+            Debug.Log($"[Crafting] HasRequiredItems: {inventory.HasRequiredItems(recipe)} for {recipe.recipeName}");
         }
 
         craftButton.interactable = inventory.HasRequiredItems(recipe) && !isCrafting; // 제작 중이면 버튼 비활성화

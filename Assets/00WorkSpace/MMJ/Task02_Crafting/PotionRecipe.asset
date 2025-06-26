@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef3865cbb9986143b000f5c527658b8, type: 3}
   m_Name: PotionRecipe
   m_EditorClassIdentifier: 
-  recipeName: "\uD3EC\uC158"
+  recipeName: "\uC544\uBB34\uD2BC\uD3EC\uC158"
   icon: {fileID: 21300000, guid: 20fde0814ea8885448e10b966c921f77, type: 3}
   requiredItems:
   - {fileID: 11400000, guid: 6d056e53f36d8b6418d59e17fbd9836d, type: 2}
   requiredCounts: 01000000
   resultItem: {fileID: 11400000, guid: f2e4ed016088acb498bf3fa48eab8848, type: 2}
   resultCount: 1
+  craftDuration: 3
