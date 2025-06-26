@@ -1,3 +1,4 @@
+using KMS.Monster.Interface;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,6 +25,7 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
     protected MonsterView view;
+    private MonsterTypeStatData typeStatData;
     public UnityEvent OnDeadEvent;
 
     private IMonsterState idleState;
@@ -50,12 +52,12 @@ public abstract class BaseMonster : MonoBehaviour
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
-    
+
 
     protected bool isDead;
     public bool IsDead => isDead;
 
-    // 넉백의 물리 작용
+    // 기절
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
 
@@ -99,7 +101,7 @@ public abstract class BaseMonster : MonoBehaviour
     }
     protected virtual void Start()
     {
-        
+
     }
 
     protected virtual void Update()
@@ -126,12 +128,45 @@ public abstract class BaseMonster : MonoBehaviour
         currentHP -= amount;
         view.PlayMonsterHitEffect();
 
-        float knockbackDistance = CalculateKnockbackDistance(); 
+        float knockbackDistance = CalculateKnockbackDistance();
         ApplyKnockback(knockbackDistance);
 
         if (currentHP <= 0)
         {
             Die();
+        }
+    }
+    private void TryAttack()
+    {
+        if (target == null) return;
+
+        float distance = Vector3.Distance(transform.position, target.position);
+
+        if (distance <= attackRange)
+        {
+            var damageable = target.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.ReceiveDamage(attackPower);
+
+                if (damageable is IKnockbackable knockbackable)
+                {
+                    Vector3 direction = (target.position - transform.position).normalized;
+
+                    float knockbackDistance = CalculateKnockbackDistance();
+                    knockbackable.ApplyKnockback(direction, knockbackDistance);
+                }
+
+                Debug.Log($"[{name}] 공격 시도: 거리 {distance}m - 공격 성공");
+            }
+            else
+            {
+                Debug.LogWarning($"[{name}] 공격 대상에 IDamageable이 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log($"[{name}] 공격 실패: 거리 {distance}m - 범위 초과");
         }
     }
 
