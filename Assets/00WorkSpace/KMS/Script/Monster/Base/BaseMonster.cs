@@ -199,6 +199,21 @@ public abstract class BaseMonster : MonoBehaviour
         Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료 - HP:{hp} / ATK:{power}");
     }
 
+    public void SetData(BaseMonsterData data)
+    {
+        //var statData = MonsterStatDatabase.Instance?.GetBySubType(data.MonsterSubType);
+        //var stageData = StageManager.Instance?.CurrentScalingData;
+        //
+        //if (statData == null || stageData == null)
+        //{
+        //    Debug.LogWarning($"[SetData] 타입/스테이지 데이터가 없습니다 - 기본 배율 적용");
+        //    statData ??= ScriptableObject.CreateInstance<MonsterTypeStatData>();
+        //    stageData ??= ScriptableObject.CreateInstance<StageMonsterScalingData>();
+        //}
+        //
+        //SetData(data, statData, stageData);
+    }
+
     public void SetSensor(IMonsterSensor newSensor)
     {
         sensor = newSensor;
@@ -354,4 +369,5 @@ public abstract class BaseMonster : MonoBehaviour
         Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + leftLimit * currentDetectionRange);
         Gizmos.DrawLine(transform.position + Vector3.up * data.EyeHeight, transform.position + rightLimit * currentDetectionRange);
     }
+
 }
