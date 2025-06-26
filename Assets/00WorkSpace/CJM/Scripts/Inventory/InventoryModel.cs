@@ -108,7 +108,6 @@ public class InventoryModel
                 // 그 칸에 최대스택 수 보다 적거나 같은 양이 남았을 때 => 남은 수량 전부 넣기
                 if (maxCount >= remainCount)
                 {
-                    Debug.Log(currentTab[i]);
                     currentTab[i].AddItem(item, remainCount);
                     remainCount -= maxCount;
                 }

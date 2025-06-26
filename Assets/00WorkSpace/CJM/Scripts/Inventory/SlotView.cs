@@ -35,10 +35,25 @@ public class SlotView : MonoBehaviour,
         if (slotData == null)
         {
             ClearSlotView();
+            
+            // 퀵슬롯에 장착된 상태에서 아이템이 사라진다면? => 체인 관계 모두 삭제
+            if (chainedQuickSlot != null) 
+            {
+                chainedQuickSlot.chainedOriginSlotView = null;
+                chainedQuickSlot.slotData = null;
+                chainedQuickSlot = null;
+            }
+                
         }
         else if (slotData.item == null)
         {
             ClearSlotView();
+            if (chainedQuickSlot != null)
+            {
+                chainedQuickSlot.chainedOriginSlotView = null;
+                chainedQuickSlot.slotData = null;
+                chainedQuickSlot = null;
+            }
         }
         // 재료아이템/소비아이템 => 갯수 표현
         else if (slotData.item.itemType == ItemType.Used || slotData.item.itemType == ItemType.Ingredient)
@@ -74,7 +89,21 @@ public class SlotView : MonoBehaviour,
     {
         if (eventData.button == PointerEventData.InputButton.Right) // 우클릭 상호작용
         {
-            if (slotData != null && !(this is QuickSlot))
+            // 퀵슬롯 우클릭 => 퀵슬롯 해제
+            if (this is QuickSlot quick)
+            {
+                ClearSlotView();
+
+                // 체인 상태라면 => 체인 해제
+                if (quick.chainedOriginSlotView != null)
+                {
+                    quick.chainedOriginSlotView.chainedQuickSlot.slotData = null;
+                    quick.chainedOriginSlotView.chainedQuickSlot = null;
+                    quick.chainedOriginSlotView = null;
+                }
+            }
+            // 퀵슬롯이 아닌 아이템 슬롯 우클릭(= 인벤토리 슬롯 우클릭) => 아이템 장착 or 사용
+            else if (slotData.item != null)
             {
                 // 장착 가능하면 장착(퀵슬롯 빈자리에 추가)
                 if (slotData.item.IsCanEquip())
@@ -82,12 +111,12 @@ public class SlotView : MonoBehaviour,
                     // 퀵슬롯에 추가
                     //UIManager.Instance.inventoryUI.quickSlotParent.
 
-                    slotData.item.AdjustConsumeEffect(this.slotData);
+                    slotData.item.AdjustConsumeEffect(slotData);
                 }
                 // 장착 불가능 + 사용 가능 아이템이라면 => 바로 사용효과 적용
                 else if (slotData.item.IsCanConsume())
                 {
-                    slotData.item.AdjustConsumeEffect(this.slotData); 
+                    slotData.item.AdjustConsumeEffect(slotData); 
                 }
 
                 // 아이템 사용한 슬롯 상태 업데이트
@@ -96,6 +125,7 @@ public class SlotView : MonoBehaviour,
                 // 퀵슬롯 뷰 업데이트
                 UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
             }
+            
         }
     }
 
@@ -171,13 +201,6 @@ public class SlotView : MonoBehaviour,
 
                 dragSlotInstance.slot.SlotViewUpdate(); // => 기존 슬롯 업데이트
             }
-            // 다른 아무곳이라면 => 퀵슬롯에서 제거
-            else 
-            {
-                dragSlotInstance.slot.slotData.CleanSlotData();
-                dragSlotInstance.slot.chainedQuickSlot = null;
-                dragSlotInstance.slot.SlotViewUpdate(); // => 기존 슬롯 업데이트
-            }
         }
         // 인벤토리에서 드래그 중이라면
         else
@@ -235,7 +258,7 @@ public class SlotView : MonoBehaviour,
                     dragSlotInstance.slot.chainedQuickSlot.UpdateInvenChain(dragSlotInstance.slot.slotData);
                     dragSlotInstance.slot.chainedQuickSlot.chainedOriginSlotView = dragSlotInstance.slot;
                 }
-
+                 
 
                 dragSlotInstance.slot.SlotViewUpdate(); // => 기존 슬롯 업데이트
             }
