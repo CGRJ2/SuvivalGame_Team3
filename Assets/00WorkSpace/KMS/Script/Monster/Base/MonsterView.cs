@@ -38,6 +38,11 @@ public class MonsterView : MonoBehaviour
         if (audioSource != null && hitSound != null)
             audioSource.PlayOneShot(hitSound);
     }
+    public void PlayMonsterSuspiciousAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Suspicious");
+    }
     public void PlayMonsterDeathAnimation()
     {
         if (animator != null)
@@ -70,6 +75,7 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("GrabThrow");
     }
+    
 
     // ===== »ç¿îµå =====
 

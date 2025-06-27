@@ -37,7 +37,7 @@ public class CatSearchState : IMonsterState
         {
             Vector3 toTarget = target.position - monster.transform.position;
             toTarget.y = 0f;
-            monster.Move(toTarget.normalized * 0.5f); // 일반 이동보다 느리게
+            monster.Move(toTarget.normalized * 0.7f); // 일반 이동보다 느리게
         }
 
         // 일정 시간 후 상태 전이 평가
