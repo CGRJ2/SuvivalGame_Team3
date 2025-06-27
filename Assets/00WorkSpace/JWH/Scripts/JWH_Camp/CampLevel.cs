@@ -6,42 +6,42 @@ public class CampLevel : MonoBehaviour
 {
     public int CurrentLevel { get; private set; } = 1;
     public int MaxLevel = 5;
-    public List<LevelRequirement> requirements;
+    public List<LevelRequirement> requirementsByLevel;
 
     public bool TryLevelUp()
     {
+        Debug.Log($"CampLevl 레벨업 시도: 현재 레벨 {CurrentLevel}");
 
-        Debug.Log($"[CampLevel] 레벨업 시도: 현재 레벨 {CurrentLevel}");
-        if (CurrentLevel >= MaxLevel) return false;
+        if (CurrentLevel >= MaxLevel) return false;//최대레벨
 
-        LevelRequirement req = requirements[CurrentLevel - 1];
-        Inventory inventory = FindObjectOfType<Inventory>();
+        LevelRequirement req = requirementsByLevel[CurrentLevel - 1];
+        Inventory inventory = FindObjectOfType<Inventory>();//인벤에서 찾기
+
         Slot[] slots = inventory.GetComponentsInChildren<Slot>();
-
         int totalCount = 0;
         foreach (Slot slot in slots)
         {
-            if (slot.item != null && slot.item.itemName == req.itemName)
+            if (slot.item != null && slot.item == req.Campitem)
             {
                 totalCount += slot.itemCount;
             }
         }
 
-        Debug.Log($" 필요 아이템: {req.itemName} x {req.itemCount}, 보유 수량: {totalCount}");
+        Debug.Log($" 필요 아이템: {req.Campitem} x {req.CampitemCount}, 보유 수량: {totalCount}");
 
-        if (totalCount >= req.itemCount)
+        if (totalCount >= req.CampitemCount)
         {
             // 아이템 소비
-            int remaining = req.itemCount;
+            int remaining = req.CampitemCount;
             foreach (Slot slot in slots)
             {
-                if (slot.item != null && slot.item.itemName == req.itemName)
+                if (slot.item != null && slot.item == req.Campitem)
                 {
                     int consume = Mathf.Min(slot.itemCount, remaining);
                     slot.SetSlotCount(-consume);
                     remaining -= consume;
                     if (remaining <= 0) break;
-                    Debug.Log($" {slot.item.itemName} x {consume} 소비됨");
+                    Debug.Log($" {slot.item} x {consume} 소비됨");
                 }
             }
 
@@ -49,14 +49,16 @@ public class CampLevel : MonoBehaviour
             Debug.Log($"캠프 레벨이 {CurrentLevel}로 증가");
             return true;
         }
-        Debug.LogWarning($"아이템 {req.itemName} 부족으로 레벨업 실패");
+        Debug.LogWarning($"아이템 {req.Campitem} 부족으로 레벨업 실패");
         return false;
     }
 }
 
+
 [System.Serializable]
-public class LevelRequirement
+ public class LevelRequirement
 {
-    public string itemName;
-    public int itemCount;
+    public int Camplevel;
+    public Item Campitem;
+    public int CampitemCount;
 }

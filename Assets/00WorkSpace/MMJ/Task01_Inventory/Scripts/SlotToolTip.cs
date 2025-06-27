@@ -13,6 +13,11 @@ public class SlotToolTip : MonoBehaviour
     [SerializeField]
     private Text Text_ItemHowToUesd;
 
+    private void Start()
+    {
+        UIManager.Instance.inventoryUI.tooltip = this;
+    }
+
     public void ShowToolTip(Item _item, Vector3 _pos)
     {
         go_Base.SetActive(true);
@@ -22,11 +27,11 @@ public class SlotToolTip : MonoBehaviour
         Text_ItemName.text = _item.itemName;
         Text_ItemDesc.text = _item.itemDesc;
 
-        if (_item.itemType == Item.ItemType.Equipment)
+        if (_item.itemType == ItemType.Equipment)
         {
             Text_ItemHowToUesd.text = "우클릭 - 장착";
         }
-        else if (_item.itemType == Item.ItemType.Used)
+        else if (_item.itemType == ItemType.Used)
         {
             Text_ItemHowToUesd.text = "우클릭 - 사용하기";
         }

@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class drawBoxGizmos : MonoBehaviour
 {
-    
-
     void OnDrawGizmos()
     {
         BoxCollider box = GetComponent<BoxCollider>();

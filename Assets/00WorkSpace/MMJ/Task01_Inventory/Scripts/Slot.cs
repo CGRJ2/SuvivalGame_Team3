@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-public class Slot : MonoBehaviour, 
+using static Item;
+public class Slot : MonoBehaviour,
     IPointerEnterHandler,           //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     IPointerExitHandler,            //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
     IPointerClickHandler,           //IPointerClickHandler - OnPointerClick - 동일 오브젝트에서 포인터를 누르고 뗄 때 호출됩니다.
@@ -12,8 +13,8 @@ public class Slot : MonoBehaviour,
     IEndDragHandler,                //IEndDragHandler - OnEndDrag - 드래그가 종료됐을 때 드래그 오브젝트에서 호출됩니다.
     IDropHandler                    //IDropHandler - OnDrop - 드래그를 멈췄을 때 해당 오브젝트에서 호출됩니다.
 {
-    private Vector3 originPos; 
-
+    private Vector3 originPos;
+    public ItemType slotType; // Inspector에서 설정해줘야 함
     public Item item; //획득한 아이템
     public int itemCount; //획득한 아이템의 갯수
     public Image itemImage; //아이템의 이미지
@@ -23,37 +24,37 @@ public class Slot : MonoBehaviour,
     [SerializeField]
     private GameObject go_CountImage;
 
-    private ItemEffectDatabase theItemEffectDatabase;
+    //private ItemEffectDatabase theItemEffectDatabase;
     private SlotToolTip theSlot;
 
 
 
     void Start()
-    { 
-        
-        theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
+    {
+
+        //theItemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
         originPos = transform.position;
     }
 
     private void SetColor(float _alpha)
-    { 
+    {
         Color color = itemImage.color;
         color.a = _alpha;
         itemImage.color = color;
     }
 
     public void AddItem(Item _item, int _count = 1)
-    { 
+    {
         item = _item;
         itemCount = _count;
         itemImage.sprite = item.itemImage;
 
-        if (item.itemType != Item.ItemType.Equipment)
+        if (item.itemType != ItemType.Equipment)
         {
             go_CountImage.SetActive(true);
             Text_Count.text = itemCount.ToString();
         }
-        else 
+        else
         {
             Text_Count.text = "0";
             go_CountImage.SetActive(false);
@@ -88,7 +89,7 @@ public class Slot : MonoBehaviour,
         {
             if (item != null)
             {
-                if (item.itemType == Item.ItemType.Equipment)
+                if (item.itemType == ItemType.Equipment)
                 {
                     //장착
 
@@ -129,10 +130,30 @@ public class Slot : MonoBehaviour,
 
     public void OnDrop(PointerEventData eventData) //IDropHandler - OnDrop - 드래그를 멈췄을 때 해당 오브젝트에서 호출됩니다.
     {
-        if (DragSlot.instance.dragSlot != null)
+        if (DragSlot.instance.dragSlot == null) return;
+
+        Item draggedItem = DragSlot.instance.dragSlot.item;
+        if (draggedItem == null) return;
+
+        // 타입 일치 검사 또는 예외 처리 허용
+        if (!IsValidItemForSlot(draggedItem.itemType))
         {
-            ChangeSlot();
+            Debug.Log("해당 슬롯에 아이템 타입이 맞지 않습니다.");
+            return;
         }
+
+        ChangeSlot();
+    }
+    private bool IsValidItemForSlot(ItemType itemType)
+    {
+        // ETC 슬롯은 Equipment, Used 허용
+        if (slotType == ItemType.ETC)
+        {
+            return itemType == ItemType.Equipment || itemType == ItemType.Used;
+        }
+
+        // 그 외엔 타입 정확히 일치해야 허용
+        return itemType == slotType;
     }
 
     private void ChangeSlot()
@@ -154,12 +175,33 @@ public class Slot : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData) //IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
     {
-        if(item != null)
-        theItemEffectDatabase.ShowToolTip(item, transform.position);
+        /*if (item != null)
+            theItemEffectDatabase.ShowToolTip(item, transform.position);*/
     }
 
     public void OnPointerExit(PointerEventData eventData) //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
     {
-        theItemEffectDatabase.HideToolTip();
+        //theItemEffectDatabase.HideToolTip();
     }
+
+
+    public int ReduceItem(int amount) //크래프팅을 위한 테스트 코드
+    {
+        if (itemCount >= amount)
+        {
+            itemCount -= amount;
+            if (itemCount == 0) ClearSlot();
+            else SetSlotCount(0); // UI 갱신
+            return amount;
+        }
+        else
+        {
+            int removed = itemCount;
+            ClearSlot();
+            return removed;
+        }
+    }
+
+
+
 }

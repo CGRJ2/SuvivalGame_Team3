@@ -20,7 +20,7 @@ public class QuickSlotController : MonoBehaviour
 
     private void Update()
     {
-        TryInPutNumber();
+        //TryInPutNumber();
     }
 
     private void TryInPutNumber()
@@ -56,11 +56,11 @@ public class QuickSlotController : MonoBehaviour
     {
         if (quickSlots[selectedSlot].item != null)
         {
-            if (quickSlots[selectedSlot].item.itemType == Item.ItemType.Equipment)
+            if (quickSlots[selectedSlot].item.itemType == ItemType.Equipment)
             { 
                 //무기 일때 무기로 교체
             }
-            else if (quickSlots[selectedSlot].item.itemType == Item.ItemType.Used)
+            else if (quickSlots[selectedSlot].item.itemType == ItemType.Used)
             {
                 //아무것도 없을때 맨손 교체
             }
