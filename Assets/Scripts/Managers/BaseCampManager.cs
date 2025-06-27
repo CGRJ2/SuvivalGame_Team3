@@ -7,6 +7,8 @@ public class BaseCampManager : Singleton<BaseCampManager>
 {
     // 참조한 다른 매니저들보다 후 순위에서 초기화 해야 함
     PlayerManager pm;
+    public Temp_BaseCampData baseCampData;
+
     public int MaxLevel { get; private set; }
     public BaseCampLevelUpCondition[] levelUpConditions;
 

@@ -36,6 +36,13 @@ public class Item : ScriptableObject
         ItemDatabase.EquipEffectDic[itemName].Invoke();
     }
 
+    // 일반 사용 효과 실행 (소모 X) // 효과 정보가 없으면 실행 안함
+    public void AdjustUseEffect()
+    {
+        if (ItemDatabase.UseEffectDic.ContainsKey(itemName))
+            ItemDatabase.UseEffectDic[itemName].Invoke();
+    }
+
     public bool IsCanEquip()
     {
         if (ItemDatabase.EquipEffectDic.ContainsKey(itemName)) { return true; }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BaseCamp_Interactable_Save : InteractableBase
 {
-    //  상호작용은 UI를 여는 용도일 뿐, 아랫 내용은 이후 UI에서 판단/실행하도록 분리한다
     public override void Interact()
     {
-        Debug.Log($"{gameObject.name} : 상호작용 실행");
+        //UIManager.Instance.SaveUI
+        Debug.Log($"Save UI 활성화");
     }
 
     public override void SetInteractableEnable()

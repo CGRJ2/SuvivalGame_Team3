@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCamp_Interactable_Craft : MonoBehaviour
+public class BaseCamp_Interactable_Craft : InteractableBase
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Interact()
     {
-        
+        Debug.Log($"제작 UI 활성화");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void SetInteractableEnable()
     {
-        
+        Debug.Log($"{gameObject.name} : 상호작용 범위 진입");
     }
 }
