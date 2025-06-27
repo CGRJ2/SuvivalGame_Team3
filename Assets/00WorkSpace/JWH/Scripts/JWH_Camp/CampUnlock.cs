@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class CampUnlock : MonoBehaviour
 {
+    //public CampRoomChecker roomChecker;
     public List<UnlockData> unlockByLevel;
 
-    public void UnlockItems(int level)
+    public void UnlockItems(int level)// List<string> openedRoomIds
     {
-        foreach (var data in unlockByLevel)
+
+        var data = unlockByLevel.Find(d => d.level == level);
+        if (data == null) return;
+        foreach (var unlock in data.itemsToUnlock)
         {
-            if (data.level == level)
+            // 조건 없는 아이템은 해금
+            if (string.IsNullOrEmpty(unlock.requiredRoomId))//|| openedRoomIds.Contains(unlock.requiredRoomId)
             {
-                foreach (var item in data.itemsToUnlock)
-                {
-                    Debug.Log($"{item.itemName} 아이템이 해제되었습니다.");
-                    //여따가 기능추가
-                    
-                }
-                return;
+                Debug.Log($"해금됨: {unlock.item.itemName})");// 실제 해금
+            }
+            else
+            {
+                Debug.Log($"보류됨: {unlock.item.itemName})");
             }
         }
-
-       
     }
 }
 
@@ -30,6 +31,16 @@ public class CampUnlock : MonoBehaviour
 public class UnlockData
 {
     public int level;
-    public List<Item> itemsToUnlock;
+    public List<RealUnlockItem> itemsToUnlock;
+}
+
+
+[System.Serializable]
+public class RealUnlockItem
+{
+    public Item item;
+
+    [HideInInspector]
+    public string requiredRoomId; // 여기 비어 있으면 방 조건 없음
 }
 

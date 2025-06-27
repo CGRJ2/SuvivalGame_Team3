@@ -16,11 +16,11 @@ public class InventoryModel
     {
         for (int i = 0; i < slotCount; i++)
         {
-            ingredientSlots.Add(new SlotData(30));
-            consumableSlots.Add(new SlotData(10));
-            equipmentSlots.Add(new SlotData(1));
-            functionSlots.Add(new SlotData(1));
-            questSlots.Add(new SlotData(1));
+            ingredientSlots.Add(new SlotData());
+            consumableSlots.Add(new SlotData());
+            equipmentSlots.Add(new SlotData());
+            functionSlots.Add(new SlotData());
+            questSlots.Add(new SlotData());
         }
     }
 
@@ -69,20 +69,19 @@ public class InventoryModel
     {
         int remainCount = count;
         bool canAdd = false;
-
-        foreach(SlotData sd in currentTab)
+        for (int i = 0; i < currentTab.Count; i ++) 
         {
-            // 같은 종류의 아이템이 인벤토리에 있으면
-            if (sd.IsStackable(item))
+            // 빈칸이라면
+            if (currentTab[i].item == null)
             {
                 // 그 칸에 쌓을 수 있는 개수 만큼남은 개수에서 빼기
-                remainCount -= sd.GetStackableCount();
+                remainCount -= item.maxCount;
             }
-            // 빈칸이 있다면
-            else if (sd.IsSlotEmpty())
+            // 같은 종류의 아이템이 인벤토리에 있으면
+            else if (currentTab[i].IsStackable(item))
             {
                 // 그 칸에 쌓을 수 있는 개수 만큼남은 개수에서 빼기
-                remainCount -= sd.maxCount;
+                remainCount -= currentTab[i].GetStackableCount();
             }
 
             // 남은 개수가 0 이하라면 foreach 탈출 (=> 인벤토리에 아이템 개수만큼 전부 추가 가능하다는 뜻)
@@ -99,41 +98,43 @@ public class InventoryModel
     private void AddToInven(List<SlotData> currentTab, Item item, int count)
     {
         int remainCount = count;
+        int maxCount = item.maxCount;
 
-        foreach (SlotData sd in currentTab)
+        for (int i = 0; i < currentTab.Count; i ++) 
         {
-            // 같은 종류의 아이템이 인벤토리에 있으면
-            if (sd.IsStackable(item))
+            // 빈칸이 있다면
+            if (currentTab[i].item == null)
             {
-                int stackableCount = sd.GetStackableCount();
+                // 그 칸에 최대스택 수 보다 적거나 같은 양이 남았을 때 => 남은 수량 전부 넣기
+                if (maxCount >= remainCount)
+                {
+                    currentTab[i].AddItem(item, remainCount);
+                    remainCount -= maxCount;
+                }
+                else
+                {
+                    currentTab[i].AddItem(item, maxCount);
+                    remainCount -= maxCount;
+                }
+            }
+            // 같은 종류의 아이템이 인벤토리에 있으면
+            else if (currentTab[i].IsStackable(item))
+            {
+                int stackableCount = currentTab[i].GetStackableCount();
 
                 if (remainCount < stackableCount)
                 {
-                    sd.AddItem(remainCount);
+                    currentTab[i].AddItem(remainCount);
                     remainCount = 0;
                 }
                 else
                 {
                     // 그 칸에 쌓을 수 있는 개수 만큼 추가
-                    sd.AddItem(stackableCount);
+                    currentTab[i].AddItem(stackableCount);
                     remainCount -= stackableCount;
                 }
             }
-            // 빈칸이 있다면
-            else if (sd.IsSlotEmpty())
-            {
-                // 그 칸에 최대스택 수 보다 적거나 같은 양이 남았을 때 => 남은 수량 전부 넣기
-                if (sd.maxCount >= remainCount)
-                {
-                    sd.AddItem(item, remainCount);
-                    remainCount -= sd.maxCount;
-                }
-                else
-                {
-                    sd.AddItem(item, sd.maxCount);
-                    remainCount -= sd.maxCount;
-                }
-            }
+            
             // 남은 개수가 0 이하라면 foreach 탈출 (=> 인벤토리에 모두 추가 완료)
             if (remainCount <= 0)
             {
