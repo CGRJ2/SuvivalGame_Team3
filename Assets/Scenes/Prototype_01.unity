@@ -3149,17 +3149,19 @@ MonoBehaviour:
     <HeadMaxHP_AfterDestroyed>k__BackingField: 20
     <ArmMaxHP_AfterDestroyed>k__BackingField: 20
     <LegMaxHP_AfterDestroyed>k__BackingField: 20
-  batterySystem:
+  <batterySystem>k__BackingField:
+    <MaxBattery_Init>k__BackingField: 100
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
     <RecoverAmount_MonsterSlay>k__BackingField: 10
     <RecoverAmount_BossHit>k__BackingField: 10
-  willPowerSystem:
+  <willPowerSystem>k__BackingField:
+    <MaxWillPower_Init>k__BackingField: 100
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Night>k__BackingField: 2
     <HeadDamagePerTick>k__BackingField: 1
-    <WillDangerZone>k__BackingField: 20
-    <DecreaseAmount_CatEvent>k__BackingField: 30
+    <WillDangerZone>k__BackingField: 30
+    <DecreaseAmount_CatEvent>k__BackingField: 20
 --- !u!4 &1854034328
 Transform:
   m_ObjectHideFlags: 0

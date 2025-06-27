@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] SuvivalSystemManager suvivalSystemManager;
     [SerializeField] Temp_DailyManager dailyManager;
     [SerializeField] DataManager dataManager;
+    [SerializeField] BaseCampManager baseCampManager;
     private void Awake() => Init();
 
 
@@ -30,6 +31,7 @@ public class GameManager : Singleton<GameManager>
         playerManager.Init();
         suvivalSystemManager.Init();
         dailyManager.Init();
+        baseCampManager.Init();
     }
 
     public void UpdateByOreder()
