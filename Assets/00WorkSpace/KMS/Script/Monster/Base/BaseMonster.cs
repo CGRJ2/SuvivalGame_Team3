@@ -146,7 +146,7 @@ public abstract class BaseMonster : MonoBehaviour
         }
     }
 
-    private void TryAttack()
+    public void TryAttack()
     {
         if (target == null) return;
 

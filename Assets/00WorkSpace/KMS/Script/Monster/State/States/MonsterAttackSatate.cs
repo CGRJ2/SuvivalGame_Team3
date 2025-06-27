@@ -35,7 +35,7 @@ public class MonsterAttackState : IMonsterState
         if (timer >= attackCooldown)
         {
             timer = 0f;
-            //monster.PerformAttack(); // 실제 공격은 내부에서 처리
+            monster.TryAttack();
         }
     }
 
