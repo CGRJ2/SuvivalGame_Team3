@@ -537,7 +537,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
 
         // 부위 랜덤 데미지
-        int r = Random.Range(0, activeBodyPart.Count);
+        int r = Random.Range(1, activeBodyPart.Count);
         activeBodyPart[r].TakeDamage(damage);
 
         Status.CheckCriticalState();

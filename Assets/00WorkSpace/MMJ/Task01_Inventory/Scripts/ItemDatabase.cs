@@ -15,6 +15,7 @@ public static class ItemDatabase
     {
         { "º¸Á¶ ¹èÅÍ¸®", () => PlayerManager.Instance.instancePlayer.Status.CurrentBattery.Value += 10},
         { "TestItem", () => Debug.Log("¹ö±×¸¦ ¸·¾ÆÁá´Ù.")},
+        { "¼ÒºñA", () => Debug.Log("¼Òºñ A »ç¿ë")},
         { "¾Æ¹«Æ° Ä¹ÀÙ", () => Debug.Log("¼Õ¿¡ ÀåÂø")},
         { "¼ÒºñB", () => Debug.Log("B ³È³È")},
     };

@@ -112,6 +112,7 @@ public class Temp_DailyManager : Singleton<Temp_DailyManager>
     }
 
 }
+
 public enum TimeZoneState
 {
     Morning, Afternoon, Evening, Night
