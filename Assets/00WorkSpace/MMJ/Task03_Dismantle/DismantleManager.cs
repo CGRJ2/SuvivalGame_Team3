@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DismantleManager : MonoBehaviour
 {
+    public static bool dismantleActivated = false;
+    [SerializeField] private GameObject go_dismantleBase;
     [System.Serializable]
     public class DismantleNormalResult
     {
@@ -27,27 +30,78 @@ public class DismantleManager : MonoBehaviour
     [Header("금지 아이템 (해체 불가)")]
     public List<string> dismantleBanList;
 
+    [Header("UI 참조")]
+    public Slot[] dismantleSlots;
+    public Button dismantleButton;
+
     public Inventory inventory;
 
-    public void Dismantle(Item targetItem)
+    private void Start()
     {
-        if (dismantleBanList.Contains(targetItem.itemName))
+        if (dismantleButton != null)
+            dismantleButton.onClick.AddListener(OnClickDismantle);
+    }
+    private void Update()
+    {
+        TryOpenDismantle();
+    }
+
+    void TryOpenDismantle()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            Debug.Log($"{targetItem.itemName} 은 해체 불가!");
-            return;
+            dismantleActivated = !dismantleActivated;
+
+            if (dismantleActivated)
+                OpenDismantle();
+            else
+                CloseDismantle();
+        }
+    }
+
+    void OpenDismantle()
+    {
+        go_dismantleBase.SetActive(true);
+    }
+
+    void CloseDismantle()
+    {
+        go_dismantleBase?.SetActive(false);
+    }
+
+    private void OnClickDismantle()
+    {
+        foreach (var slot in dismantleSlots)
+        {
+            if (slot.item != null && slot.itemCount > 0)
+            {
+                int count = slot.itemCount;
+
+                for (int i = 0; i < count; i++)
+                {
+                    if (dismantleBanList.Contains(slot.item.itemName))
+                    {
+                        Debug.Log($"{slot.item.itemName} 은 해체 불가!");
+                        continue;
+                    }
+
+                    inventory.RemoveItem(slot.item, 1);
+                    GiveRewards();
+                }
+
+                slot.ClearSlot();
+            }
+        }
+    }
+
+    private void GiveRewards()
+    {
+        foreach (var normal in normalResults)
+        {
+            int count = Random.Range(normal.minCount, normal.maxCount + 1);
+            inventory.AcquireItem(normal.item, count);
         }
 
-        // 아이템 1개 감소
-        inventory.RemoveItem(targetItem, 1);
-
-        // 일반 아이템 지급 (랜덤 수량)
-        foreach (var result in normalResults)
-        {
-            int count = Random.Range(result.minCount, result.maxCount + 1);
-            inventory.AcquireItem(result.item, count);
-        }
-
-        // 레어 아이템 확률 지급
         foreach (var rare in rareResults)
         {
             if (Random.value <= rare.probability)
@@ -55,7 +109,5 @@ public class DismantleManager : MonoBehaviour
                 inventory.AcquireItem(rare.item, 1);
             }
         }
-
-        Debug.Log($"{targetItem.itemName} 해체 완료!");
     }
 }
