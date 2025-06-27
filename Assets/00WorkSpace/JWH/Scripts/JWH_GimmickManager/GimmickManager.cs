@@ -13,15 +13,35 @@ public enum DailyState
 
 public class GimmickManager : MonoBehaviour
 {
-        public static GimmickManager Instance { get; private set; }
+    public static GimmickManager Instance { get; private set; }
+    public event Action<DailyState> OnStateChanged;
+    private DailyState lastState;
 
-        private void Awake()
+    private void Awake()
+    {
+        if (Instance != null)
         {
-            if (Instance != null) { Destroy(gameObject); return; }
-            Instance = this;
+            Destroy(gameObject);
+            return;
         }
+        Instance = this;
+    }
+    private void Start()
+    {
+        lastState = CurrentState;
+    }
 
-        public DailyState CurrentState
+    private void Update()
+    {
+        var currentState = CurrentState;
+        if (currentState != lastState)
+        {
+            lastState = currentState;
+            OnStateChanged?.Invoke(currentState);
+        }
+    }
+
+    public DailyState CurrentState
         {
             get
             {
@@ -43,5 +63,15 @@ public class GimmickManager : MonoBehaviour
     {
         return CurrentState == DailyState.Night || CurrentState == DailyState.Dawn;
     }
+
+   
+    //public bool TimeChance(TimeSpan from, TimeSpan to)// 특정시간대만 등장?
+
+    //public interface IGimmick//인터페 테스트
+    //{
+    //    void Activate();
+    //    void Deactivate();
+    //    DailyState[] ActiveStates { get; }
+    //}
 }
 
