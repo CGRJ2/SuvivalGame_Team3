@@ -23,6 +23,7 @@ public class CraftTabs : MonoBehaviour
 
     public void CloseCraftWindow()
     {
+        Cursor.visible = false;
         UIController.Instance.craftPanel.SetActive(false);
         UIController.Instance.playerInformation.SetActive(true);
         UIController.Instance.quickSlot.SetActive(true);

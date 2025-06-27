@@ -27,10 +27,7 @@ public class LocationCutScene : MonoBehaviour
         playerVcam.Priority = playerPriority;
 
         // input 복구
-        if (playerInput != null)
-        {
-            playerInput.enabled = true;
-        }
+        if (playerInput != null) playerInput.enabled = true;
 
         Debug.Log("Timeline 끝, 플레이어 카메라로 복귀!");
     }
@@ -44,10 +41,7 @@ public class LocationCutScene : MonoBehaviour
             played = true;
 
             // input 차단
-            if (playerInput != null)
-            {
-                playerInput.enabled= false;
-            }
+            if (playerInput != null) playerInput.enabled= false;
 
             // 컷씬 vCam 활성화, 플레이어 vCam 비활성화(Priority로 조정)
             cutsceneVcam.Priority = cutscenePriority;

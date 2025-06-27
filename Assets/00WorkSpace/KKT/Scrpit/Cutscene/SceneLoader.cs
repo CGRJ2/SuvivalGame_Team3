@@ -9,21 +9,12 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader Instance;
     public VideoPlayer videoPlayer;
 
-    //private void Start()
-    //{
-    //    videoPlayer.SetDirectAudioVolume(0, 0.1f); // 볼륨 조절(0.0~1.0)
-    //    videoPlayer.Play();
-    //    videoPlayer.loopPointReached += OnVideoEnd; // 영상 끝나면 호출
-    //}
-
     public void Update()
     {
         if (SceneManager.GetActiveScene().name=="KKT_MainSceneTest")
         {
             if (Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0)
-            {
                 GoToGameScene();
-            }
         }
     }
 

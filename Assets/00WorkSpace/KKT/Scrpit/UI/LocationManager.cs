@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class LocationManager : MonoBehaviour
 {
-    public static string CurrentLocation = "";
+    public static string CurrentLocation = "°Å½Ç";
 }

@@ -9,12 +9,15 @@ public class LocationTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (LocationManager.CurrentLocation == locationName) return;
 
-        LocationManager.CurrentLocation = locationName;
+        if (!other.CompareTag("Player")) return;
 
-        UIController.Instance.ShowLocationNotification($"{locationName}에 입장했습니다!", messageTime);
+        if (LocationManager.CurrentLocation != locationName )
+        {
+            LocationManager.CurrentLocation = locationName;
+            UIController.Instance.ShowLocationNotification($"현재 위치 : {locationName}", messageTime);
 
-        Debug.Log(LocationManager.CurrentLocation);
+            UIController.Instance.UpdateCurrentLocation(locationName);
+        }
     }
 }
