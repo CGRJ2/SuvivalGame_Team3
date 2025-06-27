@@ -17,21 +17,14 @@ public class TimeAppearGimmick : MonoBehaviour
         isVisible = false;
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        GimmickManager.Instance.OnStateChanged += UpdateVisible;
-        UpdateVisible(GimmickManager.Instance.CurrentState); // 시작 시 상태 체크
+        UpdateVisible();
     }
 
-    private void OnDisable()
+    private void UpdateVisible()
     {
-        if (GimmickManager.Instance != null)
-            GimmickManager.Instance.OnStateChanged -= UpdateVisible;
-    }
-
-    private void UpdateVisible(DailyState currentState)
-    {
-        
+        var currentState = GimmickManager.Instance.CurrentState;
         bool DoVisible = System.Array.Exists(visibleStates, s => s == currentState);
 
         if (DoVisible != isVisible)
