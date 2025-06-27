@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class MonsterIdleState : IMonsterState
 {
     private BaseMonster monster;
@@ -9,15 +10,24 @@ public class MonsterIdleState : IMonsterState
     private float lookDuration = 2f;
     private float rotateSpeed = 30f;
     private Quaternion baseRotation;
+    private float lookTimer = 0f;
+    private float lookInterval;
+    private Quaternion targetRotation;
+    private Quaternion baseRotationTarget;
+    private float baseRotateSmooth = 2f; // 기준방향 회전 속도
 
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
         timer = 0f;
-        direction = 1f;
-        lookDuration = Random.Range(1.5f, 3f);
+        lookTimer = 0f;
+        lookInterval = 2.5f + Random.Range(0f, 1.5f);
 
-        baseRotation = monster.transform.rotation;
+        float startY = monster.transform.rotation.eulerAngles.y;
+        baseRotation = Quaternion.Euler(0, startY, 0);
+        baseRotationTarget = baseRotation;
+
+        lookDuration = Random.Range(1.5f, 3f);
 
         monster.SetPerceptionState(MonsterPerceptionState.Idle);
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
@@ -25,31 +35,46 @@ public class MonsterIdleState : IMonsterState
         Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");
     }
 
+
     public void Execute()
     {
-
         if (monster == null || monster.IsDead) return;
 
-        // 플레이어 감지
-        if (monster.checkTargetVisible)
+        timer += Time.deltaTime;
+        lookTimer += Time.deltaTime;
+
+        // 2~4초마다 기준 방향 목표값을 변경
+        if (lookTimer >= lookInterval)
         {
-            monster.IncreaseAlert(10f);
+            SetRandomBaseRotationTarget();
+            lookTimer = 0f;
+            lookInterval = 2.5f + Random.Range(0f, 1.5f);
         }
 
-        timer += Time.deltaTime;
+        baseRotation = Quaternion.Slerp(baseRotation, baseRotationTarget, Time.deltaTime * baseRotateSmooth);
 
-        // 회전: 기준에서 좌우로 +-20도 사이로 왕복 회전
         float angleOffset = Mathf.Sin(timer * Mathf.PI / lookDuration) * 20f;
         Quaternion targetRotation = baseRotation * Quaternion.Euler(0f, angleOffset, 0f);
-        monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, targetRotation, Time.deltaTime * 3f);
-        Debug.Log($"rotation: {monster.transform.rotation.eulerAngles.y}");
-        // 일정 시간 뒤 상태 재전이
+
+        monster.transform.rotation = Quaternion.Slerp(
+            monster.transform.rotation,
+            targetRotation,
+            Time.deltaTime * 3f
+        );
+
         if (timer >= lookDuration * 2f)
         {
             timer = 0f;
             lookDuration = Random.Range(1.5f, 3f);
             Debug.Log($"[{monster.name}] 좌우 회전 루프 반복");
         }
+    }
+
+    private void SetRandomBaseRotationTarget()
+    {
+        float randomY = Random.Range(0f, 360f);
+        baseRotationTarget = Quaternion.Euler(0, randomY, 0);
+        Debug.Log($"[Monster] 기준 방향 목표 전환: {randomY}도");
     }
 
     public void Exit()

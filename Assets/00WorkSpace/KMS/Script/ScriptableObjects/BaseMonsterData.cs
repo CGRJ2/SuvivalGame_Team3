@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public enum MonsterType { Normal, Boss, Cat, Onwer } // 메인 타입
-public enum MonsterSubType { Toy1, Toy2, Doll1, Doll2 } //임의 배정
+public enum MonsterSubType { Balance, Sensor, Tank, Nuker, Assassin } // 기획안 적용
 public enum MonsterTargetType { Player, Ally, None }
 // Player = 플레이어
 // Ally = 도우미(있을 경우 추적). 없을 경우: 플레이어 앞의 오브젝트를 추적하여 예상 이동 경로로 추적
@@ -14,20 +14,37 @@ public class BaseMonsterData : ScriptableObject
     public string monsterName;
     public MonsterType monsterType;
     public MonsterSubType monsterSubType;
+    public MonsterTypeStatData typeStatData;
 
     [Header("기본 스탯")]
-    public float maxHP;
-    public float moveSpeed;
-    public float attackCooldown;
-    public float attackPower;
-    public float attackRange;
+    [SerializeField] private float maxHP;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float attackPower;
+    [SerializeField] private float attackRange;
+    [SerializeField] private float attackCooldown;
+
+    [Header("넉백 관련")]
+    [SerializeField] private float knockbackDistance = 2f;
+ 
 
     [Header("탐지")]
-    public float detectionRange;
-    public float baseFOV = 40f;
-    public float eyeHeight = 1.5f;
-    public MonsterTargetType targetType;
+    [SerializeField] private float detectionRange;
+    [SerializeField] private float baseFOV = 40f;
+    [SerializeField] private float eyeHeight = 1.5f;
+    [SerializeField] private MonsterTargetType targetType;
+    [SerializeField] private float actionRadius = 20f;
 
+    public float MaxHP => maxHP;
+    public float MoveSpeed => moveSpeed;
+    public float AttackPower => attackPower;
+    public float AttackRange => attackRange;
+    public float AttackCooldown => attackCooldown;
+    public float KnockbackDistance => knockbackDistance;
+    public float DetectionRange => detectionRange;
+    public float BaseFOV => baseFOV;
+    public float EyeHeight => eyeHeight;
+    public MonsterTargetType TargetType => targetType;
+    public float ActionRadius => actionRadius;
     [Header("프리팹")]
     public GameObject dropItemPrefab;
     public GameObject monsterPrefab;
