@@ -662,6 +662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 300340362}
+  - component: {fileID: 300340363}
   m_Layer: 0
   m_Name: DailyManager
   m_TagString: Untagged
@@ -684,6 +685,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &300340363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300340360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12cf3d3f979c4c04a8e842ef8c2fa0bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeZoneSetting:
+    <DayCycleTime>k__BackingField: 12
+    <MaxDayCount>k__BackingField: 30
+    <TZ_Morning>k__BackingField: 3
+    <TZ_Afternoon>k__BackingField: 6
+    <TZ_Evening>k__BackingField: 9
+  <CurrentTime>k__BackingField: 0
+  <CurrentDay>k__BackingField:
+    _value: 1
+  <TZ_State>k__BackingField:
+    _value: 0
 --- !u!1 &325550769
 GameObject:
   m_ObjectHideFlags: 0
@@ -3599,6 +3623,7 @@ MonoBehaviour:
   uiManager: {fileID: 535811292}
   playerManager: {fileID: 1591942975}
   suvivalSystemManager: {fileID: 1854034327}
+  dailyManager: {fileID: 300340363}
 --- !u!4 &2139602470
 Transform:
   m_ObjectHideFlags: 0
