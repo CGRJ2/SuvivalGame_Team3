@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
@@ -18,8 +16,26 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     [SerializeField] private float TickDuration;
 
     [System.Serializable]
-    private class BatterySystem
+    public class BodyPartSystem
     {
+        [field: Header("기본 최대 체력 초기값 설정")]
+        [field: SerializeField] public int HeadMaxHP_Init { get; private set; }
+        [field: SerializeField] public int ArmMaxHP_Init { get; private set; }
+        [field: SerializeField] public int LegMaxHP_Init { get; private set; }
+
+
+        [field: Header("파괴 상태에서 1차 회복 사용 시 최대체력 제한 값 설정")]
+        [field: SerializeField] public int HeadMaxHP_AfterDestroyed { get; private set; }
+        [field: SerializeField] public int ArmMaxHP_AfterDestroyed { get; private set; }
+        [field: SerializeField] public int LegMaxHP_AfterDestroyed { get; private set; }
+    }
+
+    [System.Serializable]
+    public class BatterySystem
+    {
+        [field: Header("정신력 최대량 초기값 설정")]
+        [field: SerializeField] public int MaxBattery_Init { get; private set; }
+
         [field: Header("상태 별 틱당 감소량")]
         [field: SerializeField] public int DrainPerTick_Idle { get; private set; }
         [field: SerializeField] public int DrainPerTick_Sprint { get; private set; }
@@ -39,8 +55,12 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     }
 
     [System.Serializable]
-    private class WillPowerSystem
+    public class WillPowerSystem
     {
+        [field: Header("정신력 최대량 초기값 설정")]
+        [field: SerializeField] public int MaxWillPower_Init { get; private set; }
+
+
         [field: Header("상태 별 틱당 감소량")]
         [field: SerializeField] public int DrainPerTick_Idle { get; private set; }
         [field: SerializeField] public int DrainPerTick_Night { get; private set; }
@@ -57,39 +77,46 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
         // DecreaseAmount_CustomMonster; 기획에서 추가될 시 추가
     }
 
-    [Header("배터리 시스템")]
-    [SerializeField] BatterySystem batterySystem;
+    [field: Header("부위별 내구도 시스템")]
+    [field: SerializeField] public BodyPartSystem bodyPartSystem { get; private set; }
 
-    [Header("정신력 시스템")]
-    [SerializeField] WillPowerSystem willPowerSystem;
+    [field: Header("배터리 시스템")]
+    [field: SerializeField] public BatterySystem batterySystem { get; private set; }
+
+    [field: Header("정신력 시스템")]
+    [field: SerializeField] public WillPowerSystem willPowerSystem { get; private set; }
 
     Coroutine coroutine_DecreaseWillPower;
     Coroutine coroutine_DecreaseBattery;
+    Coroutine coroutine_DotDamageByLowWill;
 
     // 테스트용도////////////////////////////////////////////////////////////
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            DecreaseRoutineStart();
-        }
+        StartDecreaseRoutines();
     }
     ////////////////////////////////////////////////////////////////////////
-    
-    
 
-    public void DecreaseRoutineStart()
+    private void OnDestroy()
+    {
+        StopDecreaseRoutines();
+    }
+
+    public void StartDecreaseRoutines()
     {
         coroutine_DecreaseWillPower = StartCoroutine(DecreaseWillPowerOverTime());
         coroutine_DecreaseBattery = StartCoroutine(DecreaseBatteryOverTime());
+        coroutine_DotDamageByLowWill = StartCoroutine(DotDamageByLowWillOverTime());
     }
 
-    public void DecreaseRoutineStop()
+    public void StopDecreaseRoutines()
     {
         if (coroutine_DecreaseWillPower != null) StopCoroutine(coroutine_DecreaseWillPower);
         if (coroutine_DecreaseBattery != null) StopCoroutine(coroutine_DecreaseBattery);
+        if (coroutine_DotDamageByLowWill != null) StopCoroutine(coroutine_DotDamageByLowWill);
     }
 
+    // 정신력 지속 감소 루틴
     IEnumerator DecreaseWillPowerOverTime()
     {
         PlayerStatus ps = pm.instancePlayer.Status;
@@ -98,17 +125,23 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
         {
             yield return new WaitForSeconds(TickDuration);
 
-            if (false/*밤이면*/)
+            if (Temp_DailyManager.Instance.TZ_State.Value == TimeZoneState.Night)
             {
-                ps.WillPower.Value -= willPowerSystem.DrainPerTick_Night;
+                if (ps.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Night > 0)
+                    ps.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Night;
+                else ps.CurrentWillPower.Value = 0;
+
             }
             else
             {
-                ps.WillPower.Value -= willPowerSystem.DrainPerTick_Idle;
+                if (ps.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Idle > 0)
+                    ps.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Idle;
+                else ps.CurrentWillPower.Value = 0;
             }
         }
     }
 
+    // 배터리 지속 감소 루틴
     IEnumerator DecreaseBatteryOverTime()
     {
         PlayerStatus ps = pm.instancePlayer.Status;
@@ -120,13 +153,81 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
             // 달리기 상태라면
             if (ps.IsCurrentState(PlayerStateTypes.Sprint))
             {
-                ps.Battery.Value -= batterySystem.DrainPerTick_Sprint;
+                if (ps.CurrentBattery.Value - batterySystem.DrainPerTick_Sprint > 0)
+                    ps.CurrentBattery.Value -= batterySystem.DrainPerTick_Sprint;
+                else ps.CurrentBattery.Value = 0;
             }
             else
             {
-                ps.Battery.Value -= batterySystem.DrainPerTick_Idle;
+                if (ps.CurrentBattery.Value - batterySystem.DrainPerTick_Idle > 0)
+                    ps.CurrentBattery.Value -= batterySystem.DrainPerTick_Idle;
+                else ps.CurrentBattery.Value = 0;
             }
         }
     }
+
+
+    // 정신력이 일정수치 이하일 때 머리 지속 데미지 루틱
+    IEnumerator DotDamageByLowWillOverTime()
+    {
+        PlayerStatus ps = pm.instancePlayer.Status;
+        while (true)
+        {
+            yield return new WaitForSeconds(TickDuration);
+
+            if (pm.instancePlayer.Status.CurrentWillPower.Value <= willPowerSystem.WillDangerZone)
+            {
+                if (ps.GetPart(BodyPartTypes.Head).Hp.Value - willPowerSystem.HeadDamagePerTick > 0)
+                    ps.GetPart(BodyPartTypes.Head).Hp.Value -= willPowerSystem.HeadDamagePerTick;
+                else ps.GetPart(BodyPartTypes.Head).Hp.Value = 0;
+            }
+        }
+    }
+
+
+    // 배터리 교체 (초기화)
+    public void InitBattery()
+    {
+        pm.instancePlayer.Status.InitBattery();
+    }
+
+    // 배터리 회복
+    public void RecoveryBattery(int amount)
+    {
+        pm.instancePlayer.Status.ChargeBattery(amount);
+    }
+
+
+    // 파츠 교체 (초기화)
+    public void InitBodyPart(BodyPart bodyPart)
+    {
+        bodyPart.Init();
+    }
+
+    // 파츠 회복
+    public void RepairBodyPart(BodyPart bodyPart, int amount)
+    {
+        bodyPart.Repair(amount);
+    }
+
+    // 파츠 활성화 (간이 회복)
+    public void QuickRepairBodyPart(BodyPart bodyPart)
+    {
+        if (bodyPart.type == BodyPartTypes.Head)
+        {
+            bodyPart.QuickRepair(bodyPartSystem.HeadMaxHP_AfterDestroyed);
+        }
+        else if (bodyPart.type == BodyPartTypes.RightArm || bodyPart.type == BodyPartTypes.LeftArm)
+        {
+            bodyPart.QuickRepair(bodyPartSystem.ArmMaxHP_AfterDestroyed);
+        }
+        else if (bodyPart.type == BodyPartTypes.RightLeg || bodyPart.type == BodyPartTypes.LeftLeg)
+        {
+            bodyPart.QuickRepair(bodyPartSystem.LegMaxHP_AfterDestroyed);
+        }
+
+    }
+
+
 
 }

@@ -8,7 +8,8 @@ public class BodyPart : IDisposable
     // 활성화 상태, 비활성화 시 체력회복 불가능, 1차회복 시 다시 활성화
     public ObservableProperty<bool> Activate = new ObservableProperty<bool>(); 
     public ObservableProperty<int> Hp = new ObservableProperty<int>();
-    private int MaxHp;
+    public ObservableProperty<int> CurrentMaxHp = new ObservableProperty<int>();
+    private int InitMaxHp;
     private Action<bool> deactiveEffectAction;
 
     public BodyPart(BodyPartTypes type, int maxHp, Action<bool> DeactiveEffectAction)
@@ -16,16 +17,18 @@ public class BodyPart : IDisposable
         Activate.Subscribe(DeactiveEffect);
         
         this.type = type;
-        this.MaxHp = maxHp;
+        this.InitMaxHp = maxHp;
         this.deactiveEffectAction = DeactiveEffectAction;
 
         Init();
     }
    
-    // 파츠 정보 초기화 & 파츠 교체 시 호출
+    // 파츠 정보 초기화 & 파츠 교체 시 호출 ==> 교체하면 현재체력 & 최대내구도까지 원상복귀
     public void Init()
     {
-        Hp.Value = MaxHp;
+        Hp.Value = InitMaxHp;
+        CurrentMaxHp.Value = InitMaxHp;
+
         Activate.Value = true;
     }
 
@@ -39,15 +42,20 @@ public class BodyPart : IDisposable
         else Hp.Value -= damage;
     }
 
+    // 회복 효과 => 현재 최대내구도 까지만 회복 가능
     public void Repair(int amount)
     {
-        if (Hp.Value + amount > MaxHp) Hp.Value = MaxHp;
+        if (Activate.Value == false) return;
+
+        if (Hp.Value + amount > CurrentMaxHp.Value) Hp.Value = CurrentMaxHp.Value;
         else Hp.Value += amount;
     }
 
-    public void QuickRepair()
+    // 회복 가능 상태로 만듦
+    public void QuickRepair(int maxHP_AfterQuickRepair)
     {
         Hp.Value = 1;
+        CurrentMaxHp.Value = maxHP_AfterQuickRepair;
         Activate.Value = true;
     }
 

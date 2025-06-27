@@ -206,66 +206,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     }
 
-
-    public void HandleMove()
-    {
-        // 컨트롤 락 걸리면 이동 로직 중지
-        if (Status.isControllLocked) return;
-
-        float moveSpeed;
-        if (Status.IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
-        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
-        else moveSpeed = Status.MoveSpeed;
-
-        Vector3 getMoveDir;
-
-        if (isFreeCamModInput)
-            getMoveDir = View.GetMoveDirection(InputDir, true);
-        else
-            getMoveDir = View.GetMoveDirection(InputDir);
-
-        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
-        View.moveDir = moveVec;
-        View.facingDir = moveVec;
-
-        if (InputDir != Vector3.zero)
-        {
-            View.animator.SetBool("IsMove", true);
-            isMoveInput = true;
-        }
-        else
-        {
-            View.animator.SetBool("IsMove", false);
-            isMoveInput = false;
-        }
-    }
-
-    public void HandleSight()
-    {
-        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
-
-        Vector3 avatarDir;
-        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
-        if (isFreeCamModInput) avatarDir = View.facingDir;
-        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
-        else if (!isMoveInput || Status.IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
-        else avatarDir = View.moveDir;
-
-        // 컨트롤 락 걸리면 아바타 회전은 정지
-        if (Status.isControllLocked) return;
-
-        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
-
-        // Attack 상태일 때만.
-        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
-        {
-            View.animator.SetFloat("MoveX", SmoothDir.x);
-            View.animator.SetFloat("MoveZ", SmoothDir.y);
-        }
-    }
-
-
-
     #region InputAction 처리
     public void OnMove(InputValue value)
     {
@@ -406,12 +346,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     }
     #endregion
 
-    public void CrouchToggleChange(bool value)
-    {
-        isCrouchToggle = value;
-    }
-
-    // InputFlag들에 따른 상태 전환 총괄
+    #region InputFlag들에 따른 상태 전환 조건 관리
     public void UpdateStateCondition()
     {
         // 컨트롤 락 걸리면 
@@ -425,7 +360,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Cc.GetIsGroundState())
         {
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
-            if ( isAttackInput || isAttacking )
+            if (isAttackInput || isAttacking)
             {
                 if ((Status.IsCurrentState(PlayerStateTypes.Idle) || Status.IsCurrentState(PlayerStateTypes.Move)))
                 {
@@ -499,7 +434,71 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
     }
 
-    
+    #endregion
+
+    #region 플레이어 조작 기능 & 상호작용 관리
+
+    public void HandleMove()
+    {
+        // 컨트롤 락 걸리면 이동 로직 중지
+        if (Status.isControllLocked) return;
+
+        float moveSpeed;
+        if (Status.IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
+        else moveSpeed = Status.MoveSpeed;
+
+        Vector3 getMoveDir;
+
+        if (isFreeCamModInput)
+            getMoveDir = View.GetMoveDirection(InputDir, true);
+        else
+            getMoveDir = View.GetMoveDirection(InputDir);
+
+        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
+        View.moveDir = moveVec;
+        View.facingDir = moveVec;
+
+        if (InputDir != Vector3.zero)
+        {
+            View.animator.SetBool("IsMove", true);
+            isMoveInput = true;
+        }
+        else
+        {
+            View.animator.SetBool("IsMove", false);
+            isMoveInput = false;
+        }
+    }
+
+    public void HandleSight()
+    {
+        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
+
+        Vector3 avatarDir;
+        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
+        if (isFreeCamModInput) avatarDir = View.facingDir;
+        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
+        else if (!isMoveInput || Status.IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
+        else avatarDir = View.moveDir;
+
+        // 컨트롤 락 걸리면 아바타 회전은 정지
+        if (Status.isControllLocked) return;
+
+        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
+
+        // Attack 상태일 때만.
+        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
+        {
+            View.animator.SetFloat("MoveX", SmoothDir.x);
+            View.animator.SetFloat("MoveZ", SmoothDir.y);
+        }
+    }
+
+    public void CrouchToggleChange(bool value)
+    {
+        isCrouchToggle = value;
+    }
 
     public void Attack()
     {
@@ -520,33 +519,20 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (interactable != null) 
             interactable.Interact();
     }
-   
-    
-
-
-    public void LoadPlayerData(PlayerStatus status)
-    {
-
-    }
-
-    public void SavePlayerData(PlayerStatus status)
-    {
-
-    }
 
     public void TakeDamage(int damage)
     {
         // 무적 상태라면 return;
         if (Status.isInvincible) return;
-        
+
         // 활성 상태인 신체 부위 중 랜덤 선택
         List<BodyPart> bodyPart = Status.GetBodyPartsList();
         List<BodyPart> activeBodyPart = new List<BodyPart>();
 
-        foreach(BodyPart part in bodyPart)
+        foreach (BodyPart part in bodyPart)
         {
             // 활성 상태인 파츠들로 리스트 새로 생성
-            if (part.Activate.Value) 
+            if (part.Activate.Value)
                 activeBodyPart.Add(part);
         }
 
@@ -558,7 +544,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
     }
 
-
     public IEnumerator InvincibleRoutine(float time)
     {
         Status.isInvincible = true;
@@ -569,5 +554,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         Status.isInvincible = false;
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
+
+    #endregion
+
+
 
 }

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 데이터 매니저라고 보면 될듯
 public class PlayerManager : Singleton<PlayerManager>
 {
+    // 플레이어 인스턴스에 전역으로 접근하기 위한 클래스 
+
     public PlayerController instancePlayer;
 
 
@@ -13,15 +14,17 @@ public class PlayerManager : Singleton<PlayerManager>
         base.SingletonInit();
     }
 
-
-    public void PlayerFaint() // => 배터리가 0이 되었을 때 호출
+    // => 배터리가 0이 되었을 때 호출
+    public void PlayerFaint() 
     {
         Debug.Log("플레이어 기절 => 최대 배터리량 감소");
         MoveToLastCamp();
     }
 
-    public void PlayerDead() // => 머리 내구도가 0이 되었을 때 호출
+    // => 머리 내구도가 0이 되었을 때 호출
+    public void PlayerDead() 
     {
+        Debug.Log("플레이어 사망!");
         MoveToLastCamp();
     }
 

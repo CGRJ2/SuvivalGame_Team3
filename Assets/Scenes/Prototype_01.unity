@@ -653,6 +653,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &297695000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 297695001}
+  - component: {fileID: 297695002}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &297695001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297695000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.7341523, y: 2.7658772, z: -12.24697}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &297695002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297695000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3348e8340ebac02418ea2de9fc6146e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &300340360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3098,6 +3142,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TickDuration: 1.2
+  <bodyPartSystem>k__BackingField:
+    <HeadMaxHP_Init>k__BackingField: 100
+    <ArmMaxHP_Init>k__BackingField: 10
+    <LegMaxHP_Init>k__BackingField: 10
+    <HeadMaxHP_AfterDestroyed>k__BackingField: 20
+    <ArmMaxHP_AfterDestroyed>k__BackingField: 20
+    <LegMaxHP_AfterDestroyed>k__BackingField: 20
   batterySystem:
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
@@ -3624,6 +3675,7 @@ MonoBehaviour:
   playerManager: {fileID: 1591942975}
   suvivalSystemManager: {fileID: 1854034327}
   dailyManager: {fileID: 300340363}
+  dataManager: {fileID: 297695002}
 --- !u!4 &2139602470
 Transform:
   m_ObjectHideFlags: 0
@@ -17071,3 +17123,4 @@ SceneRoots:
   - {fileID: 535811293}
   - {fileID: 1591942974}
   - {fileID: 1854034328}
+  - {fileID: 297695001}

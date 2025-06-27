@@ -7,8 +7,8 @@ public class TestFullRecoveryItem : ScriptableObject
 {
     public void Use(PlayerStatus player)
     {
-        player.WillPower.Value = 100;
-        player.Battery.Value = 100;
+        player.CurrentWillPower.Value = 100;
+        player.CurrentBattery.Value = 100;
 
         foreach (var part in player.GetBodyPartsList())
         {
