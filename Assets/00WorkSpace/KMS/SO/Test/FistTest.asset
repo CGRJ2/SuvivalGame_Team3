@@ -16,10 +16,14 @@ MonoBehaviour:
   spawnDelay: 10
   totalCount: 3
   spawnInfos:
-  - monsterData: {fileID: 11400000, guid: cbb59d25bda64ea41930a12f3c7cce08, type: 2}
+  - monsterData: {fileID: 11400000, guid: 1682c4a77edd82d46a597c21dc762457, type: 2}
     count: 1
     spawnDelay: 1
     spawnPosition: {x: 0, y: 0, z: 0}
-  fixedSpawns:
-  - monsterData: {fileID: 11400000, guid: a1355b111436fbb44b6d72dea5b5a267, type: 2}
-    spawnPoint: {x: 0, y: 0, z: 0}
+    stageName: 
+  - monsterData: {fileID: 11400000, guid: 1682c4a77edd82d46a597c21dc762457, type: 2}
+    count: 1
+    spawnDelay: 1
+    spawnPosition: {x: 0, y: 0, z: 0}
+    stageName: 
+  fixedSpawns: []

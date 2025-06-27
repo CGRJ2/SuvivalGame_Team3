@@ -26,7 +26,24 @@ public class StageMonsterScalingData : ScriptableObject
 
     public float GetHpMultiplier(MonsterSubType subType)
     {
-        var entry = scalingList.Find(x => x.subType == subType);
-        return entry != null ? entry.hpMultiplier : 1f;
+        foreach (var entry in scalingList)
+        {
+            Debug.Log($"[GetHpMultiplier] SO List - subType: {entry.subType}, hpMultiplier: {entry.hpMultiplier}");
+        }
+        var found = scalingList.Find(x => x.subType == subType);
+        if (found == null)
+            Debug.LogWarning($"[GetHpMultiplier] {subType}에 해당하는 배율이 없습니다. 기본값 1 반환");
+        else
+            Debug.Log($"[GetHpMultiplier] {subType} → {found.hpMultiplier} 반환");
+
+        Debug.Log($"[GetHpMultiplier] SO 인스턴스ID: {this.GetInstanceID()}, 경로: {UnityEditor.AssetDatabase.GetAssetPath(this)}");
+        foreach (var entry in scalingList)
+        {
+            Debug.Log($"[GetHpMultiplier] SO List - subType: {entry.subType}, hpMultiplier: {entry.hpMultiplier}");
+        }
+
+
+        return found != null ? found.hpMultiplier : 1f;
+
     }
 }

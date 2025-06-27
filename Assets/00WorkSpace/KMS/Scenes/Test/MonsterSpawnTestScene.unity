@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 306223995}
   - component: {fileID: 306223994}
   - component: {fileID: 306223993}
+  - component: {fileID: 306223997}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -276,6 +277,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &306223997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306223992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eacca9f3a9f1c4d40a0451dfbe8b83d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageName: Stage1
 --- !u!1 &315323532
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +616,7 @@ Transform:
   m_GameObject: {fileID: 1063072542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.78, y: 0, z: 0}
+  m_LocalPosition: {x: -7.78, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -731,6 +745,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4717e1104b9f15d4ea9b65ee157756b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeStatList:
+  - type: 0
+    statSO: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
+  - type: 0
+    statSO: {fileID: 11400000, guid: c179e73121eadb6469f71f6736295f4a, type: 2}
+  - type: 0
+    statSO: {fileID: 11400000, guid: 8b0761508dfa1cc428a3298fa92d1f1f, type: 2}
+  - type: 0
+    statSO: {fileID: 11400000, guid: 236abea4dc3bea446a8624fcefae8331, type: 2}
+  - type: 0
+    statSO: {fileID: 11400000, guid: 49777c9a7fb2e1640acbdc0ef7e5f66b, type: 2}
+  stageSOList:
+  - stageName: Basic
+    stageSO: {fileID: 11400000, guid: 98d4d61950ba82a448ec12e3cf593633, type: 2}
+  - stageName: Tutorial
+    stageSO: {fileID: 11400000, guid: 00b260b69893dba40aac8446da2d0ad6, type: 2}
+  - stageName: Stage1
+    stageSO: {fileID: 11400000, guid: 9fb591847afca824f8b3eb9b2b713901, type: 2}
+  - stageName: Stage2
+    stageSO: {fileID: 11400000, guid: ac50a332a5f38a24f8444c5dd9d66833, type: 2}
+  - stageName: Stage3
+    stageSO: {fileID: 11400000, guid: ae43863be387e1e40967f18f1d7cb9db, type: 2}
+  currentStageScaling: {fileID: 0}
 --- !u!4 &1077192838
 Transform:
   m_ObjectHideFlags: 0
@@ -982,7 +1019,7 @@ Transform:
   m_GameObject: {fileID: 2062400778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -11.24}
+  m_LocalPosition: {x: 0, y: 0.5, z: -11.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

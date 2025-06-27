@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class MonsterManager : MonoBehaviour
@@ -59,7 +60,7 @@ public class MonsterManager : MonoBehaviour
                     ? spawnInfo.spawnPosition
                     : GetRandomSpawnPosition();
 
-                var monster = MonsterFactory.Instance.SpawnMonster(spawnInfo.monsterData, spawnPos);
+                var monster = MonsterFactory.Instance.SpawnMonster(spawnInfo.monsterData, spawnPos, spawnInfo.stageName);
                 if (monster != null)
                     RegisterMonster(monster);
             }
@@ -87,7 +88,7 @@ public class MonsterManager : MonoBehaviour
                 ? info.spawnPosition
                 : GetRandomSpawnPosition();
 
-            var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, spawnPos);
+            var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, spawnPos, info.stageName);
             if (monster != null)
                 RegisterMonster(monster);
 

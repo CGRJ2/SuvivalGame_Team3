@@ -230,8 +230,11 @@ public abstract class BaseMonster : MonoBehaviour
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
     {
         data = newData;
-
+        Debug.Log($"[SetData] stageStat is null? {stageStat == null}");
         MonsterSubType subType = data.monsterSubType;
+
+        float mult = stageStat != null ? stageStat.GetHpMultiplier(subType) : 1f;
+        Debug.Log($"[SetData] GetHpMultiplier(subType) 호출, subType: {subType}, 반환값: {mult}");
 
         // base값
         float baseHP = data.MaxHP;
@@ -254,7 +257,11 @@ public abstract class BaseMonster : MonoBehaviour
         originPosition = transform.position;
         UpdateSightParameters();
 
-        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료 - HP:{hp} / ATK:{power}");
+        Debug.Log($"[SetData:Debug] 몬스터: {data.monsterName}, 타입: {subType}\n" +
+                  $"- Base HP: {baseHP}, TypeMult: {typeStat.hpMultiplier}, StageMult: {stageStat.GetHpMultiplier(subType)}\n" +
+                  $"=> 최종 HP: {hp}\n" +
+                  $"- Base ATK: {basePower}, TypeMult: {typeStat.attackPowerMultiplier}, StageMult: {stageStat.GetAttackMultiplier(subType)}\n" +
+                  $"=> 최종 ATK: {power}");
     }
 
     public void SetSensor(IMonsterSensor newSensor)

@@ -7,6 +7,7 @@ public class VariableSpawnInfo
 {
     public BaseMonsterData monsterData;
     public List<DaySpawnInfo> daySpawnList;
+    public string stageName;
 }
 
 [System.Serializable]

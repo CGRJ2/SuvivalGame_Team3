@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class FixedSpawnManager : MonoBehaviour
@@ -19,7 +20,7 @@ public class FixedSpawnManager : MonoBehaviour
                     Destroy(existing.gameObject);
             }
 
-            var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, info.spawnPoint);
+            var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, info.spawnPoint, info.stageName);
             if (monster != null)
             {
                 monster.SetTarget(FindTargetByType(info.monsterData.TargetType));
@@ -43,7 +44,9 @@ public class FixedSpawnManager : MonoBehaviour
     public void SpawnCat(int currentDay)
     {
         Vector3 spawnPos = GetSpawnPositionForDay(catSpawnData.catSpawnInfo, currentDay);
-        var cat = MonsterFactory.Instance.SpawnMonster(catSpawnData.catSpawnInfo.monsterData, spawnPos);
+        var stageName = catSpawnData.catSpawnInfo.stageName;
+
+        var cat = MonsterFactory.Instance.SpawnMonster(catSpawnData.catSpawnInfo.monsterData, spawnPos, stageName);
 
         if (cat != null)
             cat.SetTarget(FindTargetByType(catSpawnData.catSpawnInfo.monsterData.TargetType));
