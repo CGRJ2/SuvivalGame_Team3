@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum MonsterType { Normal, Boss, Cat, Onwer } // 메인 타입
@@ -52,4 +53,5 @@ public class BaseMonsterData : ScriptableObject
     [Header("기타")]
     public Vector3 spawnPosition;
     public bool useFixedPosition; //보스나 주인 리스폰설정
+    public List<MonsterDropEntry> dropTable; //드랍 아이템 테이블
 }

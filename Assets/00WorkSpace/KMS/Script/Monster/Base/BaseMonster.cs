@@ -1,4 +1,5 @@
 using KMS.Monster.Interface;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +21,8 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterTypeStatData typeStat;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
+
+    
 
     protected Transform target;
     protected MonsterStateMachine stateMachine;
@@ -183,7 +186,9 @@ public abstract class BaseMonster : MonoBehaviour
         isDead = true;
 
         view.PlayMonsterDeathAnimation();
+        //DropItem();
         OnDeadEvent?.Invoke();
+
 
         stateMachine.ChangeState(new MonsterDeadState()); // 여기가 진입점
     }
@@ -268,6 +273,25 @@ public abstract class BaseMonster : MonoBehaviour
     {
         sensor = newSensor;
     }
+
+    //private void DropItems()
+    //{
+    //    if (data.dropTable == null || data.dropTable.Count == 0) return;
+    //
+    //    foreach (var entry in data.dropTable)
+    //    {
+    //        if (Random.value <= entry.dropChance)
+    //        {
+    //            int amount = Random.Range(entry.minAmount, entry.maxAmount + 1);
+    //            for (int i = 0; i < amount; i++)
+    //            {
+    //                // 아이템 프리팹, 아이콘, 이름, 설명 등은 itemSO에서 가져와 생성
+    //                ItemFactory.SpawnItem(entry.itemSO, transform.position);
+    //            }
+    //        }
+    //    }
+    //}
+
 
     public bool SetPerceptionState(MonsterPerceptionState newState)
     {
