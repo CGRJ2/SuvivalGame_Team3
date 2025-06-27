@@ -876,59 +876,6 @@ Transform:
   - {fileID: 3000465799479504878}
   m_Father: {fileID: 6111760088890324868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2096444504180194424
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7402342636836452140}
-  - component: {fileID: 8327642268225077683}
-  m_Layer: 3
-  m_Name: InteractableArea
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7402342636836452140
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096444504180194424}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8000085483804057645}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8327642268225077683
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096444504180194424}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2179844625760204776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,7 +1397,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4854306667878556464}
-  - {fileID: 7402342636836452140}
   - {fileID: 6934143364034005771}
   - {fileID: 4949865442285414553}
   m_Father: {fileID: 0}
@@ -1595,8 +1541,9 @@ MonoBehaviour:
   ApplyDebuff_LockWeaponUse: 0
   ApplyDebuff_LockSprint: 0
   ApplyDebuff_LockAttack: 0
+  ApplyDebuff_HeadDotDamage: 0
   isInvincible: 0
-  isControllable: 0
+  isControllLocked: 0
 --- !u!114 &1818019235209181901
 MonoBehaviour:
   m_ObjectHideFlags: 0

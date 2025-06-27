@@ -1,41 +1,18 @@
 using UnityEngine;
 
-public class InteractableTest_Get : MonoBehaviour, IInteractable
+public class InteractableTest_Get : InteractableBase
 {
     [SerializeField] Item item;
-    public void Interact()
+    public override void Interact()
     {
         Debug.Log($"{gameObject.name} 를 주웠다.");
         item.SpawnItem(transform);
     }
 
-    public void SetInteractableEnable()
+    public override void SetInteractableEnable()
     {
         Debug.Log($"줍기(E) : {gameObject.name}");
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        ColliderController CC = other.GetComponent<ColliderController>();
-
-        if (CC != null)
-        {
-            CC.InteractableObj = this;
-            SetInteractableEnable();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        ColliderController CC = other.GetComponent<ColliderController>();
-
-        if (CC != null)
-        {
-            if (CC.InteractableObj == this as IInteractable)
-            {
-                CC.InteractableObj = null;
-            }
-            else return;
-        }
-    }
+   
 }

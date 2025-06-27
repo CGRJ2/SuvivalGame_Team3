@@ -7,6 +7,12 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 {
     // 참조한 다른 매니저들보다 후 순위에서 초기화 해야 함
     PlayerManager pm;
+    public void Init()
+    {
+        base.SingletonInit();
+        pm = PlayerManager.Instance;
+    }
+    ///////////////////////////////////////////
 
     [Header("생존 수치 소모 주기 설정")]
     [SerializeField] private float TickDuration;
@@ -70,11 +76,7 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     }
     ////////////////////////////////////////////////////////////////////////
     
-    public void Init()
-    {
-        base.SingletonInit();
-        pm = PlayerManager.Instance;
-    }
+    
 
     public void DecreaseRoutineStart()
     {
