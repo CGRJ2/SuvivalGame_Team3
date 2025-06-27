@@ -5,11 +5,15 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] UIManager uiManager;
-
-    // 게임 상태 : 장사 대기 > 장사 시작 > 장사 종료 > 정산 > 장사 대기 ... ////// +일시정지
+    [SerializeField] PlayerManager playerManager;
+    [SerializeField] SuvivalSystemManager suvivalSystemManager;
     private void Awake() => Init();
 
-    private void Init()
+
+
+    private void Update() => UpdateByOreder();
+
+        private void Init()
     {
         base.SingletonInit();
         InitalizeOrderSetting();
@@ -20,6 +24,12 @@ public class GameManager : Singleton<GameManager>
     {
         // 초기화할 순서대로 나열
         uiManager.Init();
+        playerManager.Init();
+        suvivalSystemManager.Init();
     }
 
+    public void UpdateByOreder()
+    {
+
+    }
 }

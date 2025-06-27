@@ -77,6 +77,7 @@ public class PlayerStatus : MonoBehaviour
     // 플레이어 데이터 초기 상태
     public void Init()
     {
+
         WillPower.Subscribe(WillPowerChanged);
         Battery.Subscribe(BatteryChanged);
 
@@ -98,16 +99,27 @@ public class PlayerStatus : MonoBehaviour
         inventory = new InventoryPresenter();
     }
 
+    public void WillPowerAdjust(int value)
+    {
+        WillPower.Value += value;
+    }
+
     public void WillPowerChanged(int value)
     {
         // 임시
         // CurWillPower필드 삭제 후 UI로 표기
+
     }
     public void BatteryChanged(int value)
     {
         // 임시
         // CurBattery필드 삭제 후 UI로 표기
     }
+
+
+    
+
+    
 
     public void BodySet()
     {
@@ -154,6 +166,11 @@ public class PlayerStatus : MonoBehaviour
         Debug.Log("플레이어 사망");
     }
 
+
+    public bool IsCurrentState(PlayerStateTypes state)
+    {
+        return stateMachine.CurState == stateMachine.stateDic[state];
+    }
 }
 public enum PlayerStateTypes
 {

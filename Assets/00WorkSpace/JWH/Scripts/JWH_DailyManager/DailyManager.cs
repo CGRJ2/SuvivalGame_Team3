@@ -5,9 +5,10 @@ using UnityEngine;
 
 //public enum DailyState
 //{
-//    Morning,   // 09:00 ~ 15:00
-//    Afternoon, // 15:00 ~ 22:00
-//    Dawn       // 22:00 ~ 09:00
+//      Morning   // 03:00 ~ 12:00
+//      Afternoon // 12:00 ~ 15:00
+//      Night     // 15:00 ~ 21:00
+//      Dawn      // 21:00 ~ 03:00 (다음 날)
 //}
 
 public class DailyManager : MonoBehaviour
@@ -36,7 +37,7 @@ public class DailyManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentTime = new TimeSpan(9, 0, 0); // 시작 시간
+        CurrentTime = new TimeSpan(3, 0, 0); // 시작 시간
         CurrentDay = 1;
         //CurrentTime = CurrentTime.Add(TimeSpan.FromMinutes(1));
         //CurrentOnTimeProperty.Value = CurrentTime;
@@ -90,7 +91,7 @@ public class DailyManager : MonoBehaviour
         if (hour != lastLoggedHour)
         {
             lastLoggedHour = hour;
-            Debug.Log($"인게임 시간 {CurrentTime:hh\\:mm} / {CurrentDay}일차");
+            Debug.Log($"인게임 시간 {CurrentTime:hh\\:mm} / {CurrentDay}일차 / 상태: ");
         }
     }
 
@@ -108,12 +109,14 @@ public class DailyManager : MonoBehaviour
     //private void UpdateDailyState()
     //{
     //    int hour = CurrentTime.Hours;
-    //    if (hour >= 9 && hour < 15)
-    //        CurrentState = DailyState.Morning;//아침
-    //    else if (hour >= 15 && hour < 22)
-    //        CurrentState = DailyState.Afternoon;//낮
-    //    else
-    //        CurrentState = DailyState.Dawn;//새벽
+    //    if (hour >= 3 && hour < 12)
+    //        CurrentState = DailyState.Morning;//오전
+    //    else if (hour >= 12 && hour < 15)
+    //        CurrentState = DailyState.Afternoon;//오후
+    //    else if (hour >= 15 && hour < 21)
+    //        CurrentState = DailyState.Dawn;//밤
+    //       else // 21:00 ~ 03:00
+    //      CurrentState = DailyState.Dawn;//새벽
     //}
 
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CampInteract : MonoBehaviour, IInteractable
 {
-    
+    public FakeSave fakeSave;
 
     public void Interact()
     {
@@ -14,6 +14,17 @@ public class CampInteract : MonoBehaviour, IInteractable
         {
             recovery.CampRecover(player);
         }
+
+        if (fakeSave != null)
+        {
+            fakeSave.NotSave();
+        }
+
+        if (fakeSave != null)
+        {
+            fakeSave.NotLoad();
+        }
+
     }
 
     public void SetInteractableEnable()
