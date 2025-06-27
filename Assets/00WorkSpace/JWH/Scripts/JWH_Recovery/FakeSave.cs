@@ -6,7 +6,7 @@ public class FakeSave : MonoBehaviour
 {
     public void TryNotSave()
     {
-        if (GimmickManager.CanSaveNow())
+        if (GimmickManager.Instance.CanSaveNow())
         {
             Debug.Log("세이브! (실제로 저장되지 않음)");
         }
