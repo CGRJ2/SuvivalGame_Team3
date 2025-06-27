@@ -11,37 +11,28 @@ public enum DailyState
     Dawn       // 21:00 ~ 03:00 (다음날)
 }
 
-public class GimmickManager : MonoBehaviour
-{
-        public static GimmickManager Instance { get; private set; }
 
-        private void Awake()
-        {
-            if (Instance != null) { Destroy(gameObject); return; }
-            Instance = this;
-        }
 
-        public DailyState CurrentState
+        public static class GimmickManager
+        { 
+
+        public static DailyState CurrentState
         {
             get
             {
                 TimeSpan time = DailyManager.Instance.CurrentTime;
                 int hour = time.Hours;
 
-                if (hour >= 3 && hour < 12)
-                    return DailyState.Morning;
-                else if (hour >= 12 && hour < 15)
-                    return DailyState.Afternoon;
-                else if (hour >= 15 && hour < 21)
-                    return DailyState.Night;
-                else 
-                    return DailyState.Dawn;
+                if (hour >= 3 && hour < 12) return DailyState.Morning;
+                else if (hour >= 12 && hour < 15) return DailyState.Afternoon;
+                else if (hour >= 15 && hour < 21) return DailyState.Night;
+                else return DailyState.Dawn;
             }
         }
 
-    public bool CanSaveNow() //테스트
-    {
+        public static bool CanSaveNow() //테스트
+        {
         return CurrentState == DailyState.Night || CurrentState == DailyState.Dawn;
-    }
+        }
 }
 
