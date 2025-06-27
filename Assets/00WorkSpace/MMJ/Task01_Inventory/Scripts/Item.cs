@@ -63,6 +63,7 @@ public enum ItemType
     Ingredient, // 재료
     Function, // 기능
     Quest, //퀘스트
-    ETC // 기타
+    ETC, // 기타
+    All  // 해체 슬롯용
 }
 

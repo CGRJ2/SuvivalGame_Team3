@@ -212,4 +212,28 @@ public class Inventory : MonoBehaviour
 
         return total;
     }
+
+    public void RemoveItem(Item _item, int _count = 1) //해체 시스템
+    {
+        Slot[] targetSlots = GetTargetSlotArray(_item.itemType);
+
+        int remainToRemove = _count;
+
+        foreach (Slot slot in targetSlots)
+        {
+            if (slot.item != null && slot.item == _item)
+            {
+                int removed = slot.ReduceItem(remainToRemove);  // 슬롯에 구현되어 있어야 함
+                remainToRemove -= removed;
+
+                if (remainToRemove <= 0)
+                    break;
+            }
+        }
+
+        if (remainToRemove > 0)
+        {
+            Debug.LogWarning($"[{_item.itemName}] 아이템을 {remainToRemove}만큼 제거하지 못했습니다 (인벤토리에 충분하지 않음).");
+        }
+    }
 }
