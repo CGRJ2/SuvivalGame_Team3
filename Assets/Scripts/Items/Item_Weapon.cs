@@ -19,7 +19,7 @@ public class Item_Weapon : Item, IEquipable
 
     public void EquipToQuickSlot()
     {
-        throw new System.NotImplementedException();
+        PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
     }
 
     public void OnAttackEffect()

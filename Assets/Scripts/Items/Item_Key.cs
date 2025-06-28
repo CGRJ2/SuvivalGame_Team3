@@ -9,7 +9,7 @@ public class Item_Key : Item, IEquipable
     public void EquipToQuickSlot()
     {
         // Äü½½·Ô µî·Ï
-        throw new System.NotImplementedException();
+        PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
     }
 
     public void OnAttackEffect()

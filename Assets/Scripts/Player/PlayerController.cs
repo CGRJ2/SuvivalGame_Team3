@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 8. Äü½½·Ô ÇÖÅ°
         quickSlotActions = playerControlMap.FindAction("QuickSlots");
         quickSlotActions.Enable();
-        quickSlotActions.started += OnQuickSlotPerformed;
+        quickSlotActions.performed += OnQuickSlotPerformed;
     }
 
     private void InputActionsDelete()
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         attackAction.started -= OpenInventory;
 
         // 8. Äü½½·Ô ÇÖÅ°
-        quickSlotActions.started -= OnQuickSlotPerformed;
+        quickSlotActions.performed -= OnQuickSlotPerformed;
 
     }
 
@@ -329,7 +329,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void OnQuickSlotPerformed(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
             // µðÁöÅÐ Å° °ª °Ë»ç (Keyboard.current.digit1Key.wasPressedThisFrame µî)
             if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectQuickSlot(1);
@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void SelectQuickSlot(int index)
     {
         Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index, out Status.onHandItem);
+        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index - 1);
         // ¼Õ¿¡ µå´Â ¾ÆÀÌÅÛ ±³Ã¼
     }
     #endregion

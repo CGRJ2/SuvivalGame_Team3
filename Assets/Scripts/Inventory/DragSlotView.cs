@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class DragSlotView : MonoBehaviour
 {
-    public SlotView slot;
+    public SlotView slotView;
 
     //아이템 이미지
     [SerializeField]

@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,11 +28,16 @@ public class SlotView : MonoBehaviour,
         this.slotData = slotData;
     }
 
+    public void QuickSlotHandClear()
+    {
+
+    }
+
     public void SlotViewUpdate()
     {
-        // 슬롯의 참조가 비어있다면 => 빈칸이라는 뜻
-        if (slotData == null)
+        /*if (slotData == null)
         {
+            Debug.LogError("슬롯이 null이되면 안되지 않냐?");
             ClearSlotView();
             
             // 퀵슬롯에 장착된 상태에서 아이템이 사라진다면? => 체인 관계 모두 삭제
@@ -43,16 +47,32 @@ public class SlotView : MonoBehaviour,
                 chainedQuickSlot.slotData = null;
                 chainedQuickSlot = null;
             }
-                
+            
+            if (this is QuickSlot)
+            {
+                Debug.Log("손에서 제거");
+                PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
+            }
+
+
         }
-        else if (slotData.item == null)
+        else */
+        if (slotData.item == null)
         {
             ClearSlotView();
             if (chainedQuickSlot != null)
             {
                 chainedQuickSlot.chainedOriginSlotView = null;
-                chainedQuickSlot.slotData = null;
+                chainedQuickSlot.slotData = new SlotData();
                 chainedQuickSlot = null;
+            }
+            // 현재 활성화 중인 퀵슬롯에 아이템이 없으면 => 손에 든 아이템 제거
+            if (this is QuickSlot)
+            {
+                if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this)
+                {
+                    PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
+                }
             }
         }
         // 재료아이템/소비아이템 => 갯수 표현
@@ -96,24 +116,37 @@ public class SlotView : MonoBehaviour,
                 // 체인 상태라면 => 체인 해제
                 if (quick.chainedOriginSlotView != null)
                 {
-                    quick.chainedOriginSlotView.chainedQuickSlot.slotData = null;
                     quick.chainedOriginSlotView.chainedQuickSlot = null;
+                    // 슬롯 데이터 비워주기
+                    quick.slotData = new SlotData();
                     quick.chainedOriginSlotView = null;
                 }
+
+                SlotViewUpdate();
             }
             // 퀵슬롯이 아닌 아이템 슬롯 우클릭(= 인벤토리 슬롯 우클릭) => 아이템 장착 or 사용
             else
             {
-                if (slotData == null) return;
                 if (slotData.item == null) return;
+
+                // 퀵슬롯 빈칸 여부 판단
+                // 인벤토리 빈 슬롯 중 가장 앞 슬롯에 데이터 저장
+                QuickSlot emptyQuickSlot = UIManager.Instance.inventoryUI.quickSlotParent.GetEmptyQuickSlot();
+
+                // 빈칸 없으면 추가 안됨
+                if (emptyQuickSlot == null) return;
+
+                // 슬롯 데이터 건네주고
+                emptyQuickSlot.slotData = this.slotData;
+
                 // 아이템 종류 별로 인벤토리 내 사용 효과 실행
                 slotData.item.UseInInventory(slotData);
 
                 // 아이템 사용한 슬롯 상태 업데이트
                 SlotViewUpdate();
 
-                // 퀵슬롯 뷰 업데이트
-                UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
+                // 아이템이 등록된 퀵슬롯 상태 업데이트
+                emptyQuickSlot.SlotViewUpdate();
             }
 
         }
@@ -128,7 +161,7 @@ public class SlotView : MonoBehaviour,
         if (slotData.item != null)
         {
             DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
-            dragSlotInstance.slot = this;
+            dragSlotInstance.slotView = this;
             dragSlotInstance.DragSetImage(itemSprite);
             dragSlotInstance.transform.position = eventData.position;
         }
@@ -151,7 +184,7 @@ public class SlotView : MonoBehaviour,
         DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
 
         dragSlotInstance.DropClearImage();
-        dragSlotInstance.slot = null;
+        dragSlotInstance.slotView = null;
     }
 
     //IDropHandler - OnDrop - 드래그를 멈췄을 때 해당 오브젝트에서 호출됩니다.
@@ -160,11 +193,11 @@ public class SlotView : MonoBehaviour,
         DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
 
         // 드랍이 이루어지는 슬롯 => this
-        
-        if (dragSlotInstance.slot == null) return;
+
+        if (dragSlotInstance.slotView == null) return;
 
         // 퀵슬롯에서 드래그 중이라면 => 퀵슬롯 끼리의 교환은 평범하게 이루어지도록
-        if(dragSlotInstance.slot is QuickSlot draggedQuickSlot)
+        if (dragSlotInstance.slotView is QuickSlot draggedQuickSlot)
         {
             // 드랍된 위치의 아이템 슬롯이 퀵슬롯이라면 
             if (this is QuickSlot droppedQuickSlot)
@@ -192,7 +225,14 @@ public class SlotView : MonoBehaviour,
                 // 퀵슬롯들도 업데이트
                 //UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
 
-                dragSlotInstance.slot.SlotViewUpdate(); // => 기존 슬롯 업데이트
+                // 현재 슬롯에다 놓았으면 손에 업데이트
+                if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this)
+                {
+                    if (dragSlotInstance.slotView.slotData.item is IEquipable equipable)
+                        equipable.EquipToQuickSlot();
+                }
+
+                dragSlotInstance.slotView.SlotViewUpdate(); // => 기존 슬롯 업데이트
             }
         }
         // 인벤토리에서 드래그 중이라면
@@ -201,20 +241,27 @@ public class SlotView : MonoBehaviour,
             // 드랍된 위치의 아이템 슬롯이 퀵슬롯이라면 => 원본 그대로 놔두기
             if (this is QuickSlot quick)
             {
-                if (UIManager.Instance.inventoryUI.quickSlotParent.IsAlreadyInQuickSlot(dragSlotInstance.slot.slotData))
+                if (UIManager.Instance.inventoryUI.quickSlotParent.IsAlreadyInQuickSlot(dragSlotInstance.slotView.slotData))
                 {
                     Debug.Log("이미 아이템이 퀵슬롯에 장착되어 있습니다");
                 }
-                else if (dragSlotInstance.slot.slotData.item is IEquipable)
+                else if (dragSlotInstance.slotView.slotData.item is IEquipable equipable)
                 {
                     // 현재 퀵슬롯에 인벤토리 데이터 참조
-                    slotData = dragSlotInstance.slot.slotData;
+                    slotData = dragSlotInstance.slotView.slotData;
 
                     // 인벤토리에서 드래그 했던 슬롯에 퀵 연결 정보 참조
-                    dragSlotInstance.slot.chainedQuickSlot = quick;
+                    dragSlotInstance.slotView.chainedQuickSlot = quick;
 
                     // 퀵슬롯에는 인벤토리 원본 데이터 연결정보 참조
-                    quick.chainedOriginSlotView = dragSlotInstance.slot;
+                    quick.chainedOriginSlotView = dragSlotInstance.slotView;
+
+
+                    // 현재 슬롯에다 놓았으면 손에 업데이트
+                    if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this)
+                    {
+                        equipable.EquipToQuickSlot();
+                    }
                 }
             }
             // 퀵슬롯이 아니라면
@@ -223,45 +270,45 @@ public class SlotView : MonoBehaviour,
             else
             {
                 // 같은 종류의 아이템이라면
-                if (dragSlotInstance.slot.slotData.item == this.slotData.item)
+                if (dragSlotInstance.slotView.slotData.item == this.slotData.item)
                 {
                     // 값 연산
-                    MergeSlotData(dragSlotInstance.slot.slotData, this.slotData);
+                    MergeSlotData(dragSlotInstance.slotView.slotData, this.slotData);
                 }
                 // 다른 종류 아이템이라면 위치 변경 (빈슬롯 포함)
                 else
                 {
                     // 값 교체
-                    ChangeSlotData(dragSlotInstance.slot.slotData, this.slotData);
+                    ChangeSlotData(dragSlotInstance.slotView.slotData, this.slotData);
                 }
 
                 // 퀵슬롯 체인 정보 교환
                 QuickSlot quickChainDataTemp = chainedQuickSlot;
-                this.chainedQuickSlot = dragSlotInstance.slot.chainedQuickSlot;
-                dragSlotInstance.slot.chainedQuickSlot = quickChainDataTemp;
+                this.chainedQuickSlot = dragSlotInstance.slotView.chainedQuickSlot;
+                dragSlotInstance.slotView.chainedQuickSlot = quickChainDataTemp;
 
                 if (this.chainedQuickSlot != null)
                 {
                     this.chainedQuickSlot.UpdateInvenChain(this.slotData);
                     this.chainedQuickSlot.chainedOriginSlotView = this;
                 }
-                
-                if (dragSlotInstance.slot.chainedQuickSlot != null)
-                {
-                    dragSlotInstance.slot.chainedQuickSlot.UpdateInvenChain(dragSlotInstance.slot.slotData);
-                    dragSlotInstance.slot.chainedQuickSlot.chainedOriginSlotView = dragSlotInstance.slot;
-                }
-                 
 
-                dragSlotInstance.slot.SlotViewUpdate(); // => 기존 슬롯 업데이트
+                if (dragSlotInstance.slotView.chainedQuickSlot != null)
+                {
+                    dragSlotInstance.slotView.chainedQuickSlot.UpdateInvenChain(dragSlotInstance.slotView.slotData);
+                    dragSlotInstance.slotView.chainedQuickSlot.chainedOriginSlotView = dragSlotInstance.slotView;
+                }
+
+
+                dragSlotInstance.slotView.SlotViewUpdate(); // => 기존 슬롯 업데이트
             }
         }
-        
+
         SlotViewUpdate();
     }
 
     // 
-    
+
 
     // 자리 교체 (참조 교체가 아닌 ***값 교체***)
     public void ChangeSlotData(SlotData A, SlotData B)
@@ -328,7 +375,7 @@ public class SlotView : MonoBehaviour,
         UIManager.Instance.inventoryUI.tooltip.HideToolTip();
     }
 
-    
+
 
     #endregion
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class QuickSlotParent : MonoBehaviour
 {
     QuickSlot[] quickSlots;
-
+    public QuickSlot NowSelectedSlot { get; private set; }
     [SerializeField] private GameObject selectedStateImage;
 
     private void Start()
@@ -18,6 +18,9 @@ public class QuickSlotParent : MonoBehaviour
         }
 
         UIManager.Instance.inventoryUI.quickSlotParent = this;
+
+        // 첫 초기화 시 맨앞 슬롯 선택중으로
+        NowSelectedSlot = quickSlots[0];
     }
 
 
@@ -39,34 +42,44 @@ public class QuickSlotParent : MonoBehaviour
     {
         foreach (QuickSlot quickSlot in quickSlots)
         {
-            if (quickSlot.slotData == default)
+            if (quickSlot.slotData.item == null)
             {
                 return quickSlot;
             }
         }
 
         Debug.Log("퀵슬롯 빈공간 없어요");
-        return default;
+        return null;
     }
 
 
     // 아이템 인스턴스(or 아이템 모델링을 업데이트)를 손에 활성화
-    public void SelectQuickSlot(int quickSlotNumber, out Item onHandItem)
+    public void SelectQuickSlot(int quickSlotNumber)
     {
-        SlotData slotData = quickSlots[quickSlotNumber - 1].slotData;
+        NowSelectedSlot = quickSlots[quickSlotNumber];
 
-        if (slotData.item != null)
+        if (NowSelectedSlot.slotData.item != null)
         {
-            onHandItem = slotData.item;
+            Debug.Log(NowSelectedSlot.slotData.item);
+            PlayerManager.Instance.instancePlayer.Status.onHandItem = NowSelectedSlot.slotData.item;
         }
-        else onHandItem = null;
+        else PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
+
+        // 즉발 소비템이면  여기서 소비 효과 실행
+
+        SelectedImageUpdate();
+        //UpdateQuickSlotView();
+
+        NowSelectedSlot.SlotViewUpdate();
     }
 
 
-    private void SelectedSlot(int nowIndex)
+
+
+    private void SelectedImageUpdate()
     {
         //선택슬롯으로 이동
-        selectedStateImage.transform.position = quickSlots[nowIndex].transform.position;
+        selectedStateImage.GetComponent<RectTransform>().position = NowSelectedSlot.GetComponent<RectTransform>().position;
     }
 
     public void UpdateQuickSlotView()

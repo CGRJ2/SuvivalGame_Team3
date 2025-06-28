@@ -16,6 +16,7 @@ public class Item_Tool : Item, IEquipable
     public void EquipToQuickSlot()
     {
         // Äü½½·Ô ºóÄ­ ÆÇ´Ü & ºó Äü½½·Ô¿¡ ÀåÂø
+        PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
     }
 
     public void OnAttackEffect()
