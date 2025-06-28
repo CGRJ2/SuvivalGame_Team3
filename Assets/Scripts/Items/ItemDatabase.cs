@@ -23,10 +23,20 @@ public static class ItemDatabase
     // 일반 사용 (퀘스트 아이템, 지도 등)
     public static Dictionary<string, Action> AttackOnHandEffectDic = new Dictionary<string, Action>()
     {
+        // Consumable > Generic
+        
+        { "캣잎", () => Debug.Log("A방의 문을 언락한다")},
+        { "일반 소비 테스트 아이템", () => Debug.Log("일반 소비 테스트 공격 사용")},
+
+
+        // Equipment > Generic(Tool)
         { "손전등", () => Debug.Log("불을 켠다")}, // 여기서 아이템 손에 장착 후 공격 키 누를 때 효과 정리
+
+        // Quest > Generic()
         { "열쇠A", () => Debug.Log("A방의 문을 언락한다")},
 
-        /// 다용도 아이템////
+
+
     };
 
 

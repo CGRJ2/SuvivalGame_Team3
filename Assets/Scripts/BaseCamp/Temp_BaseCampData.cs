@@ -7,7 +7,13 @@ public class Temp_BaseCampData
     public ObservableProperty<int> CurrentCampLevel { get; private set; }
     // 조합 가능 아이템 정보 (조합 결과물 아이템, bool isUnlocked, 언락 트리거 아이템(레시피) => 이 아이템을 습득해서 사용()하면 언락해줌..)
 
-    List<RecipeData> recipeList;
+    public Item_Recipe[] allRecipeList;
+    public List<Item_Recipe> UnlockedRecipeList;
+
+    public void Init()
+    {
+        allRecipeList = Resources.LoadAll<Item_Recipe>("ItemDatabase/99 Recipes");
+    }
 
     public void LevelUp()
     {
@@ -17,25 +23,23 @@ public class Temp_BaseCampData
     }
     
 
-    // 레시피 아이템 사용 효과를 적용하려면 key값 받아와서 구분 후 언락
-    public void UnlockRecipe(string recipeItemName)
+    // 언락된 레시피들만 오픈
+    public List<Item_Recipe> GetUnlockRecipeList()
     {
+        List<Item_Recipe> unlockedRecipes = new List<Item_Recipe>();
 
-        foreach (RecipeData recipe in recipeList)
+        foreach (Item_Recipe recipe in allRecipeList)
         {
             // 레시피 리스트 안에서 (레시피 이름 == 사용한 레시피 아이템 이름) 인 경우 레시피 언락
-            if (recipe.recipeName == recipeItemName)
+            if (recipe.RecipeData.isUnlocked)
             {
-                // 이미 언락되어 있는 상태라면
-                if (recipe.isUnlocked)
-                {
-                    Debug.Log("이미 알고 있는 조합법이다. ");
-                }
-                else
-                {
-                    recipe.isUnlocked = true;
-                }
+                unlockedRecipes.Add(recipe);
             }
         }
+
+        // 인덱스 순으로 재정렬
+        unlockedRecipes.Sort((a, b) => a.RecipeData.orderIndex.CompareTo(b.RecipeData.orderIndex));
+
+        return unlockedRecipes;
     }
 }

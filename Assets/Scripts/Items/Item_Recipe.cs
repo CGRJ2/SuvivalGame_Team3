@@ -5,11 +5,43 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "New Item/재료 아이템/레시피")]
 public class Item_Recipe : Item_Ingredient
 {
+    public string recipeName;
+    public Sprite icon;
+
+    [field: Header("레시피 데이터")]
+    [field: SerializeField] public RecipeData RecipeData { get; private set; }
+    
     protected override void OnEnable()
     {
         base.OnEnable();
         maxCount = 1;
     }
 
-    // 헬스장 갔다와서 레시피 데이터 만들어둔거랑 연결해서 리팩토링 해보자
+    
+    public void UnlockThisRecipe()
+    {
+        if (!RecipeData.isUnlocked)
+            RecipeData.isUnlocked = true;
+        else
+        {
+            Debug.Log("이미 제작대에 추가된 레시피이다.");
+        }
+    }
+}
+
+[System.Serializable]
+public class RecipeData
+{
+    [Header("언락 여부")]
+    public bool isUnlocked;
+
+    [Header("레시피 창에 나타낼 순서")]
+    public int orderIndex;
+
+    [Header("결과물 설정")]
+    public Item resultItem;
+    public int resultItemCount = 1;
+
+    [Header("재료 설정")]
+    public List<ItemRequirement> requiredItems;
 }

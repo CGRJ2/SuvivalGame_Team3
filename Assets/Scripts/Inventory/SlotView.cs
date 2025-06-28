@@ -205,7 +205,7 @@ public class SlotView : MonoBehaviour,
                 {
                     Debug.Log("이미 아이템이 퀵슬롯에 장착되어 있습니다");
                 }
-                else
+                else if (dragSlotInstance.slot.slotData.item is IEquipable)
                 {
                     // 현재 퀵슬롯에 인벤토리 데이터 참조
                     slotData = dragSlotInstance.slot.slotData;

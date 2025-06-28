@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void SelectQuickSlot(int index)
     {
         Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlotEffect(index);
+        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index, out Status.onHandItem);
         // 손에 드는 아이템 교체
     }
     #endregion

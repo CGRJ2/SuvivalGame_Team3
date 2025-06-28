@@ -43,7 +43,7 @@ public class Item : ScriptableObject
         // 레시피 아이템이라면
         else if (this is Item_Recipe recipe)
         {
-
+            recipe.UnlockThisRecipe();
         }
     }
 
