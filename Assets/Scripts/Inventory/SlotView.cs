@@ -58,7 +58,7 @@ public class SlotView : MonoBehaviour,
         // 재료아이템/소비아이템 => 갯수 표현
         else if (slotData.item.itemType == ItemType.Used || slotData.item.itemType == ItemType.Ingredient)
         {
-            itemSprite.sprite = slotData.item.itemImage;
+            itemSprite.sprite = slotData.item.imageSprite;
             countText.text = slotData.currentCount.ToString();
             SetColor(1);
             countTextParent.SetActive(true);
@@ -66,7 +66,7 @@ public class SlotView : MonoBehaviour,
         // 장비아이템/퀘스트아이템/기능아이템 => 갯수 표현 X
         else
         {
-            itemSprite.sprite = slotData.item.itemImage;
+            itemSprite.sprite = slotData.item.imageSprite;
             countText.text = "0";
             SetColor(1);
             countTextParent.SetActive(false);
@@ -82,8 +82,7 @@ public class SlotView : MonoBehaviour,
     }
 
 
-    #region 인벤토리 내 아이템 Drag & Drop 기능
-
+    // 인벤토리 슬롯 & 퀵슬롯 우클릭 상호작용 처리
     //IPointerClickHandler - OnPointerClick - 동일 오브젝트에서 포인터를 누르고 뗄 때 호출됩니다.
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -107,19 +106,8 @@ public class SlotView : MonoBehaviour,
             {
                 if (slotData == null) return;
                 if (slotData.item == null) return;
-                // 장착 가능하면 장착(퀵슬롯 빈자리에 추가)
-                if (slotData.item.IsCanEquip())
-                {
-                    // 퀵슬롯에 추가
-                    //UIManager.Instance.inventoryUI.quickSlotParent.
-
-                    slotData.item.AdjustConsumeEffect(slotData);
-                }
-                // 장착 불가능 + 사용 가능 아이템이라면 => 바로 사용효과 적용
-                else if (slotData.item.IsCanConsume())
-                {
-                    slotData.item.AdjustConsumeEffect(slotData); 
-                }
+                // 아이템 종류 별로 인벤토리 내 사용 효과 실행
+                slotData.item.UseInInventory(slotData);
 
                 // 아이템 사용한 슬롯 상태 업데이트
                 SlotViewUpdate();
@@ -127,9 +115,11 @@ public class SlotView : MonoBehaviour,
                 // 퀵슬롯 뷰 업데이트
                 UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
             }
-            
+
         }
     }
+
+    #region 인벤토리 내 아이템 Drag & Drop 기능
 
     //IBeginDragHandler - OnBeginDrag - 드래그가 시작되는 시점에 드래그 대상 오브젝트에서 호출됩니다.
     public void OnBeginDrag(PointerEventData eventData)

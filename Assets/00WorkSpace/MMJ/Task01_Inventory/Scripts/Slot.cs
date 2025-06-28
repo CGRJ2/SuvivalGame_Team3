@@ -47,7 +47,7 @@ public class Slot : MonoBehaviour,
     {
         item = _item;
         itemCount = _count;
-        itemImage.sprite = item.itemImage;
+        itemImage.sprite = item.imageSprite;
 
         if (item.itemType != ItemType.Equipment)
         {

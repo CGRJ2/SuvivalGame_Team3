@@ -79,7 +79,7 @@ public class CraftingUIManager : MonoBehaviour
     {
         selectedRecipe = recipe;
 
-        iconImage.sprite = recipe.resultItem.itemImage;
+        iconImage.sprite = recipe.resultItem.imageSprite;
         itemNameText.text = recipe.resultItem.itemName;
 
         // 우측 재료 목록 표시
@@ -90,7 +90,7 @@ public class CraftingUIManager : MonoBehaviour
         {
             GameObject go = Instantiate(requiredSlotPrefab, requiredListParent);
             go.GetComponentInChildren<Text>().text = $"{recipe.requiredItems[i].itemName} x {recipe.requiredCounts[i]}";
-            go.GetComponentInChildren<Image>().sprite = recipe.requiredItems[i].itemImage;
+            go.GetComponentInChildren<Image>().sprite = recipe.requiredItems[i].imageSprite;
         }
 
         craftButton.interactable = inventory.HasRequiredItems(recipe);

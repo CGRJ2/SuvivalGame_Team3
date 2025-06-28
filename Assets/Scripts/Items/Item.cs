@@ -3,62 +3,107 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Item", menuName = "New Item/item")]
 public class Item : ScriptableObject
 {
-    public string itemName;         //아이템 이름
-    [TextArea]
-    public string itemDesc;         //아이템 설명
-    public Sprite itemImage;        //아이템 이미지
-    public GameObject itemPrefab;   //아이템 프리펩
     public ItemType itemType;       //아이템 타입
+    public string itemName;         //아이템 이름
+    [TextArea(3,10)]
+    public string description;         //아이템 설명
+    public Sprite imageSprite;        //아이템 이미지
+    public GameObject instancePrefab;   //아이템 프리펩
 
-    public int maxCount = 1; // 한 칸당 최대 보유 가능 수량
+    public int maxCount; // 한 칸당 최대 보유 가능 수량
 
-
-    // 소비 효과 실행
-    public void AdjustConsumeEffect(SlotData slotData, int multieUseCount = 1)
+    // 공통 초기화 가능
+    protected virtual void OnEnable()
     {
-        // 슬롯 데이터에서 아이템 개수 감소
-        slotData.currentCount -= multieUseCount;
-        if (slotData.currentCount <= 0)
+        // 기본 아이템인스턴스 프리펩 설정. 특수 아이템의 경우 아이템인스턴스 프리펩을 다른걸로 달아주면 됨
+        instancePrefab = Resources.Load<GameObject>("ItemInstancePrefabs/ItemInstance_Noraml");
+
+        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
+    }
+    
+    // 사용 => 인벤토리 우클릭 상호작용 시 호출
+    public void UseInInventory(SlotData slotData, int multieUseCount = 1)
+    {
+        // 장비 아이템
+        if (this is IEquipable equipable)
         {
-            slotData.CleanSlotData();
+            equipable.EquipToQuickSlot();
         }
+        // 소비 아이템 (소비 아이템인데 장착 가능한 애들은 따로 장착까지만 가능)
+        else if (this is Item_Consumable consumable)
+        {
+            // 소비템 종류 별 효과 실행
+            ConsumableSorting(consumable);
 
-        // 효과 실행
-        ItemDatabase.ConsumeEffectDic[itemName].Invoke();
+            // 슬롯 데이터에서 개수 줄이기
+            consumable.Consume(slotData, multieUseCount);
+        }
+        // 레시피 아이템이라면
+        else if (this is Item_Recipe recipe)
+        {
+
+        }
     }
 
-    // 장비 아아이템 장착 시 효과 적용
-    public void AdjustEquipEffect()
+    // 기능실행 => 플레이어가 장착한 상태에서 공격할 시 호출
+    public void ActivateEffectOnAttack(SlotData slotData) // 여기서 slotData는 현재 활성화 되어있는 퀵슬롯의 원본 슬롯 데이터를 참조한다
     {
-        ItemDatabase.EquipEffectDic[itemName].Invoke();
+        // 장비 아이템
+        if (this is IEquipable equipable)
+        {
+            if (this is Item_Throwing throwing)
+            {
+                throwing.OnAttackEffect();
+                throwing.Consume(slotData);
+            }
+            else
+            {
+                equipable.OnAttackEffect();
+            }
+        }
+        // 소비 아이템 (소비 아이템인데 장착 가능한 애들은 따로 장착까지만 가능)
+        else if (this is Item_Consumable consumable)
+        {
+            // 소비템 종류 별 효과 실행
+            ConsumableSorting(consumable);
+
+            // 슬롯 데이터에서 개수 줄이기
+            consumable.Consume(slotData);
+        }
     }
 
-    // 일반 사용 효과 실행 (소모 X) // 효과 정보가 없으면 실행 안함
-    public void AdjustUseEffect()
+    // 소비템 종류 별 분류해서 각 종류에 맞는 효과 실행
+    private void ConsumableSorting(Item_Consumable consumable)
     {
-        if (ItemDatabase.UseEffectDic.ContainsKey(itemName))
-            ItemDatabase.UseEffectDic[itemName].Invoke();
+        if (consumable is Item_HealingHP hp)
+        {
+            hp.Hp_HealingRandomPart();
+        }
+        else if (consumable is Item_BodyPart part)
+        {
+            part.Hp_Init();
+        }
+        else if (consumable is Item_ChargeBattery charge)
+        {
+            charge.Battery_Healing();
+        }
+        else if (consumable is Item_NewBattery battery)
+        {
+            battery.Battery_Init();
+        }
+        else
+        {
+            consumable.ConsumeEffectInvoke();
+        }
     }
 
-    public bool IsCanEquip()
-    {
-        if (ItemDatabase.EquipEffectDic.ContainsKey(itemName)) { return true; }
-        else return false;
-    }
-
-    public bool IsCanConsume()
-    {
-        if (ItemDatabase.ConsumeEffectDic.ContainsKey(itemName)) { return true; }
-        else return false;
-    }
 
     // 아이템 인스턴스 생성
     public void SpawnItem(Transform transform, int count = 1)
     {
-        ItemInstance instance = Instantiate(itemPrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();
+        ItemInstance instance = Instantiate(instancePrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();
         instance.InitInstance(this, count);
     }
 }
@@ -79,3 +124,17 @@ public class ItemRequirement
     public Item item;
     public int count;
 }
+
+
+public interface IEquipable
+{
+    public void EquipToQuickSlot();
+
+    public void OnAttackEffect();
+}
+
+public interface IConsumable
+{
+    public void Consume(SlotData slotData, int multieUseCount = 1);
+}
+

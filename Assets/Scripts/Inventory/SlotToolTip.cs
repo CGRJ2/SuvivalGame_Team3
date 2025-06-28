@@ -25,7 +25,7 @@ public class SlotToolTip : MonoBehaviour
 
         go_Base.transform.position = _pos;
         Text_ItemName.text = _item.itemName;
-        Text_ItemDesc.text = _item.itemDesc;
+        Text_ItemDesc.text = _item.description;
 
         if (_item.itemType == ItemType.Equipment)
         {

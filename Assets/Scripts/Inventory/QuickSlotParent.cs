@@ -59,19 +59,19 @@ public class QuickSlotParent : MonoBehaviour
         // 소비 효과만 있는 아이템이라면 슬롯 누르자마자 사용효과 적용 (즉발 소비 아이템)
 
         // 장착 가능한 아이템부터 판별 => 장착
-        if (selectedItem.IsCanEquip())
+        /*if (selectedItem.IsHaveEquipEffect())
         {
             // 장착 효과 적용 (무기면 공격력 증가, Todo: 소비 아이템이면서 장착 효과가 존재하는 아이템 => 공격 키 스탠바이 상태)
             selectedItem.AdjustEquipEffect();
         }
-        else if (selectedItem.IsCanConsume())
+        else if (selectedItem.IsHaveConsumeEffect())
         {
             // 소비
             selectedItem.AdjustConsumeEffect(slotData);
 
             // 소비 후 슬롯 View 업데이트
             quickSlots[quickSlotNumber - 1].SlotViewUpdate();
-        }
+        }*/
     }
 
     public void UpdateQuickSlotView()

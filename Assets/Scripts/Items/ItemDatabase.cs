@@ -11,29 +11,27 @@ public static class ItemDatabase
     // 데이터 매니저 => 저장 기능
     // 기믹 매니저 => 기믹 해제, 판별 기능
 
-    // 아이템 소모
+
+
+    // 아이템 소모 효과 데이터 베이스 => Action<매개변수, 매개변수>
     public static Dictionary<string, Action> ConsumeEffectDic = new Dictionary<string, Action>()
     {
-        { "보조 배터리", () => PlayerManager.Instance.instancePlayer.Status.CurrentBattery.Value += 10},
-        { "TestItem", () => Debug.Log("버그를 막아줬다.")},
-        { "소비A", () => Debug.Log("소비 A 사용")},
-        { "아무튼 캣잎", () => Debug.Log("손에 장착")},
-        { "소비B", () => Debug.Log("B 냠냠")},
-    };
-
-    // 아이템 장착
-    public static Dictionary<string, Action> EquipEffectDic = new Dictionary<string, Action>()
-    {
-        { "아무튼 캣잎", () => Debug.Log("투척무기 준비상태")}, // 여기서 아이템 손에 장착 후 공격 키 누를 때 효과 정리
-        { "장비A", () => Debug.Log("장비를 장착했다")},
 
     };
+    
 
     // 일반 사용 (퀘스트 아이템, 지도 등)
-    public static Dictionary<string, Action> UseEffectDic = new Dictionary<string, Action>()
+    public static Dictionary<string, Action> AttackOnHandEffectDic = new Dictionary<string, Action>()
     {
-        { "퀘스트아이템A", () => Debug.Log("퀘스트 아이템A 본다")}, // 여기서 아이템 손에 장착 후 공격 키 누를 때 효과 정리
-        { "레시피", () => BaseCampManager.Instance.baseCampData.UnlockRecipe("레시피")},
+        { "손전등", () => Debug.Log("불을 켠다")}, // 여기서 아이템 손에 장착 후 공격 키 누를 때 효과 정리
+        { "열쇠A", () => Debug.Log("A방의 문을 언락한다")},
 
+        /// 다용도 아이템////
     };
+
+
+   
+   
+
+
 }
