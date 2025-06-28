@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     
 
 
-    private void Start() => Init();
+    private void Awake() => Init();
 
     public Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
     public float SmoothTime = 0.1f; // 보간 속도
