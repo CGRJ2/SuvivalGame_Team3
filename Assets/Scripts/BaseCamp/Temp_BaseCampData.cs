@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Temp_BaseCampData
@@ -10,9 +11,17 @@ public class Temp_BaseCampData
     public Item_Recipe[] allRecipeList;
     public List<Item_Recipe> UnlockedRecipeList;
 
+    public Temp_BaseCampData()
+    {
+        Init();
+    }
+
     public void Init()
     {
         allRecipeList = Resources.LoadAll<Item_Recipe>("ItemDatabase/99 Recipes");
+        List<Item_Recipe> sortTemp = allRecipeList.ToList();
+        sortTemp.Sort((a, b) => a.RecipeData.orderIndex.CompareTo(b.RecipeData.orderIndex));
+        allRecipeList = sortTemp.ToArray();
     }
 
     public void LevelUp()

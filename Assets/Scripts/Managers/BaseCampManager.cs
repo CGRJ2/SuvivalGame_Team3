@@ -16,6 +16,7 @@ public class BaseCampManager : Singleton<BaseCampManager>
     {
         base.SingletonInit();
         pm = PlayerManager.Instance;
+        baseCampData = new Temp_BaseCampData();
     }
 
     private void Start()

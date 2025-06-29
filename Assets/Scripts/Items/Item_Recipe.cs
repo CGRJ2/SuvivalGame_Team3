@@ -38,6 +38,9 @@ public class RecipeData
     [Header("레시피 창에 나타낼 순서")]
     public int orderIndex;
 
+    [Header("제작 시간")]
+    public float craftDuration = 3f;
+
     [Header("결과물 설정")]
     public Item resultItem;
     public int resultItemCount = 1;
