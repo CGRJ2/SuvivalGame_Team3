@@ -5,7 +5,6 @@ using static UnityEditor.MaterialProperty;
 
 public class Interactable_RegionLock : InteractableBase
 {
-
     public Item itemForUnlock;
 
     public override void Interact()
