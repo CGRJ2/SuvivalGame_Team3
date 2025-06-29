@@ -54,6 +54,10 @@ public abstract class BaseMonster : MonoBehaviour
     // 회전 관련
     [SerializeField] private float rotationSpeed = 7f;
 
+    // 랜덤 이동 관련
+    private float moveTimer = 0f;
+    private Vector3 currentDirection;
+
     // 읽기 전용
     public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
@@ -128,8 +132,13 @@ public abstract class BaseMonster : MonoBehaviour
         }
 
         stateMachine.Update();
-        HandleState(); // 자식이 override 가능
+        HandleState();
         perceptionController.Update();
+
+        if (stateMachine.CurrentState is MonsterIdleState) // Idle 상태에선
+        {
+            HandleWanderMovement(); // 랜덤 이동 호출
+        }
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -230,6 +239,20 @@ public abstract class BaseMonster : MonoBehaviour
         // 이동
         Vector3 targetPosition = rb.position + (direction * moveSpeed * Time.deltaTime);
         rb.MovePosition(targetPosition);
+    }
+    private void HandleWanderMovement()
+    {
+        moveTimer -= Time.deltaTime;
+
+        if (moveTimer <= 0f)
+        {
+            float angle = Random.Range(0f, 360f);
+            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
+
+            moveTimer = Random.Range(1f, 2f);
+        }
+
+        Move(currentDirection);
     }
 
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
