@@ -27,7 +27,7 @@ public class Slot : MonoBehaviour,
     //private ItemEffectDatabase theItemEffectDatabase;
     private SlotToolTip theSlot;
 
-
+    public bool isDismantleSlot = false; //해체슬롯 구분 변수
 
     void Start()
     {
@@ -135,24 +135,47 @@ public class Slot : MonoBehaviour,
         Item draggedItem = DragSlot.instance.dragSlot.item;
         if (draggedItem == null) return;
 
-        // 타입 일치 검사 또는 예외 처리 허용
+        // 해체 슬롯이면 추가 검사
+        if (slotType == ItemType.All) // All 타입은 해체슬롯
+        {
+            var dismantle = FindObjectOfType<DismantleManager>();
+            if (dismantle.dismantleBanList.Contains(draggedItem.itemName))
+            {
+                Debug.Log($"{draggedItem.itemName} 은 해체할 수 없습니다.");
+                return;
+            }
+        }
+        if (isDismantleSlot)
+        {
+            // 해체 슬롯일 경우, 인벤토리 슬롯에서 아이템을 복사해서 담기
+            AddItem(draggedItem, 1); // 수량 1개만 표시 (혹은 원하는 값)
+            return;
+        }
+
+        // 타입 검사
         if (!IsValidItemForSlot(draggedItem.itemType))
         {
             Debug.Log("해당 슬롯에 아이템 타입이 맞지 않습니다.");
             return;
         }
 
+        // 인벤토리끼리 스왑
         ChangeSlot();
     }
     private bool IsValidItemForSlot(ItemType itemType)
     {
-        // ETC 슬롯은 Equipment, Used 허용
-        if (slotType == ItemType.ETC)
+        if (slotType == ItemType.All)
         {
+            // All 슬롯은 어떤 아이템 타입이든 허용
+            return true;
+        }
+        else if (slotType == ItemType.ETC)
+        {
+            // ETC 슬롯은 장비, 소비만 허용
             return itemType == ItemType.Equipment || itemType == ItemType.Used;
         }
 
-        // 그 외엔 타입 정확히 일치해야 허용
+        // 기본적으로 타입 일치
         return itemType == slotType;
     }
 

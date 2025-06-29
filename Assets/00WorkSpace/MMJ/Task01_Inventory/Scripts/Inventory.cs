@@ -149,26 +149,18 @@ public class Inventory : MonoBehaviour
 
     public bool HasRequiredItems(CraftingRecipe recipe)
     {
-        Slot[] ingredientSlots = ingredientSlots = GetTargetSlotArray(ItemType.Ingredient);
-
         for (int i = 0; i < recipe.requiredItems.Length; i++)
         {
-            int requiredCount = recipe.requiredCounts[i];
-            int totalCount = 0;
+            int required = recipe.requiredCounts[i];
+            int owned = GetItemCount(recipe.requiredItems[i]);
 
-            foreach (Slot slot in ingredientSlots)
-            {
-                if (slot.item != null && slot.item == recipe.requiredItems[i])
-                {
-                    totalCount += slot.itemCount;
-                }
-            }
+            Debug.Log($"[Check] {recipe.requiredItems[i].itemName}: 필요 {required}, 보유 {owned}");
 
-            if (totalCount < requiredCount)
+            if (owned < required)
                 return false;
         }
 
-        return true;
+        return true; //드디어 버그 고쳤다..!!!!!!!!! 이유> 아이템은 다섯가지 타입으로 분류되는데 재료 탭에서만 아이템이 있는지 확인하고 있었기때문 -> 모든 인벤토리에서 순회해서 찾도록 변경
     }
 
     public void CraftItem(CraftingRecipe recipe)  // 크래프팅을 위한 테스트코드
@@ -197,4 +189,51 @@ public class Inventory : MonoBehaviour
     }
 
 
+    public int GetItemCount(Item item)
+    {
+        int total = 0;
+
+        // 모든 슬롯 배열 돌기
+        Slot[][] allSlotGroups = new Slot[][]
+        {
+        equipmentSlots, usedSlots, ingredientSlots, functionSlots, questSlots
+        };
+
+        foreach (var slotGroup in allSlotGroups)
+        {
+            foreach (var slot in slotGroup)
+            {
+                if (slot.item != null && slot.item.itemName == item.itemName)
+                {
+                    total += slot.itemCount;
+                }
+            }
+        }
+
+        return total;
+    }
+
+    public void RemoveItem(Item _item, int _count = 1) //해체 시스템
+    {
+        Slot[] targetSlots = GetTargetSlotArray(_item.itemType);
+
+        int remainToRemove = _count;
+
+        foreach (Slot slot in targetSlots)
+        {
+            if (slot.item != null && slot.item == _item)
+            {
+                int removed = slot.ReduceItem(remainToRemove);  // 슬롯에 구현되어 있어야 함
+                remainToRemove -= removed;
+
+                if (remainToRemove <= 0)
+                    break;
+            }
+        }
+
+        if (remainToRemove > 0)
+        {
+            Debug.LogWarning($"[{_item.itemName}] 아이템을 {remainToRemove}만큼 제거하지 못했습니다 (인벤토리에 충분하지 않음).");
+        }
+    }
 }

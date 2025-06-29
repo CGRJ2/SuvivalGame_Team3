@@ -14,5 +14,7 @@ public class CraftingRecipe : ScriptableObject
 
 
     public Item resultItem;         //결과아이템
-    public int resultCount = 1;     //결과아이템수량
+    public int resultCount = 1;         //결과아이템수량
+
+    public float craftDuration = 3f; // 제작에 걸리는 시간 (초 단위)
 }
