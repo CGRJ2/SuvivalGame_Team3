@@ -13,7 +13,8 @@ public class UIManager : Singleton<UIManager>
 [System.Serializable]
 public class InventoryUI
 {
-    public ObservableProperty<InventoryView> inventoryView = new ObservableProperty<InventoryView>();
+    public InventoryView inventoryView;
     public SlotToolTip tooltip;
     public DragSlotView dragSlotInstance;
+    public QuickSlotParent quickSlotParent;
 }

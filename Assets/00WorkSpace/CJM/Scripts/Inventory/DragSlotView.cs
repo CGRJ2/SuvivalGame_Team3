@@ -11,6 +11,8 @@ public class DragSlotView : MonoBehaviour
 
     private void Start() => Init();
 
+
+
     public void Init()
     {
         UIManager.Instance.inventoryUI.dragSlotInstance = this;

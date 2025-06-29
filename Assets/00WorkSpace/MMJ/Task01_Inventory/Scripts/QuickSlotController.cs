@@ -20,7 +20,7 @@ public class QuickSlotController : MonoBehaviour
 
     private void Update()
     {
-        TryInPutNumber();
+        //TryInPutNumber();
     }
 
     private void TryInPutNumber()
