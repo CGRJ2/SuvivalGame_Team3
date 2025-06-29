@@ -93,7 +93,7 @@ public class CraftingUIManager : MonoBehaviour
     {
         selectedRecipe = recipe;                            // 현재 선택된 레시피를 저장
 
-        iconImage.sprite = recipe.resultItem.itemImage;     // 결과 아이템의 아이콘과 이름을 UI에 표시
+        iconImage.sprite = recipe.resultItem.imageSprite;     // 결과 아이템의 아이콘과 이름을 UI에 표시
         itemNameText.text = recipe.resultItem.itemName;
 
         foreach (Transform child in requiredListParent)      // 기존에 표시된 필요 재료 슬롯들을 모두 제거
@@ -125,7 +125,7 @@ public class CraftingUIManager : MonoBehaviour
 
             Image itemImage = go.GetComponentInChildren<Image>();
             if (itemImage != null)
-                itemImage.sprite = input.itemImage;
+                itemImage.sprite = input.imageSprite;
 
             Debug.Log($"[Crafting] HasRequiredItems: {inventory.HasRequiredItems(recipe)} for {recipe.recipeName}");
         }

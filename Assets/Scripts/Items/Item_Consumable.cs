@@ -8,7 +8,7 @@ public class Item_Consumable : Item, IConsumable
     protected override void OnEnable()
     {
         base.OnEnable();
-        itemType = ItemType.Used;
+        itemType = ItemType.Consumalbe;
         maxCount = 10;
         itemName = this.name;
         imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/Sprite_Consumable");

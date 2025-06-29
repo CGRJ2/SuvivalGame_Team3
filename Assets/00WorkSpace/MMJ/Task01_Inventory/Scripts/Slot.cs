@@ -136,7 +136,7 @@ public class Slot : MonoBehaviour,
         if (draggedItem == null) return;
 
         // 해체 슬롯이면 추가 검사
-        if (slotType == ItemType.All) // All 타입은 해체슬롯
+        if (slotType == ItemType.AllType) // All 타입은 해체슬롯
         {
             var dismantle = FindObjectOfType<DismantleManager>();
             if (dismantle.dismantleBanList.Contains(draggedItem.itemName))
@@ -164,7 +164,7 @@ public class Slot : MonoBehaviour,
     }
     private bool IsValidItemForSlot(ItemType itemType)
     {
-        if (slotType == ItemType.All)
+        if (slotType == ItemType.AllType)
         {
             // All 슬롯은 어떤 아이템 타입이든 허용
             return true;
@@ -172,7 +172,7 @@ public class Slot : MonoBehaviour,
         else if (slotType == ItemType.ETC)
         {
             // ETC 슬롯은 장비, 소비만 허용
-            return itemType == ItemType.Equipment || itemType == ItemType.Used;
+            return itemType == ItemType.Equipment || itemType == ItemType.Consumalbe;
         }
 
         // 기본적으로 타입 일치

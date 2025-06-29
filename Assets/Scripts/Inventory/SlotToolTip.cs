@@ -31,7 +31,7 @@ public class SlotToolTip : MonoBehaviour
         {
             Text_ItemHowToUesd.text = "우클릭 - 장착";
         }
-        else if (_item.itemType == ItemType.Used)
+        else if (_item.itemType == ItemType.Consumalbe)
         {
             Text_ItemHowToUesd.text = "우클릭 - 사용하기";
         }

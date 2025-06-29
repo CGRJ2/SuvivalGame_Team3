@@ -83,7 +83,7 @@ public class Inventory : MonoBehaviour
         switch (currentTab)
         {
             case ItemType.Equipment: go_EquipmentSlotsParent.SetActive(true); break;
-            case ItemType.Used: go_UsedSlotsParent.SetActive(true); break;
+            case ItemType.Consumalbe: go_UsedSlotsParent.SetActive(true); break;
             case ItemType.Ingredient: go_IngredientSlotsParent.SetActive(true); break;
             case ItemType.Function: go_FunctionSlotsParent.SetActive(true); break;
             case ItemType.Quest: go_QuestSlotsParent.SetActive(true); break;
@@ -104,7 +104,7 @@ public class Inventory : MonoBehaviour
         switch (type)
         {
             case ItemType.Equipment: return equipmentSlots;
-            case ItemType.Used: return usedSlots;
+            case ItemType.Consumalbe: return usedSlots;
             case ItemType.Ingredient: return ingredientSlots;
             case ItemType.Function: return functionSlots;
             case ItemType.Quest: return questSlots;
@@ -141,7 +141,7 @@ public class Inventory : MonoBehaviour
     }
 
     public void OnClickEquipmentTab() => ChangeTab(ItemType.Equipment);
-    public void OnClickUsedTab() => ChangeTab(ItemType.Used);
+    public void OnClickUsedTab() => ChangeTab(ItemType.Consumalbe);
     public void OnClickIngredient() => ChangeTab(ItemType.Ingredient);
     public void OnClickFunctionTab() => ChangeTab(ItemType.Function);
     public void OnClickQuestTab() => ChangeTab(ItemType.Quest);

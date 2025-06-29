@@ -33,7 +33,7 @@ public class InventoryModel
             case ItemType.Ingredient:
                 nowTab = ingredientSlots;
                 break;
-            case ItemType.Used:
+            case ItemType.Consumalbe:
                 nowTab = consumableSlots;
                 break;
             case ItemType.Equipment:

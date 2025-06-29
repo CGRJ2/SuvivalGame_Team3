@@ -54,7 +54,7 @@ public class SlotView : MonoBehaviour,
             }
         }
         // 재료아이템/소비아이템 => 갯수 표현
-        else if (slotData.item.itemType == ItemType.Used || slotData.item.itemType == ItemType.Ingredient)
+        else if (slotData.item.itemType == ItemType.Consumalbe || slotData.item.itemType == ItemType.Ingredient)
         {
             itemSprite.sprite = slotData.item.imageSprite;
             countText.text = slotData.currentCount.ToString();
