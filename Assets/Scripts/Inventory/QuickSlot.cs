@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class QuickSlot : SlotView
 {
-    public SlotView chainedOriginSlotView;
+
 }

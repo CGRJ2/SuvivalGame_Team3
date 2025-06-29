@@ -25,16 +25,16 @@ public class QuickSlotParent : MonoBehaviour
 
 
     // 현재 퀵슬롯에 드롭한 아이템이 이미 등록되어있는지 판단하는 함수
-    public bool IsAlreadyInQuickSlot(SlotData dropedSlotData)
+    public QuickSlot IsAlreadyInQuickSlot(SlotData dropedSlotData)
     {
-        foreach(QuickSlot quickSlotData in quickSlots)
+        foreach(QuickSlot quickSlot in quickSlots)
         {
-            if (quickSlotData.slotData == dropedSlotData)
+            if (quickSlot.slotData == dropedSlotData)
             {
-                return true;
+                return quickSlot;
             }
         }
-        return false;
+        return null;
     }
 
     // 비어있는 가장 앞의 퀵슬롯 반환
@@ -47,8 +47,6 @@ public class QuickSlotParent : MonoBehaviour
                 return quickSlot;
             }
         }
-
-        Debug.Log("퀵슬롯 빈공간 없어요");
         return null;
     }
 

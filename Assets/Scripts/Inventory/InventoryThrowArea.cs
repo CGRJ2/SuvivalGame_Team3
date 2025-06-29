@@ -14,13 +14,7 @@ public class InventoryThrowArea : MonoBehaviour, IDropHandler
         {
             dragSlotInstance.slotView.ClearSlotView();
 
-            // 체인 상태라면 => 체인 해제
-            if (quick.chainedOriginSlotView != null)
-            {
-                quick.chainedOriginSlotView.chainedQuickSlot.slotData = new SlotData();
-                quick.chainedOriginSlotView.chainedQuickSlot = null;
-                quick.chainedOriginSlotView = null;
-            }
+            quick.slotData = new SlotData();
 
             quick.SlotViewUpdate();
         }
