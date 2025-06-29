@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     
 
 
-    private void Start() => Init();
+    private void Awake() => Init();
 
     public Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
     public float SmoothTime = 0.1f; // 보간 속도
@@ -84,6 +84,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Init()
     {
+        PlayerManager.Instance.instancePlayer = this;
+
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
@@ -164,7 +166,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 8. 퀵슬롯 핫키
         quickSlotActions = playerControlMap.FindAction("QuickSlots");
         quickSlotActions.Enable();
-        quickSlotActions.started += OnQuickSlotPerformed;
+        quickSlotActions.performed += OnQuickSlotPerformed;
     }
 
     private void InputActionsDelete()
@@ -200,69 +202,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         attackAction.started -= OpenInventory;
 
         // 8. 퀵슬롯 핫키
-        quickSlotActions.started -= OnQuickSlotPerformed;
+        quickSlotActions.performed -= OnQuickSlotPerformed;
 
     }
-
-
-    public void HandleMove()
-    {
-        // 컨트롤 락 걸리면 이동 로직 중지
-        if (Status.isControllLocked) return;
-
-        float moveSpeed;
-        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
-        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
-        else moveSpeed = Status.MoveSpeed;
-
-        Vector3 getMoveDir;
-
-        if (isFreeCamModInput)
-            getMoveDir = View.GetMoveDirection(InputDir, true);
-        else
-            getMoveDir = View.GetMoveDirection(InputDir);
-
-        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
-        View.moveDir = moveVec;
-        View.facingDir = moveVec;
-
-        if (InputDir != Vector3.zero)
-        {
-            View.animator.SetBool("IsMove", true);
-            isMoveInput = true;
-        }
-        else
-        {
-            View.animator.SetBool("IsMove", false);
-            isMoveInput = false;
-        }
-    }
-
-    public void HandleSight()
-    {
-        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
-
-        Vector3 avatarDir;
-        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
-        if (isFreeCamModInput) avatarDir = View.facingDir;
-        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
-        else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir; 
-        else avatarDir = View.moveDir;
-
-        // 컨트롤 락 걸리면 아바타 회전은 정지
-        if (Status.isControllLocked) return;
-
-        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
-
-        // Attack 상태일 때만.
-        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
-        {
-            View.animator.SetFloat("MoveX", SmoothDir.x);
-            View.animator.SetFloat("MoveZ", SmoothDir.y);
-        }
-    }
-
-
 
     #region InputAction 처리
     public void OnMove(InputValue value)
@@ -387,7 +329,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void OnQuickSlotPerformed(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
             // 디지털 키 값 검사 (Keyboard.current.digit1Key.wasPressedThisFrame 등)
             if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectQuickSlot(1);
@@ -399,17 +341,12 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void SelectQuickSlot(int index)
     {
         Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlotEffect(index);
+        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index - 1);
         // 손에 드는 아이템 교체
     }
     #endregion
 
-    public void CrouchToggleChange(bool value)
-    {
-        isCrouchToggle = value;
-    }
-
-    // InputFlag들에 따른 상태 전환 총괄
+    #region InputFlag들에 따른 상태 전환 조건 관리
     public void UpdateStateCondition()
     {
         // 컨트롤 락 걸리면 
@@ -423,13 +360,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Cc.GetIsGroundState())
         {
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
-            if ( isAttackInput || isAttacking )
+            if (isAttackInput || isAttacking)
             {
-                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                if ((Status.IsCurrentState(PlayerStateTypes.Idle) || Status.IsCurrentState(PlayerStateTypes.Move)))
                 {
                     Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
@@ -446,7 +383,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
@@ -463,7 +400,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
+                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
                         Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
@@ -497,9 +434,70 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
     }
 
-    public bool IsCurrentState(PlayerStateTypes state)
+    #endregion
+
+    #region 플레이어 조작 기능 & 상호작용 관리
+
+    public void HandleMove()
     {
-        return Status.stateMachine.CurState == Status.stateMachine.stateDic[state];
+        // 컨트롤 락 걸리면 이동 로직 중지
+        if (Status.isControllLocked) return;
+
+        float moveSpeed;
+        if (Status.IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
+        else moveSpeed = Status.MoveSpeed;
+
+        Vector3 getMoveDir;
+
+        if (isFreeCamModInput)
+            getMoveDir = View.GetMoveDirection(InputDir, true);
+        else
+            getMoveDir = View.GetMoveDirection(InputDir);
+
+        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
+        View.moveDir = moveVec;
+        View.facingDir = moveVec;
+
+        if (InputDir != Vector3.zero)
+        {
+            View.animator.SetBool("IsMove", true);
+            isMoveInput = true;
+        }
+        else
+        {
+            View.animator.SetBool("IsMove", false);
+            isMoveInput = false;
+        }
+    }
+
+    public void HandleSight()
+    {
+        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
+
+        Vector3 avatarDir;
+        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
+        if (isFreeCamModInput) avatarDir = View.facingDir;
+        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
+        else if (!isMoveInput || Status.IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
+        else avatarDir = View.moveDir;
+
+        // 컨트롤 락 걸리면 아바타 회전은 정지
+        if (Status.isControllLocked) return;
+
+        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
+
+        // Attack 상태일 때만.
+        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
+        {
+            View.animator.SetFloat("MoveX", SmoothDir.x);
+            View.animator.SetFloat("MoveZ", SmoothDir.y);
+        }
+    }
+
+    public void CrouchToggleChange(bool value)
+    {
+        isCrouchToggle = value;
     }
 
     public void Attack()
@@ -521,44 +519,30 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (interactable != null) 
             interactable.Interact();
     }
-   
-    
-
-
-    public void LoadPlayerData(PlayerStatus status)
-    {
-
-    }
-
-    public void SavePlayerData(PlayerStatus status)
-    {
-
-    }
 
     public void TakeDamage(int damage)
     {
         // 무적 상태라면 return;
         if (Status.isInvincible) return;
-        
+
         // 활성 상태인 신체 부위 중 랜덤 선택
         List<BodyPart> bodyPart = Status.GetBodyPartsList();
         List<BodyPart> activeBodyPart = new List<BodyPart>();
 
-        foreach(BodyPart part in bodyPart)
+        foreach (BodyPart part in bodyPart)
         {
             // 활성 상태인 파츠들로 리스트 새로 생성
-            if (part.Activate.Value) 
+            if (part.Activate.Value)
                 activeBodyPart.Add(part);
         }
 
         // 부위 랜덤 데미지
-        int r = Random.Range(0, activeBodyPart.Count);
+        int r = Random.Range(1, activeBodyPart.Count);
         activeBodyPart[r].TakeDamage(damage);
 
         Status.CheckCriticalState();
         StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
     }
-
 
     public IEnumerator InvincibleRoutine(float time)
     {
@@ -570,5 +554,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         Status.isInvincible = false;
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
+
+    #endregion
+
+
 
 }

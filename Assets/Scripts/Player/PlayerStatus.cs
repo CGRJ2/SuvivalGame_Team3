@@ -6,6 +6,8 @@ public class PlayerStatus : MonoBehaviour
 {
     public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
 
+    SuvivalSystemManager ssm;
+
     [Header("런타임 내 불변 값 세팅")] /////////////////////
     [SerializeField][Range(-90, 0)] private float minPitch;
     [SerializeField][Range(0, 90)] private float maxPitch;
@@ -18,8 +20,6 @@ public class PlayerStatus : MonoBehaviour
     //////////////////////////////////////////////////////
 
     [Header("초기값 세팅")]////////////////////////
-    [SerializeField] private int willPower_Init;
-    [SerializeField] private int battery_Init;
     [SerializeField] private float moveSpeed_Init;
     [SerializeField] private float sprintSpeed_Init;
     [SerializeField] private float jumpForce_Init;
@@ -30,15 +30,18 @@ public class PlayerStatus : MonoBehaviour
 
 
     [Header("현재 플레이어 정보")] // 세이브 & 로드 가능
-    public ObservableProperty<int> WillPower = new ObservableProperty<int>();
-    public ObservableProperty<int> Battery = new ObservableProperty<int>();
+    public ObservableProperty<int> CurrentWillPower = new ObservableProperty<int>();
+    public ObservableProperty<int> CurrentBattery = new ObservableProperty<int>();
+    public ObservableProperty<int> MaxBattery = new ObservableProperty<int>();
     [field: SerializeField] public float MoveSpeed { get; set; }
     [field: SerializeField] public float SprintSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
     [field: SerializeField] public int Damage { get; set; }
 
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
-    
+
+    [Header("장착 중인 아이템")]
+    public Item onHandItem;
 
     // 우선 캔버스에 직접 연결하지만, MVP 구조로 리팩토링 필요 (데이터 & UI & 로직 처리(상태 업데이트, Input처리 등)로 분리)
     public InventoryPresenter inventory;
@@ -77,13 +80,14 @@ public class PlayerStatus : MonoBehaviour
     // 플레이어 데이터 초기 상태
     public void Init()
     {
-        PlayerManager.Instance.currentPlayerStatus = this;
+        ssm = SuvivalSystemManager.Instance;
 
-        WillPower.Subscribe(WillPowerChanged);
-        Battery.Subscribe(BatteryChanged);
+        // 정신력 초기화
+        CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
 
-        WillPower.Value = willPower_Init;
-        Battery.Value = battery_Init;
+        // 배터리 초기화
+        InitBattery();
+
 
         MouseSensitivity = mouseSensitivity_Init;
 
@@ -92,39 +96,40 @@ public class PlayerStatus : MonoBehaviour
         SprintSpeed = sprintSpeed_Init;
         JumpForce = jumpForce_Init;
 
-        
-
-        BodySet();
+        BodyPartsInit();
 
         // 인벤토리 초기화
         inventory = new InventoryPresenter();
     }
 
-    public void WillPowerAdjust(int value)
+    public void BodyPartsInit()
     {
-        WillPower.Value += value;
-    }
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
 
-    public void WillPowerChanged(int value)
-    {
-        // 임시
-        // CurWillPower필드 삭제 후 UI로 표기
-
-    }
-    public void BatteryChanged(int value)
-    {
-        // 임시
-        // CurBattery필드 삭제 후 UI로 표기
-    }
-
-    public void BodySet()
-    {
         // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.
-        bodyParts.Add(new BodyPart(BodyPartTypes.LeftArm, 10, (isActive) => ApplyDebuff_CraftSpeed = !isActive)); 
-        bodyParts.Add(new BodyPart(BodyPartTypes.RightArm, 10, (isActive) => ApplyDebuff_LockWeaponUse = !isActive));
-        bodyParts.Add(new BodyPart(BodyPartTypes.LeftLeg, 10, (isActive) => ApplyDebuff_SprintSpeed = !isActive));
-        bodyParts.Add(new BodyPart(BodyPartTypes.RightLeg, 10, (isActive) => ApplyDebuff_SprintSpeed = !isActive));
-        bodyParts.Add(new BodyPart(BodyPartTypes.Head, 100, (isActive) => Dead()));
+        bodyParts.Add(new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_Init, 
+            (isActive) => Dead()));
+        bodyParts.Add(new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_Init, 
+            (isActive) => ApplyDebuff_CraftSpeed = !isActive)); 
+        bodyParts.Add(new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_Init,
+            (isActive) => ApplyDebuff_LockWeaponUse = !isActive));
+        bodyParts.Add(new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
+            (isActive) => ApplyDebuff_SprintSpeed = !isActive));
+        bodyParts.Add(new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
+            (isActive) => ApplyDebuff_SprintSpeed = !isActive));
+    }
+
+    public void InitBattery()
+    {
+        MaxBattery.Value = ssm.batterySystem.MaxBattery_Init;
+        CurrentBattery.Value = MaxBattery.Value;
+    }
+
+    public void ChargeBattery(int amount)
+    {
+        if (CurrentBattery.Value + amount < MaxBattery.Value)
+            CurrentBattery.Value += amount;
+        else CurrentBattery.Value = MaxBattery.Value;
     }
 
     public List<BodyPart> GetBodyPartsList()
@@ -159,9 +164,13 @@ public class PlayerStatus : MonoBehaviour
     }
     public void Dead()
     {
-        Debug.Log("플레이어 사망");
+        PlayerManager.Instance.PlayerDead();
     }
 
+    public bool IsCurrentState(PlayerStateTypes state)
+    {
+        return stateMachine.CurState == stateMachine.stateDic[state];
+    }
 }
 public enum PlayerStateTypes
 {
