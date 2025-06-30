@@ -17,9 +17,9 @@ public class BasicMonsterAI : BaseMonster
     {
         if (IsDead) return;
 
-        Debug.Log($"[AI] checkTargetVisible: {checkTargetVisible}");
-        Debug.Log($"Target: {(target == null ? "null" : target.name)}");
-        Debug.Log($"FOV: {currentFOV}, Range: {currentDetectionRange}");
+        //Debug.Log($"[AI] checkTargetVisible: {checkTargetVisible}");
+        //Debug.Log($"Target: {(target == null ? "null" : target.name)}");
+        //Debug.Log($"FOV: {currentFOV}, Range: {currentDetectionRange}");
 
         if (checkTargetVisible)
         {

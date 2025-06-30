@@ -125,7 +125,7 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
         {
             yield return new WaitForSeconds(TickDuration);
 
-            if (Temp_DailyManager.Instance.TZ_State.Value == TimeZoneState.Night)
+            if (DailyManager.Instance.TZ_State.Value == TimeZoneState.Night)
             {
                 if (ps.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Night > 0)
                     ps.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Night;

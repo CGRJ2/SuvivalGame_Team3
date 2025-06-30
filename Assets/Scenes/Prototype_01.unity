@@ -7226,7 +7226,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <BasePanel>k__BackingField: {fileID: 666467467}
   recipeListParent: {fileID: 1814066394}
+  requiredListParent: {fileID: 0}
   pageIndex: 0
+  resultItemImage: {fileID: 0}
+  resultItemNameText: {fileID: 0}
 --- !u!1 &1222435680
 GameObject:
   m_ObjectHideFlags: 0
@@ -12872,18 +12875,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5660997679408610634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12cf3d3f979c4c04a8e842ef8c2fa0bd, type: 3}
+  m_Script: {fileID: 11500000, guid: a311d3b54f49ce7458dd25627a5582ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timeZoneSetting:
-    <DayCycleTime>k__BackingField: 12
-    <MaxDayCount>k__BackingField: 30
-    <TZ_Morning>k__BackingField: 3
-    <TZ_Afternoon>k__BackingField: 6
-    <TZ_Evening>k__BackingField: 9
+    <DayCycleTime>k__BackingField: 1200
+    <MaxDayCount>k__BackingField: 15
+    <TZ_Morning>k__BackingField: 540
+    <TZ_Afternoon>k__BackingField: 720
+    <TZ_Evening>k__BackingField: 900
   <CurrentTime>k__BackingField: 0
   <CurrentDay>k__BackingField:
-    _value: 1
+    _value: 0
   <TZ_State>k__BackingField:
     _value: 0
 --- !u!114 &733829589874939694

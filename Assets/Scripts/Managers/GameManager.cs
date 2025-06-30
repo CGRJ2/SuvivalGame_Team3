@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] UIManager uiManager;
     [SerializeField] PlayerManager playerManager;
     [SerializeField] SuvivalSystemManager suvivalSystemManager;
-    [SerializeField] Temp_DailyManager dailyManager;
+    [SerializeField] DailyManager dailyManager;
     [SerializeField] DataManager dataManager;
     [SerializeField] BaseCampManager baseCampManager;
     private void Awake() => Init();

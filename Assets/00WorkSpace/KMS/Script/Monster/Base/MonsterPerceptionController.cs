@@ -35,7 +35,7 @@ public class MonsterPerceptionController
 
     public void Update()
     {
-        Debug.Log($"[{owner.name}] perception 업데이트 중 - AlertLevel: {alertLevel}");
+        //Debug.Log($"[{owner.name}] perception 업데이트 중 - AlertLevel: {alertLevel}");
 
         cooldownTimer += Time.deltaTime;
 

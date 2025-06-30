@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BaseMonster : MonoBehaviour
+public abstract class BaseMonster : MonoBehaviour, IDamagable
 {
     [Header("Data")]
     public BaseMonsterData data;
@@ -225,7 +225,7 @@ public abstract class BaseMonster : MonoBehaviour
         // 행동 반경 제한
         if (IsOutsideActionRadius())
         {
-            Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
+            //Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
             return;
         }
 
@@ -488,4 +488,8 @@ public abstract class BaseMonster : MonoBehaviour
         Gizmos.DrawLine(eyePos, eyePos + rightLimit * currentDetectionRange);
     }
 
+    public void TakeDamage(int damage)
+    {
+        Debug.LogError($"맞음! 데미지 {damage}");
+    }
 }

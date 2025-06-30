@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Temp_DailyManager : Singleton<Temp_DailyManager>
+public class DailyManager : Singleton<DailyManager>
 {
     [System.Serializable]
     private class TimeZoneSetting
