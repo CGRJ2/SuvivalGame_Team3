@@ -27,8 +27,8 @@ public class GameManager : Singleton<GameManager>
     {
         // 초기화할 순서대로 나열
         dataManager.Init();
-        uiManager.Init();
         playerManager.Init();
+        uiManager.Init();
         suvivalSystemManager.Init();
         dailyManager.Init();
         baseCampManager.Init();

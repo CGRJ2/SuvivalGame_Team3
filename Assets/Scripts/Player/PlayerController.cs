@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void Init()
     {
         PlayerManager.Instance.instancePlayer = this;
+        
+
 
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
@@ -118,13 +120,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 1. 자유 카메라
         freeCamAction = playerControlMap.FindAction("FreeCamMod");
         freeCamAction.Enable();
-        freeCamAction.started += HandleFreeCam;
+        freeCamAction.performed += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
 
         // 2. 상호 작용
         interactAction = playerControlMap.FindAction("Interaction");
         interactAction.Enable();
-        interactAction.started += HandleInteract;
+        interactAction.performed += HandleInteract;
 
         /*// 조준 (포커싱)
         AimingAction = playerControlMap.FindAction("Aiming");
@@ -155,13 +157,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 6. 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
-        attackAction.started += HandleAttack;
+        attackAction.performed += HandleAttack;
         attackAction.canceled += HandleAttack;
 
         // 7. 인벤토리 열기(I)
         inventoryOpenAction = playerControlMap.FindAction("Inventory");
         inventoryOpenAction.Enable();
-        inventoryOpenAction.started += OpenInventory;
+        inventoryOpenAction.performed += OpenInventory;
 
         // 8. 퀵슬롯 핫키
         quickSlotActions = playerControlMap.FindAction("QuickSlots");
@@ -172,11 +174,11 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void InputActionsDelete()
     {
         // 1. 자유 카메라
-        freeCamAction.started -= HandleFreeCam;
+        freeCamAction.performed -= HandleFreeCam;
         freeCamAction.canceled -= HandleFreeCam;
 
         // 2. 상호작용
-        interactAction.started -= HandleInteract;
+        interactAction.performed -= HandleInteract;
 
         /*AimingAction.performed -= HandleAiming;
         AimingAction.canceled -= HandleAiming;*/
@@ -199,7 +201,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         attackAction.canceled -= HandleAttack;
 
         // 7. 인벤토리 열기(I)
-        attackAction.started -= OpenInventory;
+        attackAction.performed -= OpenInventory;
 
         // 8. 퀵슬롯 핫키
         quickSlotActions.performed -= OnQuickSlotPerformed;
@@ -251,7 +253,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleFreeCam(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
             isFreeCamModInput = true;
             View.FreeCamSet(true);
@@ -309,7 +311,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
             isAttackInput = true;
         if (context.canceled)
             isAttackInput = false;
@@ -317,13 +319,13 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleInteract(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
             Interact();
     }
 
     public void OpenInventory(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
             UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
     }
 

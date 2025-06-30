@@ -58,12 +58,12 @@ public class InventoryView : MonoBehaviour
 
     private void OpenInventory()
     {
-        go_inventoryBase.SetActive(true);
+        UIManager.Instance.OpenPanelNotChangeActionMap(go_inventoryBase);
     }
 
     private void CloseInventory()
     {
-        go_inventoryBase.SetActive(false);
+        UIManager.Instance.CloseTargetPanel(go_inventoryBase);
     }
 
     public void OnClickEquipmentTab() => CurrentTab.Value = ItemType.Equipment;

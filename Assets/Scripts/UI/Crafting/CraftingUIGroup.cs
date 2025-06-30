@@ -8,8 +8,6 @@ public class CraftingUIGroup : MonoBehaviour
 {
     public Item_Recipe currentSelectedRecipe;
 
-    [field: SerializeField] public Transform BasePanel { get; private set; }
-
     [SerializeField] RecipeListPagePanel recipeListPage;
     [SerializeField] RecipeRequiresPanel recipeRequires;
     [SerializeField] Button craftButton;               
@@ -29,24 +27,25 @@ public class CraftingUIGroup : MonoBehaviour
     {
         recipeListPage.nowPageIndex = 0;
         recipeListPage.UpdateRecipePageData();
-        recipeListPage.gameObject.SetActive(true);
+
+        // 이전에 선택했던 정보 초기화
+        currentSelectedRecipe = null;
+
+        // 패널이 안 열린 상태라면 열기
+        // UI 패널 스택에 추가하며 열기
+        if (!recipeListPage.gameObject.activeSelf)
+            UIManager.Instance.OpenPanel(recipeListPage.gameObject);
     }
 
     public void OpenPanel_CraftRequires()
     {
         // 패널이 안 열린 상태라면 열기
+        // UI 패널 스택에 추가하며 열기
         if (!recipeRequires.gameObject.activeSelf)
-            recipeRequires.gameObject.SetActive(true);
+            UIManager.Instance.OpenPanel(recipeRequires.gameObject);
 
         // 현재 선택된 레시피의 정보 업데이트 & 충분한 재료가 있다면 버튼 활성화
         craftButton.interactable = recipeRequires.IsRequiresSufficent(currentSelectedRecipe);
-    }
-
-    public void ClosePanel_Crafting()
-    {
-        recipeListPage.gameObject.SetActive(false);
-        recipeRequires.gameObject.SetActive(false);
-        currentSelectedRecipe = null;
     }
 
 
