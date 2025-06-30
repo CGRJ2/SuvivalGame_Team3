@@ -23,10 +23,13 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private float attackPower;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackCooldown;
+    [SerializeField] private int collisionDamage;
 
     [Header("넉백 관련")]
     [SerializeField] private float knockbackDistance = 2f;
- 
+
+    [Header("공격 애니메이션 속도 배율")]
+    [SerializeField] private float attackAnimSpeed = 1f; // (1.0이 기본, 1.2 빠름, 0.8 느림 등)
 
     [Header("탐지")]
     [SerializeField] private float detectionRange;
@@ -38,6 +41,7 @@ public class BaseMonsterData : ScriptableObject
     public float MaxHP => maxHP;
     public float MoveSpeed => moveSpeed;
     public float AttackPower => attackPower;
+    public int CollisionDamage => collisionDamage;
     public float AttackRange => attackRange;
     public float AttackCooldown => attackCooldown;
     public float KnockbackDistance => knockbackDistance;
@@ -46,6 +50,9 @@ public class BaseMonsterData : ScriptableObject
     public float EyeHeight => eyeHeight;
     public MonsterTargetType TargetType => targetType;
     public float ActionRadius => actionRadius;
+    public float AttackAnimSpeed => attackAnimSpeed;
+
+
     [Header("프리팹")]
     public GameObject dropItemPrefab;
     public GameObject monsterPrefab;

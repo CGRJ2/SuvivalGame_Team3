@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
+  m_Name: NukerTypeMonsterData
+  m_EditorClassIdentifier: 
+  monsterName: "\uC548\uBC29\uBAAC\uC2A4\uD130"
+  monsterType: 0
+  monsterSubType: 3
+  typeStatData: {fileID: 11400000, guid: 8b0761508dfa1cc428a3298fa92d1f1f, type: 2}
+  maxHP: 180
+  moveSpeed: 2
+  attackPower: 20
+  attackRange: 6
+  attackCooldown: 1
+  collisionDamage: 10
+  knockbackDistance: 2
+  attackAnimSpeed: 1
+  detectionRange: 30
+  baseFOV: 360
+  eyeHeight: 1.5
+  targetType: 0
+  actionRadius: 20
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []

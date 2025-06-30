@@ -9,6 +9,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
+    private Animator animator;
 
     protected float currentHP;
     protected float moveSpeed;
@@ -139,6 +140,16 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
         if (stateMachine.CurrentState is MonsterIdleState) // Idle 상태에선
         {
             HandleWanderMovement(); // 랜덤 이동 호출
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // 충돌 데미지 계산에 SO 값 사용
+        var damageable = collision.gameObject.GetComponent<IDamagable>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(data.CollisionDamage);
         }
     }
 
