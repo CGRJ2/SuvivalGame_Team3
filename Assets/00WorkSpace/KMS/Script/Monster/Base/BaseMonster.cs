@@ -1,11 +1,8 @@
 using KMS.Monster.Interface;
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
+public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
@@ -24,7 +21,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
-    
+
 
     protected Transform target;
     protected MonsterStateMachine stateMachine;
@@ -153,17 +150,17 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
         }
     }
 
-    public virtual void ReceiveDamage(float amount, Vector3 direction)
-    {
-        currentHP -= amount;
-        view.PlayMonsterHitEffect();
-
-        float knockbackDistance = CalculateKnockbackDistance();
-        ApplyKnockback(direction, knockbackDistance);
-
-        if (currentHP <= 0)
-            Die();
-    }
+    //public virtual void ReceiveDamage(float amount, Vector3 direction)
+    //{
+    //    currentHP -= amount;
+    //    view.PlayMonsterHitEffect();
+    //
+    //    float knockbackDistance = CalculateKnockbackDistance();
+    //    ApplyKnockback(direction, knockbackDistance);
+    //
+    //    if (currentHP <= 0)
+    //        Die();
+    //}
 
     public void TryAttack()
     {
@@ -369,32 +366,32 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
 
     private void UpdateSightParameters() //임의 배정
     {
-       float fovMultiplier = 1f;   //시야 배율
-       float rangeMultiplier = 1f; //탐지범위 배율
-   
-       switch (perceptionState)
-       {
-           case MonsterPerceptionState.Idle: //대기 상태
+        float fovMultiplier = 1f;   //시야 배율
+        float rangeMultiplier = 1f; //탐지범위 배율
+
+        switch (perceptionState)
+        {
+            case MonsterPerceptionState.Idle: //대기 상태
                 fovMultiplier = 1f;
-               rangeMultiplier = 1f;
-                break;
-           case MonsterPerceptionState.Search: //탐색 상태
-               fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-           case MonsterPerceptionState.Alert: //경계 상태
-               fovMultiplier = 1f;
+            case MonsterPerceptionState.Search: //탐색 상태
+                fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-           case MonsterPerceptionState.Combat: //전투 상태
-               fovMultiplier = 1f;
+            case MonsterPerceptionState.Alert: //경계 상태
+                fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-       }
-   
-       currentFOV = data.BaseFOV * fovMultiplier;
-       currentDetectionRange = data.DetectionRange * rangeMultiplier;
-   }
+            case MonsterPerceptionState.Combat: //전투 상태
+                fovMultiplier = 1f;
+                rangeMultiplier = 1f;
+                break;
+        }
+
+        currentFOV = data.BaseFOV * fovMultiplier;
+        currentDetectionRange = data.DetectionRange * rangeMultiplier;
+    }
 
     protected bool CheckTargetVisible()
     {
@@ -465,7 +462,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
     public void ApplyKnockback(Vector3 direction, float knockbackDistance)
     {
         if (rb == null) return;
-        Vector3 knockbackPos = transform.position + direction.normalized * knockbackDistance;
+        Vector3 knockbackPos = transform.position + (direction.normalized * knockbackDistance);
         rb.MovePosition(knockbackPos);
         Debug.Log($"[Knockback] {name} 넉백 위치: {knockbackPos}");
     }
@@ -486,7 +483,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
 
         // 시야 감지 범위 (기존 코드)
         Gizmos.color = Color.yellow;
-        Vector3 eyePos = transform.position + Vector3.up * data.EyeHeight;
+        Vector3 eyePos = transform.position + (Vector3.up * data.EyeHeight);
         Gizmos.DrawWireSphere(eyePos, currentDetectionRange);
 
         // 행동 반경 (originPosition 기준)
@@ -499,14 +496,30 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(eyePos, eyePos + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(eyePos, eyePos + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + (leftLimit * currentDetectionRange));
+        Gizmos.DrawLine(eyePos, eyePos + (rightLimit * currentDetectionRange));
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage) // 기존 인터페이스용 TakeDamage
     {
-        Debug.LogError($"맞음! 데미지 {damage}");
+        currentHP -= damage;
+        view.PlayMonsterHitEffect();
+
+        if (currentHP <= 0)
+            Die();
     }
 
+
+    public void TakeDamage(int damage, Vector3 direction) // 넉백용 TakeDamage 오버로드
+    {
+        currentHP -= damage;
+        view.PlayMonsterHitEffect();
+
+        float knockbackDistance = CalculateKnockbackDistance();
+        ApplyKnockback(direction, knockbackDistance);
+
+        if (currentHP <= 0)
+            Die();
+    }
 
 }
