@@ -10,27 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
-  m_Name: TutoTypeMonster
+  m_Name: TestMonster_AssassinSO
   m_EditorClassIdentifier: 
-  monsterName: "\uD29C\uD1A0\uB9AC\uC5BC\uBAAC\uC2A4\uD130"
+  monsterName: Balance
   monsterType: 0
-  monsterSubType: 0
+  monsterSubType: 4
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 80
-  moveSpeed: 2
-  attackPower: 7
-  attackRange: 2
+  maxHP: 100
+  moveSpeed: 2.5
+  attackPower: 20
+  attackRange: 3
   attackCooldown: 1
-  collisionDamage: 5
   knockbackDistance: 2
-  attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 180
   eyeHeight: 1.5
   targetType: 0
   actionRadius: 20
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
+  monsterPrefab: {fileID: 2052929862295601145, guid: 8463a9c8c84ef514eb3333a2174e6b71, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
-  dropTable: []

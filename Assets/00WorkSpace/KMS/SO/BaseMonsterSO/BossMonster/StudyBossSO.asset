@@ -10,31 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
-  m_Name: New Base Monster Data
+  m_Name: StudyBossSO
   m_EditorClassIdentifier: 
-  monsterName: 
+  monsterName: "\uC11C\uC7AC\uBCF4\uC2A4"
   monsterType: 1
-  monsterSubType: 0
-  typeStatData: {fileID: 0}
-  maxHP: 0
-  moveSpeed: 0
-  attackPower: 0
-  attackRange: 0
-  attackCooldown: 0
+  monsterSubType: 4
+  typeStatData: {fileID: 11400000, guid: 49777c9a7fb2e1640acbdc0ef7e5f66b, type: 2}
+  maxHP: 1200
+  moveSpeed: 3.2
+  attackPower: 40
+  attackRange: 10
+  attackCooldown: 1.2
   collisionDamage: 0
-  knockbackDistance: 2
-  attackAnimSpeed: 1
-  detectionRange: 0
-  baseFOV: 40
+  knockbackDistance: 3
+  attackAnimSpeed: 0.8
+  detectionRange: 50
+  baseFOV: 360
   eyeHeight: 1.5
   targetType: 0
-  actionRadius: 20
-  phase2AttackPower: 0
-  phase3AttackPower: 0
-  phase2KnockbackDistance: 0
-  phase3KnockbackDistance: 0
-  phase2AttackCooldown: 0
-  phase3AttackCooldown: 0
+  actionRadius: 50
+  phase2AttackPower: 70
+  phase3AttackPower: 50
+  phase2KnockbackDistance: 6
+  phase3KnockbackDistance: 11
+  phase2AttackCooldown: 15
+  phase3AttackCooldown: 21
+  phase2AnimSpeed: 2
+  phase3AnimSpeed: 1.8
   dropItemPrefab: {fileID: 0}
   monsterPrefab: {fileID: 0}
   spawnPosition: {x: 0, y: 0, z: 0}

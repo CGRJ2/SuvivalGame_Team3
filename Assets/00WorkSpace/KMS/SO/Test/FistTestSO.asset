@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b69016cf05f94e54191eeca276052050, type: 3}
-  m_Name: FistTest
+  m_Name: FistTestSO
   m_EditorClassIdentifier: 
   waveName: "\uCCAB\uBC88\uC9F8\uB0A0"
   spawnDelay: 10
@@ -20,5 +20,15 @@ MonoBehaviour:
     count: 1
     spawnDelay: 1
     spawnPosition: {x: 0, y: 0, z: 0}
-    stageName: Stage1
+    stageName: Stage2
+  - monsterData: {fileID: 11400000, guid: 379a5e57edca84940a47e6c4137ad74d, type: 2}
+    count: 1
+    spawnDelay: 1
+    spawnPosition: {x: 0, y: 0, z: 0}
+    stageName: Stage2
+  - monsterData: {fileID: 11400000, guid: 3370b8cb4427b07409a2fd0682e2969d, type: 2}
+    count: 1
+    spawnDelay: 1
+    spawnPosition: {x: 0, y: 0, z: 0}
+    stageName: Stage2
   fixedSpawns: []

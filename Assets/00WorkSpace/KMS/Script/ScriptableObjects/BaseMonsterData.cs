@@ -45,6 +45,8 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private float phase3KnockbackDistance;
     [SerializeField] private float phase2AttackCooldown;
     [SerializeField] private float phase3AttackCooldown;
+    [SerializeField] private float phase2AnimSpeed = 1f;
+    [SerializeField] private float phase3AnimSpeed = 1f;
 
 
     public float MaxHP => maxHP;
@@ -66,6 +68,8 @@ public class BaseMonsterData : ScriptableObject
     public float Phase3KnockbackDistance => phase3KnockbackDistance;
     public float Phase2AttackCooldown => phase2AttackCooldown;
     public float Phase3AttackCooldown => phase3AttackCooldown;
+    public float Phase2AnimSpeed => phase2AnimSpeed;
+    public float Phase3AnimSpeed => phase3AnimSpeed;
 
     [Header("ÇÁ¸®ÆÕ")]
     public GameObject dropItemPrefab;

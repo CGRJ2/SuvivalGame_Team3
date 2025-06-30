@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
+  m_Name: ClosetBossSO
+  m_EditorClassIdentifier: 
+  monsterName: "\uC637\uBC29\uBCF4\uC2A4"
+  monsterType: 1
+  monsterSubType: 4
+  typeStatData: {fileID: 11400000, guid: 49777c9a7fb2e1640acbdc0ef7e5f66b, type: 2}
+  maxHP: 2000
+  moveSpeed: 1.8
+  attackPower: 60
+  attackRange: 10
+  attackCooldown: 2
+  collisionDamage: 0
+  knockbackDistance: 5
+  attackAnimSpeed: 1.5
+  detectionRange: 100
+  baseFOV: 40
+  eyeHeight: 1.5
+  targetType: 0
+  actionRadius: 20
+  phase2AttackPower: 100
+  phase3AttackPower: 200
+  phase2KnockbackDistance: 5
+  phase3KnockbackDistance: 5
+  phase2AttackCooldown: 15
+  phase3AttackCooldown: 25
+  phase2AnimSpeed: 25
+  phase3AnimSpeed: 3
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []

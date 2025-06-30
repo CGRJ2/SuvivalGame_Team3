@@ -10,24 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
-  m_Name: TestMonster_Tank
+  m_Name: TankTypeMonsterSO
   m_EditorClassIdentifier: 
-  monsterName: Tank
+  monsterName: "\uC11C\uC7AC\uBAAC\uC2A4\uD130"
   monsterType: 0
-  monsterSubType: 2
+  monsterSubType: 0
   typeStatData: {fileID: 11400000, guid: 49777c9a7fb2e1640acbdc0ef7e5f66b, type: 2}
-  maxHP: 100
-  moveSpeed: 2.5
-  attackPower: 20
-  attackRange: 3
-  attackCooldown: 1
-  knockbackDistance: 2
-  detectionRange: 30
+  maxHP: 200
+  moveSpeed: 1.5
+  attackPower: 18
+  attackRange: 5
+  attackCooldown: 1.5
+  collisionDamage: 15
+  knockbackDistance: 3
+  attackAnimSpeed: 2
+  detectionRange: 20
   baseFOV: 180
   eyeHeight: 1.5
   targetType: 0
   actionRadius: 20
+  phase2AttackPower: 0
+  phase3AttackPower: 0
+  phase2KnockbackDistance: 0
+  phase3KnockbackDistance: 0
+  phase2AttackCooldown: 0
+  phase3AttackCooldown: 0
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 5885807536210855638, guid: 9c6fe34ed1f96e241818086626b5283a, type: 3}
+  monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
+  dropTable: []
