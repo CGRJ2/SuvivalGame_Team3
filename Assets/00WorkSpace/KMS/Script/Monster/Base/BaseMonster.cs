@@ -1,6 +1,7 @@
 using KMS.Monster.Interface;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
@@ -217,8 +218,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
 
         stateMachine.ChangeState(new MonsterDeadState()); // 여기가 진입점
+        StartCoroutine(DestroyAfterDelay(10f));
     }
-
+    private IEnumerator DestroyAfterDelay(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(gameObject);
+    }
     protected abstract void HandleState(); // 상태머신 상태 변경은 여기서
 
     public void SetTarget(Transform newTarget)
