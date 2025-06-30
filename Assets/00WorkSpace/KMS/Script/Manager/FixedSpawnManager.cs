@@ -22,7 +22,7 @@ public class FixedSpawnManager : MonoBehaviour
             var monster = MonsterFactory.Instance.SpawnMonster(info.monsterData, info.spawnPoint);
             if (monster != null)
             {
-                monster.SetTarget(FindTargetByType(info.monsterData.targetType));
+                monster.SetTarget(FindTargetByType(info.monsterData.TargetType));
                 fixedMonsters[info.monsterData.monsterName] = monster;
             }
         }
@@ -46,7 +46,7 @@ public class FixedSpawnManager : MonoBehaviour
         var cat = MonsterFactory.Instance.SpawnMonster(catSpawnData.catSpawnInfo.monsterData, spawnPos);
 
         if (cat != null)
-            cat.SetTarget(FindTargetByType(catSpawnData.catSpawnInfo.monsterData.targetType));
+            cat.SetTarget(FindTargetByType(catSpawnData.catSpawnInfo.monsterData.TargetType));
     }
 
     private Vector3 GetSpawnPositionForDay(VariableSpawnInfo info, int day)

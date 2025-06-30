@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06ab557cdcc09b942823ff2913ec9f87, type: 3}
+  m_Name: Sub_Nuker
+  m_EditorClassIdentifier: 
+  subType: 3
+  attackPowerMultiplier: 2
+  attackSpeedMultiplier: 0.5
+  attackRangeMultiplier: 3
+  collisionDamageMultiplier: 3
+  knockbackDistanceMultiplier: 1
+  moveSpeedMultiplier: 0.8
+  hpMultiplier: 0.5
+  detectionRangeMultiplier: 1.2
+  description: 
+  designIntent: 

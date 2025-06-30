@@ -91,7 +91,7 @@ public class DailyManager : MonoBehaviour
         if (hour != lastLoggedHour)
         {
             lastLoggedHour = hour;
-            Debug.Log($"인게임 시간 {CurrentTime:hh\\:mm} / {CurrentDay}일차 / 상태: ");
+            Debug.Log($"인게임 시간 {CurrentTime:hh\\:mm} / {CurrentDay}일차 ");
         }
     }
 

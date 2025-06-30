@@ -12,7 +12,7 @@ public class BossPhase2AttackState : IMonsterState
     {
         this.monster = monster;
         // NOTE : 일반 몬스터와 차별화되는 패턴, 공격 주기 짧게 설정
-        attackCooldown = monster.data.attackCooldown * 0.8f;
+        attackCooldown = monster.data.AttackCooldown * 0.8f;
         timer = 0f;
 
         monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
@@ -40,7 +40,7 @@ public class BossPhase2AttackState : IMonsterState
         if (target != null)
         {
             // TODO : 2페이즈에선 대미지 증가 가능성이 있어서 만들어둠.
-            float finalDamage = monster.data.attackPower * 1.5f; 
+            float finalDamage = monster.data.AttackPower * 1.5f; 
             Debug.Log($"[{monster.name}] → {target.name} 에게 강화된 {finalDamage} 데미지");
             // 실제 데미지 적용 로직 필요
         }

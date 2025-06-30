@@ -17,7 +17,7 @@ public class CampInteract : MonoBehaviour, IInteractable
 
         if (fakeSave != null)
         {
-            fakeSave.NotSave();
+            fakeSave.TryNotSave();
         }
 
         if (fakeSave != null)
