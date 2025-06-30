@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
-public class BossPhase2AttackState : IMonsterState
+public class BossPhase1AttackState : IMonsterState
 {
     private BaseMonster monster;
     private BossMonster bossMonster;
     private float attackCooldown;
-    private float specialACooldown = 0f;
     private float timer;
 
     public void Enter(BaseMonster monster)
@@ -17,9 +13,7 @@ public class BossPhase2AttackState : IMonsterState
         bossMonster = monster as BossMonster;
         attackCooldown = monster.data.AttackCooldown; // SO 등에서 받아오기
         monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
-        monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation(); // 2페이즈 특수A 애니메이션
         timer = 0f;
-        specialACooldown = 0f;
     }
 
     public void Execute()     // 쿨타임 감소, 공격 가능 여부 체크
@@ -34,32 +28,26 @@ public class BossPhase2AttackState : IMonsterState
             monster.StateMachine.ChangeState(chaseState);
             return;
         }
-
+        // 감지범위 밖으로 나가면 회복 + Idle상태
+        if (monster.IsOutsideActionRadius())
+        {
+            bossMonster.ResetBoss();
+            monster.StateMachine.ChangeState(new MonsterIdleState());
+            return;
+        }
         // 공격 쿨타임
         timer += Time.deltaTime;
-        specialACooldown -= Time.deltaTime;
-        if (specialACooldown <= 0f && Random.value < 0.4f) // 40% 확률 특수A
+        if (timer >= attackCooldown)
         {
-            // 특수A 애니메이션 및 공격
-            monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
-            bossMonster.phase2TryAttack();
-            specialACooldown = 15f;
-        }
-        else
-        {
-            // 일반 공격
-            if (timer >= attackCooldown)
-            {
-                timer = 0f;
-                monster.TryAttack();
-                monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
-            }
+            timer = 0f;
+            monster.TryAttack();
+            monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
+
 
     public void Exit()
     {
         Debug.Log($"[{monster.name}] Phase2Attack 종료");
     }
 }
-

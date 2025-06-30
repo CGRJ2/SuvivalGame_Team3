@@ -44,7 +44,7 @@ public class BossMonster : BaseMonster
             return;
         }
         if (SetPerceptionState(MonsterPerceptionState.Alert))
-            stateMachine.ChangeState(new MonsterChaseState());
+            stateMachine.ChangeState(new BossPhase1AttackState());
         else
             stateMachine.ChangeState(new MonsterIdleState());
     }
@@ -76,6 +76,12 @@ public class BossMonster : BaseMonster
             if (kb != null) kb.ApplyKnockback(direction, knockback);
         }
         view.PlayMonsterPhase3AttackAnimation();
+    }
+    public void ResetBoss()
+    {
+        currentHP = data.MaxHP;
+        //view.PlayBossHealEffect(); // 회복 연출이 있으면 호출
+        Debug.Log("[Boss] HP가 최대치로 회복됨");
     }
     // 캡슐화
     public void phase2TryAttack() => Phase2TryAttack();
