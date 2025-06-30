@@ -38,6 +38,15 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private MonsterTargetType targetType;
     [SerializeField] private float actionRadius = 20f;
 
+    [Header("보스 전용(Phase별)")]
+    [SerializeField] private int phase2AttackPower;
+    [SerializeField] private int phase3AttackPower;
+    [SerializeField] private float phase2KnockbackDistance;
+    [SerializeField] private float phase3KnockbackDistance;
+    [SerializeField] private float phase2AttackCooldown;
+    [SerializeField] private float phase3AttackCooldown;
+
+
     public float MaxHP => maxHP;
     public float MoveSpeed => moveSpeed;
     public float AttackPower => attackPower;
@@ -51,7 +60,12 @@ public class BaseMonsterData : ScriptableObject
     public MonsterTargetType TargetType => targetType;
     public float ActionRadius => actionRadius;
     public float AttackAnimSpeed => attackAnimSpeed;
-
+    public int Phase2AttackPower => phase2AttackPower;
+    public int Phase3AttackPower => phase3AttackPower;
+    public float Phase2KnockbackDistance => phase2KnockbackDistance;
+    public float Phase3KnockbackDistance => phase3KnockbackDistance;
+    public float Phase2AttackCooldown => phase2AttackCooldown;
+    public float Phase3AttackCooldown => phase3AttackCooldown;
 
     [Header("프리팹")]
     public GameObject dropItemPrefab;

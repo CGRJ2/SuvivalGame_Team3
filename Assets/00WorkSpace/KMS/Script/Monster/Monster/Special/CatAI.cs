@@ -36,4 +36,13 @@ public class CatAI : BaseMonster
         SetPerceptionState(MonsterPerceptionState.Idle); // 혹은 Pacified 전용 Enum도 고려 가능
         StateMachine.ChangeState(new CatPacifiedState(duration));
     }
+
+    protected override void Phase2TryAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+    protected override void Phase3TryAttack()
+    {
+        throw new System.NotImplementedException();
+    }
 }

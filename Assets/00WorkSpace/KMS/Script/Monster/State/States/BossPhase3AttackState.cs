@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class BossPhase2AttackState : IMonsterState
+public class BossPhase3AttackState : IMonsterState
 {
     private BaseMonster monster;
     private BossMonster bossMonster;
     private float attackCooldown;
-    private float specialACooldown = 0f;
+    private float phase2AttackACooldown = 0f;
+    private float phase3AttackACooldown = 0f;
     private float timer;
-
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
         bossMonster = monster as BossMonster;
-        attackCooldown = monster.data.AttackCooldown; // SO 등에서 받아오기
-        monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
-        monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation(); // 2페이즈 특수A 애니메이션
+        attackCooldown = monster.data.AttackCooldown;
         timer = 0f;
-        specialACooldown = 0f;
+        phase2AttackACooldown = 0f;
+        phase3AttackACooldown = 0f;
     }
 
     public void Execute()     // 쿨타임 감소, 공격 가능 여부 체크
@@ -37,13 +36,18 @@ public class BossPhase2AttackState : IMonsterState
 
         // 공격 쿨타임
         timer += Time.deltaTime;
-        specialACooldown -= Time.deltaTime;
-        if (specialACooldown <= 0f && Random.value < 0.4f) // 40% 확률 특수A
+        phase2AttackACooldown -= Time.deltaTime;
+        if (phase2AttackACooldown <= 0f && Random.value < 0.3f) // 특수A
         {
-            // 특수A 애니메이션 및 공격
             monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
             bossMonster.phase2TryAttack();
-            specialACooldown = 15f;
+            phase2AttackACooldown = 15f;
+        }
+        else if (phase3AttackACooldown <= 0f && Random.value < 0.4f) // 특수B
+        {
+            monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
+            bossMonster.phase2TryAttack();
+            phase3AttackACooldown = 25f;
         }
         else
         {
@@ -56,10 +60,9 @@ public class BossPhase2AttackState : IMonsterState
             }
         }
     }
-
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] Phase2Attack 종료");
+        
+        Debug.Log($"[{monster.name}] Phase3Attack 종료");
     }
 }
-

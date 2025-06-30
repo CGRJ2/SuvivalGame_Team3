@@ -43,18 +43,5 @@ public class MonsterAttackState : IMonsterState
     {
         Debug.Log($"[{monster.name}] 상태: Attack 종료");
     }
-
-    // 애니메이션 이벤트용 데미지 적용 함수
-    private void ApplyDamage()
-    {
-        var target = monster.GetTarget();
-        if (target != null)
-        {
-            Debug.Log($"[{monster.name}] → {target.name} 에게 {monster.data.AttackPower} 데미지");
-
-            // 실제 데미지 적용은 인터페이스 기반 설계 추천
-            // ex: target.GetComponent<IDamageable>()?.TakeDamage(monster.data.attackPower);
-        }
-    }
 }
 

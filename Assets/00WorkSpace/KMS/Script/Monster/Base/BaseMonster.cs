@@ -196,6 +196,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         }
     }
 
+    protected abstract void Phase2TryAttack();
+    protected abstract void Phase3TryAttack();
+    
     private bool IsFacingTarget()
     {
         Vector3 toTarget = (target.position - transform.position).normalized;
@@ -521,5 +524,4 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         if (currentHP <= 0)
             Die();
     }
-
 }

@@ -45,4 +45,12 @@ public class OwnerAI : BaseMonster
             player.ApplyThrow(direction, force);
         }
     }
+    protected override void Phase2TryAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+    protected override void Phase3TryAttack()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -30,6 +30,16 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Attack");
     }
+    public void PlayMonsterPhase2AttackAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase2Attack");
+    }
+    public void PlayMonsterPhase3AttackAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase3Attack");
+    }
     public void PlayMonsterHitEffect()
     {
         if (hitEffect != null)
