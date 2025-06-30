@@ -51,6 +51,7 @@ public class BossMonster : BaseMonster
     // 오버라이드 
     protected override void Phase2TryAttack()
     {
+        view.Animator.SetFloat("Phase2AttackSpeed", data.Phase2AnimSpeed);
         int damage = data.Phase2AttackPower;
         float knockback = data.Phase2KnockbackDistance;
         if (target != null)
@@ -65,6 +66,7 @@ public class BossMonster : BaseMonster
     }
     protected override void Phase3TryAttack()
     {
+        view.Animator.SetFloat("Phase3AttackSpeed", data.Phase3AnimSpeed);
         int damage = data.Phase3AttackPower;
         float knockback = data.Phase3KnockbackDistance;
         if (target != null)

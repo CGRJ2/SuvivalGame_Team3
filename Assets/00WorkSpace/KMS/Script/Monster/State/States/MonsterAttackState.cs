@@ -15,7 +15,6 @@ public class MonsterAttackState : IMonsterState
         timer = 0f;
 
         monster.SetPerceptionState(MonsterPerceptionState.Combat); // 전투 상태 설정
-        monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
 
         Debug.Log($"[{monster.name}] 상태: Attack 진입");
     }

@@ -12,7 +12,6 @@ public class BossPhase1AttackState : IMonsterState
         this.monster = monster;
         bossMonster = monster as BossMonster;
         attackCooldown = monster.data.AttackCooldown; // SO 등에서 받아오기
-        monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         timer = 0f;
     }
 
@@ -41,7 +40,6 @@ public class BossPhase1AttackState : IMonsterState
         {
             timer = 0f;
             monster.TryAttack();
-            monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
 

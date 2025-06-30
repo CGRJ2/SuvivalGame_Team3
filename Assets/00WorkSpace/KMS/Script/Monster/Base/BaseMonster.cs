@@ -184,6 +184,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
                     knockbackable.ApplyKnockback(direction, knockbackDistance);
                 }
 
+                // 애니메이션 속도 배율 적용
+                if (view != null && view.Animator != null)
+                    view.Animator.SetFloat("AttackSpeed", data.AttackAnimSpeed);
+
+                // 공격 애니메이션 트리거
+                view?.PlayMonsterAttackAnimation();
+
                 Debug.Log($"[{name}] 공격 시도: 거리 {distance}m - 공격 성공");
             }
             else

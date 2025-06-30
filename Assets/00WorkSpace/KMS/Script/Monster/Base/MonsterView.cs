@@ -14,6 +14,8 @@ public class MonsterView : MonoBehaviour
     [SerializeField] private AudioClip hitSound;
     [SerializeField] private AudioClip deathSound;
 
+    public Animator Animator => animator;
+
     // ===== 애니메이션 =====
     public void PlayMonsterIdleAnimation()
     {

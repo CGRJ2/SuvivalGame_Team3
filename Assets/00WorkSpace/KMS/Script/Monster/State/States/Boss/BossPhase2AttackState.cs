@@ -56,7 +56,6 @@ public class BossPhase2AttackState : IMonsterState
             {
                 timer = 0f;
                 monster.TryAttack();
-                monster.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
             }
         }
     }
