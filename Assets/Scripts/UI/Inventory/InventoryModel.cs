@@ -142,4 +142,45 @@ public class InventoryModel
             }
         }
     }
+
+    public int GetOwnedItemCount(Item item)
+    {
+        int ownedItemCount = 0;
+        switch (item.itemType)
+        {
+            case ItemType.Ingredient:
+                ownedItemCount = GetItemCountInList(ingredientSlots, item);
+                break;
+
+            case ItemType.Consumalbe:
+                ownedItemCount = GetItemCountInList(consumableSlots, item);
+                break;
+
+            case ItemType.Equipment:
+                ownedItemCount = GetItemCountInList(equipmentSlots, item);
+                break;
+
+            case ItemType.Function:
+                ownedItemCount = GetItemCountInList(functionSlots, item);
+
+                break;
+            case ItemType.Quest:
+                ownedItemCount = GetItemCountInList(questSlots, item);
+                break;
+
+            default: break;
+        }
+        return ownedItemCount;
+    }
+
+    private int GetItemCountInList(List<SlotData> slotDataList, Item item)
+    {
+        int OwnedItemCount = 0;
+        foreach (SlotData slotData in slotDataList)
+        {
+            if (slotData.item = item) OwnedItemCount += slotData.currentCount;
+        }
+        return OwnedItemCount;
+    }
+
 }

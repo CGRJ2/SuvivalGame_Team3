@@ -7,7 +7,7 @@ public class BaseCamp_Interactable_Craft : InteractableBase
     public override void Interact()
     {
         Debug.Log($"제작 UI 활성화");
-        UIManager.Instance.craftingUI.craftingUIGroup.PanelOpen();
+        UIManager.Instance.craftingUI.craftingUIGroup.PanelOpen_CraftRecipeList();
     }
 
     public override void SetInteractableEnable()

@@ -19,5 +19,5 @@ public class RecipeSlotView : MonoBehaviour
     {
         image.sprite = sprite_BlockedSlot;
     }
-
+    
 }

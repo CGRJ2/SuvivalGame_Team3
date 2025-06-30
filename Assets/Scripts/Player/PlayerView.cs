@@ -35,6 +35,8 @@ public class PlayerView : MonoBehaviour
 
         rb.velocity = velocity;
 
+
+
         return moveDirection;
     }
 
