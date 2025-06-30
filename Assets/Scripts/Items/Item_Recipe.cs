@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "New Item/재료 아이템/레시피")]
 public class Item_Recipe : Item_Ingredient
 {
-    public string recipeName;
     public Sprite icon;
 
     [field: Header("레시피 데이터")]
@@ -32,6 +31,9 @@ public class Item_Recipe : Item_Ingredient
 [System.Serializable]
 public class RecipeData
 {
+    [Header("레시피 이름")]
+    public string recipeName;
+
     [Header("언락 여부")]
     public bool isUnlocked;
 
