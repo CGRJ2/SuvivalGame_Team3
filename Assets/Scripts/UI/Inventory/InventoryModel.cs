@@ -145,32 +145,8 @@ public class InventoryModel
 
     public int GetOwnedItemCount(Item item)
     {
-        int ownedItemCount = 0;
-        switch (item.itemType)
-        {
-            case ItemType.Ingredient:
-                ownedItemCount = GetItemCountInList(ingredientSlots, item);
-                break;
-
-            case ItemType.Consumalbe:
-                ownedItemCount = GetItemCountInList(consumableSlots, item);
-                break;
-
-            case ItemType.Equipment:
-                ownedItemCount = GetItemCountInList(equipmentSlots, item);
-                break;
-
-            case ItemType.Function:
-                ownedItemCount = GetItemCountInList(functionSlots, item);
-
-                break;
-            case ItemType.Quest:
-                ownedItemCount = GetItemCountInList(questSlots, item);
-                break;
-
-            default: break;
-        }
-        return ownedItemCount;
+        List<SlotData> thisItemTypeSlots = GetCurrentTabSlots(item.itemType);
+        return GetItemCountInList(thisItemTypeSlots, item);
     }
 
     private int GetItemCountInList(List<SlotData> slotDataList, Item item)
@@ -178,9 +154,50 @@ public class InventoryModel
         int OwnedItemCount = 0;
         foreach (SlotData slotData in slotDataList)
         {
-            if (slotData.item = item) OwnedItemCount += slotData.currentCount;
+            if (slotData.item == item) OwnedItemCount += slotData.currentCount;
         }
+        Debug.Log($"{item.itemName}의 인벤토리 내 개수 : {OwnedItemCount}");
         return OwnedItemCount;
     }
 
+
+
+    public void RemoveItem(Item item, int count)
+    {
+        List<SlotData> thisItemTypeTab = GetCurrentTabSlots(item.itemType);
+
+        int removableCount = GetItemCountInList(thisItemTypeTab, item);
+
+        if (removableCount < count)
+        {
+            Debug.LogError("현재 보유 중인 아이템 총 개수보다 많은 양을 제거하려고 시도함!");
+            return;
+        }
+
+        int remainCount = count;
+
+        foreach (SlotData sd in thisItemTypeTab)
+        {
+            // 같은 아이템 발견
+            if(sd.item == item)
+            {
+                // 개수가 모자랄 때
+                if (sd.currentCount < remainCount)
+                {
+                    // 현재 슬롯이 들고 있는 만큼 제거할 수량에서 제외
+                    remainCount -= sd.currentCount;
+
+                    // 현재 슬롯이 들고 있는 모든 아이템 제거
+                    sd.CleanSlotData();
+                }
+                // 개수가 충분하면
+                else
+                {
+                    sd.RemoveItem(remainCount);
+                    return;
+                }
+            }
+        }
+
+    }
 }

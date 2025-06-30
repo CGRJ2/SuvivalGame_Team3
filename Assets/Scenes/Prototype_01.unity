@@ -1339,7 +1339,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 146429035}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1221607962}
+        m_TargetAssemblyTypeName: CraftingUIGroup, Assembly-CSharp
+        m_MethodName: StartCrafting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &146429035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9033,11 +9045,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1641338830461623193, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: m_Name
-      value: "\uCEA3\uC78E \uD14C\uC2A4\uD2B8"
+      value: "\uBA3C\uC9C0"
       objectReference: {fileID: 0}
     - target: {fileID: 2657892774736262744, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.81
+      value: -5.06
       objectReference: {fileID: 0}
     - target: {fileID: 2657892774736262744, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9045,7 +9057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2657892774736262744, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.15
+      value: -1.53
       objectReference: {fileID: 0}
     - target: {fileID: 2657892774736262744, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9078,10 +9090,10 @@ PrefabInstance:
     - target: {fileID: 6286608767469336869, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: item
       value: 
-      objectReference: {fileID: 11400000, guid: a9b7dc6d3fd3776419423fa4aa5c41bd, type: 2}
+      objectReference: {fileID: 11400000, guid: 4407808d2ed2d8842b0605af709cbc9c, type: 2}
     - target: {fileID: 6286608767469336869, guid: dc03149c20a1e0344b43fbc4aafc0f05, type: 3}
       propertyPath: count
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

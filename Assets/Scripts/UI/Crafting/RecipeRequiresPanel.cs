@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class RecipeRequiresPanel : MonoBehaviour
 {
@@ -9,11 +10,6 @@ public class RecipeRequiresPanel : MonoBehaviour
     [SerializeField] Color textColor_requiresSufficient;
     [SerializeField] Color textColor_requiresInsufficient;
     [SerializeField] Sprite blockedRecipeSprite;
-    public void Init()
-    {
-        requiresSlotViews = requiredListParent.GetComponentsInChildren<RequiresSlotView>();
-    }
-
 
     // 결과 아이템 슬롯
     [SerializeField] Image resultItemImage;
@@ -21,7 +17,10 @@ public class RecipeRequiresPanel : MonoBehaviour
     [SerializeField] TMP_Text resultItemTypeText;
     [SerializeField] TMP_Text resultItemCraftTimeText;
     [SerializeField] TMP_Text resultItemDescriptionText;
-
+    public void Init()
+    {
+        requiresSlotViews = requiredListParent.GetComponentsInChildren<RequiresSlotView>();
+    }
 
     // 결과 아이템 데이터 View 업데이트 (사용가능한 레시피 선택 시)
     public void ShowRecipeRequiresView(Item_Recipe item_Recipe)
@@ -73,8 +72,11 @@ public class RecipeRequiresPanel : MonoBehaviour
             // 현재 재료 조건의 아이템과 필요 수량
             Item requiredItem = selectedRecipe.RecipeData.requiredItems[i].item;
             int requiredCount = selectedRecipe.RecipeData.requiredItems[i].count;
+
             // 인벤토리 내 해당 조건 아이템 보유 수량
-            int owned = PlayerManager.Instance.instancePlayer.Status.inventory.model.GetOwnedItemCount(selectedRecipe);
+            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Status.inventory;
+            int owned = playerInventory.model.GetOwnedItemCount(requiredItem);
+            Debug.Log($"{requiredItem.itemName}의 현재 인식 개수 : {owned}");
 
             // 재료 슬롯에 현재 재료 조건 데이터 넣어주기
             requiresSlotViews[i].requiredItemData = requiredItem;

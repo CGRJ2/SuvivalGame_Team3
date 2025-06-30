@@ -44,6 +44,12 @@ public class InventoryPresenter
         }
     }
 
+    public void RemoveItem(Item item, int count = 1)
+    {
+        model.RemoveItem(item, count);
+        UpdateUI();
+    }
+
     public void UpdateUI()
     {
         if (view == null) SetView(UIManager.Instance.inventoryUI.inventoryView);
