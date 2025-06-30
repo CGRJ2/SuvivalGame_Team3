@@ -49,11 +49,7 @@ public class CraftingUI
 
     
 
-    public void PanelOpen()
-    {
-        craftingUIGroup.UpdateRecipePageData();
-        craftingUIGroup.BasePanel.gameObject.SetActive(true);
-    }
+    
 
 
     

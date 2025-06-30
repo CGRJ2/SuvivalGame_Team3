@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class CraftingUIGroup : MonoBehaviour
 {
-    [field: SerializeField] public Transform BasePanel { get; private set; }      
-    [SerializeField] Transform recipeListParent;
-    [SerializeField] Transform requiredListParent;
-
-    private RecipeSlotView[] recipeSlotViews;
-    List<Item_Recipe> nowPageRecipeList = new List<Item_Recipe>();
-    public int pageIndex;
-
     Item_Recipe currentSelectedRecipe;
+
+    [field: SerializeField] public Transform BasePanel { get; private set; }
+
+    [SerializeField] RecipeListPage recipeListPage;
+    //[SerializeField] 
+
+
+    [SerializeField] Transform requiredListParent;
 
     // 결과창
     [SerializeField] Image resultItemImage;
@@ -26,71 +26,13 @@ public class CraftingUIGroup : MonoBehaviour
     public void Init()
     {
         UIManager.Instance.craftingUI.craftingUIGroup = this;
-
-        // 슬롯 리스트
-        recipeSlotViews = recipeListParent.GetComponentsInChildren<RecipeSlotView>();
-
-        // 현재 페이지 인덱스에 있는 레시피 리스트(처음엔 15개 전부 null)
-        for (int i = 0; i < 15; i++)
-        {
-            nowPageRecipeList.Add(null);
-        }
+        recipeListPage.Init();
     }
 
-
-    public void SetCurrentPageRecipeList(int start, int end)
+    public void PanelOpen()
     {
-        Item_Recipe[] allRecipeList = BaseCampManager.Instance.baseCampData.allRecipeList;
-
-        for (int i = start; i < end; i++)
-        {
-            if (allRecipeList.Length <= i)
-            {
-                nowPageRecipeList[i - pageIndex * i] = null;
-            }
-            else
-            {
-                nowPageRecipeList[i - pageIndex * i] = allRecipeList[i];
-            }
-        }
-    }
-
-    public void UpdateRecipePageData()       // 모든 제작 레시피를 UI에 표시하는 메서드, // 기존 레시피 버튼들을 제거하고 새로 생성
-    {
-
-        if (pageIndex == 0)
-        {
-            SetCurrentPageRecipeList(0, 15);
-        }
-        else if (pageIndex == 1)
-        {
-            SetCurrentPageRecipeList(15, 30);
-        }
-
-        for (int i = 0; i < recipeSlotViews.Length; i++)
-        {
-            if (nowPageRecipeList[i] != null)
-            {
-                recipeSlotViews[i].gameObject.SetActive(true);
-
-                // 열려있는 레시피라면 => UI에 아이템 스프라이트 넣기
-                if (nowPageRecipeList[i].RecipeData.isUnlocked)
-                {
-                    recipeSlotViews[i].recipeItem = nowPageRecipeList[i];
-                    recipeSlotViews[i].SetRecipeSprite();
-                }
-                // 잠겨있는 레시피라면 => UI에 검은 창으로 덮기
-                else
-                {
-                    recipeSlotViews[i].recipeItem = null;
-                    recipeSlotViews[i].SetBlockedSprite();
-                }
-            }
-            else
-            {
-                recipeSlotViews[i].gameObject.SetActive(false);
-            }
-        }
+        recipeListPage.UpdateRecipePageData();
+        BasePanel.gameObject.SetActive(true);
     }
 
 
