@@ -55,9 +55,13 @@ public class UIController : MonoBehaviour
     // ... 필요하다면 추가로 더 선언
 
     // ==== 알림 띄우기 ====
-    private Coroutine notificationRoutine;
+    private Coroutine notificationCoroutine;
     public void ShowLocationNotification(string msg, float duration = 2f)
     {
+        if (notificationCoroutine != null)
+        {
+            StopCoroutine(notificationCoroutine);
+        }
         StartCoroutine(ShowAndHide(locationPanel, locationText, msg, duration));
     }
     public void ShowCollectNotification(string msg, float duration = 2f)
@@ -79,68 +83,63 @@ public class UIController : MonoBehaviour
     // ==== 상호작용 안내 On/Off ====
     public void ShowInteractionPrompt(bool isShow)
     {
-        if (interactionPrompt != null)
-            interactionPrompt.SetActive(isShow);
+        if (interactionPrompt != null) interactionPrompt.SetActive(isShow);
     }
 
     // ==== 인벤토리 On/Off ====
     public void ShowInventory(bool isShow)
     {
-        if (inventoryPanel != null)
-        {
-            inventoryPanel.SetActive(isShow);
-        }
+        if (inventoryPanel != null) inventoryPanel.SetActive(isShow);
 
         if (isShow)
         {
             Cursor.visible = true;
-            Debug.Log("마우스 활성화");
-            
-            if(inventoryTabs!=null)
-            {
-                inventoryTabs.ShowMap();
-            }
+            if(inventoryTabs!=null) inventoryTabs.ShowMap();
         }
-        else
-        {
-            Cursor.visible = false;
-            Debug.Log("마우스 비활성화");
-        }
+        else Cursor.visible = false;
     }
 
     // ==== 커맨드 On/Off ====
     public void ShowCommand(bool isShow)
     {
-        if (commandPanel != null)
-            commandPanel.SetActive(isShow);
+        if (commandPanel != null) commandPanel.SetActive(isShow);
     }
 
     // ==== 크래프트 On/Off ====
     public void ShowCraftPanel(bool isShow)
     {
-        if(craftPanel != null)
-        {
-            craftPanel.SetActive(isShow);
-        }
+        if(craftPanel != null) craftPanel.SetActive(isShow);
 
         if (isShow)
         {
+            Cursor.visible = true;
+            Debug.Log("마우스 활성화");
+
             if (playerInformation != null) playerInformation.SetActive(false);
             if (quickSlot != null) quickSlot.SetActive(false);
         }
         else
         {
+            Cursor.visible = false;
+            Debug.Log("마우스 비활성화");
+
             if (playerInformation != null) playerInformation.SetActive(true);
             if (quickSlot != null) quickSlot.SetActive(true);
+
+            
         }
     }
 
     public void CloseCraftWindow(bool isShow)
     {
-        if (isShow)
-        {
-            craftPanel.SetActive(false);
-        }
+        if (isShow) craftPanel.SetActive(false);
+    }
+
+    // 현재 위치 확인을 위한 테스트 코드
+    public TextMeshProUGUI locationNowText;
+    public void UpdateCurrentLocation(string locName)
+    {
+        locationNowText.text = locName;
     }
 
     // ... 필요시 UI별로 Show/Hide 함수 추가!

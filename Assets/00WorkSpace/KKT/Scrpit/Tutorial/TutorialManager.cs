@@ -29,7 +29,7 @@ public class TutorialManager : MonoBehaviour
         stateMachine.Update();
     }
 
-    // 플레이어 행동 감지 메서드 예시
+    // 플레이어 행동 감지 메서드
     public bool PlayerDidMove() { /* 실제 이동 감지 코드 */ return Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0; }
     public bool PlayerDidJump() { /* 점프 감지 코드 */    return Input.GetKeyDown(KeyCode.Space); }
     public bool PlayerDidAttack() { /* 공격 감지 코드 */   return Input.GetMouseButtonDown(0); }
@@ -37,7 +37,7 @@ public class TutorialManager : MonoBehaviour
     public bool PlayerDidRun() { /* 공격 감지 코드 */   return Input.GetKey(KeyCode.None); }
     public bool PlayerDidProduction() { /* 공격 감지 코드 */   return Input.GetKey(KeyCode.None); }
 
-    // UI Show/Hide 메서드 예시
+    // UI Show/Hide 메서드
     public void ShowMoveGuideUI(bool show) => moveGuideUI?.SetActive(show);
     public void ShowJumpGuideUI(bool show) => jumpGuideUI?.SetActive(show);
     public void ShowAttackGuideUI(bool show) => attackGuideUI?.SetActive(show);

@@ -33,10 +33,7 @@ public class InteractCutScene : MonoBehaviour
             UIController.Instance.ShowInteractionPrompt(false);
 
             // 입력 차단
-            if (playerInput != null) 
-            {
-                playerInput.enabled = false;
-            }
+            if (playerInput != null) playerInput.enabled = false;
 
             // 컷씬 vCam 활성화, 플레이어 vCam 비활성화(Priority로 조정)
             cutsceneVcam.Priority = cutscenePriority;
@@ -59,10 +56,7 @@ public class InteractCutScene : MonoBehaviour
         playerVcam.Priority = playerPriority;
 
         // input 복구
-        if (playerInput != null)
-        { 
-            playerInput.enabled = false; 
-        }
+        if (playerInput != null) playerInput.enabled = false; 
 
         Debug.Log("상호작용 컷씬 끝! 입력 복구");
     }
