@@ -1,4 +1,5 @@
 using KMS.Monster.Interface;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +21,8 @@ public abstract class BaseMonster : MonoBehaviour
     protected MonsterTypeStatData typeStat;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
+
+    
 
     protected Transform target;
     protected MonsterStateMachine stateMachine;
@@ -50,6 +53,10 @@ public abstract class BaseMonster : MonoBehaviour
 
     // 회전 관련
     [SerializeField] private float rotationSpeed = 7f;
+
+    // 랜덤 이동 관련
+    private float moveTimer = 0f;
+    private Vector3 currentDirection;
 
     // 읽기 전용
     public float AlertLevel => perceptionController.GetAlertLevel();
@@ -125,8 +132,13 @@ public abstract class BaseMonster : MonoBehaviour
         }
 
         stateMachine.Update();
-        HandleState(); // 자식이 override 가능
+        HandleState();
         perceptionController.Update();
+
+        if (stateMachine.CurrentState is MonsterIdleState) // Idle 상태에선
+        {
+            HandleWanderMovement(); // 랜덤 이동 호출
+        }
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -143,7 +155,7 @@ public abstract class BaseMonster : MonoBehaviour
         }
     }
 
-    private void TryAttack()
+    public void TryAttack()
     {
         if (target == null) return;
 
@@ -183,7 +195,9 @@ public abstract class BaseMonster : MonoBehaviour
         isDead = true;
 
         view.PlayMonsterDeathAnimation();
+        //DropItem();
         OnDeadEvent?.Invoke();
+
 
         stateMachine.ChangeState(new MonsterDeadState()); // 여기가 진입점
     }
@@ -226,12 +240,29 @@ public abstract class BaseMonster : MonoBehaviour
         Vector3 targetPosition = rb.position + (direction * moveSpeed * Time.deltaTime);
         rb.MovePosition(targetPosition);
     }
+    private void HandleWanderMovement()
+    {
+        moveTimer -= Time.deltaTime;
+
+        if (moveTimer <= 0f)
+        {
+            float angle = Random.Range(0f, 360f);
+            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
+
+            moveTimer = Random.Range(1f, 2f);
+        }
+
+        Move(currentDirection);
+    }
 
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
     {
         data = newData;
-
+        Debug.Log($"[SetData] stageStat is null? {stageStat == null}");
         MonsterSubType subType = data.monsterSubType;
+
+        float mult = stageStat != null ? stageStat.GetHpMultiplier(subType) : 1f;
+        Debug.Log($"[SetData] GetHpMultiplier(subType) 호출, subType: {subType}, 반환값: {mult}");
 
         // base값
         float baseHP = data.MaxHP;
@@ -254,13 +285,36 @@ public abstract class BaseMonster : MonoBehaviour
         originPosition = transform.position;
         UpdateSightParameters();
 
-        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료 - HP:{hp} / ATK:{power}");
+        Debug.Log($"[SetData:Debug] 몬스터: {data.monsterName}, 타입: {subType}\n" +
+                  $"- Base HP: {baseHP}, TypeMult: {typeStat.hpMultiplier}, StageMult: {stageStat.GetHpMultiplier(subType)}\n" +
+                  $"=> 최종 HP: {hp}\n" +
+                  $"- Base ATK: {basePower}, TypeMult: {typeStat.attackPowerMultiplier}, StageMult: {stageStat.GetAttackMultiplier(subType)}\n" +
+                  $"=> 최종 ATK: {power}");
     }
 
     public void SetSensor(IMonsterSensor newSensor)
     {
         sensor = newSensor;
     }
+
+    //private void DropItems()
+    //{
+    //    if (data.dropTable == null || data.dropTable.Count == 0) return;
+    //
+    //    foreach (var entry in data.dropTable)
+    //    {
+    //        if (Random.value <= entry.dropChance)
+    //        {
+    //            int amount = Random.Range(entry.minAmount, entry.maxAmount + 1);
+    //            for (int i = 0; i < amount; i++)
+    //            {
+    //                // 아이템 프리팹, 아이콘, 이름, 설명 등은 itemSO에서 가져와 생성
+    //                ItemFactory.SpawnItem(entry.itemSO, transform.position);
+    //            }
+    //        }
+    //    }
+    //}
+
 
     public bool SetPerceptionState(MonsterPerceptionState newState)
     {

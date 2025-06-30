@@ -9,4 +9,5 @@ public class WaveSpawnInfo
     public int count;
     public float spawnDelay;
     public Vector3 spawnPosition;
+    public string stageName;
 }
