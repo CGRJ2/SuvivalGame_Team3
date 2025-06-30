@@ -1,17 +1,18 @@
 using KMS.Monster.Interface;
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BaseMonster : MonoBehaviour, IDamagable
+public abstract class BaseMonster : MonoBehaviour, IDamagable , IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
 
     protected float currentHP;
     protected float moveSpeed;
-    protected float attackPower;
+    protected int attackPower;
     protected float attackCooldown;
     protected float detectionRange;
     protected float currentFOV;
@@ -141,18 +142,16 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
         }
     }
 
-    public virtual void ReceiveDamage(float amount)
+    public virtual void ReceiveDamage(float amount, Vector3 direction)
     {
         currentHP -= amount;
         view.PlayMonsterHitEffect();
 
         float knockbackDistance = CalculateKnockbackDistance();
-        ApplyKnockback(knockbackDistance);
+        ApplyKnockback(direction, knockbackDistance);
 
         if (currentHP <= 0)
-        {
             Die();
-        }
     }
 
     public void TryAttack()
@@ -161,12 +160,12 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
 
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance <= attackRange)
+        if (distance <= attackRange * 0.95f && IsFacingTarget())
         {
-            var damageable = target.GetComponent<IDamageable>();
+            var damageable = target.GetComponent<IDamagable>();
             if (damageable != null)
             {
-                damageable.ReceiveDamage(attackPower);
+                damageable.TakeDamage(attackPower);
 
                 if (damageable is IKnockbackable knockbackable)
                 {
@@ -187,6 +186,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
         {
             Debug.Log($"[{name}] 공격 실패: 거리 {distance}m - 범위 초과");
         }
+    }
+
+    private bool IsFacingTarget()
+    {
+        Vector3 toTarget = (target.position - transform.position).normalized;
+        float dot = Vector3.Dot(transform.forward, toTarget);
+        return dot > 0.7f; // 1에 가까울 수록 정면
     }
 
     protected virtual void Die()
@@ -246,10 +252,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
 
         if (moveTimer <= 0f)
         {
-            float angle = Random.Range(0f, 360f);
+            float angle = UnityEngine.Random.Range(0f, 360f);
             currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
 
-            moveTimer = Random.Range(1f, 2f);
+            moveTimer = UnityEngine.Random.Range(1f, 2f);
         }
 
         Move(currentDirection);
@@ -273,8 +279,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
         float power = basePower * typeStat.attackPowerMultiplier * stageStat.GetAttackMultiplier(subType);
 
         // 실제 적용
-        currentHP = hp;
-        attackPower = power;
+        currentHP = Mathf.RoundToInt(hp);
+        attackPower = Mathf.RoundToInt(power);
         moveSpeed = data.MoveSpeed * typeStat.moveSpeedMultiplier;
 
         attackCooldown = data.AttackCooldown;
@@ -445,16 +451,14 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
         Debug.Log($"[MonsterSearchState] {name} 탐색 상태 진입");
     }
 
-    public void ApplyKnockback(float distance)
+    public void ApplyKnockback(Vector3 direction, float knockbackDistance)
     {
-        if (rb == null || target == null) return;
-
-        Vector3 direction = (transform.position - target.position).normalized;
-        Vector3 knockbackPos = transform.position + direction * distance;
-
+        if (rb == null) return;
+        Vector3 knockbackPos = transform.position + direction.normalized * knockbackDistance;
         rb.MovePosition(knockbackPos);
         Debug.Log($"[Knockback] {name} 넉백 위치: {knockbackPos}");
     }
+
     public float CalculateKnockbackDistance()
     {
         return data.KnockbackDistance * typeStat.knockbackDistanceMultiplier;
@@ -492,4 +496,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable
     {
         Debug.LogError($"맞음! 데미지 {damage}");
     }
+
+
 }
