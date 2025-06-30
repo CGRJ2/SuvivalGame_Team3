@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c56aec8dad04694497b4fe219ec3a3e, type: 3}
+  m_Name: New Item
+  m_EditorClassIdentifier: 
+  itemType: 2
+  itemName: New Item
+  description: 
+  imageSprite: {fileID: 21300000, guid: b2ce142d6121758419d3b2a34e65aa9c, type: 3}
+  instancePrefab: {fileID: 1641338830461623193, guid: 552fcc0fc41b33746b7c5bcaa16e4ba8, type: 3}
+  maxCount: 1
+  recipeName: 
+  icon: {fileID: 0}
+  <RecipeData>k__BackingField:
+    isUnlocked: 0
+    orderIndex: 0
+    craftDuration: 3
+    resultItem: {fileID: 0}
+    resultItemCount: 1
+    requiredItems: []
