@@ -60,7 +60,7 @@ public class QuickSlotController : MonoBehaviour
             { 
                 //무기 일때 무기로 교체
             }
-            else if (quickSlots[selectedSlot].item.itemType == ItemType.Used)
+            else if (quickSlots[selectedSlot].item.itemType == ItemType.Consumalbe)
             {
                 //아무것도 없을때 맨손 교체
             }

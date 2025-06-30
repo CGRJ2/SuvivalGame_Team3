@@ -6,5 +6,6 @@ using UnityEngine;
 public class FixedSpawnInfo
 {
     public BaseMonsterData monsterData;  //주인, 고양이
-    public Vector3 spawnPoint;         //소환 위치
+    public Vector3 spawnPoint;           //소환 위치
+    public string stageName;             //스테이지 정보
 }

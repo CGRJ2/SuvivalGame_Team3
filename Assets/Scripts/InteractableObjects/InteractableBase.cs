@@ -18,7 +18,8 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     private void OnTriggerEnter(Collider other)
     {
-        pc = other.GetComponent<PlayerController>();
+        if (other.GetComponent<PlayerController>() != null)
+            pc = other.GetComponent<PlayerController>();
 
         if (pc != null)
         {
@@ -29,8 +30,16 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     private void OnTriggerExit(Collider other)
     {
-        ColliderController CC = other.GetComponent<ColliderController>();
-        
+        ColliderController CC;
+
+        if (other.GetComponent<PlayerController>() != null)
+        {
+            CC = pc.Cc;
+            pc = null;
+        }
+        else CC = null;
+
+
         if (CC != null)
         {
             if (CC.InteractableObj == this as IInteractable)

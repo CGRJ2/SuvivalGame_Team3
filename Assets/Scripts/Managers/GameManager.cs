@@ -6,9 +6,17 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] UIManager uiManager;
     [SerializeField] PlayerManager playerManager;
+    [SerializeField] SuvivalSystemManager suvivalSystemManager;
+    [SerializeField] DailyManager dailyManager;
+    [SerializeField] DataManager dataManager;
+    [SerializeField] BaseCampManager baseCampManager;
     private void Awake() => Init();
 
-    private void Init()
+
+
+    private void Update() => UpdateByOreder();
+
+        private void Init()
     {
         base.SingletonInit();
         InitalizeOrderSetting();
@@ -18,7 +26,16 @@ public class GameManager : Singleton<GameManager>
     private void InitalizeOrderSetting()
     {
         // 초기화할 순서대로 나열
+        dataManager.Init();
         uiManager.Init();
         playerManager.Init();
+        suvivalSystemManager.Init();
+        dailyManager.Init();
+        baseCampManager.Init();
+    }
+
+    public void UpdateByOreder()
+    {
+
     }
 }

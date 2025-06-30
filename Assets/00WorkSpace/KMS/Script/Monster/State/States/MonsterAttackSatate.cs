@@ -11,7 +11,7 @@ public class MonsterAttackState : IMonsterState
     public void Enter(BaseMonster monster)
     {
         this.monster = monster;
-        attackCooldown = monster.data.attackCooldown;
+        attackCooldown = monster.data.AttackCooldown;
         timer = 0f;
 
         monster.SetPerceptionState(MonsterPerceptionState.Combat); // 전투 상태 설정
@@ -35,7 +35,7 @@ public class MonsterAttackState : IMonsterState
         if (timer >= attackCooldown)
         {
             timer = 0f;
-            //monster.PerformAttack(); // 실제 공격은 내부에서 처리
+            monster.TryAttack();
         }
     }
 
@@ -50,7 +50,7 @@ public class MonsterAttackState : IMonsterState
         var target = monster.GetTarget();
         if (target != null)
         {
-            Debug.Log($"[{monster.name}] → {target.name} 에게 {monster.data.attackPower} 데미지");
+            Debug.Log($"[{monster.name}] → {target.name} 에게 {monster.data.AttackPower} 데미지");
 
             // 실제 데미지 적용은 인터페이스 기반 설계 추천
             // ex: target.GetComponent<IDamageable>()?.TakeDamage(monster.data.attackPower);

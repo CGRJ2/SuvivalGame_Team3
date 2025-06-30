@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3044075387593597658}
   - component: {fileID: 3037680218289445706}
   - component: {fileID: 3453622015412133305}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TestOwner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,6 +132,7 @@ MonoBehaviour:
   alertThreshold_Medium: 50
   alertThreshold_High: 80
   actionRadius: 20
+  rotationSpeed: 7
   rb: {fileID: 3453622015412133305}
   stunTime: 0.5
 --- !u!54 &3453622015412133305

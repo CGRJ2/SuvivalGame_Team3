@@ -1,7 +1,10 @@
+using KMS.Monster.Interface;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class BaseMonster : MonoBehaviour
+public abstract class BaseMonster : MonoBehaviour, IDamagable
 {
     [Header("Data")]
     public BaseMonsterData data;
@@ -15,13 +18,17 @@ public abstract class BaseMonster : MonoBehaviour
     protected float currentDetectionRange;
     protected float attackRange;
     private Vector3 originPosition;
+    protected MonsterTypeStatData typeStat;
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
+
+    
 
     protected Transform target;
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
     protected MonsterView view;
+    private MonsterTypeStatData typeStatData;
     public UnityEvent OnDeadEvent;
 
     private IMonsterState idleState;
@@ -41,19 +48,29 @@ public abstract class BaseMonster : MonoBehaviour
     [SerializeField] protected float alertThreshold_High = 80f;
 
     // 행동 반경
-    [SerializeField] protected float actionRadius = 20f;
+    [SerializeField] protected float actionRadius = 10f;
     private Vector3 spawnPoint;
 
+    // 회전 관련
+    [SerializeField] private float rotationSpeed = 7f;
+
+    // 랜덤 이동 관련
+    private float moveTimer = 0f;
+    private Vector3 currentDirection;
+
+    // 읽기 전용
     public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
-    
+    public Vector3 OriginPosition => originPosition;
+    public float ActionRadius => actionRadius;
+
 
     protected bool isDead;
     public bool IsDead => isDead;
 
-    // 넉백의 물리 작용
+    // 기절
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
 
@@ -72,6 +89,7 @@ public abstract class BaseMonster : MonoBehaviour
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
+        spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
 
 
         idleState = stateFactory.CreateIdleState();
@@ -96,7 +114,7 @@ public abstract class BaseMonster : MonoBehaviour
     }
     protected virtual void Start()
     {
-        spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
+
     }
 
     protected virtual void Update()
@@ -114,8 +132,13 @@ public abstract class BaseMonster : MonoBehaviour
         }
 
         stateMachine.Update();
-        HandleState(); // 자식이 override 가능
+        HandleState();
         perceptionController.Update();
+
+        if (stateMachine.CurrentState is MonsterIdleState) // Idle 상태에선
+        {
+            HandleWanderMovement(); // 랜덤 이동 호출
+        }
     }
 
     public virtual void ReceiveDamage(float amount)
@@ -123,9 +146,46 @@ public abstract class BaseMonster : MonoBehaviour
         currentHP -= amount;
         view.PlayMonsterHitEffect();
 
+        float knockbackDistance = CalculateKnockbackDistance();
+        ApplyKnockback(knockbackDistance);
+
         if (currentHP <= 0)
         {
             Die();
+        }
+    }
+
+    public void TryAttack()
+    {
+        if (target == null) return;
+
+        float distance = Vector3.Distance(transform.position, target.position);
+
+        if (distance <= attackRange)
+        {
+            var damageable = target.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.ReceiveDamage(attackPower);
+
+                if (damageable is IKnockbackable knockbackable)
+                {
+                    Vector3 direction = (target.position - transform.position).normalized;
+
+                    float knockbackDistance = CalculateKnockbackDistance();
+                    knockbackable.ApplyKnockback(direction, knockbackDistance);
+                }
+
+                Debug.Log($"[{name}] 공격 시도: 거리 {distance}m - 공격 성공");
+            }
+            else
+            {
+                Debug.LogWarning($"[{name}] 공격 대상에 IDamageable이 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log($"[{name}] 공격 실패: 거리 {distance}m - 범위 초과");
         }
     }
 
@@ -135,7 +195,9 @@ public abstract class BaseMonster : MonoBehaviour
         isDead = true;
 
         view.PlayMonsterDeathAnimation();
+        //DropItem();
         OnDeadEvent?.Invoke();
+
 
         stateMachine.ChangeState(new MonsterDeadState()); // 여기가 진입점
     }
@@ -149,42 +211,110 @@ public abstract class BaseMonster : MonoBehaviour
 
     public Transform GetTarget() => target;
 
+    public Vector3 GetSpawnPoint() => spawnPoint;
+
+
     public virtual void Move(Vector3 direction)
     {
-        Debug.Log($"[Move] 호출됨 - 방향: {direction}");
-
-        if (rb != null)
-        {
-            Vector3 targetPosition = rb.position + (direction * data.moveSpeed * Time.deltaTime);
-            rb.MovePosition(targetPosition);
-        }
-        else
+        if (rb == null)
         {
             Debug.LogWarning("Rigidbody가 없습니다!");
+            return;
         }
+
+        // 행동 반경 제한
+        if (IsOutsideActionRadius())
+        {
+            //Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
+            return;
+        }
+
+        // 회전
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        // 이동
+        Vector3 targetPosition = rb.position + (direction * moveSpeed * Time.deltaTime);
+        rb.MovePosition(targetPosition);
+    }
+    private void HandleWanderMovement()
+    {
+        moveTimer -= Time.deltaTime;
+
+        if (moveTimer <= 0f)
+        {
+            float angle = Random.Range(0f, 360f);
+            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
+
+            moveTimer = Random.Range(1f, 2f);
+        }
+
+        Move(currentDirection);
     }
 
-    public virtual void SetData(BaseMonsterData newData)
+    public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
     {
         data = newData;
+        Debug.Log($"[SetData] stageStat is null? {stageStat == null}");
+        MonsterSubType subType = data.monsterSubType;
 
-        currentHP = data.maxHP;
-        moveSpeed = data.moveSpeed;
-        attackPower = data.attackPower;
-        attackCooldown = data.attackCooldown;
-        detectionRange = data.detectionRange;
-        targetType = data.targetType;
+        float mult = stageStat != null ? stageStat.GetHpMultiplier(subType) : 1f;
+        Debug.Log($"[SetData] GetHpMultiplier(subType) 호출, subType: {subType}, 반환값: {mult}");
+
+        // base값
+        float baseHP = data.MaxHP;
+        float basePower = data.AttackPower;
+
+        // 배율 계산
+        float hp = baseHP * typeStat.hpMultiplier * stageStat.GetHpMultiplier(subType);
+        float power = basePower * typeStat.attackPowerMultiplier * stageStat.GetAttackMultiplier(subType);
+
+        // 실제 적용
+        currentHP = hp;
+        attackPower = power;
+        moveSpeed = data.MoveSpeed * typeStat.moveSpeedMultiplier;
+
+        attackCooldown = data.AttackCooldown;
+        detectionRange = data.DetectionRange;
+        attackRange = data.AttackRange;
+        targetType = data.TargetType;
+
         originPosition = transform.position;
-
         UpdateSightParameters();
 
-        Debug.Log($"[BaseMonster] {data.monsterName} 스탯 설정 완료");
+        Debug.Log($"[SetData:Debug] 몬스터: {data.monsterName}, 타입: {subType}\n" +
+                  $"- Base HP: {baseHP}, TypeMult: {typeStat.hpMultiplier}, StageMult: {stageStat.GetHpMultiplier(subType)}\n" +
+                  $"=> 최종 HP: {hp}\n" +
+                  $"- Base ATK: {basePower}, TypeMult: {typeStat.attackPowerMultiplier}, StageMult: {stageStat.GetAttackMultiplier(subType)}\n" +
+                  $"=> 최종 ATK: {power}");
     }
 
     public void SetSensor(IMonsterSensor newSensor)
     {
         sensor = newSensor;
     }
+
+    //private void DropItems()
+    //{
+    //    if (data.dropTable == null || data.dropTable.Count == 0) return;
+    //
+    //    foreach (var entry in data.dropTable)
+    //    {
+    //        if (Random.value <= entry.dropChance)
+    //        {
+    //            int amount = Random.Range(entry.minAmount, entry.maxAmount + 1);
+    //            for (int i = 0; i < amount; i++)
+    //            {
+    //                // 아이템 프리팹, 아이콘, 이름, 설명 등은 itemSO에서 가져와 생성
+    //                ItemFactory.SpawnItem(entry.itemSO, transform.position);
+    //            }
+    //        }
+    //    }
+    //}
+
 
     public bool SetPerceptionState(MonsterPerceptionState newState)
     {
@@ -204,7 +334,7 @@ public abstract class BaseMonster : MonoBehaviour
         toTarget.y = 0f;
 
         float distance = toTarget.magnitude;
-        return distance <= data.attackRange;
+        return distance <= data.AttackRange;
     }
 
     public virtual bool IsOutsideDetectionRadius()
@@ -215,43 +345,43 @@ public abstract class BaseMonster : MonoBehaviour
         return distance > currentDetectionRange;
     }
 
-    public virtual bool IsOutsideActionRadius()
+    public bool IsOutsideActionRadius()
     {
-        return Vector3.Distance(transform.position, spawnPoint) > actionRadius;
+        return Vector3.Distance(originPosition, transform.position) > actionRadius;
     }
 
     private void UpdateSightParameters() //임의 배정
     {
-        float fovMultiplier = 1f;   //시야 배율
-        float rangeMultiplier = 1f; //탐지범위 배율
-
-        switch (perceptionState)
-        {
-            case MonsterPerceptionState.Idle: //대기 상태
-                fovMultiplier = 0.95f;
-                rangeMultiplier = 0.95f;
+       float fovMultiplier = 1f;   //시야 배율
+       float rangeMultiplier = 1f; //탐지범위 배율
+   
+       switch (perceptionState)
+       {
+           case MonsterPerceptionState.Idle: //대기 상태
+                fovMultiplier = 1f;
+               rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Search: //탐색 상태
-                fovMultiplier = 1.2f;
-                rangeMultiplier = 1.2f;
+           case MonsterPerceptionState.Search: //탐색 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Alert: //경계 상태
-                fovMultiplier = 1.5f;
-                rangeMultiplier = 1.5f;
+           case MonsterPerceptionState.Alert: //경계 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Combat: //전투 상태
-                fovMultiplier = 0.8f;
-                rangeMultiplier = 0.8f;
+           case MonsterPerceptionState.Combat: //전투 상태
+               fovMultiplier = 1f;
+                rangeMultiplier = 1f;
                 break;
-        }
-
-        currentFOV = data.baseFOV * fovMultiplier;
-        currentDetectionRange = data.detectionRange * rangeMultiplier;
-    }
+       }
+   
+       currentFOV = data.BaseFOV * fovMultiplier;
+       currentDetectionRange = data.DetectionRange * rangeMultiplier;
+   }
 
     protected bool CheckTargetVisible()
     {
-        return sensor.IsTargetVisible(transform, target, currentDetectionRange, currentFOV, data.eyeHeight);
+        return sensor.IsTargetVisible(transform, target, currentDetectionRange, currentFOV, data.EyeHeight);
     }
     public bool checkTargetVisible => CheckTargetVisible();
     public MonsterPerceptionState GetCurrentPerceptionState()
@@ -296,39 +426,70 @@ public abstract class BaseMonster : MonoBehaviour
                 break;
         }
     }
+    public void DecreaseAlert(float amount)
+    {
+        perceptionController?.DecreaseAlert(amount);
+    }
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
+        if (stateMachine.CurrentState is MonsterReturnWaitState ||
+            stateMachine.CurrentState is MonsterReturnState)
+        {
+            Debug.Log($"[{name}] (Perception) Return 계열 상태에서는 상태 전이 무시");
+            return;
+        }
         Debug.Log($"[{name}] 상태 전이 시도 → {state}");
         IMonsterState nextState = stateFactory.GetStateForPerception(state);
         stateMachine.ChangeState(nextState);
         Debug.Log($"[MonsterSearchState] {name} 탐색 상태 진입");
     }
 
-    public void ApplyKnockback(Vector3 direction, float force)
+    public void ApplyKnockback(float distance)
     {
-        if (rb == null) return;
-        rb.AddForce(direction.normalized * force, ForceMode.Impulse);
-        Debug.Log($"[Monster] 넉백 적용: {direction}, 힘: {force}");
+        if (rb == null || target == null) return;
 
-        // 공격 중이라면 상태 중단
-        var monster = GetComponent<BaseMonster>();
-        monster?.StateMachine?.ChangeState(new MonsterStaggerState(stunTime));
+        Vector3 direction = (transform.position - target.position).normalized;
+        Vector3 knockbackPos = transform.position + direction * distance;
+
+        rb.MovePosition(knockbackPos);
+        Debug.Log($"[Knockback] {name} 넉백 위치: {knockbackPos}");
+    }
+    public float CalculateKnockbackDistance()
+    {
+        return data.KnockbackDistance * typeStat.knockbackDistanceMultiplier;
+    }
+
+    public void ResetAlert()
+    {
+        perceptionController.ResetAlert();
     }
 
     protected virtual void OnDrawGizmosSelected()
     {
         if (data == null) return;
 
+        // 시야 감지 범위 (기존 코드)
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up * data.eyeHeight, currentDetectionRange);
+        Vector3 eyePos = transform.position + Vector3.up * data.EyeHeight;
+        Gizmos.DrawWireSphere(eyePos, currentDetectionRange);
 
+        // 행동 반경 (originPosition 기준)
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
+
+        // 눈 높이 시점에서 방향 각도 시각화
         Vector3 forward = transform.forward;
         Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + leftLimit * currentDetectionRange);
-        Gizmos.DrawLine(transform.position + Vector3.up * data.eyeHeight, transform.position + rightLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + leftLimit * currentDetectionRange);
+        Gizmos.DrawLine(eyePos, eyePos + rightLimit * currentDetectionRange);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Debug.LogError($"맞음! 데미지 {damage}");
     }
 }
