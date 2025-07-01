@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [System.Serializable]
 public class PlayerCopy
 {
@@ -11,43 +13,51 @@ public class PlayerCopy
     public bool SaveInventory = true;
     public bool SaveStats = true;
     //public bool SaveOtherStates = true;
+
+
     [HideInInspector] public Vector3 position;
     [HideInInspector] public int willPower, battery, maxBattery;
     [HideInInspector] public float moveSpeed, sprintSpeed, jumpForce;
     [HideInInspector] public int damage;
     [HideInInspector] public List<InventorySlotSaveData> inventorySlots = new List<InventorySlotSaveData>();
 
-
-
     public void Bring(PlayerStatus status)
     {
-        position = status.transform.position;
-        willPower = status.CurrentWillPower.Value;
-        battery = status.CurrentBattery.Value;
-        maxBattery = status.MaxBattery.Value;
-        moveSpeed = status.MoveSpeed;
-        sprintSpeed = status.SprintSpeed;
-        jumpForce = status.JumpForce;
-        damage = status.Damage;
+        if (SavePosition)
+            position = status.transform.position;
 
-        inventorySlots.Clear();
-        foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+        if (SaveStats)
         {
-            var slots = status.inventory.model.GetCurrentTabSlots(type);
-            if (slots == null) continue;
+            willPower = status.CurrentWillPower.Value;
+            battery = status.CurrentBattery.Value;
+            maxBattery = status.MaxBattery.Value;
+            moveSpeed = status.MoveSpeed;
+            sprintSpeed = status.SprintSpeed;
+            jumpForce = status.JumpForce;
+            damage = status.Damage;
+        }
 
-            for (int i = 0; i < slots.Count; i++)
+        if (SaveInventory && status.inventory != null && status.inventory.model != null)
+        {
+            inventorySlots.Clear();
+            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
             {
-                var slot = slots[i];
-                if (slot.item != null)
+                var slots = status.inventory.model.GetCurrentTabSlots(type);
+                if (slots == null) continue;
+
+                for (int i = 0; i < slots.Count; i++)
                 {
-                    inventorySlots.Add(new InventorySlotSaveData
+                    var slot = slots[i];
+                    if (slot.item != null && slot.item.name != null)
                     {
-                        itemName = slot.item.name,
-                        count = slot.currentCount,
-                        type = type,
-                        slotIndex = i
-                    });
+                        inventorySlots.Add(new InventorySlotSaveData
+                        {
+                            itemName = slot.item.name,
+                            count = slot.currentCount,
+                            type = type,
+                            slotIndex = i
+                        });
+                    }
                 }
             }
         }
@@ -55,28 +65,56 @@ public class PlayerCopy
 
     public void Give(PlayerStatus status)
     {
-        status.transform.position = position;
-        status.CurrentWillPower.Value = willPower;
-        status.CurrentBattery.Value = battery;
-        status.MaxBattery.Value = maxBattery;
-        status.MoveSpeed = moveSpeed;
-        status.SprintSpeed = sprintSpeed;
-        status.JumpForce = jumpForce;
-        status.Damage = damage;
+        if (SavePosition)
+            status.transform.position = position;
 
-        foreach (var data in inventorySlots)
+        if (SaveStats)
         {
-            var slots = status.inventory.model.GetCurrentTabSlots(data.type);
-            if (slots == null || data.slotIndex >= slots.Count) continue;
+            status.CurrentWillPower.Value = willPower;
+            status.CurrentBattery.Value = battery;
+            status.MaxBattery.Value = maxBattery;
+            status.MoveSpeed = moveSpeed;
+            status.SprintSpeed = sprintSpeed;
+            status.JumpForce = jumpForce;
+            status.Damage = damage;
+        }
 
-            var item = Resources.Load<Item>($"ItemDatabase/{GetFolderForType(data.type)}/{data.itemName}");
-            if (item != null)
+        if (SaveInventory && status.inventory != null && status.inventory.model != null)
+        {
+            foreach (var data in inventorySlots)
             {
-                slots[data.slotIndex].item = item;
-                slots[data.slotIndex].currentCount = data.count;
+                var slots = status.inventory.model.GetCurrentTabSlots(data.type);
+                if (slots == null || data.slotIndex >= slots.Count)
+                {
+                    Debug.LogWarning($"[Inventory Restore] 잘못된 슬롯 인덱스: type={data.type}, index={data.slotIndex}");
+                    continue;
+                }
+
+                string path = $"ItemDatabase/{GetFolderForType(data.type)}/{data.itemName}";
+                var item = Resources.Load<Item>(path);
+
+                if (item != null)
+                {
+                    slots[data.slotIndex].item = item;
+                    slots[data.slotIndex].currentCount = data.count;
+                }
+                else
+                {
+                    //Debug.LogWarning($"[Inventory Restore] 아이템 로드 실패: {path}");
+                }
             }
         }
     }
+
+    [Serializable]
+    public class InventorySlotSaveData
+    {
+        public string itemName;
+        public int count;
+        public ItemType type;
+        public int slotIndex;
+    }
+
 
     private string GetFolderForType(ItemType type)
     {
@@ -89,14 +127,5 @@ public class PlayerCopy
             ItemType.Quest => "05_Quest_Item",
             _ => "Unknown"
         };
-    }
-
-    [Serializable]
-    public class InventorySlotSaveData
-    {
-        public string itemName;
-        public int count;
-        public ItemType type;
-        public int slotIndex;
     }
 }

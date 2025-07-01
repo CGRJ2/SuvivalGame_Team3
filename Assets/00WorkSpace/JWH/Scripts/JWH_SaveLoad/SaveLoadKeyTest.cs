@@ -12,22 +12,22 @@ public class SaveLoadKeyTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            JWH_DataManager.Instance.SaveData(testSlot);
+            JWHDataTest.Instance.SaveData(testSlot);
         }
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            JWH_DataManager.Instance.LoadData(testSlot);
+            JWHDataTest.Instance.LoadData(testSlot);
         }
 
         if (Input.GetKeyDown(KeyCode.F7))
         {
-            JWH_DataManager.Instance.DeleteSlot(testSlot);
+            JWHDataTest.Instance.DeleteSlot(testSlot);
         }
 
         if (Input.GetKeyDown(KeyCode.F8))
         {
-            List<int> slots = JWH_DataManager.Instance.GetSavedSlots();
+            List<int> slots = JWHDataTest.Instance.GetSavedSlots();
             Debug.Log($"[저장된 슬롯 목록] {string.Join(", ", slots)}");
         }
     }
