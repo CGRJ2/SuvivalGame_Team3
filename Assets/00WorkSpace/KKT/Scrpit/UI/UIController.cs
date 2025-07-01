@@ -8,7 +8,6 @@ public class UIController : MonoBehaviour
 {
     public static UIController Instance { get; private set; }
 
-
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -48,6 +47,7 @@ public class UIController : MonoBehaviour
 
     [Header("Craft Panel")]
     public GameObject craftPanel;
+    public GameObject SelectPartPanel;
 
     [Header("Inventory Tabs")]
     public InventoryTabs inventoryTabs;
@@ -125,11 +125,9 @@ public class UIController : MonoBehaviour
 
             if (playerInformation != null) playerInformation.SetActive(true);
             if (quickSlot != null) quickSlot.SetActive(true);
-
-            
         }
     }
-    public void CloseCraftWindow(bool isShow)
+    public void CloseCraftPanel(bool isShow)
     {
         if (isShow) craftPanel.SetActive(false);
     }

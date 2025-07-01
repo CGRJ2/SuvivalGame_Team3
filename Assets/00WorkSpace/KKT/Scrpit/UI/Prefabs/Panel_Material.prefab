@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4468841770297249811}
   m_Layer: 5
-  m_Name: MaterialSlot1
+  m_Name: MaterialSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 6418674922371111399}
   - component: {fileID: 3549051900800382393}
   m_Layer: 5
-  m_Name: Text_MatCont
+  m_Name: MatCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 5719917430000135585}
   - component: {fileID: 6595429367042832161}
   m_Layer: 5
-  m_Name: Text_MatName
+  m_Name: MatName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,7 +467,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1136510168886676531, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
       propertyPath: m_Name
-      value: MaterialSlot1
+      value: MaterialSlot
       objectReference: {fileID: 0}
     - target: {fileID: 1786807716264836282, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
       propertyPath: m_SizeDelta.x
@@ -577,6 +577,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5668948390160609760, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
+      propertyPath: m_Name
+      value: MatCount
+      objectReference: {fileID: 0}
     - target: {fileID: 6718621498571079958, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
       propertyPath: m_SizeDelta.x
       value: 40
@@ -592,6 +596,10 @@ PrefabInstance:
     - target: {fileID: 6718621498571079958, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -17.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8802876724385939295, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
+      propertyPath: m_Name
+      value: MatName
       objectReference: {fileID: 0}
     - target: {fileID: 8825307272511690524, guid: 2f470d5227a16a942ae79f42cfb49565, type: 3}
       propertyPath: m_SizeDelta.x

@@ -9,6 +9,7 @@ public class CraftTabs : MonoBehaviour
     [Header("CraftPanels")]
     public GameObject craftPanel;
     public GameObject disassemblePanel;
+    
 
     public void ShowCraft()
     {
@@ -20,8 +21,7 @@ public class CraftTabs : MonoBehaviour
         craftPanel.SetActive(false);
         disassemblePanel.SetActive(true);
     }
-
-    public void CloseCraftWindow()
+    public void CloseCraftPanel()
     {
         Cursor.visible = false;
         UIController.Instance.craftPanel.SetActive(false);
@@ -29,5 +29,11 @@ public class CraftTabs : MonoBehaviour
         UIController.Instance.quickSlot.SetActive(true);
         UIController.Instance.interactionPrompt.SetActive(true);
     }
-
+    public void Update()
+    {
+        if (craftPanel.activeSelf && Input.GetKeyUp(KeyCode.Escape)) 
+        { 
+            CloseCraftPanel();
+        }
+    }
 }
