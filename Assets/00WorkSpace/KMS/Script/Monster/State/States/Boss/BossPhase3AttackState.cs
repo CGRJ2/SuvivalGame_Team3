@@ -4,23 +4,17 @@ using UnityEngine;
 
 public class BossPhase3AttackState : IMonsterState
 {
+    public BossAttackPattern CurrentPattern { get; private set; }
     private BaseMonster monster;
     private BossMonster bossMonster;
     private BossMonsterDataSO bossData;
-
-    // 패턴별 리스트 (SO에서 받아옴)
     private List<BossAttackPattern> phase2Patterns;
     private List<BossAttackPattern> phase3Patterns;
-    private List<BossAttackPattern> normalPatterns;
-
-    private BossAttackPattern currentPattern;
-
-    private enum AttackPhase { None, Prelude, Attack, AfterDelay }
-    private AttackPhase attackPhase = AttackPhase.None;
-
+    private float attackCooldown;
     private float timer;
 
-    public BossPhase3AttackState() { }
+    private float phase2AttackACooldownTimer;
+    private float phase3AttackACooldownTimer;
 
     public void Enter(BaseMonster monster)
     {
@@ -28,90 +22,73 @@ public class BossPhase3AttackState : IMonsterState
         bossMonster = monster as BossMonster;
         bossData = monster.data as BossMonsterDataSO;
 
-        if (bossData == null)
-        {
-            Debug.LogError("BossMonsterDataSO 타입이 아님");
-            return;
-        }
-
         phase2Patterns = bossData.phase2PatternSO?.patterns;
         phase3Patterns = bossData.phase3PatternSO?.patterns;
-        normalPatterns = bossData.normalPatternSO?.patterns;
 
-        attackPhase = AttackPhase.Prelude;
+        attackCooldown = bossData.AttackCooldown;
         timer = 0f;
-
-        SelectNextPattern();
-        monster.GetComponent<MonsterView>()?.PlayMonsterPhase3PreludeAnimation();
-    }
-
-    private void SelectNextPattern()
-    {
-        // 0.0~1.0
-        float rnd = Random.value;
-        if (rnd < 0.3f && phase2Patterns != null && phase2Patterns.Count > 0)
-        {
-            // Phase2 특수 공격 (30%)
-            currentPattern = phase2Patterns[Random.Range(0, phase2Patterns.Count)];
-        }
-        else if (rnd < 0.7f && phase3Patterns != null && phase3Patterns.Count > 0)
-        {
-            // Phase3 특수 공격 (40%)
-            currentPattern = phase3Patterns[Random.Range(0, phase3Patterns.Count)];
-        }
-        else if (normalPatterns != null && normalPatterns.Count > 0)
-        {
-            // 일반공격 (30%)
-            currentPattern = normalPatterns[Random.Range(0, normalPatterns.Count)];
-        }
-        else
-        {
-            Debug.LogWarning("[BossPhase3] No valid pattern found, fallback to first available pattern.");
-            currentPattern = (phase3Patterns != null && phase3Patterns.Count > 0)
-                ? phase3Patterns[0]
-                : null;
-        }
+        phase2AttackACooldownTimer = 0f;
+        phase3AttackACooldownTimer = 0f;
     }
 
     public void Execute()
     {
         if (monster == null || monster.IsDead) return;
 
-        timer += Time.deltaTime;
-
-        switch (attackPhase)
+        if (!monster.IsInAttackRange())
         {
-            case AttackPhase.Prelude:
-                if (timer >= currentPattern.preludeTime)
-                {
-                    attackPhase = AttackPhase.Attack;
-                    timer = 0f;
-                }
-                break;
-            case AttackPhase.Attack:
-                attackPhase = AttackPhase.AfterDelay;
-                timer = 0f;
-                break;
-            case AttackPhase.AfterDelay:
-                if (timer >= currentPattern.afterDelay)
-                {
-                    SelectNextPattern();
-                    attackPhase = AttackPhase.Prelude;
-                    timer = 0f;
-                    monster.GetComponent<MonsterView>()?.PlayMonsterPhase3PreludeAnimation();
-                }
-                break;
+            var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
+            monster.StateMachine.ChangeState(chaseState);
+            return;
+        }
+        if (monster.IsOutsideActionRadius())
+        {
+            bossMonster.ResetBoss();
+            monster.StateMachine.ChangeState(new MonsterIdleState());
+            return;
+        }
+
+        timer += Time.deltaTime;
+        phase2AttackACooldownTimer -= Time.deltaTime;
+        phase3AttackACooldownTimer -= Time.deltaTime;
+
+        if (timer >= attackCooldown)
+        {
+            timer = 0f;
+
+            if (phase2AttackACooldownTimer <= 0f && Random.value < 0.3f)
+            {
+                // 1. SO에서 패턴 랜덤 선택
+                if (phase2Patterns != null && phase2Patterns.Count > 0)
+                    CurrentPattern = phase2Patterns[Random.Range(0, phase2Patterns.Count)];
+                else
+                    CurrentPattern = null; // fallback
+
+                monster.GetComponent<MonsterView>()?.PlayMonsterPhase2PreludeAnimation();
+                phase2AttackACooldownTimer = bossData.Phase2AttackCooldown;
+                Debug.Log($"[{monster.name}] Phase2 특수공격 발동! (쿨다운 적용)");
+            }
+            else if (phase3AttackACooldownTimer <= 0f && Random.value < 0.4f)
+            {
+                // 1. SO에서 패턴 랜덤 선택
+                if (phase3Patterns != null && phase3Patterns.Count > 0)
+                    CurrentPattern = phase3Patterns[Random.Range(0, phase3Patterns.Count)];
+                else
+                    CurrentPattern = null; // fallback
+
+                monster.GetComponent<MonsterView>()?.PlayMonsterPhase3PreludeAnimation();
+                phase3AttackACooldownTimer = bossData.Phase3AttackCooldown;
+                Debug.Log($"[{monster.name}] Phase2 특수공격 발동! (쿨다운 적용)");
+            }
+            else
+            {
+                monster.TryAttack();
+            }
         }
     }
 
     public void Exit()
     {
         Debug.Log($"[{monster.name}] Phase3Attack 종료");
-    }
-
-    public void TriggerAttack()
-    {
-        if (monster == null) return;
-        bossMonster.phase3TryAttack(currentPattern);
     }
 }

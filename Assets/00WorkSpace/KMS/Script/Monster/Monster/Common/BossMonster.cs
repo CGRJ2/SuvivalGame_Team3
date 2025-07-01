@@ -1,14 +1,8 @@
 using KMS.Monster.Interface;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Xml;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossMonster : BaseMonster
 {
-    private BossMonster bossMonster;
     private BossMonsterDataSO bossData;
 
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
@@ -61,28 +55,28 @@ public class BossMonster : BaseMonster
             stateMachine.ChangeState(new MonsterIdleState());
     }
     // 오버라이드 
-public void phase2TryAttack(BossAttackPattern pattern)
-{
-    // 애니메이터 속도 (패턴에서 지정, 없으면 SO 기본값)
-    view.Animator.SetFloat("Phase2AttackSpeed", pattern != null ? pattern.cooldown : bossData.Phase2AnimSpeed);
-
-    // 데미지/넉백 등 패턴값 우선, 없으면 SO값
-    int damage = (int)(pattern != null ? pattern.damage : bossData.Phase2AttackPower);
-    float knockback = pattern != null ? pattern.range : bossData.Phase2KnockbackDistance;
-
-    if (target != null)
+    public void phase2TryAttack(BossAttackPattern pattern)
     {
-        var dmg = target.GetComponent<IDamagable>();
-        var kb = target.GetComponent<IKnockbackable>();
-        Vector3 direction = (target.position - transform.position).normalized;
-        if (dmg != null) dmg.TakeDamage(damage);
-        if (kb != null) kb.ApplyKnockback(direction, knockback);
+        // 애니메이터 속도 (패턴에서 지정, 없으면 SO 기본값)
+        view.Animator.SetFloat("Phase2AttackSpeed", pattern != null ? pattern.cooldown : bossData.Phase2AnimSpeed);
+
+        // 데미지/넉백 등 패턴값 우선, 없으면 SO값
+        int damage = (int)(pattern != null ? pattern.damage : bossData.Phase2AttackPower);
+        float knockback = pattern != null ? pattern.range : bossData.Phase2KnockbackDistance;
+
+        if (target != null)
+        {
+            var dmg = target.GetComponent<IDamagable>();
+            var kb = target.GetComponent<IKnockbackable>();
+            Vector3 direction = (target.position - transform.position).normalized;
+            if (dmg != null) dmg.TakeDamage(damage);
+            if (kb != null) kb.ApplyKnockback(direction, knockback);
+        }
+        view.PlayMonsterPhase2AttackAnimation();
     }
-    view.PlayMonsterPhase2AttackAnimation();
-}
     public void phase3TryAttack(BossAttackPattern pattern)
     {
-        view.Animator.SetFloat("Phase3AttackSpeed", pattern != null ? pattern.cooldown : 1f);
+        view.Animator.SetFloat("Phase3AttackSpeed", pattern != null ? pattern.cooldown : bossData.Phase3AnimSpeed);
 
         int damage = (int)(pattern != null ? pattern.damage : bossData.Phase3AttackPower);
         float knockback = pattern != null ? pattern.range : bossData.Phase3KnockbackDistance;
@@ -103,8 +97,14 @@ public void phase2TryAttack(BossAttackPattern pattern)
         //view.PlayBossHealEffect(); // 회복 연출이 있으면 호출
         Debug.Log("[Boss] HP가 최대치로 회복됨");
     }
-    // 캡슐화
-    public void phase2TryAttack() => Phase2TryAttack();
-    public void phase3TryAttack() => Phase3TryAttack();
 
+    protected override void Phase2TryAttack()
+    {
+        phase2TryAttack(null);
+    }
+
+    protected override void Phase3TryAttack()
+    {
+        phase3TryAttack(null);
+    }
 }

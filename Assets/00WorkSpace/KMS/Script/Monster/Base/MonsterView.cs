@@ -46,13 +46,21 @@ public class MonsterView : MonoBehaviour
     {
         var bossMonster = GetComponent<BossMonster>();
         if (bossMonster != null)
-            bossMonster.phase2TryAttack();
+        {
+            var phase2State = bossMonster.StateMachine.CurrentState as BossPhase2AttackState;
+            if (phase2State != null)
+                bossMonster.phase2TryAttack(phase2State.CurrentPattern);
+        }
     }
     public void OnPhase3AttackTrigger()
     {
         var bossMonster = GetComponent<BossMonster>();
         if (bossMonster != null)
-            bossMonster.phase3TryAttack();
+        {
+            var phase3State = bossMonster.StateMachine.CurrentState as BossPhase3AttackState;
+            if (phase3State != null)
+                bossMonster.phase3TryAttack(phase3State.CurrentPattern);
+        }
     }
     public void PlayMonsterPhase2AttackAnimation()
     {
