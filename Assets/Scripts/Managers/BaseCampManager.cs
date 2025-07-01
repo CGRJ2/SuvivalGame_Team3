@@ -1,34 +1,52 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BaseCampManager : Singleton<BaseCampManager>
 {
-    // 참조한 다른 매니저들보다 후 순위에서 초기화 해야 함
-    PlayerManager pm;
-    public Temp_BaseCampData baseCampData;
+    [field: SerializeField] public int MaxLevel { get; private set; }
 
-    public int MaxLevel { get; private set; }
-    public BaseCampLevelUpCondition[] levelUpConditions;
+    public BaseCampData currentCampData;
+
+    [HideInInspector] public Item_Recipe[] allRecipeList;
+
+    [HideInInspector] public BaseCampUpgradeCondition[] UpgradeConditions;
 
     public void Init()
     {
         base.SingletonInit();
-        pm = PlayerManager.Instance;
-        baseCampData = new Temp_BaseCampData();
+        currentCampData = new BaseCampData();
+        InitUpgradeConditions();
+        InitAllRecipes();
     }
 
-    private void Start()
+    public void LoadData()
     {
-        InitLevelUpConditions();
+        // 로드 시 
+        // currentCampData = 세이브 데이터의 Basc Camp Data 할당;
+        // 스크립터블 오브젝트들(레시피 데이터 언락정보, 스테이지 데이터 클리어 여부 등)은 자동으로 저장되니 동기화 안해도 괜찮음
     }
 
-    // Recoureces에서 베이스캠프 레벨업 조건(스크립터블obj) 배열로 받아와 레벨 순으로 정렬하기
-    private void InitLevelUpConditions()
+
+    private void InitUpgradeConditions()
     {
-        levelUpConditions = Resources.LoadAll<BaseCampLevelUpCondition>("BaseCampLevelUpConditions");
-        Array.Sort(levelUpConditions, (a, b) => a.currentLevel.CompareTo(b.currentLevel));
+        UpgradeConditions = Resources.LoadAll<BaseCampUpgradeCondition>("BaseCampUpgradeConditions");
+        Array.Sort(UpgradeConditions, (a, b) => a.currentLevel.CompareTo(b.currentLevel));
+    }
+
+    public void InitAllRecipes()
+    {
+        allRecipeList = Resources.LoadAll<Item_Recipe>("ItemDatabase/99 Recipes");
+        Array.Sort(allRecipeList, (a, b) => a.RecipeData.orderIndex.CompareTo(b.RecipeData.orderIndex));
+    }
+
+    public void LevelUp()
+    {
+        if (currentCampData.CurrentCampLevel.Value < MaxLevel)
+            currentCampData.CurrentCampLevel.Value += 1;
+        else Debug.Log("레벨업 불가 [사유 : 이미 최대 레벨입니다.]");
     }
 
 }

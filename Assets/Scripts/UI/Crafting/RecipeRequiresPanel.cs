@@ -101,6 +101,7 @@ public class RecipeRequiresPanel : MonoBehaviour
             }
         }
 
+        Debug.Log(canCraft);
         return canCraft;
     }
 }

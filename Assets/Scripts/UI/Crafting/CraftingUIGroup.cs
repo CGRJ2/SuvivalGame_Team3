@@ -10,7 +10,7 @@ public class CraftingUIGroup : MonoBehaviour
 
     [SerializeField] RecipeListPagePanel recipeListPage;
     [SerializeField] RecipeRequiresPanel recipeRequires;
-    [SerializeField] Button craftButton;               
+    [SerializeField] CraftingButton craftButton;               
 
 
 
@@ -18,7 +18,7 @@ public class CraftingUIGroup : MonoBehaviour
     private void Awake() => Init();
     public void Init()
     {
-        UIManager.Instance.craftingUI.craftingUIGroup = this;
+        UIManager.Instance.craftingGroup = this;
         recipeListPage.Init();
         recipeRequires.Init();
     }
@@ -45,7 +45,13 @@ public class CraftingUIGroup : MonoBehaviour
             UIManager.Instance.OpenPanel(recipeRequires.gameObject);
 
         // 현재 선택된 레시피의 정보 업데이트 & 충분한 재료가 있다면 버튼 활성화
-        craftButton.interactable = recipeRequires.IsRequiresSufficent(currentSelectedRecipe);
+        UpdateRequiresPanelState();
+    }
+    public void UpdateRequiresPanelState()
+    {
+        craftButton.btnSelf.interactable = recipeRequires.IsRequiresSufficent(currentSelectedRecipe);
+        if(currentSelectedRecipe != null)
+            craftButton.craftingTime = currentSelectedRecipe.RecipeData.craftDuration;
     }
 
 
@@ -69,7 +75,7 @@ public class CraftingUIGroup : MonoBehaviour
     {
         if (currentSelectedRecipe != null)
         {
-            Debug.LogWarning("제작 실행");
+            //Debug.LogWarning("제작 실행");
             InventoryPresenter playerInventroy = PlayerManager.Instance.instancePlayer.Status.inventory;
 
             // 인벤토리에 결과 아이템 추가하기
@@ -83,6 +89,6 @@ public class CraftingUIGroup : MonoBehaviour
         }
 
         // 제작 완료 후, 제작 버튼 활성화 조건 한 번 더 업데이트
-        craftButton.interactable = recipeRequires.IsRequiresSufficent(currentSelectedRecipe);
+        UpdateRequiresPanelState();
     }
 }

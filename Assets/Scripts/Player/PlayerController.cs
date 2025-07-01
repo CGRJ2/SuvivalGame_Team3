@@ -326,7 +326,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void OpenInventory(InputAction.CallbackContext context)
     {
         if (context.performed)
-            UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
+            UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
     }
 
     private void OnQuickSlotPerformed(InputAction.CallbackContext context)
@@ -343,7 +343,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void SelectQuickSlot(int index)
     {
         Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index - 1);
+        UIManager.Instance.inventoryGroup.quickSlotParent.SelectQuickSlot(index - 1);
         // 손에 드는 아이템 교체
     }
     #endregion
@@ -508,9 +508,15 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if (damagables.Length < 1) return;
 
+        int finalDamage = Status.Damage;
+        if (Status.onHandItem is Item_Weapon weapon)
+        {
+            finalDamage += weapon.Damage;
+        }
+
         foreach (IDamagable damagable in damagables)
         {
-            damagable.TakeDamage(Status.Damage);
+            damagable.TakeDamage(finalDamage);
         }
     }
 

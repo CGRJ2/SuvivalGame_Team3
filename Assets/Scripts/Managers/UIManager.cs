@@ -8,8 +8,9 @@ public class UIManager : Singleton<UIManager>
 {
     PlayerManager pm;
 
-    public InventoryUI inventoryUI;
-    public CraftingUI craftingUI;
+    public InventoryUIGroup inventoryGroup;
+    public CraftingUIGroup craftingGroup;
+    public UpgradeUIGroup upgradeGroup;
 
     private InputActionMap playerActionMap;
     private InputActionMap uiActionMap;
@@ -49,7 +50,7 @@ public class UIManager : Singleton<UIManager>
     {
         // I키로도 인벤토리 끄기 가능
         if (context.performed)
-            UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
+            UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
     }
 
     
@@ -104,7 +105,7 @@ public class UIManager : Singleton<UIManager>
 }
 
 [System.Serializable]
-public class InventoryUI
+public class InventoryUIGroup
 {
     public InventoryView inventoryView;
     public SlotToolTip tooltip;
@@ -112,8 +113,3 @@ public class InventoryUI
     public QuickSlotParent quickSlotParent;
 }
 
-[System.Serializable]
-public class CraftingUI
-{
-    public CraftingUIGroup craftingUIGroup;
-}

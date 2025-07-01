@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public class ColliderController : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class ColliderController : MonoBehaviour
     {
         Vector3 rayOrigin = transform.position + Vector3.up * offsetY_Ground;
         RaycastHit[] raycastHits = Physics.SphereCastAll(rayOrigin, rayRadius_Ground, Vector3.down, distance_Ground, collisionLayerMask);
+        raycastHits = raycastHits.Where(hit => !hit.collider.isTrigger).ToArray();
 
         if (raycastHits.Length > 0)
         {
@@ -72,6 +74,7 @@ public class ColliderController : MonoBehaviour
     {
         Vector3 rayOrigin = transform.position + Vector3.up * offsetY_Head;
         RaycastHit[] raycastHits = Physics.SphereCastAll(rayOrigin, rayRadius_Head, Vector3.up, distance_Head, collisionLayerMask);
+        raycastHits = raycastHits.Where(hit => !hit.collider.isTrigger).ToArray();
 
         if (raycastHits.Length > 0)
         {
@@ -88,6 +91,7 @@ public class ColliderController : MonoBehaviour
         Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;
 
         Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Attack, attackableLayerMask);
+        cols = cols.Where(c => !c.isTrigger).ToArray();
         List<IDamagable> damagables = new List<IDamagable>();
         
         foreach (Collider col in cols)

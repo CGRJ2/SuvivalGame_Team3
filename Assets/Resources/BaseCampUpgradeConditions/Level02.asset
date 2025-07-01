@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f595dea547f174e85d3baee81a3ce8, type: 3}
+  m_Name: Level02
+  m_EditorClassIdentifier: 
+  currentLevel: 1
+  baseCampSprite: {fileID: 21300000, guid: 72d40a675f801e248878ba029152eb5c, type: 3}
+  upgradingTime: 10
+  needUnlockStage: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
+  requiredItems:
+  - item: {fileID: 11400000, guid: 8fa480d0683a12344843f9fddedf380c, type: 2}
+    count: 2
+  - item: {fileID: 11400000, guid: 9a03b406a2d9f3f4dadf0270cb871814, type: 2}
+    count: 5
+  - item: {fileID: 11400000, guid: 4407808d2ed2d8842b0605af709cbc9c, type: 2}
+    count: 10

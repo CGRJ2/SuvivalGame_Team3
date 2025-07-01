@@ -26,7 +26,7 @@ public class RecipeListPagePanel : MonoBehaviour
 
     public void SetCurrentPageRecipeList(int start, int end)
     {
-        Item_Recipe[] allRecipeList = BaseCampManager.Instance.baseCampData.allRecipeList;
+        Item_Recipe[] allRecipeList = BaseCampManager.Instance.allRecipeList;
 
         for (int i = start; i < end; i++)
         {
