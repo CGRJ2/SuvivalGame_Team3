@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandLight : MonoBehaviour
+public class FlashLight : MonoBehaviour
 {
     private bool isLighted = false; // 손전등의 활성화 상태를 나타내는 변수
     public float intensity;
