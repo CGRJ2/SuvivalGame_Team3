@@ -7,7 +7,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
-    private Animator animator;
+    protected Animator animator;
 
     protected float currentHP;
     protected float moveSpeed;
@@ -39,7 +39,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     [SerializeField] protected float alertDecayRate = 5f;
     [SerializeField] private float cooldownTimer = 0f;
     [SerializeField] private float alertCooldownThreshold = 2f;
-    private MonsterPerceptionController perceptionController;
+    protected MonsterPerceptionController perceptionController;
 
     // 경계도 단계
     [SerializeField] protected float alertThreshold_Low = 20f;

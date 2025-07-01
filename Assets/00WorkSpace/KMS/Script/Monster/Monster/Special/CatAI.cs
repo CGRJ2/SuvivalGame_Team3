@@ -10,6 +10,7 @@ public class CatAI : BaseMonster
 
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
+    public Transform respawnPoint;
 
     protected override void Awake()
     {
@@ -37,6 +38,18 @@ public class CatAI : BaseMonster
         // 여기에 감지범위 등 시간대별 파라미터 변경
         Debug.Log("고양이 시간대 변경됨: " + newState);
         UpdateSightParameters();
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var player = other.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                //player.StartCatCutscene(this); // this = CatAI 인스턴스
+                                               // (여기서는 아무 컷씬 정보 없음)
+            }
+        }
     }
     protected override void HandleState()
     {
@@ -159,16 +172,16 @@ public class CatAI : BaseMonster
         var tz = DailyManager.Instance.TZ_State.Value;
         switch (tz)
         {
-            case TimeZoneState.Morning:
+            case TimeZoneState.Morning: // 오전
                 CatData.catDetectionRange = 0f; // 감지 없음
                 break;
-            case TimeZoneState.Afternoon:
+            case TimeZoneState.Afternoon: // 정오
                 CatData.catDetectionRange = baseRange; // a
                 break;
-            case TimeZoneState.Evening:
+            case TimeZoneState.Evening: // 오후
                 CatData.catDetectionRange = baseRange * 1.5f; // a x 1.5
                 break;
-            case TimeZoneState.Night: // 새벽
+            case TimeZoneState.Night: // 밤
                 CatData.catDetectionRange = baseRange * 1.25f; // a x 1.25
                 break;
             default:
@@ -233,6 +246,17 @@ public class CatAI : BaseMonster
         Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
         RB.MovePosition(targetPosition);
     }
+    public void MoveToRespawn()
+    {
+        if (respawnPoint != null)
+            transform.position = respawnPoint.position;
+
+        perceptionController.ResetAlert();// 경계도 값 리셋
+        SetPerceptionState(MonsterPerceptionState.Idle);
+        stateMachine.ChangeState(new CatIdleState());
+        // 혹은 네비메시 경로 이동, 상태 변경 등
+    }
+
     public override void TakeDamage(int damage)
     {
     }
@@ -247,5 +271,13 @@ public class CatAI : BaseMonster
     protected override void Phase3TryAttack()
     {
         throw new System.NotImplementedException();
+    }
+    public void PlayCutsceneAnim(int cutsceneType)
+    {
+        switch (cutsceneType)
+        {
+            case 0: animator.SetTrigger("CutsceneA"); break; // 컷씬 1
+            case 1: animator.SetTrigger("CutsceneB"); break; // 컷씬 2
+        }
     }
 }
