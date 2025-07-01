@@ -256,6 +256,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
             return;
         }
 
+        // TODO: 네비메시 설치시 주석처리 예정 (Area/Mask로 이동제한 대체)
         // 행동 반경 제한
         if (IsOutsideActionRadius())
         {
