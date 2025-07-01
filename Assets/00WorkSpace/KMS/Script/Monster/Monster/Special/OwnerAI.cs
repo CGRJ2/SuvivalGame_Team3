@@ -61,9 +61,11 @@ public class OwnerAI : BaseMonster
 
     public void ApplyPacifyEffect(float duration)
     {
+        if (StateMachine.CurrentState is OwnerPacifiedState)
+            return;
         // 외부 자극(아이템 등)으로 인해 무력화 상태 진입
         SetPerceptionState(MonsterPerceptionState.Idle);
-        StateMachine.ChangeState(new CatPacifiedState(duration));
+        StateMachine.ChangeState(new OwnerPacifiedState(duration));
     }
 
     public OwnerDetectionTarget GetClosestTarget(out Transform closest)
@@ -130,7 +132,7 @@ public class OwnerAI : BaseMonster
         }
 
         // OwnerData 참조로 커스텀 속도 적용
-        float moveSpd = (customSpeed > 0f) ? customSpeed : OwnerData.moveSpeed;
+        float moveSpd = (customSpeed > 0f) ? customSpeed : OwnerData.ownerMoveSpeed;
         Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
         RB.MovePosition(targetPosition);
     }
@@ -141,7 +143,7 @@ public class OwnerAI : BaseMonster
 
         perceptionController.ResetAlert();// 경계도 값 리셋
         SetPerceptionState(MonsterPerceptionState.Idle);
-        stateMachine.ChangeState(new CatIdleState());
+        stateMachine.ChangeState(new OwnerIdleState());
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
 
