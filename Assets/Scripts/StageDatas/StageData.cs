@@ -6,16 +6,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New StageData", menuName = "New StageData")]
 public class StageData : ScriptableObject
 {
-    public Sprite stageImage;
-    public string stageName;
-    public bool isUnlocked;
+    [field: SerializeField] public bool IsUnlocked { get; private set; }
+    [field: SerializeField] public int StageLevel { get; private set; }
+    [field: SerializeField] public Sprite StageImage { get; private set; }
+    [field: SerializeField] public string StageName { get; private set; }
+
     public StageUnlockCondition unlockCondition;
 
 
     protected void OnEnable()
     {
-        stageName = this.name;
+        StageName = this.name;
         unlockCondition.needTimeState = new List<TimeZoneState>() { TimeZoneState.All };
+    }
+
+    public void UlockStage()
+    {
+        IsUnlocked = true;
+        StageManager.Instance.SetCurrentStageIndex(StageLevel);
     }
 }
 

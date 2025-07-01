@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4feca833a5714e4a803b858caa7dd51, type: 3}
   m_Name: "\uB180\uC774\uBC29"
   m_EditorClassIdentifier: 
-  stageImage: {fileID: 21300000, guid: 72d40a675f801e248878ba029152eb5c, type: 3}
-  stageName: "\uB180\uC774\uBC29"
-  isUnlocked: 1
+  IsUnlocked:
+    _value: 0
+  <StageLevel>k__BackingField: 0
+  <StageImage>k__BackingField: {fileID: 21300000, guid: bd6b16de5b6062e458ce57c95c740087, type: 3}
+  <StageName>k__BackingField: "\uB180\uC774\uBC29"
   unlockCondition:
     needItemList:
     - item: {fileID: 11400000, guid: 341e0c903fc68704dbc9e5f09b982ed6, type: 2}

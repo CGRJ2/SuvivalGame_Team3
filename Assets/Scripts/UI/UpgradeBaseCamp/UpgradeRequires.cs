@@ -89,7 +89,7 @@ public class UpgradeRequires : MonoBehaviour
         unlockStageRequireView.UpdateView(currentUpgradeCondition.needUnlockStage, textColor_requiresSufficient, textColor_requiresInsufficient);
 
         // 해금되어있는 상태라면
-        if (currentUpgradeCondition.needUnlockStage.isUnlocked)
+        if (currentUpgradeCondition.needUnlockStage.IsUnlocked)
         {
             return true;
         }

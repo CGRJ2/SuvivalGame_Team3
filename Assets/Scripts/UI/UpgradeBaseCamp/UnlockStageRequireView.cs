@@ -14,18 +14,18 @@ public class UnlockStageRequireView : MonoBehaviour
 
     public void UpdateView(StageData stageData, Color ActiveColor, Color DeactiveColor)
     {
-        image_StageImage.sprite = stageData.stageImage;
+        image_StageImage.sprite = stageData.StageImage;
 
-        if (stageData.isUnlocked)
+        if (stageData.IsUnlocked)
         {
             tmp_StageNameAndUnlockedCondition.color = ActiveColor;
-            tmp_StageNameAndUnlockedCondition.text = $"[{stageData.stageName}] 해금";
+            tmp_StageNameAndUnlockedCondition.text = $"[{stageData.StageName}] 해금";
             lockedImage.gameObject.SetActive(false);
         }
         else
         {
             tmp_StageNameAndUnlockedCondition.color = DeactiveColor;
-            tmp_StageNameAndUnlockedCondition.text = $"[{stageData.stageName}] 해금 필요";
+            tmp_StageNameAndUnlockedCondition.text = $"[{stageData.StageName}] 해금 필요";
             lockedImage.gameObject.SetActive(true);
         }
     }

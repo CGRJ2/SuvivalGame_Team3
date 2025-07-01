@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractableBase : MonoBehaviour, IInteractable
@@ -8,45 +6,48 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        Debug.Log($"{gameObject.name} : 상호작용 실행");
+
     }
 
     public virtual void SetInteractableEnable()
     {
-        Debug.Log($"{gameObject.name} : 상호작용 범위 진입");
+
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<PlayerController>() != null)
+        {
             pc = other.GetComponent<PlayerController>();
 
-        if (pc != null)
-        {
             pc.Cc.InteractableObj = this;
             SetInteractableEnable();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        ColliderController CC;
-
         if (other.GetComponent<PlayerController>() != null)
         {
-            CC = pc.Cc;
-            pc = null;
-        }
-        else CC = null;
+            pc = other.GetComponent<PlayerController>();
 
-
-        if (CC != null)
-        {
-            if (CC.InteractableObj == this as IInteractable)
+            if (pc.Cc.InteractableObj == this as IInteractable) return;
+            else if (pc.Cc.InteractableObj == null)
             {
-                CC.InteractableObj = null;
+                pc.Cc.InteractableObj = this;
+                SetInteractableEnable();
             }
-            else return;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<PlayerController>() != null)
+        {
+            Debug.LogError(gameObject.name);
+            pc.Cc.InteractableObj = null;
+            pc = null;
         }
     }
 }
