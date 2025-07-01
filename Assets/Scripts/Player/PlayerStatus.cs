@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 
@@ -102,21 +103,68 @@ public class PlayerStatus : MonoBehaviour
         inventory = new InventoryPresenter();
     }
 
+    // 플레이어 죽고 리스폰 할 때 초기화
+    public void Init_AfterDead()
+    {
+        // 일반 로드 함수 실행
+        Debug.Log("마지막에 저장한 데이터 로드해서 붙이기");
+
+        // 정신력, 배터리만 최대로 맞춰주기
+        CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
+        InitBattery();
+
+        // 감소한 최대 체력으로 설정
+        BodyPartsInit_AfterDead();
+    }
+
+    // 플레이어 기절 후 리스폰 할 때 초기화
+    public void Init_AfterFaint()
+    {
+        // 최대 배터리 감소
+        MaxBattery.Value = ssm.batterySystem.MaxBattery_AfterFaint;
+        CurrentBattery.Value = MaxBattery.Value;
+    }
+
+
     public void BodyPartsInit()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+        List<BodyPart> tempBodyParts = new List<BodyPart>();
 
         // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.
-        bodyParts.Add(new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_Init, 
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_Init, 
             (isActive) => Dead()));
-        bodyParts.Add(new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_Init, 
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_Init, 
             (isActive) => ApplyDebuff_CraftSpeed = !isActive)); 
-        bodyParts.Add(new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_Init,
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_Init,
             (isActive) => ApplyDebuff_LockWeaponUse = !isActive));
-        bodyParts.Add(new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
             (isActive) => ApplyDebuff_SprintSpeed = !isActive));
-        bodyParts.Add(new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_Init, 
             (isActive) => ApplyDebuff_SprintSpeed = !isActive));
+
+        bodyParts = tempBodyParts;
+    }
+
+    public void BodyPartsInit_AfterDead()
+    {
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+        List<BodyPart> tempBodyParts = new List<BodyPart>();
+
+        // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_AfterDestroyed,
+            (isActive) => Dead()));
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_AfterDestroyed,
+            (isActive) => ApplyDebuff_CraftSpeed = !isActive));
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_AfterDestroyed,
+            (isActive) => ApplyDebuff_LockWeaponUse = !isActive));
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_AfterDestroyed,
+            (isActive) => ApplyDebuff_SprintSpeed = !isActive));
+        tempBodyParts.Add(new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_AfterDestroyed,
+            (isActive) => ApplyDebuff_SprintSpeed = !isActive));
+
+        bodyParts = tempBodyParts;
+
     }
 
     public void InitBattery()

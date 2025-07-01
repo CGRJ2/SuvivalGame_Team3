@@ -772,6 +772,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &27708187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 27708188}
+  - component: {fileID: 27708189}
+  m_Layer: 0
+  m_Name: BaseCampInstance
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &27708188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27708187}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 21.64, y: 0, z: 13.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 238977703}
+  - {fileID: 1429760242}
+  - {fileID: 1361762036}
+  - {fileID: 1100310963}
+  - {fileID: 576415425}
+  - {fileID: 644702325}
+  m_Father: {fileID: 2047813297}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &27708189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 27708187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825a7f1b1401721429ad64bf514065cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnPoint: {fileID: 238977703}
 --- !u!1 &37629042
 GameObject:
   m_ObjectHideFlags: 0
@@ -2043,12 +2094,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238977702}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 644702325}
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &239762913
 GameObject:
@@ -6064,11 +6115,11 @@ Transform:
   m_GameObject: {fileID: 576415424}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.403, y: -0.4, z: 0.238}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 4.029999, y: 0.5, z: 2.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 644702325}
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &576415426
 CapsuleCollider:
@@ -7369,7 +7420,7 @@ GameObject:
   - component: {fileID: 644702327}
   - component: {fileID: 644702326}
   m_Layer: 0
-  m_Name: BaseCampArea
+  m_Name: BaseCampArea(ColliderTrigger)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7383,17 +7434,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644702324}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.64, y: 4.5, z: 13.45}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 576415425}
-  - {fileID: 1100310963}
-  - {fileID: 1361762036}
-  - {fileID: 1429760242}
-  - {fileID: 238977703}
-  m_Father: {fileID: 2047813297}
+  m_Children: []
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &644702326
 BoxCollider:
@@ -12156,11 +12202,11 @@ Transform:
   m_GameObject: {fileID: 1100310957}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.272, y: -0.45, z: 0.429}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 2.7200012, y: 0, z: 4.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 644702325}
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1101167784
 GameObject:
@@ -14769,11 +14815,11 @@ Transform:
   m_GameObject: {fileID: 1361762035}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.282, y: -0.45, z: 0.366}
-  m_LocalScale: {x: 0.4, y: 0.1, z: 0.2}
+  m_LocalPosition: {x: -2.8199997, y: 0, z: 3.6600008}
+  m_LocalScale: {x: 4, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 644702325}
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1361762038
 SphereCollider:
@@ -15797,12 +15843,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429760241}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: -0.4, z: 0.4218}
-  m_LocalScale: {x: 0.1, y: 0.2, z: 0.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.8999996, y: 0.5, z: 4.2179995}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 644702325}
+  m_Father: {fileID: 27708188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1429760243
 BoxCollider:
@@ -22866,7 +22912,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 644702325}
+  - {fileID: 27708188}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2048181648
@@ -28764,18 +28810,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxLevel>k__BackingField: 4
-  currentCampData:
+  baseCampData:
     CurrentCampLevel:
       _value: 0
     upgradingProcess:
       isUpgrading: 0
       proceededTime: 0
-    craftingProcess:
-      isCrafting: 0
-      proceededTime: 0
-      resultItem: {fileID: 0}
+  tempCampData:
+    respawnPoint: {fileID: 0}
   allRecipeList: []
   UpgradeConditions: []
+  baseCampInstance: {fileID: 0}
+  currentTempCampInstance: {fileID: 0}
 --- !u!224 &2383654588709031351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31794,6 +31840,7 @@ MonoBehaviour:
     <LegMaxHP_AfterDestroyed>k__BackingField: 5
   <batterySystem>k__BackingField:
     <MaxBattery_Init>k__BackingField: 100
+    <MaxBattery_AfterFaint>k__BackingField: 0
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
     <RecoverAmount_MonsterSlay>k__BackingField: 10

@@ -8,19 +8,28 @@ public class BaseCampManager : Singleton<BaseCampManager>
 {
     [field: SerializeField] public int MaxLevel { get; private set; }
 
-    public BaseCampData currentCampData;
+    // [세이브 & 로드 데이터]
+    public BaseCampData baseCampData;
+
+    // [세이브 & 로드 데이터]
+    public TempCampData tempCampData;
 
     [HideInInspector] public Item_Recipe[] allRecipeList;
 
     [HideInInspector] public BaseCampUpgradeCondition[] UpgradeConditions;
 
+    public BaseCampInstance baseCampInstance;
+    public TemporaryCampInstance currentTempCampInstance;
+
     public void Init()
     {
         base.SingletonInit();
-        currentCampData = new BaseCampData();
+        baseCampData = new BaseCampData();
+        tempCampData = null;
         InitUpgradeConditions();
         InitAllRecipes();
     }
+
 
     public void LoadData()
     {
@@ -44,9 +53,10 @@ public class BaseCampManager : Singleton<BaseCampManager>
 
     public void LevelUp()
     {
-        if (currentCampData.CurrentCampLevel.Value < MaxLevel)
-            currentCampData.CurrentCampLevel.Value += 1;
+        if (baseCampData.CurrentCampLevel.Value < MaxLevel)
+            baseCampData.CurrentCampLevel.Value += 1;
         else Debug.Log("레벨업 불가 [사유 : 이미 최대 레벨입니다.]");
     }
+
 
 }

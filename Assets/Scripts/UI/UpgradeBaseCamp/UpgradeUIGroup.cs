@@ -40,8 +40,8 @@ public class UpgradeUIGroup : MonoBehaviour
         if (upgradingCoroutine != null)
         {
             StopCoroutine(upgradingCoroutine);
-            BaseCampManager.Instance.currentCampData.upgradingProcess.isUpgrading = true;
-            BaseCampManager.Instance.currentCampData.upgradingProcess.proceededTime = upgradeProgressingTime;
+            BaseCampManager.Instance.baseCampData.upgradingProcess.isUpgrading = true;
+            BaseCampManager.Instance.baseCampData.upgradingProcess.proceededTime = upgradeProgressingTime;
         }
     }
 
@@ -79,7 +79,7 @@ public class UpgradeUIGroup : MonoBehaviour
         }
 
         // 업그레이드 가능 상태일 때 (최대 레벨이 아닐 때) 조건들 업데이트
-        if (bcm.currentCampData.CurrentCampLevel.Value < bcm.MaxLevel)
+        if (bcm.baseCampData.CurrentCampLevel.Value < bcm.MaxLevel)
         {
             UpdateUpgradeRequiresPanelState();
         }

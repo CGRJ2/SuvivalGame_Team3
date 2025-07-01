@@ -8,7 +8,12 @@ public class PlayerController : MonoBehaviour, IDamagable
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public bool isAttacking;
 
+    // [세이브 & 로드 데이터]
+    // Transform << 정보 저장소도 만들어주세요
+
+    // [세이브 & 로드 데이터]
     public PlayerStatus Status { get; private set; }
+
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
 
@@ -41,7 +46,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     bool isAttackInput;
 
 
-    
+
 
 
     private void Awake() => Init();
@@ -85,7 +90,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void Init()
     {
         PlayerManager.Instance.instancePlayer = this;
-        
+
 
 
         Status = GetComponent<PlayerStatus>();
@@ -195,7 +200,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 5. 앉기 액션
         crouchAction.performed -= HandleCrouch;
         crouchAction.canceled -= HandleCrouch;
-        
+
         // 6. 공격 액션
         attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
@@ -524,7 +529,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         IInteractable interactable = Cc.InteractableObj;
 
-        if (interactable != null) 
+        if (interactable != null)
             interactable.Interact();
     }
 
@@ -544,9 +549,17 @@ public class PlayerController : MonoBehaviour, IDamagable
                 activeBodyPart.Add(part);
         }
 
-        // 부위 랜덤 데미지
-        int r = Random.Range(1, activeBodyPart.Count);
-        activeBodyPart[r].TakeDamage(damage);
+        if (activeBodyPart.Count > 1)
+        {
+            // 부위 랜덤 데미지
+            int r = Random.Range(1, activeBodyPart.Count);
+            activeBodyPart[r].TakeDamage(damage);
+        }
+        else if (activeBodyPart.Count > 0)
+        {
+            // 머리만 남은 상태면 머리에 데미지
+            activeBodyPart[0].TakeDamage(damage);
+        }
 
         Status.CheckCriticalState();
         StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
@@ -563,6 +576,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
 
+
+    // 단순 위치만 이동해주기
+    public void Respawn(Transform transform)
+    {
+        this.transform.position = transform.position;
+        this.transform.rotation = transform.rotation;
+    }
     #endregion
 
 

@@ -33,8 +33,12 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     [System.Serializable]
     public class BatterySystem
     {
-        [field: Header("정신력 최대량 초기값 설정")]
+        [field: Header("배터리 최대량 초기값 설정")]
         [field: SerializeField] public int MaxBattery_Init { get; private set; }
+
+
+        [field: Header("기절 후 감소한 배터리 최대량")]
+        [field: SerializeField] public int MaxBattery_AfterFaint { get; private set; }
 
         [field: Header("상태 별 틱당 감소량")]
         [field: SerializeField] public int DrainPerTick_Idle { get; private set; }

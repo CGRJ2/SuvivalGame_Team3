@@ -16,13 +16,13 @@ public class UpgradeRequires : MonoBehaviour
     public void Init()
     {
         requiresSlotViews = requiresSlotsParent.GetComponentsInChildren<RequiresSlotView>();
-        BaseCampManager.Instance.currentCampData.CurrentCampLevel.Subscribe(SetCurrentUpgradeCondition);
-        SetCurrentUpgradeCondition(BaseCampManager.Instance.currentCampData.CurrentCampLevel.Value);
+        BaseCampManager.Instance.baseCampData.CurrentCampLevel.Subscribe(SetCurrentUpgradeCondition);
+        SetCurrentUpgradeCondition(BaseCampManager.Instance.baseCampData.CurrentCampLevel.Value);
     }
 
     private void OnDestroy()
     {
-        BaseCampManager.Instance.currentCampData.CurrentCampLevel.Unsubscribe(SetCurrentUpgradeCondition);
+        BaseCampManager.Instance.baseCampData.CurrentCampLevel.Unsubscribe(SetCurrentUpgradeCondition);
     }
 
     // 현재 베이스캠프 레벨에 따라 업그레이드 조건 업데이트
