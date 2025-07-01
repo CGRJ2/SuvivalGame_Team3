@@ -49,10 +49,10 @@ public class OwnerChaseState : IMonsterState
 
         if (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait)
         {
-            owner.Move(toTarget.normalized * 1f); // 미끼 속도조절 가능
+            owner.Move(toTarget.normalized * 0.8f); // 미끼 느리게
             if (toTarget.magnitude < 1.2f)
             {
-                owner.ApplyPacifyEffect(6f);  
+                owner.ApplyPacifyEffect(4f);
                 Debug.Log($"[{owner.name}] 미끼 도달 => 무력화 상태 전이");
             }
         }

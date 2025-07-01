@@ -14,6 +14,7 @@ public class OwnerStateFactory : DefaultMonsterStateFactory
     {
         ownerIdleState = new OwnerIdleState();
         ownerChaseState = new OwnerChaseState();
+        ownerAttackState = new OwnerAttackState();
     }
 
     public override IMonsterState GetStateForPerception(MonsterPerceptionState state)
@@ -30,6 +31,7 @@ public class OwnerStateFactory : DefaultMonsterStateFactory
 
     public override IMonsterState CreateIdleState() => ownerIdleState;
     public override IMonsterState CreateChaseState() => ownerChaseState;
+    public override IMonsterState CreateAttackState() => ownerAttackState;
 
 }
 
