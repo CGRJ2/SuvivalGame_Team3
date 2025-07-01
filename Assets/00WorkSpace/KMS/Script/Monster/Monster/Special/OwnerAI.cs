@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static OwnerAI;
 
 public class OwnerAI : BaseMonster
 {
-    public enum OnwerDetectionTarget { None, CatBait, Player }
+    public enum OwnerDetectionTarget { None, OwnerBait, Player }
     public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
     public bool IsInvincible { get; private set; } = true;
     private List<Transform> baitTransforms = new List<Transform>();
@@ -65,11 +66,11 @@ public class OwnerAI : BaseMonster
         StateMachine.ChangeState(new CatPacifiedState(duration));
     }
 
-    public OnwerDetectionTarget GetClosestTarget(out Transform closest)
+    public OwnerDetectionTarget GetClosestTarget(out Transform closest)
     {
         closest = null;
         float minDist = float.MaxValue;
-        OnwerDetectionTarget found = OnwerDetectionTarget.None;
+        OwnerDetectionTarget found = OwnerDetectionTarget.None;
 
         // 1. ¹Ì³¢ ¸ÕÀú Å½»ö
         foreach (var bait in baitTransforms)
@@ -80,7 +81,7 @@ public class OwnerAI : BaseMonster
             {
                 minDist = dist;
                 closest = bait;
-                found = OnwerDetectionTarget.CatBait;
+                found = OwnerDetectionTarget.OwnerBait;
             }
         }
         // 2. ÇÃ·¹ÀÌ¾î°¡ ´õ °¡±î¿ì¸é µ¤¾î¾¸
@@ -91,7 +92,7 @@ public class OwnerAI : BaseMonster
             {
                 minDist = playerDist;
                 closest = playerTransform;
-                found = OnwerDetectionTarget.Player;
+                found = OwnerDetectionTarget.Player;
             }
         }
         return found;

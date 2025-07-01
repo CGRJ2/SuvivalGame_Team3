@@ -79,7 +79,7 @@ public class CatChaseState : IMonsterState
         // 타겟 방향으로 이동
         Vector3 dir = (target.position - cat.transform.position);
         dir.y = 0f;
-        cat.Move(dir, currentSpeed);   // ← 변화된 속도로 이동
+        cat.Move(dir, currentSpeed);   // 변화된 속도로 이동
 
         // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;
@@ -92,13 +92,6 @@ public class CatChaseState : IMonsterState
                 Debug.Log($"[{cat.name}] → 정신력 {mentalDamage} 감소 (추적 지속)");
             }
             mentalTickTimer = 0f;
-        }
-
-        // 근접 시 공격 연출
-        float dist = Vector3.Distance(cat.transform.position, target.position);
-        if (dist < 2f)
-        {
-            cat.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
 

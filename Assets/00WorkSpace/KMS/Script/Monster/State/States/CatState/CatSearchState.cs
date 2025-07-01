@@ -41,7 +41,7 @@ public class CatSearchState : IMonsterState
                 // 캣잎이면 다가가서 먹기/무력화 등
                 Vector3 dir = target.position - cat.transform.position;
                 dir.y = 0f;
-                cat.Move(dir.normalized * 0.5f); // 탐색중은 천천히
+                cat.Move(dir.normalized * 1f); //속도 도절가능
                 // 먹는 행동 조건 추가 가능
             }
             else if (targetType == CatAI.CatDetectionTarget.Player)
@@ -49,7 +49,7 @@ public class CatSearchState : IMonsterState
                 // 플레이어 쫓기 or 경계도 상승 등
                 Vector3 dir = target.position - cat.transform.position;
                 dir.y = 0f;
-                cat.Move(dir.normalized * 0.7f);
+                cat.Move(dir.normalized * 1f);
                 cat.IncreaseAlert(10f);
             }
         }
