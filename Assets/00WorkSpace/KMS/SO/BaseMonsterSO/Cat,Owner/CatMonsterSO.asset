@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c844c8c8b25abe54bbf27d9486da7565, type: 3}
+  m_Name: CatMonsterSO
+  m_EditorClassIdentifier: 
+  monsterName: 
+  monsterType: 0
+  monsterSubType: 0
+  typeStatData: {fileID: 0}
+  maxHP: 0
+  moveSpeed: 0
+  attackPower: 0
+  attackRange: 0
+  attackCooldown: 0
+  collisionDamage: 0
+  knockbackDistance: 2
+  attackAnimSpeed: 1
+  detectionRange: 0
+  baseFOV: 40
+  eyeHeight: 1.5
+  targetType: 0
+  actionRadius: 20
+  phase2AttackPower: 0
+  phase3AttackPower: 0
+  phase2KnockbackDistance: 0
+  phase3KnockbackDistance: 0
+  phase2AttackCooldown: 0
+  phase3AttackCooldown: 0
+  phase2AnimSpeed: 1
+  phase3AnimSpeed: 1
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []
+  footstepDetectionRange: 12
+  chaseMoveSpeed: 5
+  cutsceneDuration: 3
+  idleMoveSpeed: 3
+  detectionRange: 7
+  preferredBaitItems: []

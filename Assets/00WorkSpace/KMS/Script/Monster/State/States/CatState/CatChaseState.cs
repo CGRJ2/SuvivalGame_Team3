@@ -7,7 +7,6 @@ public class CatChaseState : IMonsterState
     private CatAI cat;
     private Transform target;
 
-    // 정신력 감소 주기 및 수치 (기본값, 나중에 튜닝 가능)
     private float mentalTickInterval = 1.0f;
     private float mentalDamage = 3.0f;
     private float mentalTickTimer = 0f;
@@ -21,7 +20,7 @@ public class CatChaseState : IMonsterState
         cat.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
         Debug.Log($"[{cat.name}] 상태: CatChase 진입");
 
-        mentalTickTimer = 0f; // 진입 시 초기화
+        mentalTickTimer = 0f;
     }
 
     public void Execute()
@@ -32,10 +31,21 @@ public class CatChaseState : IMonsterState
             return;
         }
 
+        if (cat.CatData != null)
+        {
+            if (cat.IsPlayerMakingNoise() && cat.IsInDetectionRange(target))
+            {
+                cat.IncreaseAlert(cat.CatData.footstepAlertValue);
+                cat.StateMachine.ChangeState(
+                    cat.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert));
+                return;
+            }
+        }
+
+        // 이하 동일
         Vector3 dir = (target.position - cat.transform.position).normalized;
         cat.Move(dir);
 
-        // 정신력 감소 처리
         mentalTickTimer += Time.deltaTime;
         if (mentalTickTimer >= mentalTickInterval)
         {
@@ -48,7 +58,6 @@ public class CatChaseState : IMonsterState
             mentalTickTimer = 0f;
         }
 
-        // 공격 애니메이션은 단순 연출용
         float dist = Vector3.Distance(cat.transform.position, target.position);
         if (dist < 2f)
         {
@@ -60,4 +69,7 @@ public class CatChaseState : IMonsterState
     {
         Debug.Log($"[{cat.name}] CatChase 종료");
     }
+
+
 }
+

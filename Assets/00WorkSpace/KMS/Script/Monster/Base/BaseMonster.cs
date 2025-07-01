@@ -23,7 +23,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
 
-
     protected Transform target;
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
