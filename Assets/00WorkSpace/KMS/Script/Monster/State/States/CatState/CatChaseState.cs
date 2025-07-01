@@ -16,7 +16,10 @@ public class CatChaseState : IMonsterState
         cat = monster as CatAI;
         if (cat == null) return;
 
-        target = cat.GetTarget();
+        // 추적 대상 재탐색 (항상 최신 타겟)
+        cat.RefreshBaitList();
+        CatAI.CatDetectionTarget targetType = cat.GetClosestTarget(out target);
+
         cat.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
         Debug.Log($"[{cat.name}] 상태: CatChase 진입");
 
@@ -25,13 +28,21 @@ public class CatChaseState : IMonsterState
 
     public void Execute()
     {
-        if (target == null)
+        if (cat == null || cat.IsDead)
+            return;
+
+        // 타겟 실시간 재탐색
+        cat.RefreshBaitList();
+        CatAI.CatDetectionTarget targetType = cat.GetClosestTarget(out target);
+
+        if (target == null || targetType == CatAI.CatDetectionTarget.None)
         {
             cat.StateMachine.ChangeState(new CatIdleState());
             return;
         }
 
-        if (cat.CatData != null)
+        // 플레이어 추적 중 소음/범위 등으로 경계도 상승(즉시 Alert 전이)
+        if (cat.CatData != null && targetType == CatAI.CatDetectionTarget.Player)
         {
             if (cat.IsPlayerMakingNoise() && cat.IsInDetectionRange(target))
             {
@@ -42,10 +53,12 @@ public class CatChaseState : IMonsterState
             }
         }
 
-        // 이하 동일
-        Vector3 dir = (target.position - cat.transform.position).normalized;
-        cat.Move(dir);
+        // 타겟 방향으로 이동
+        Vector3 dir = (target.position - cat.transform.position);
+        dir.y = 0f;
+        cat.Move(dir.normalized);
 
+        // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;
         if (mentalTickTimer >= mentalTickInterval)
         {
@@ -58,6 +71,7 @@ public class CatChaseState : IMonsterState
             mentalTickTimer = 0f;
         }
 
+        // 근접 시 공격 연출
         float dist = Vector3.Distance(cat.transform.position, target.position);
         if (dist < 2f)
         {
@@ -69,7 +83,4 @@ public class CatChaseState : IMonsterState
     {
         Debug.Log($"[{cat.name}] CatChase 종료");
     }
-
-
 }
-

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CatPacifiedState : IMonsterState
 {
-    private BaseMonster monster;
+    private CatAI cat;
     private float pacifyDuration;
     private float timer;
 
@@ -15,34 +15,34 @@ public class CatPacifiedState : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
-        this.monster = monster;
+        cat = monster as CatAI;
         timer = 0f;
 
-        monster.SetPerceptionState(MonsterPerceptionState.Idle); // 무력화 중에는 경계도 초기화 or 유지
-        monster.GetComponent<MonsterView>()?.PlayMonsterPacifyAnimation();
+        // 무력화 상태에서는 경계도/퍼셉션 모두 Idle로 유지
+        cat.SetPerceptionState(MonsterPerceptionState.Idle);
+        cat.GetComponent<MonsterView>()?.PlayMonsterPacifyAnimation();
 
-        Debug.Log($"[{monster.name}] 상태: CatPacified 진입 ({pacifyDuration:F1}초)");
+        Debug.Log($"[{cat.name}] 상태: CatPacified 진입 ({pacifyDuration:F1}초)");
     }
 
     public void Execute()
     {
-        if (monster == null || monster.IsDead) return;
+        if (cat == null || cat.IsDead) return;
 
         timer += Time.deltaTime;
 
         if (timer >= pacifyDuration)
         {
-            var current = monster.GetCurrentPerceptionState();
-            var next = monster.StateFactory.GetStateForPerception(current);
+            // 무력화 상태 종료 → 현 퍼셉션 상태 기반으로 상태전이
+            var next = cat.StateFactory.GetStateForPerception(cat.GetCurrentPerceptionState());
 
-            monster.StateMachine.ChangeState(next);
-            Debug.Log($"[{monster.name}] 무력화 종료 → {current} 상태 전이");
+            cat.StateMachine.ChangeState(next);
+            Debug.Log($"[{cat.name}] 무력화 종료 → {next.GetType().Name} 상태 전이");
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: CatPacified 종료");
+        Debug.Log($"[{cat.name}] 상태: CatPacified 종료");
     }
 }
-
