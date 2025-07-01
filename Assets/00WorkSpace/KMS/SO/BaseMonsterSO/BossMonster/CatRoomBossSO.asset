@@ -10,35 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cfaaf648b70d744fb1338759d930aec, type: 3}
-  m_Name: StudyBossSO
+  m_Name: CatRoomBossSO
   m_EditorClassIdentifier: 
-  monsterName: "\uC11C\uC7AC\uBCF4\uC2A4"
+  monsterName: "\uACE0\uC591\uC774\uBC29\uBCF4\uC2A4"
   monsterType: 1
   monsterSubType: 4
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 1200
-  moveSpeed: 3.2
-  attackPower: 40
-  attackRange: 10
-  attackCooldown: 1.2
+  maxHP: 0
+  moveSpeed: 0
+  attackPower: 0
+  attackRange: 0
+  attackCooldown: 0
   collisionDamage: 0
-  knockbackDistance: 3
-  attackAnimSpeed: 0.8
-  detectionRange: 50
-  baseFOV: 360
+  knockbackDistance: 2
+  attackAnimSpeed: 1
+  detectionRange: 0
+  baseFOV: 40
   eyeHeight: 1.5
   targetType: 0
-  actionRadius: 50
+  actionRadius: 20
   dropItemPrefab: {fileID: 0}
   monsterPrefab: {fileID: 0}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
-  phase2AttackPower: 70
-  phase3AttackPower: 50
-  phase2KnockbackDistance: 6
-  phase3KnockbackDistance: 11
-  phase2AttackCooldown: 15
-  phase3AttackCooldown: 21
-  phase2AnimSpeed: 2
-  phase3AnimSpeed: 1.8
+  phase2AttackPower: 0
+  phase3AttackPower: 0
+  phase2KnockbackDistance: 0
+  phase3KnockbackDistance: 0
+  phase2AttackCooldown: 0
+  phase3AttackCooldown: 0
+  phase2AnimSpeed: 1
+  phase3AnimSpeed: 1

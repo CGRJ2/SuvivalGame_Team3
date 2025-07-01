@@ -7,6 +7,7 @@ public class BossPhase3AttackState : IMonsterState
 {
     private BaseMonster monster;
     private BossMonster bossMonster;
+    private BossMonsterDataSO bossData;
     private float attackCooldown;
     private float phase2AttackACooldown;
     private float phase3AttackACooldown;
@@ -16,8 +17,19 @@ public class BossPhase3AttackState : IMonsterState
         this.monster = monster;
         bossMonster = monster as BossMonster;
         attackCooldown = monster.data.AttackCooldown;
-        phase2AttackACooldown = bossMonster.data.Phase2AttackCooldown;
-        phase3AttackACooldown = bossMonster.data.Phase3AttackCooldown;
+
+        // SO 참조 & 캐스팅
+        BossMonsterDataSO bossData = monster.data as BossMonsterDataSO;
+        if (bossData != null)
+        {
+            phase2AttackACooldown = bossData.Phase2AttackCooldown;
+            phase3AttackACooldown = bossData.Phase3AttackCooldown;
+        }
+        else
+        {
+            Debug.LogError("BossMonsterDataSO 타입이 아님");
+        }
+
         timer = 0f;
     }
 
@@ -40,20 +52,22 @@ public class BossPhase3AttackState : IMonsterState
             monster.StateMachine.ChangeState(new MonsterIdleState());
             return;
         }
-            // 공격 쿨타임
-            timer += Time.deltaTime;
+        // 공격 쿨타임
+        timer += Time.deltaTime;
         phase2AttackACooldown -= Time.deltaTime;
-        if (phase2AttackACooldown <= 0f && Random.value < 0.3f) // 특수A
+        phase3AttackACooldown -= Time.deltaTime;
+
+        if (phase2AttackACooldown <= 0f && Random.value < 0.3f)
         {
             monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
             bossMonster.phase2TryAttack();
-            phase2AttackACooldown = bossMonster.data.Phase2AttackCooldown;
+            phase2AttackACooldown = bossData.Phase2AttackCooldown; // SO에서 다시 초기화
         }
-        else if (phase3AttackACooldown <= 0f && Random.value < 0.4f) // 특수B
+        else if (phase3AttackACooldown <= 0f && Random.value < 0.4f)
         {
             monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
-            bossMonster.phase2TryAttack();
-            phase3AttackACooldown = bossMonster.data.Phase3AttackCooldown;
+            bossMonster.phase3TryAttack();
+            phase3AttackACooldown = bossData.Phase3AttackCooldown; // SO에서 다시 초기화
         }
         else
         {

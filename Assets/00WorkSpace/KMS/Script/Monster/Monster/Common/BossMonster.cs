@@ -1,14 +1,26 @@
 using KMS.Monster.Interface;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossMonster : BaseMonster
 {
+    private BossMonster bossMonster;
+    private BossMonsterDataSO bossData;
+
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
     private int batteryChargePerSection = 20; // 10%마다 충전할 양
+
+    protected override void Start()
+    {
+        base.Start();
+        bossData = data as BossMonsterDataSO;
+        if (bossData == null)
+            Debug.LogError("BossMonsterDataSO로 캐스팅 실패! data가 잘못 세팅됨.");
+    }
     protected override void HandleState()
     {
         float hpPercent = currentHP / data.MaxHP;
@@ -51,9 +63,9 @@ public class BossMonster : BaseMonster
     // 오버라이드 
     protected override void Phase2TryAttack()
     {
-        view.Animator.SetFloat("Phase2AttackSpeed", data.Phase2AnimSpeed);
-        int damage = data.Phase2AttackPower;
-        float knockback = data.Phase2KnockbackDistance;
+        view.Animator.SetFloat("Phase2AttackSpeed", bossData.Phase2AnimSpeed);
+        int damage = bossData.Phase2AttackPower;
+        float knockback = bossData.Phase2KnockbackDistance;
         if (target != null)
         {
             var dmg = target.GetComponent<IDamagable>();
@@ -66,9 +78,9 @@ public class BossMonster : BaseMonster
     }
     protected override void Phase3TryAttack()
     {
-        view.Animator.SetFloat("Phase3AttackSpeed", data.Phase3AnimSpeed);
-        int damage = data.Phase3AttackPower;
-        float knockback = data.Phase3KnockbackDistance;
+        view.Animator.SetFloat("Phase3AttackSpeed", bossData.Phase3AnimSpeed);
+        int damage = bossData.Phase3AttackPower;
+        float knockback = bossData.Phase3KnockbackDistance;
         if (target != null)
         {
             var dmg = target.GetComponent<IDamagable>();

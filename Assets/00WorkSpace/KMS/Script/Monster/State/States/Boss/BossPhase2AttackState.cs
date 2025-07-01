@@ -7,6 +7,7 @@ public class BossPhase2AttackState : IMonsterState
 {
     private BaseMonster monster;
     private BossMonster bossMonster;
+    private BossMonsterDataSO bossData;
     private float attackCooldown;
     private float phase2AttackACooldown;
     private float timer;
@@ -15,8 +16,16 @@ public class BossPhase2AttackState : IMonsterState
     {
         this.monster = monster;
         bossMonster = monster as BossMonster;
-        attackCooldown = monster.data.AttackCooldown;
-        phase2AttackACooldown = bossMonster.data.Phase2AttackCooldown;
+
+        bossData = monster.data as BossMonsterDataSO;
+        if (bossData == null)
+        {
+            Debug.LogError("BossMonsterDataSO 타입이 아님");
+            return;
+        }
+
+        attackCooldown = bossData.AttackCooldown;
+        phase2AttackACooldown = bossData.Phase2AttackCooldown;
         timer = 0f;
     }
 
@@ -42,12 +51,11 @@ public class BossPhase2AttackState : IMonsterState
         // 공격 쿨타임
         timer += Time.deltaTime;
         phase2AttackACooldown -= Time.deltaTime;
-        if (phase2AttackACooldown <= 0f && Random.value < 0.4f) // 40% 확률 특수A
+        if (phase2AttackACooldown <= 0f && Random.value < 0.4f)
         {
-            // 특수A 애니메이션 및 공격
             monster.GetComponent<MonsterView>()?.PlayMonsterPhase2AttackAnimation();
             bossMonster.phase2TryAttack();
-            phase2AttackACooldown = bossMonster.data.Phase2AttackCooldown;
+            phase2AttackACooldown = bossData.Phase2AttackCooldown; 
         }
         else
         {

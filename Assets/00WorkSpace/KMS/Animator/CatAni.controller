@@ -35,7 +35,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: CutsceneA
+    m_ConditionEvent: CatCutsceneA
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6016999799115516974}
@@ -58,7 +58,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CutsceneA
+  m_Name: CatCutsceneA
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -164,7 +164,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: CutsceneB
+    m_ConditionEvent: CatCutsceneB
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7292923957611876690}
@@ -257,13 +257,13 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: CutsceneA
+  - m_Name: CatCutsceneA
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: CutsceneB
+  - m_Name: CatCutsceneB
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -530,7 +530,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CutsceneB
+  m_Name: CatCutsceneB
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

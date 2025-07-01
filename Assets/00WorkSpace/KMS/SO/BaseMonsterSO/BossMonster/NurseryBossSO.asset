@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cfaaf648b70d744fb1338759d930aec, type: 3}
   m_Name: NurseryBossSO
   m_EditorClassIdentifier: 
   monsterName: "\uC544\uC774\uBC29\uBCF4\uC2A4"
   monsterType: 1
   monsterSubType: 4
-  typeStatData: {fileID: 11400000, guid: 49777c9a7fb2e1640acbdc0ef7e5f66b, type: 2}
+  typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
   maxHP: 1000
   moveSpeed: 3
   attackPower: 30
@@ -29,16 +29,16 @@ MonoBehaviour:
   eyeHeight: 1.5
   targetType: 0
   actionRadius: 50
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []
   phase2AttackPower: 45
   phase3AttackPower: 80
   phase2KnockbackDistance: 4
   phase3KnockbackDistance: 8
   phase2AttackCooldown: 10
   phase3AttackCooldown: 15
-  phase2AnimSpeed: 22
+  phase2AnimSpeed: 2.2
   phase3AnimSpeed: 1.2
-  dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 0}
-  spawnPosition: {x: 0, y: 0, z: 0}
-  useFixedPosition: 0
-  dropTable: []
