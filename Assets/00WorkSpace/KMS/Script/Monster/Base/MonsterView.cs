@@ -87,7 +87,11 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("GrabThrow");
     }
-    
+    public void PlayMonsterSleepAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("GrabThrow");
+    }
 
     // ===== »ç¿îµå =====
 

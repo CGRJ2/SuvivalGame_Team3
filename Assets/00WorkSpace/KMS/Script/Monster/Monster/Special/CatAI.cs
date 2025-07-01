@@ -35,9 +35,15 @@ public class CatAI : BaseMonster
     }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {
-        // 여기에 감지범위 등 시간대별 파라미터 변경
         Debug.Log("고양이 시간대 변경됨: " + newState);
         UpdateSightParameters();
+
+        if (newState == TimeZoneState.Morning)
+        {
+            MoveToRespawn();
+            StateMachine.ChangeState(new CatSleepState());
+            Debug.Log("[Cat] 오전, 수면 상태 진입");
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -276,8 +282,8 @@ public class CatAI : BaseMonster
     {
         switch (cutsceneType)
         {
-            case 0: animator.SetTrigger("CutsceneA"); break; // 컷씬 1
-            case 1: animator.SetTrigger("CutsceneB"); break; // 컷씬 2
+            case 0: animator.SetTrigger("CatCutsceneA"); break; // 컷씬 1
+            case 1: animator.SetTrigger("CatCutsceneB"); break; // 컷씬 2
         }
     }
 }

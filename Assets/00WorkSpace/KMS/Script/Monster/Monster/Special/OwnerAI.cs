@@ -22,6 +22,18 @@ public class OwnerAI : BaseMonster
         playerTransform = GameObject.FindWithTag("Player")?.transform;
         RefreshBaitList();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var player = other.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                //player.StartCatCutscene(this); // this = Owner 인스턴스
+                // (여기서는 아무 컷씬 정보 없음)
+            }
+        }
+    }
 
     protected override void HandleState()
     {
@@ -131,6 +143,27 @@ public class OwnerAI : BaseMonster
         stateMachine.ChangeState(new CatIdleState());
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
+
+    private void OnEnable()
+    {
+        DailyManager.Instance.TZ_State.Subscribe(OnTimeZoneChanged);
+    }
+
+    private void OnDisable()
+    {
+        DailyManager.Instance.TZ_State.Unsubscribe(OnTimeZoneChanged);
+    }
+    private void OnTimeZoneChanged(TimeZoneState newState)
+    {
+        Debug.Log("주인 시간대 변경됨: " + newState);
+
+        if (newState == TimeZoneState.Night)
+        {
+            MoveToRespawn();
+            StateMachine.ChangeState(new OwnerSleepState());
+            Debug.Log("[Owner] , 수면 상태 진입");
+        }
+    }
     public override void TakeDamage(int damage)
     {
     }
@@ -146,5 +179,12 @@ public class OwnerAI : BaseMonster
     protected override void Phase3TryAttack()
     {
         throw new System.NotImplementedException();
+    }
+    public void PlayCutsceneAnim(int cutsceneType)
+    {
+        switch (cutsceneType)
+        {
+            case 0: animator.SetTrigger("OwnerCutsceneA"); break; // 컷씬
+        }
     }
 }
