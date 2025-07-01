@@ -15,6 +15,10 @@ public class InventoryTabs : MonoBehaviour
     public GameObject weaponItemPanel;
     public GameObject functionItemPanel;
     public GameObject questItemPanel;
+
+    [Header("SystemPanel")]
+    public GameObject HomeWarning;
+
     public void ShowMap()
     {
         mapPanel.SetActive(true);
@@ -38,5 +42,18 @@ public class InventoryTabs : MonoBehaviour
         mapPanel.SetActive(false);
         itemPanel.SetActive(false);
         systemPanel.SetActive(true);
+    }
+    public void ShowHomeWarning()
+    {
+        HomeWarning.SetActive(true);
+    }
+    public void CloseHomeWarning()
+    {
+        HomeWarning.SetActive(false);
+    }
+
+    public void CloseInventory()
+    {
+        UIController.Instance.ShowInventory(false);
     }
 }

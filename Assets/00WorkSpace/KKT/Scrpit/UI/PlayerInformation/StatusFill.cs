@@ -22,24 +22,24 @@ public class StatusFill : MonoBehaviour
 
     private void Start()
     {
-        playerStatus = PlayerManager.Instance.currentPlayerStatus;
+        playerStatus = PlayerManager.Instance.instancePlayer.Status;
         if(playerStatus == null)
         {
             Debug.Log("playerStatus 연결이 필요");
         }
 
-        playerStatus.WillPower.Subscribe(UpdateWillPowerBar);
-        playerStatus.Battery.Subscribe(UpdateStaminaBar);
+        playerStatus.CurrentWillPower.Subscribe(UpdateWillPowerBar);
+        playerStatus.CurrentBattery.Subscribe(UpdateStaminaBar);
     }
 
     void Update()
     {
         if(playerStatus==null) return;
 
-        staminaBarFill.fillAmount = (float)playerStatus.Battery.Value / 100f;
-        willBarFill.fillAmount = (float)playerStatus.WillPower.Value / 100f;
+        staminaBarFill.fillAmount = (float)playerStatus.CurrentBattery.Value / 100f;
+        willBarFill.fillAmount = (float)playerStatus.CurrentWillPower.Value / 100f;
 
-        var head = PlayerManager.Instance.currentPlayerStatus.GetPart(BodyPartTypes.Head);
+        //var head = playerStatus.GetPart(BodyPartTypes.Head).Hp.Subscribe;
         // var head = playerStatus.GetPart(BodyPartTypes.Head);
         var rightArm = playerStatus.GetPart(BodyPartTypes.RightArm);
         var leftArm = playerStatus.GetPart(BodyPartTypes.LeftArm);

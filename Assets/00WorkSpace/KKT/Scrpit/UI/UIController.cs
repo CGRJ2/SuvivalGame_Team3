@@ -94,7 +94,7 @@ public class UIController : MonoBehaviour
         if (isShow)
         {
             Cursor.visible = true;
-            if(inventoryTabs!=null) inventoryTabs.ShowMap();
+            if(inventoryTabs!=null) inventoryTabs.ShowItem();
         }
         else Cursor.visible = false;
     }
@@ -129,7 +129,6 @@ public class UIController : MonoBehaviour
             
         }
     }
-
     public void CloseCraftWindow(bool isShow)
     {
         if (isShow) craftPanel.SetActive(false);
