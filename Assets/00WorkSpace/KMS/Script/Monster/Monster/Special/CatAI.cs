@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class CatAI : BaseMonster
 {
     public enum CatDetectionTarget { None, CatBait, Player }
     public CatMonsterSO CatData => data as CatMonsterSO;
+    public bool IsInvincible { get; private set; } = true;
 
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
@@ -16,6 +18,8 @@ public class CatAI : BaseMonster
     }
     protected override void Start()
     {
+        base.Start();
+        IsInvincible = true;
         playerTransform = GameObject.FindWithTag("Player")?.transform;
         RefreshBaitList();
     }
@@ -128,6 +132,23 @@ public class CatAI : BaseMonster
             }
         }
         return found;
+    }
+    public void SetInvincible(float duration)
+    {
+        StopAllCoroutines();
+        StartCoroutine(InvincibleCoroutine(duration));
+    }
+    private IEnumerator InvincibleCoroutine(float duration)
+    {
+        IsInvincible = true;
+        yield return new WaitForSeconds(duration);
+        IsInvincible = false;
+    }
+    public override void TakeDamage(int damage)
+    {
+    }
+    protected override void Die()
+    {
     }
 
     protected override void Phase2TryAttack()

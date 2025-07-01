@@ -515,7 +515,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         Gizmos.DrawLine(eyePos, eyePos + (rightLimit * currentDetectionRange));
     }
 
-    public void TakeDamage(int damage) // 기존 인터페이스용 TakeDamage
+    public virtual void TakeDamage(int damage) // 기존 인터페이스용 TakeDamage
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();
