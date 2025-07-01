@@ -77,7 +77,7 @@ public class CatAI : BaseMonster
     public void ApplyPacifyEffect(float duration)
     {
         // 외부 자극(아이템 등)으로 인해 무력화 상태 진입
-        SetPerceptionState(MonsterPerceptionState.Idle); // 혹은 Pacified 전용 Enum도 고려 가능
+        SetPerceptionState(MonsterPerceptionState.Idle);
         StateMachine.ChangeState(new CatPacifiedState(duration));
     }
 
