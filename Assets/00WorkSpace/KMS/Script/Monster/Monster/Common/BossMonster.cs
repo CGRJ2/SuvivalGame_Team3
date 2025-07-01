@@ -61,26 +61,32 @@ public class BossMonster : BaseMonster
             stateMachine.ChangeState(new MonsterIdleState());
     }
     // 오버라이드 
-    protected override void Phase2TryAttack()
+public void phase2TryAttack(BossAttackPattern pattern)
+{
+    // 애니메이터 속도 (패턴에서 지정, 없으면 SO 기본값)
+    view.Animator.SetFloat("Phase2AttackSpeed", pattern != null ? pattern.cooldown : bossData.Phase2AnimSpeed);
+
+    // 데미지/넉백 등 패턴값 우선, 없으면 SO값
+    int damage = (int)(pattern != null ? pattern.damage : bossData.Phase2AttackPower);
+    float knockback = pattern != null ? pattern.range : bossData.Phase2KnockbackDistance;
+
+    if (target != null)
     {
-        view.Animator.SetFloat("Phase2AttackSpeed", bossData.Phase2AnimSpeed);
-        int damage = bossData.Phase2AttackPower;
-        float knockback = bossData.Phase2KnockbackDistance;
-        if (target != null)
-        {
-            var dmg = target.GetComponent<IDamagable>();
-            var kb = target.GetComponent<IKnockbackable>();
-            Vector3 direction = (target.position - transform.position).normalized;
-            if (dmg != null) dmg.TakeDamage(damage);
-            if (kb != null) kb.ApplyKnockback(direction, knockback);
-        }
-        view.PlayMonsterPhase2AttackAnimation();
+        var dmg = target.GetComponent<IDamagable>();
+        var kb = target.GetComponent<IKnockbackable>();
+        Vector3 direction = (target.position - transform.position).normalized;
+        if (dmg != null) dmg.TakeDamage(damage);
+        if (kb != null) kb.ApplyKnockback(direction, knockback);
     }
-    protected override void Phase3TryAttack()
+    view.PlayMonsterPhase2AttackAnimation();
+}
+    public void phase3TryAttack(BossAttackPattern pattern)
     {
-        view.Animator.SetFloat("Phase3AttackSpeed", bossData.Phase3AnimSpeed);
-        int damage = bossData.Phase3AttackPower;
-        float knockback = bossData.Phase3KnockbackDistance;
+        view.Animator.SetFloat("Phase3AttackSpeed", pattern != null ? pattern.cooldown : 1f);
+
+        int damage = (int)(pattern != null ? pattern.damage : bossData.Phase3AttackPower);
+        float knockback = pattern != null ? pattern.range : bossData.Phase3KnockbackDistance;
+
         if (target != null)
         {
             var dmg = target.GetComponent<IDamagable>();

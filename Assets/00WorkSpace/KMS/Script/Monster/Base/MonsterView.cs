@@ -32,6 +32,28 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Attack");
     }
+    public void PlayMonsterPhase2PreludeAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase2Prelude");
+    }
+    public void PlayMonsterPhase3PreludeAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase3Prelude");
+    }
+    public void OnPhase2AttackTrigger()
+    {
+        var bossMonster = GetComponent<BossMonster>();
+        if (bossMonster != null)
+            bossMonster.phase2TryAttack();
+    }
+    public void OnPhase3AttackTrigger()
+    {
+        var bossMonster = GetComponent<BossMonster>();
+        if (bossMonster != null)
+            bossMonster.phase3TryAttack();
+    }
     public void PlayMonsterPhase2AttackAnimation()
     {
         if (animator != null)
@@ -92,6 +114,8 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("GrabThrow");
     }
+
+
 
     // ===== »ç¿îµå =====
 

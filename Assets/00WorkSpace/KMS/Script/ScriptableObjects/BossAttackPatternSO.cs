@@ -8,14 +8,16 @@ public enum BossAttackShape { Circle, Cone, Box }
 public class BossAttackPattern
 {
     public string patternName;
+    public AnimationClip preludeAnimation; // 전조
+    public AnimationClip attackAnimation;  // 본공격
+    public float preludeTime;              // 전조 모션 시간
+    public float afterDelay;               // 후딜, 후방 경직 시간
     public BossAttackShape shape;
     public float damage;
     public float range;
-    public float angle; // 원뿔형 공격에만
-    public float width, height, length; // 박스형만
+    public float angle;                    // 원뿔형 공격에만
+    public float width, height, length;    // 박스형만
     public float cooldown;
-    public AnimationClip attackAnimation;
-    //필요한 것 추가 가능
 }
 
 [CreateAssetMenu(menuName = "Monster/BossAttackPatternSO")]
