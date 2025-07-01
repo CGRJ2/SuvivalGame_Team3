@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 [System.Serializable]
 public class PlayerCopy
 {
@@ -12,8 +10,6 @@ public class PlayerCopy
     public bool SavePosition = true;
     public bool SaveInventory = true;
     public bool SaveStats = true;
-    //public bool SaveOtherStates = true;
-
 
     [HideInInspector] public Vector3 position;
     [HideInInspector] public int willPower, battery, maxBattery;
@@ -45,19 +41,14 @@ public class PlayerCopy
                 var slots = status.inventory.model.GetCurrentTabSlots(type);
                 if (slots == null) continue;
 
-                for (int i = 0; i < slots.Count; i++)
+                foreach (var slot in slots)
                 {
-                    var slot = slots[i];
-                    if (slot.item != null && slot.item.name != null)
+                    inventorySlots.Add(new InventorySlotSaveData
                     {
-                        inventorySlots.Add(new InventorySlotSaveData
-                        {
-                            itemName = slot.item.name,
-                            count = slot.currentCount,
-                            type = type,
-                            slotIndex = i
-                        });
-                    }
+                        itemName = slot.item != null ? slot.item.name : null,
+                        count = slot.currentCount,
+                        type = type
+                    });
                 }
             }
         }
@@ -81,26 +72,53 @@ public class PlayerCopy
 
         if (SaveInventory && status.inventory != null && status.inventory.model != null)
         {
+
+            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            {
+                var slots = status.inventory.model.GetCurrentTabSlots(type);
+                if (slots == null) continue;
+
+                foreach (var slot in slots)
+                {
+                    slot.item = null;
+                    slot.currentCount = 0;
+                }
+            }
+
+            var slotsByType = new Dictionary<ItemType, Queue<InventorySlotSaveData>>();
             foreach (var data in inventorySlots)
             {
-                var slots = status.inventory.model.GetCurrentTabSlots(data.type);
-                if (slots == null || data.slotIndex >= slots.Count)
-                {
-                    Debug.LogWarning($"[Inventory Restore] 잘못된 슬롯 인덱스: type={data.type}, index={data.slotIndex}");
-                    continue;
-                }
+                if (!slotsByType.ContainsKey(data.type))
+                    slotsByType[data.type] = new Queue<InventorySlotSaveData>();
 
-                string path = $"ItemDatabase/{GetFolderForType(data.type)}/{data.itemName}";
-                var item = Resources.Load<Item>(path);
+                slotsByType[data.type].Enqueue(data);
+            }
 
-                if (item != null)
+
+            foreach (var type in slotsByType.Keys)
+            {
+                var savedQueue = slotsByType[type];
+                var slots = status.inventory.model.GetCurrentTabSlots(type);
+
+                foreach (var slot in slots)
                 {
-                    slots[data.slotIndex].item = item;
-                    slots[data.slotIndex].currentCount = data.count;
-                }
-                else
-                {
-                    //Debug.LogWarning($"[Inventory Restore] 아이템 로드 실패: {path}");
+                    if (savedQueue.Count == 0) break;
+
+                    var data = savedQueue.Dequeue();
+                    if (string.IsNullOrEmpty(data.itemName)) continue;
+
+                    string path = $"ItemDatabase/{GetFolderForType(type)}/{data.itemName}";
+                    var item = Resources.Load<Item>(path);
+
+                    if (item == null)
+                    {
+                        Debug.LogWarning($"아이템 로드 실패: {path}");
+                        continue;
+                    }
+
+                    slot.item = item;
+                    slot.currentCount = data.count;
+                    slot.maxCount = item.maxCount;
                 }
             }
         }
@@ -112,9 +130,7 @@ public class PlayerCopy
         public string itemName;
         public int count;
         public ItemType type;
-        public int slotIndex;
     }
-
 
     private string GetFolderForType(ItemType type)
     {

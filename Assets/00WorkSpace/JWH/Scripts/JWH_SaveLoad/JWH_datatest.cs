@@ -48,10 +48,10 @@ public class JWHDataTest : Singleton<JWHDataTest>
         }
 
         string json = File.ReadAllText(path);
-        playercopy = JsonUtility.FromJson<PlayerCopy>(json);
+        var loadedCopy = JsonUtility.FromJson<PlayerCopy>(json);
 
         var status = PlayerManager.Instance.instancePlayer.Status;
-        playercopy.Give(status);
+        loadedCopy.Give(status);
         Debug.Log($"[불러오기 완료] 슬롯 {slotIndex} ");
     }
 
