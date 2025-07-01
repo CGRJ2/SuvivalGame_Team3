@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CatChaseState : IMonsterState
@@ -10,6 +8,13 @@ public class CatChaseState : IMonsterState
     private float mentalTickInterval = 1.0f;
     private float mentalDamage = 3.0f;
     private float mentalTickTimer = 0f;
+
+    // 이동속도 Lerp 관련 변수
+    private float speedLerpTimer = 0f;
+    private float lerpDuration = 3f;
+    private float startSpeed;
+    private float targetSpeed;
+    private float currentSpeed;
 
     public void Enter(BaseMonster monster)
     {
@@ -24,6 +29,12 @@ public class CatChaseState : IMonsterState
         Debug.Log($"[{cat.name}] 상태: CatChase 진입");
 
         mentalTickTimer = 0f;
+
+        // Lerp 세팅
+        startSpeed = cat.CatData.basicMoveSpeed;   // 탐색속도에서 시작
+        targetSpeed = cat.CatData.chaseMoveSpeed;   // 추적속도가 목표
+        currentSpeed = startSpeed;
+        speedLerpTimer = 0f;
     }
 
     public void Execute()
@@ -53,10 +64,22 @@ public class CatChaseState : IMonsterState
             }
         }
 
+        // 3초간 이동속도 Lerp
+        if (speedLerpTimer < lerpDuration)
+        {
+            speedLerpTimer += Time.deltaTime;
+            float t = Mathf.Clamp01(speedLerpTimer / lerpDuration);
+            currentSpeed = Mathf.Lerp(startSpeed, targetSpeed, t);
+        }
+        else
+        {
+            currentSpeed = targetSpeed;
+        }
+
         // 타겟 방향으로 이동
         Vector3 dir = (target.position - cat.transform.position);
         dir.y = 0f;
-        cat.Move(dir.normalized);
+        cat.Move(dir, currentSpeed);   // ← 변화된 속도로 이동
 
         // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;

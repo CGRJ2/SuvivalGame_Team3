@@ -51,7 +51,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     private Vector3 spawnPoint;
 
     // 회전 관련
-    [SerializeField] private float rotationSpeed = 7f;
+    [SerializeField] protected float rotationSpeed = 7f;
+
+    public float RotationSpeed => rotationSpeed;
 
     // 랜덤 이동 관련
     private float moveTimer = 0f;
@@ -72,6 +74,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     // 기절
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
+    public Rigidbody RB => rb; 
 
     public IMonsterState GetIdleState() => idleState;
     public IMonsterState GetAlertState() => alertState;
@@ -243,8 +246,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     public Vector3 GetSpawnPoint() => spawnPoint;
 
 
-    public virtual void Move(Vector3 direction)
+    public virtual void Move(Vector3 direction, float customSpeed = -1f)
     {
+        float speed = (customSpeed > 0f) ? customSpeed : moveSpeed;
+
         if (rb == null)
         {
             Debug.LogWarning("Rigidbody가 없습니다!");
@@ -266,7 +271,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         }
 
         // 이동
-        Vector3 targetPosition = rb.position + (direction * moveSpeed * Time.deltaTime);
+        Vector3 targetPosition = rb.position + (direction * speed * Time.deltaTime);
         rb.MovePosition(targetPosition);
     }
     private void HandleWanderMovement()
@@ -379,7 +384,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         return Vector3.Distance(originPosition, transform.position) > actionRadius;
     }
 
-    private void UpdateSightParameters() //임의 배정
+    protected virtual void UpdateSightParameters() //임의 배정
     {
         float fovMultiplier = 1f;   //시야 배율
         float rangeMultiplier = 1f; //탐지범위 배율

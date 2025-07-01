@@ -23,6 +23,21 @@ public class CatAI : BaseMonster
         playerTransform = GameObject.FindWithTag("Player")?.transform;
         RefreshBaitList();
     }
+    private void OnEnable()
+    {
+        DailyManager.Instance.TZ_State.Subscribe(OnTimeZoneChanged);
+    }
+
+    private void OnDisable()
+    {
+        DailyManager.Instance.TZ_State.Unsubscribe(OnTimeZoneChanged);
+    }
+    private void OnTimeZoneChanged(TimeZoneState newState)
+    {
+        // 여기에 감지범위 등 시간대별 파라미터 변경
+        Debug.Log("고양이 시간대 변경됨: " + newState);
+        UpdateSightParameters();
+    }
     protected override void HandleState()
     {
         if (IsDead)
@@ -133,6 +148,57 @@ public class CatAI : BaseMonster
         }
         return found;
     }
+
+    protected override void UpdateSightParameters()
+    {
+        float fovMultiplier = 1f;
+        float rangeMultiplier = 1f;
+        float baseRange = CatData.catDetectionRange;
+
+        // 시간대에 따른 multiplier 적용
+        var tz = DailyManager.Instance.TZ_State.Value;
+        switch (tz)
+        {
+            case TimeZoneState.Morning:
+                CatData.catDetectionRange = 0f; // 감지 없음
+                break;
+            case TimeZoneState.Afternoon:
+                CatData.catDetectionRange = baseRange; // a
+                break;
+            case TimeZoneState.Evening:
+                CatData.catDetectionRange = baseRange * 1.5f; // a x 1.5
+                break;
+            case TimeZoneState.Night: // 새벽
+                CatData.catDetectionRange = baseRange * 1.25f; // a x 1.25
+                break;
+            default:
+                CatData.catDetectionRange = baseRange;
+                break;
+        }
+
+        // 상태별 multiplier도 합산 적용 (예: Alert 땐 더 멀리)
+        switch (perceptionState)
+        {
+            case MonsterPerceptionState.Idle:
+                fovMultiplier = 1f;
+                break;
+            case MonsterPerceptionState.Search:
+                fovMultiplier = 1f;
+                break;
+            case MonsterPerceptionState.Alert:
+                fovMultiplier = 1f;
+                rangeMultiplier *= 1f;
+                break;  
+            case MonsterPerceptionState.Combat:
+                fovMultiplier = 1f;
+                rangeMultiplier *= 1f;
+                break;
+        }
+
+        currentFOV = data.BaseFOV * fovMultiplier;
+        currentDetectionRange = data.DetectionRange * rangeMultiplier;
+        Debug.Log($"고양이 감지 파라미터 갱신: FOV={currentFOV}  Range={currentDetectionRange}");
+    }
     public void SetInvincible(float duration)
     {
         StopAllCoroutines();
@@ -143,6 +209,29 @@ public class CatAI : BaseMonster
         IsInvincible = true;
         yield return new WaitForSeconds(duration);
         IsInvincible = false;
+    }
+
+    public override void Move(Vector3 direction, float customSpeed = -1f)
+    {
+        if (RB == null)
+        {
+            Debug.LogWarning("Rigidbody가 없습니다!");
+            return;
+        }
+
+        if (IsOutsideActionRadius())
+            return;
+
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        // 커스텀 속도 지정, 없으면 CatData.maxMoveSpeed 사용
+        float moveSpd = (customSpeed > 0f) ? customSpeed : CatData.chaseMoveSpeed;
+        Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
+        RB.MovePosition(targetPosition);
     }
     public override void TakeDamage(int damage)
     {

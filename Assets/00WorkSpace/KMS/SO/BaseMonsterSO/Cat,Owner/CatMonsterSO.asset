@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c844c8c8b25abe54bbf27d9486da7565, type: 3}
   m_Name: CatMonsterSO
   m_EditorClassIdentifier: 
-  monsterName: 
-  monsterType: 0
-  monsterSubType: 0
-  typeStatData: {fileID: 0}
+  monsterName: "\uACE0\uC591\uC774"
+  monsterType: 2
+  monsterSubType: 4
+  typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
   maxHP: 0
-  moveSpeed: 0
+  moveSpeed: 3
   attackPower: 0
   attackRange: 0
   attackCooldown: 0
@@ -42,9 +42,10 @@ MonoBehaviour:
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
+  footstepAlertValue: 10
   footstepDetectionRange: 12
   chaseMoveSpeed: 5
   cutsceneDuration: 3
   idleMoveSpeed: 3
-  detectionRange: 7
+  catDetectionRange: 7
   preferredBaitItems: []

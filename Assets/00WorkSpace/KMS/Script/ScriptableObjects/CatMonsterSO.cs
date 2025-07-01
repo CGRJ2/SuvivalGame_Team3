@@ -11,7 +11,7 @@ public class CatMonsterSO : BaseMonsterData
     public float footstepDetectionRange = 12f;      // 발걸음 감지 범위
     public float chaseMoveSpeed = 5f;               // 추적 이동 속도
     public float cutsceneDuration = 3f;             // 컷신 지속 시간
-    public float idleMoveSpeed = 3f;                // 일반 이동 속도
+    public float basicMoveSpeed = 3f;                // 일반 이동 속도
     public float catDetectionRange = 7f;            // 감지 범위
 
     [Header("고양이 전용 기타")]
