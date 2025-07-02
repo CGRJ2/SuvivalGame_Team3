@@ -91,6 +91,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
+        if (view == null)
+            Debug.LogError($"{name}: MonsterView 컴포넌트가 없습니다!");
         spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
 
 

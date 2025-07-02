@@ -4,16 +4,23 @@ using UnityEngine;
 public class BossMonster : BaseMonster
 {
     private BossMonsterDataSO bossData;
+    public BossAttackPatternSO bossAttackPatternSO;
+    public BossAttackPattern currentPattern;
 
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
     private int batteryChargePerSection = 20; // 10%마다 충전할 양
     private bool isCounterWindow = false;
+
+
+    private BoxCollider rushHitbox;
     protected override void Start()
     {
         base.Start();
         bossData = data as BossMonsterDataSO;
         if (bossData == null)
             Debug.LogError("BossMonsterDataSO로 캐스팅 실패! data가 잘못 세팅됨.");
+        if (bossAttackPatternSO != null && bossAttackPatternSO.patterns.Count > 0)
+            currentPattern = bossAttackPatternSO.patterns[0];
     }
     protected override void HandleState()
     {
@@ -216,6 +223,8 @@ public class BossMonster : BaseMonster
         }
     }
 
+    // 카운트 어택용 패턴
+
     public void OnCounterWindowOpen()
     {
         isCounterWindow = true;
@@ -225,11 +234,31 @@ public class BossMonster : BaseMonster
         isCounterWindow = false;
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        var target = other.GetComponent<IDamagable>();
+        if (target != null && currentPattern != null)
+            target.TakeDamage((int)currentPattern.damage);
+    }
+
     public void TryCounter()
     {
         if (isCounterWindow)
         {
             Phase3TryAttack();
         }
+    }
+
+    // 돌진 패턴용 히트 박스 트리거
+    public void OnHitboxTrigger()
+    {
+        if (rushHitbox != null)
+            rushHitbox.enabled = true;
+    }
+
+    public void OffHitboxTrigger()
+    {
+        if (rushHitbox != null)
+            rushHitbox.enabled = false;
     }
 }

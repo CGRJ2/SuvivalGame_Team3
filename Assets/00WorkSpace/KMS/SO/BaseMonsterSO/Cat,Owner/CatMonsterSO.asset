@@ -29,16 +29,8 @@ MonoBehaviour:
   eyeHeight: 1.5
   targetType: 0
   actionRadius: 20
-  phase2AttackPower: 0
-  phase3AttackPower: 0
-  phase2KnockbackDistance: 0
-  phase3KnockbackDistance: 0
-  phase2AttackCooldown: 0
-  phase3AttackCooldown: 0
-  phase2AnimSpeed: 1
-  phase3AnimSpeed: 1
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 5962036566243503757, guid: ae7f2c453787bc84392c9b9500fb628b, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
@@ -46,6 +38,6 @@ MonoBehaviour:
   footstepDetectionRange: 12
   chaseMoveSpeed: 5
   cutsceneDuration: 3
-  idleMoveSpeed: 3
+  basicMoveSpeed: 3
   catDetectionRange: 7
   preferredBaitItems: []
