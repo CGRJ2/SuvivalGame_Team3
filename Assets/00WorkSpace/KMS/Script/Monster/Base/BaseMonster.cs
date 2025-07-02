@@ -1,13 +1,16 @@
 using KMS.Monster.Interface;
-using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Events;
 
 public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
     protected Animator animator;
+
+    protected NavMeshAgent agent;
 
     protected float currentHP;
     protected float moveSpeed;
@@ -93,6 +96,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         view = GetComponent<MonsterView>();
         if (view == null)
             Debug.LogError($"{name}: MonsterView 컴포넌트가 없습니다!");
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+            Debug.LogError($"{name}: NavMeshAgent가 없습니다!");
         spawnPoint = transform.position; //스폰 된 위치를 기점으로 몬스터의 행동반경이 정해짐
 
 
@@ -123,6 +129,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
     protected virtual void Update()
     {
+        if (target != null && agent != null)
+        {
+            agent.SetDestination(target.position); // 타겟 따라가기
+        }
         if (stateMachine == null)
         {
             Debug.LogError($"{name}의 stateMachine이 null입니다.");
@@ -238,7 +248,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     }
     protected abstract void HandleState(); // 상태머신 상태 변경은 여기서
 
-    public void SetTarget(Transform newTarget)
+    public virtual void SetTarget(Transform newTarget)
     {
         target = newTarget;
     }
@@ -248,34 +258,46 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     public Vector3 GetSpawnPoint() => spawnPoint;
 
 
-    public virtual void Move(Vector3 direction, float customSpeed = -1f)
+    //public virtual void Move(Vector3 direction, float customSpeed = -1f)
+    //{
+    //    float speed = (customSpeed > 0f) ? customSpeed : moveSpeed;
+    //
+    //    if (rb == null)
+    //    {
+    //        Debug.LogWarning("Rigidbody가 없습니다!");
+    //        return;
+    //    }
+    //
+    //     TODO: 네비메시 설치시 주석처리 예정 (Area/Mask로 이동제한 대체)
+    //     행동 반경 제한
+    //    if (IsOutsideActionRadius())
+    //    {
+    //        //Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
+    //        return;
+    //    }
+    //
+    //     회전
+    //    if (direction != Vector3.zero)
+    //    {
+    //        Quaternion lookRotation = Quaternion.LookRotation(direction);
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+    //    }
+    //    
+    //    // 이동
+    //    Vector3 targetPosition = rb.position + (direction * speed * Time.deltaTime);
+    //    rb.MovePosition(targetPosition);
+    //}
+
+    public virtual void MoveTo(Vector3 destination)
     {
-        float speed = (customSpeed > 0f) ? customSpeed : moveSpeed;
-
-        if (rb == null)
+        if (agent == null)
         {
-            Debug.LogWarning("Rigidbody가 없습니다!");
+            Debug.LogWarning("NavMeshAgent가 없습니다!");
             return;
         }
 
-        // TODO: 네비메시 설치시 주석처리 예정 (Area/Mask로 이동제한 대체)
-        // 행동 반경 제한
-        if (IsOutsideActionRadius())
-        {
-            //Debug.Log($"[{name}] 행동 반경 초과 → 이동 중지");
-            return;
-        }
-
-        // 회전
-        if (direction != Vector3.zero)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-        }
-
-        // 이동
-        Vector3 targetPosition = rb.position + (direction * speed * Time.deltaTime);
-        rb.MovePosition(targetPosition);
+        agent.speed = moveSpeed;
+        agent.SetDestination(destination);
     }
     private void HandleWanderMovement()
     {
@@ -283,13 +305,16 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
         if (moveTimer <= 0f)
         {
-            float angle = UnityEngine.Random.Range(0f, 360f);
-            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
+            // NavMesh 내에서 랜덤 위치 뽑기
+            Vector3 randomPoint = originPosition + Random.insideUnitSphere * actionRadius;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, actionRadius, NavMesh.AllAreas))
+            {
+                MoveTo(hit.position); // 새로운 목적지로 이동
+            }
 
-            moveTimer = UnityEngine.Random.Range(1f, 2f);
+            moveTimer = Random.Range(1f, 2f);
         }
-
-        Move(currentDirection);
     }
 
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
@@ -446,23 +471,19 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         {
             case MonsterTargetType.Player:
                 GameObject player = GameObject.FindWithTag("Player");
-                if (player != null)
-                    SetTarget(player.transform);
+                if (player != null) SetTarget(player.transform);
                 break;
-
             case MonsterTargetType.Ally:
                 GameObject ally = GameObject.FindWithTag("Ally");
-                if (ally != null)
-                    SetTarget(ally.transform);
+                if (ally != null) SetTarget(ally.transform);
                 break;
-
             case MonsterTargetType.None:
-                GameObject none = GameObject.FindWithTag("None");
-                if (none != null)
-                    SetTarget(none.transform);
+            default:
+                SetTarget(null);
                 break;
         }
     }
+
     public void DecreaseAlert(float amount)
     {
         perceptionController?.DecreaseAlert(amount);

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterAlertState : IMonsterState
@@ -19,26 +17,30 @@ public class MonsterAlertState : IMonsterState
     public void Execute()
     {
         float distanceFromOrigin = Vector3.Distance(monster.OriginPosition, monster.transform.position);
-        float triggerDistance = monster.ActionRadius * returnTriggerRatio;
+        //float triggerDistance = monster.ActionRadius * returnTriggerRatio;
 
         // 95% 경계 도달 시 ReturnWaitState로 전이
-        if (distanceFromOrigin >= triggerDistance)
-        {
-            Debug.Log($"[{monster.name}] 95% 경계 도달 - 복귀 대기 상태 진입");
-            monster.StateMachine.ChangeState(new MonsterReturnWaitState());
-            return;
-        }
+        //if (distanceFromOrigin >= triggerDistance)
+        //{
+        //    Debug.Log($"[{monster.name}] 95% 경계 도달 - 복귀 대기 상태 진입");
+        //    monster.StateMachine.ChangeState(new MonsterReturnWaitState());
+        //    return;
+        //}
 
         // (이하 기존 Alert 상태 동작)
         if (monster.checkTargetVisible)
             monster.IncreaseAlert(15f);
 
-        var target = monster.GetTarget();
-        if (target != null)
+        //var target = monster.GetTarget();
+        //if (target != null)
+        //{
+        //    Vector3 toTarget = target.position - monster.transform.position;
+        //    toTarget.y = 0f;
+        //    monster.MoveTo();
+        //}
+        if (monster.GetTarget() != null)
         {
-            Vector3 toTarget = target.position - monster.transform.position;
-            toTarget.y = 0f;
-            monster.Move(toTarget.normalized);
+            monster.MoveTo(monster.GetTarget().position);
         }
 
         if (monster.IsInAttackRange())
