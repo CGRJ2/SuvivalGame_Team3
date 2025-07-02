@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CatChaseState : IMonsterState
@@ -7,35 +5,83 @@ public class CatChaseState : IMonsterState
     private CatAI cat;
     private Transform target;
 
-    // 정신력 감소 주기 및 수치 (기본값, 나중에 튜닝 가능)
     private float mentalTickInterval = 1.0f;
     private float mentalDamage = 3.0f;
     private float mentalTickTimer = 0f;
+
+    // 이동속도 Lerp 관련 변수
+    private float speedLerpTimer = 0f;
+    private float lerpDuration = 3f;
+    private float startSpeed;
+    private float targetSpeed;
+    private float currentSpeed;
 
     public void Enter(BaseMonster monster)
     {
         cat = monster as CatAI;
         if (cat == null) return;
 
-        target = cat.GetTarget();
+        // 추적 대상 재탐색 (항상 최신 타겟)
+        cat.RefreshBaitList();
+        CatAI.CatDetectionTarget targetType = cat.GetClosestTarget(out target);
+
         cat.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
         Debug.Log($"[{cat.name}] 상태: CatChase 진입");
 
-        mentalTickTimer = 0f; // 진입 시 초기화
+        mentalTickTimer = 0f;
+
+        // Lerp 세팅
+        startSpeed = cat.CatData.basicMoveSpeed;   // 탐색속도에서 시작
+        targetSpeed = cat.CatData.chaseMoveSpeed;   // 추적속도가 목표
+        currentSpeed = startSpeed;
+        speedLerpTimer = 0f;
     }
 
     public void Execute()
     {
-        if (target == null)
+        if (cat == null || cat.IsDead)
+            return;
+
+        // 타겟 실시간 재탐색
+        cat.RefreshBaitList();
+        CatAI.CatDetectionTarget targetType = cat.GetClosestTarget(out target);
+
+        if (target == null || targetType == CatAI.CatDetectionTarget.None)
         {
             cat.StateMachine.ChangeState(new CatIdleState());
             return;
         }
 
-        Vector3 dir = (target.position - cat.transform.position).normalized;
-        cat.Move(dir);
+        // 플레이어 추적 중 소음/범위 등으로 경계도 상승(즉시 Alert 전이)
+        if (cat.CatData != null && targetType == CatAI.CatDetectionTarget.Player)
+        {
+            if (cat.IsPlayerMakingNoise() && cat.IsInDetectionRange(target))
+            {
+                cat.IncreaseAlert(cat.CatData.footstepAlertValue);
+                cat.StateMachine.ChangeState(
+                    cat.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert));
+                return;
+            }
+        }
 
-        // 정신력 감소 처리
+        // 3초간 이동속도 Lerp
+        if (speedLerpTimer < lerpDuration)
+        {
+            speedLerpTimer += Time.deltaTime;
+            float t = Mathf.Clamp01(speedLerpTimer / lerpDuration);
+            currentSpeed = Mathf.Lerp(startSpeed, targetSpeed, t);
+        }
+        else
+        {
+            currentSpeed = targetSpeed;
+        }
+
+        // 타겟 방향으로 이동
+        Vector3 dir = (target.position - cat.transform.position);
+        dir.y = 0f;
+        cat.Move(dir, currentSpeed);   // 변화된 속도로 이동
+
+        // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;
         if (mentalTickTimer >= mentalTickInterval)
         {
@@ -46,13 +92,6 @@ public class CatChaseState : IMonsterState
                 Debug.Log($"[{cat.name}] → 정신력 {mentalDamage} 감소 (추적 지속)");
             }
             mentalTickTimer = 0f;
-        }
-
-        // 공격 애니메이션은 단순 연출용
-        float dist = Vector3.Distance(cat.transform.position, target.position);
-        if (dist < 2f)
-        {
-            cat.GetComponent<MonsterView>()?.PlayMonsterAttackAnimation();
         }
     }
 

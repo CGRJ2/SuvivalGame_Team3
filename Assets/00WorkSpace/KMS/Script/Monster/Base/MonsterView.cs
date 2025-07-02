@@ -14,6 +14,8 @@ public class MonsterView : MonoBehaviour
     [SerializeField] private AudioClip hitSound;
     [SerializeField] private AudioClip deathSound;
 
+    public Animator Animator => animator;
+
     // ===== 애니메이션 =====
     public void PlayMonsterIdleAnimation()
     {
@@ -29,6 +31,46 @@ public class MonsterView : MonoBehaviour
     {
         if (animator != null)
             animator.SetTrigger("Attack");
+    }
+    public void PlayMonsterPhase2PreludeAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase2Prelude");
+    }
+    public void PlayMonsterPhase3PreludeAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase3Prelude");
+    }
+    public void OnPhase2AttackTrigger()
+    {
+        var bossMonster = GetComponent<BossMonster>();
+        if (bossMonster != null)
+        {
+            var phase2State = bossMonster.StateMachine.CurrentState as BossPhase2AttackState;
+            if (phase2State != null)
+                bossMonster.phase2TryAttack(phase2State.CurrentPattern);
+        }
+    }
+    public void OnPhase3AttackTrigger()
+    {
+        var bossMonster = GetComponent<BossMonster>();
+        if (bossMonster != null)
+        {
+            var phase3State = bossMonster.StateMachine.CurrentState as BossPhase3AttackState;
+            if (phase3State != null)
+                bossMonster.phase3TryAttack(phase3State.CurrentPattern);
+        }
+    }
+    public void PlayMonsterPhase2AttackAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase2Attack");
+    }
+    public void PlayMonsterPhase3AttackAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Phase3Attack");
     }
     public void PlayMonsterHitEffect()
     {
@@ -75,7 +117,13 @@ public class MonsterView : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("GrabThrow");
     }
-    
+    public void PlayMonsterSleepAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("GrabThrow");
+    }
+
+
 
     // ===== 사운드 =====
 

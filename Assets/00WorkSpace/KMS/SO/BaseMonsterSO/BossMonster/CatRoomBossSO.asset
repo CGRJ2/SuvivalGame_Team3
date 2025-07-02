@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfaaf648b70d744fb1338759d930aec, type: 3}
+  m_Name: CatRoomBossSO
+  m_EditorClassIdentifier: 
+  monsterName: "\uACE0\uC591\uC774\uBC29\uBCF4\uC2A4"
+  monsterType: 1
+  monsterSubType: 4
+  typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
+  maxHP: 1500
+  moveSpeed: 2.3
+  attackPower: 45
+  attackRange: 10
+  attackCooldown: 1.4
+  collisionDamage: 0
+  knockbackDistance: 4
+  attackAnimSpeed: 1.2
+  detectionRange: 0
+  baseFOV: 40
+  eyeHeight: 1.5
+  targetType: 0
+  actionRadius: 20
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []
+  phase2AttackPower: 90
+  phase3AttackPower: 130
+  phase2KnockbackDistance: 5
+  phase3KnockbackDistance: 6
+  phase2AttackCooldown: 15
+  phase3AttackCooldown: 20
+  phase2AnimSpeed: 2.2
+  phase3AnimSpeed: 2.2
+  phase2PatternSO: {fileID: 0}
+  phase3PatternSO: {fileID: 0}
