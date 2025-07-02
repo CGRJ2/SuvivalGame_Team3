@@ -127,7 +127,7 @@ public class BossMonster : BaseMonster
         }
         view.PlayMonsterPhase3AttackAnimation();
     }
-    public void ResetBoss()
+    public override void ResetMonsterHP()
     {
         currentHP = data.MaxHP;
         //view.PlayBossHealEffect(); // 회복 연출이 있으면 호출

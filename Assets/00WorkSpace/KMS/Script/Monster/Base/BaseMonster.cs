@@ -288,7 +288,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
                 MoveTo(hit.position); // 새로운 목적지로 이동
             }
 
-            moveTimer = Random.Range(1f, 2f);
+            moveTimer = Random.Range(1f, 4f);
         }
     }
 
@@ -517,8 +517,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         if (currentHP <= 0)
             Die();
     }
-
-
     public void TakeDamage(int damage, Vector3 direction) // 넉백용 TakeDamage
     {
         currentHP -= damage;
@@ -529,5 +527,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
         if (currentHP <= 0)
             Die();
+    }
+    public virtual void ResetMonsterHP()
+    {
+        currentHP = data.MaxHP;
+        // 필요하면 추가로 회복 이펙트, 로그 등
+        Debug.Log($"[{name}] HP가 최대치로 회복됨");
     }
 }

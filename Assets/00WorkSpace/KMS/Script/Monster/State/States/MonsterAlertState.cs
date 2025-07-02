@@ -16,7 +16,7 @@ public class MonsterAlertState : IMonsterState
 
     public void Execute()
     {
-        float distanceFromOrigin = Vector3.Distance(monster.OriginPosition, monster.transform.position);
+        //float distanceFromOrigin = Vector3.Distance(monster.OriginPosition, monster.transform.position);
         //float triggerDistance = monster.ActionRadius * returnTriggerRatio;
 
         // 95% 경계 도달 시 ReturnWaitState로 전이
@@ -38,10 +38,12 @@ public class MonsterAlertState : IMonsterState
         //    toTarget.y = 0f;
         //    monster.MoveTo();
         //}
+
         if (monster.GetTarget() != null)
         {
             monster.MoveTo(monster.GetTarget().position);
         }
+
 
         if (monster.IsInAttackRange())
         {
