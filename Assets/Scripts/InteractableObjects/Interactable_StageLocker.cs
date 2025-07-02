@@ -62,7 +62,7 @@ public class Interactable_StageLocker : InteractableBase
 
         if (IsCanUlock())
         {
-            if (chainedStageData.unlockCondition.needItemList.Count < 1)
+            if (chainedStageData.unlockCondition.needItemList.Count > 0)
             {
                 Debug.Log($"[{chainedStageData.unlockCondition.needItemList[0].item.itemName} »ç¿ë: (E)]");
             }

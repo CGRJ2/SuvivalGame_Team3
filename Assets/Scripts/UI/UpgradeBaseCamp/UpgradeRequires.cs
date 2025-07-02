@@ -22,6 +22,7 @@ public class UpgradeRequires : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (BaseCampManager.Instance != null)
         BaseCampManager.Instance.baseCampData.CurrentCampLevel.Unsubscribe(SetCurrentUpgradeCondition);
     }
 

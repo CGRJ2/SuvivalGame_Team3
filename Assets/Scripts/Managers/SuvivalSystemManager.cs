@@ -21,8 +21,8 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     [field: Header("정신력 시스템")]
     [field: SerializeField] public WillPowerSystem willPowerSystem { get; private set; }
 
-    [Header("파밍 시스템")]
-    public FarmingSystem farmingSystem;
+    //[Header("파밍 시스템")]
+    //public FarmingSystem farmingSystem;
 
     Coroutine coroutine_DecreaseWillPower;
     Coroutine coroutine_DecreaseBattery;
@@ -32,18 +32,9 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     {
         base.SingletonInit();
         pm = PlayerManager.Instance;
-        FarmingObjectListsInit();
     }
 
-    public void FarmingObjectListsInit()
-    {
-        farmingSystem = new FarmingSystem();
-
-        farmingSystem.livingRoom_FO_List = Resources.LoadAll<GameObject>("FarmingObjects/LivingRoom");
-        farmingSystem.library_FO_List = Resources.LoadAll<GameObject>("FarmingObjects/Library");
-        farmingSystem.dressRoom_FO_List = Resources.LoadAll<GameObject>("FarmingObjects/DressRoom");
-        farmingSystem.masterBedRoom_FO_List = Resources.LoadAll<GameObject>("FarmingObjects/MasterBedroom");
-    }
+    
 
     // 테스트용도////////////////////////////////////////////////////////////
     private void Start()
@@ -214,19 +205,3 @@ public class WillPowerSystem
 }
 
 
-[System.Serializable]
-public class FarmingSystem
-{
-    [Header("거실에 소환되는 파밍 오브젝트 리스트")]
-    public GameObject[] livingRoom_FO_List;
-
-    [Header("서재에 소환되는 파밍 오브젝트 리스트")]
-    public GameObject[] library_FO_List;
-
-    [Header("옷방에 소환되는 파밍 오브젝트 리스트")]
-    public GameObject[] dressRoom_FO_List;
-
-    [Header("안방에 소환되는 파밍 오브젝트 리스트")]
-    public GameObject[] masterBedRoom_FO_List;
-    
-}

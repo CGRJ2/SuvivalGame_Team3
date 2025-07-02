@@ -45,7 +45,6 @@ public class InteractableBase : MonoBehaviour, IInteractable
     {
         if (other.GetComponent<PlayerController>() != null)
         {
-            Debug.LogError(gameObject.name);
             pc.Cc.InteractableObj = null;
             pc = null;
         }

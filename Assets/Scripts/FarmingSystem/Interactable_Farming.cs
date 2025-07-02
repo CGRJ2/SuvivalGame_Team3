@@ -16,33 +16,33 @@ public class Interactable_Farming : InteractableBase
     public override void Interact()
     {
         base.Interact();
-        Item dropItem = dropTable.GetDropItem();
+        DropInfo dropInfo = dropTable.GetDropItemInfo();
 
         switch (dropType)
         {
             case FarmingType.Drop_Immediately:
 
                 // 아이템 인스턴스 드롭
-                dropItem.SpawnItem(itemSpawnPoint);
+                dropInfo.dropItem.SpawnItem(itemSpawnPoint, dropInfo.dropCount);
 
                 break;
             case FarmingType.Drop_AfterAnimation:
 
                 // 애니메이션 진행 완료 후 실행
-                dropItem.SpawnItem(itemSpawnPoint);
+                dropInfo.dropItem.SpawnItem(itemSpawnPoint, dropInfo.dropCount);
 
                 break;
             case FarmingType.AddToInventory_Immediately:
 
                 // 플레이어 인벤토리로 들어감
                 Debug.Log(pc);
-                pc.Status.inventory.AddItem(dropItem);
+                pc.Status.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
 
                 break;
             case FarmingType.AddToInventory_AfterAnimation:
 
                 // 플레이어 인벤토리로 들어감
-                pc.Status.inventory.AddItem(dropItem);
+                pc.Status.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
                 break;
         }
     }

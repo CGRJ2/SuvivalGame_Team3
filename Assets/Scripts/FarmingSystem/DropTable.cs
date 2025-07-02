@@ -14,7 +14,7 @@ public class DropTable : ScriptableObject
         DropTableName = this.name;
     }
 
-    public Item GetDropItem()
+    public DropInfo GetDropItemInfo()
     {
         int totalWeight = 0;
         int key = 0;
@@ -35,8 +35,8 @@ public class DropTable : ScriptableObject
             key += dropInfo.dropWeight;
             if (r < key)
             {
-                // 현재 키에 해당. 아이템 반환
-                return dropInfo.dropItem;
+                // 현재 키에 해당 드랍 정보 적용
+                return dropInfo;
             }
         }
 
@@ -50,5 +50,6 @@ public class DropInfo
 {
     public Item dropItem;
     [Tooltip("확률(or 비율로 적어도 됨)")]
+    public int dropCount;
     public int dropWeight;
 }
