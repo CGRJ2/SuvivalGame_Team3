@@ -1,18 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class DataManagerTest : Singleton<DataManagerTest>
 {
     PlayerManager pm;
-
-    public void Start()
-    {
-        Init();
-    }
-
-
-
     public void Init()
     {
         base.SingletonInit();
