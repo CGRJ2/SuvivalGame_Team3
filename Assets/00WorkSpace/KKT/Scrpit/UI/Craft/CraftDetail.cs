@@ -24,7 +24,13 @@ public class CraftDetail : MonoBehaviour
     public Button craftButton;
     public Button selectPartButton;
 
+    [Header("Panel")]
+    public GameObject craftInteractPanel;
+    public GameObject starforcePanel;
+
+
     private bool canCraft = false;
+    private bool recipeNeed = false;
     // 재료 데이터
     public class MatData
     {
@@ -40,9 +46,9 @@ public class CraftDetail : MonoBehaviour
         }
     }
     // 버튼 변환
-    public void SetItemType(string type)
+    public void SetItemName(string name)
     {
-        if (type == "회복아이템")
+        if (name == "어떤 인형의 부품")
         {
             craftButton.gameObject.SetActive(false);
             selectPartButton.gameObject.SetActive(true);
@@ -55,16 +61,20 @@ public class CraftDetail : MonoBehaviour
 
         Debug.Log("craftButton.interactable = " + craftButton.interactable);
     }
-    public void UpdateDetail(string _itemName, string _itemType, Sprite _itemSprite, string _makeTime, string _desc, List<MatData> matDatas)
+    // 제작할 아이템 클릭시 정보 표시
+    public void UpdateDetail(string _itemName, string _itemType, Sprite _itemSprite, string _makeTime, string _desc, bool _recipeNeed, List<MatData> matDatas)
     {
         itemName.text = _itemName;
         itemType.text = _itemType;
         itemImage.sprite = _itemSprite;
         makeTime.text = _makeTime;
         itemDesc.text = _desc;
-        SetItemType(_itemType);
+        recipeNeed=_recipeNeed;
+        SetItemName(_itemName);
         ShowMaterial(matDatas);
+        Debug.Log("recipe = " + _recipeNeed);
     }
+    // 제작 버튼 활성화/비활성화
     public void UpdateCraftButton(List<MatData> matDatas)
     {
         canCraft = true;
@@ -90,16 +100,14 @@ public class CraftDetail : MonoBehaviour
 
         Debug.Log("craftButton.interactable = " + craftButton.interactable);
     }
-    
+    // 제작 재료 업데이트
     public void ShowMaterial(List<MatData> matDatas)
     {
-        
         // 기존 슬롯 삭제
         foreach (Transform child in materialListParent)
         {
             Destroy(child.gameObject);
         }
-
         // 생성
         foreach (var data in matDatas)
         {
@@ -142,6 +150,20 @@ public class CraftDetail : MonoBehaviour
         foreach (Transform child in materialListParent)
             Destroy(child.gameObject);
     }
+    public void OnClickCraftButton()
+    {
+        craftInteractPanel.SetActive(false);
+        starforcePanel.SetActive(false);
+
+        if (recipeNeed)
+        {
+            craftInteractPanel.SetActive(true);
+        }
+        else 
+        {
+            starforcePanel.SetActive(true);
+        }
+    }
     public void Update()
     {
         if (SelectPartPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
@@ -149,5 +171,4 @@ public class CraftDetail : MonoBehaviour
             CloseSelectPart();
         }
     }
-
 }
