@@ -19,6 +19,8 @@ public class Item_Throwing : Item_Consumable, IEquipable
 
     public void OnAttackEffect()
     {
-        throw new System.NotImplementedException();
+        // 던지기 기능을 위해 임시로 추가한 내용
+        Debug.Log($"{itemName} 아이템을 던졌습니다!");
+        // 여기에 던지기 효과 관련 코드 추가 (소리, 파티클 등)
     }
 }
