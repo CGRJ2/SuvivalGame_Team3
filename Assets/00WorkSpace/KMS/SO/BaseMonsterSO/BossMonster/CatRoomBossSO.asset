@@ -16,14 +16,14 @@ MonoBehaviour:
   monsterType: 1
   monsterSubType: 4
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 0
-  moveSpeed: 0
-  attackPower: 0
-  attackRange: 0
-  attackCooldown: 0
+  maxHP: 1500
+  moveSpeed: 2.3
+  attackPower: 45
+  attackRange: 10
+  attackCooldown: 1.4
   collisionDamage: 0
-  knockbackDistance: 2
-  attackAnimSpeed: 1
+  knockbackDistance: 4
+  attackAnimSpeed: 1.2
   detectionRange: 0
   baseFOV: 40
   eyeHeight: 1.5
@@ -34,11 +34,13 @@ MonoBehaviour:
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
-  phase2AttackPower: 0
-  phase3AttackPower: 0
-  phase2KnockbackDistance: 0
-  phase3KnockbackDistance: 0
-  phase2AttackCooldown: 0
-  phase3AttackCooldown: 0
-  phase2AnimSpeed: 1
-  phase3AnimSpeed: 1
+  phase2AttackPower: 90
+  phase3AttackPower: 130
+  phase2KnockbackDistance: 5
+  phase3KnockbackDistance: 6
+  phase2AttackCooldown: 15
+  phase3AttackCooldown: 20
+  phase2AnimSpeed: 2.2
+  phase3AnimSpeed: 2.2
+  phase2PatternSO: {fileID: 0}
+  phase3PatternSO: {fileID: 0}

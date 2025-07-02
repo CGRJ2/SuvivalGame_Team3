@@ -16,7 +16,7 @@ MonoBehaviour:
   monsterType: 1
   monsterSubType: 4
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 2000
+  maxHP: 1800
   moveSpeed: 3.5
   attackPower: 50
   attackRange: 10
@@ -42,3 +42,5 @@ MonoBehaviour:
   phase3AttackCooldown: 12
   phase2AnimSpeed: 2
   phase3AnimSpeed: 1.8
+  phase2PatternSO: {fileID: 0}
+  phase3PatternSO: {fileID: 0}

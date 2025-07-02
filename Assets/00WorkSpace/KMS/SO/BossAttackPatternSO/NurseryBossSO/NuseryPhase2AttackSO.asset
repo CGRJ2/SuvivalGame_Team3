@@ -10,28 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 728e8249aa8dd1c44b1ccc49924bce81, type: 3}
-  m_Name: New Boss Attack Pattern SO
+  m_Name: NuseryPhase2AttackSO
   m_EditorClassIdentifier: 
   patterns:
-  - patternName: 
+  - patternName: "\uC2A4\uD2B8\uB808\uC774\uD2B8"
     preludeAnimation: {fileID: 0}
     attackAnimation: {fileID: 0}
-    shape: 2
-    damage: 0
-    range: 0
-    angle: 0
+    shape: 1
+    damage: 45
+    range: 10
+    angle: 45
     width: 0
     height: 0
     length: 0
-    cooldown: 0
-  - patternName: 
-    preludeAnimation: {fileID: 0}
-    attackAnimation: {fileID: 0}
-    shape: 0
-    damage: 0
-    range: 0
-    angle: 0
-    width: 0
-    height: 0
-    length: 0
-    cooldown: 0
+    cooldown: 10

@@ -7,7 +7,7 @@ public class BossMonster : BaseMonster
 
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
     private int batteryChargePerSection = 20; // 10%마다 충전할 양
-
+    private bool isCounterWindow = false;
     protected override void Start()
     {
         base.Start();
@@ -162,7 +162,22 @@ public class BossMonster : BaseMonster
 
     public void ApplyCircleDamage(BossAttackPattern pattern)
     {
-        Vector3 center = transform.position + transform.forward * pattern.range; // 공격 원 중심(앞쪽)
+        Vector3 center;
+        switch (pattern.originType)
+        {
+            case CircleOriginType.Boss:
+                center = transform.position;
+                break;
+            case CircleOriginType.Player:
+                var playerObj = GameObject.FindWithTag("Player");
+                if (playerObj == null) return;
+                center = playerObj.transform.position;
+                break;
+            default:
+                center = transform.position;
+                break;
+        }
+
         float radius = pattern.range;
         Collider[] hits = Physics.OverlapSphere(center, radius, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
@@ -172,7 +187,7 @@ public class BossMonster : BaseMonster
             if (dmg != null)
                 dmg.TakeDamage((int)pattern.damage);
             if (kb != null)
-                kb.ApplyKnockback((hit.transform.position - transform.position).normalized, pattern.range);
+                kb.ApplyKnockback((hit.transform.position - center).normalized, pattern.range);
         }
     }
 
@@ -198,6 +213,23 @@ public class BossMonster : BaseMonster
                 if (kb != null)
                     kb.ApplyKnockback(dir, pattern.range);
             }
+        }
+    }
+
+    public void OnCounterWindowOpen()
+    {
+        isCounterWindow = true;
+    }
+    public void OnCounterWindowClose()
+    {
+        isCounterWindow = false;
+    }
+
+    public void TryCounter()
+    {
+        if (isCounterWindow)
+        {
+            Phase3TryAttack();
         }
     }
 }
