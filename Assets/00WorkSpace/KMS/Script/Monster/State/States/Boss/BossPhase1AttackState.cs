@@ -30,7 +30,6 @@ public class BossPhase1AttackState : IMonsterState
         // 감지범위 밖으로 나가면 회복 + Idle상태
         if (monster.IsOutsideActionRadius())
         {
-            bossMonster.ResetBoss();
             monster.StateMachine.ChangeState(new MonsterIdleState());
             return;
         }

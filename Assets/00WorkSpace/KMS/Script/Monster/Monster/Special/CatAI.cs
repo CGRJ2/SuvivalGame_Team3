@@ -230,27 +230,38 @@ public class CatAI : BaseMonster
         IsInvincible = false;
     }
 
-    public override void Move(Vector3 direction, float customSpeed = -1f)
+    //public override void Move(Vector3 direction, float customSpeed = -1f)
+    //{
+    //    if (RB == null)
+    //    {
+    //        Debug.LogWarning("Rigidbody가 없습니다!");
+    //        return;
+    //    }
+    //
+    //    if (IsOutsideActionRadius())
+    //        return;
+    //
+    //    if (direction != Vector3.zero)
+    //    {
+    //        Quaternion lookRotation = Quaternion.LookRotation(direction);
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+    //    }
+    //
+    //    // 커스텀 속도 지정, 없으면 CatData.maxMoveSpeed 사용
+    //    float moveSpd = (customSpeed > 0f) ? customSpeed : CatData.chaseMoveSpeed;
+    //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
+    //    RB.MovePosition(targetPosition);
+    //}
+    public override void MoveTo(Vector3 destination)
     {
-        if (RB == null)
+        if (agent == null)
         {
-            Debug.LogWarning("Rigidbody가 없습니다!");
+            Debug.LogWarning("NavMeshAgent가 없습니다!");
             return;
         }
 
-        if (IsOutsideActionRadius())
-            return;
-
-        if (direction != Vector3.zero)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-        }
-
-        // 커스텀 속도 지정, 없으면 CatData.maxMoveSpeed 사용
-        float moveSpd = (customSpeed > 0f) ? customSpeed : CatData.chaseMoveSpeed;
-        Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
-        RB.MovePosition(targetPosition);
+        agent.speed = CatData.chaseMoveSpeed;
+        agent.SetDestination(destination);
     }
     public void MoveToRespawn()
     {

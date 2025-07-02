@@ -31,4 +31,7 @@ MonoBehaviour:
     spawnDelay: 1
     spawnPosition: {x: 0, y: 0, z: 0}
     stageName: Stage2
-  fixedSpawns: []
+  fixedSpawns:
+  - monsterData: {fileID: 11400000, guid: 41c4ece782b55724490495899871b65f, type: 2}
+    spawnPoint: {x: 0, y: 0, z: 0}
+    stageName: Stage2
