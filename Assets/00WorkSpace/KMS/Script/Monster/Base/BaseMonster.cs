@@ -11,6 +11,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     protected Animator animator;
 
     protected UnityEngine.AI.NavMeshAgent agent;
+    public NavMeshAgent Agent => agent;
 
     protected float currentHP;
     protected float moveSpeed;
@@ -91,6 +92,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
+        agent = GetComponent<NavMeshAgent>();
         if (view == null)
         spawnPoint = transform.position;
 

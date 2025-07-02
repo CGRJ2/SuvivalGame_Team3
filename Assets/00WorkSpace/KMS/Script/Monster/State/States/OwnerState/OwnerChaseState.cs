@@ -43,14 +43,15 @@ public class OwnerChaseState : IMonsterState
             lostTimer = 0f;
         }
 
-        // 미끼와 플레이어 분기
-        Vector3 toTarget = target.position - owner.transform.position;
-        toTarget.y = 0;
+        Vector3 destination = target.position;
+        destination.y = owner.transform.position.y; // y 보정
+
+        owner.Agent.speed = owner.OwnerData.moveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
+        owner.MoveTo(destination);
 
         if (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait)
         {
-            owner.Move(toTarget.normalized * 0.8f); // 미끼 느리게
-            if (toTarget.magnitude < 1.2f)
+            if (Vector3.Distance(owner.transform.position, destination) < 1.2f)
             {
                 owner.ApplyPacifyEffect(4f);
                 Debug.Log($"[{owner.name}] 미끼 도달 => 무력화 상태 전이");
@@ -58,8 +59,6 @@ public class OwnerChaseState : IMonsterState
         }
         else if (targetType == OwnerAI.OwnerDetectionTarget.Player)
         {
-            owner.Move(toTarget.normalized * 1.0f);
-            // 공격 사거리 도달 시 잡기 등
             if (owner.IsInAttackRange())
             {
                 Debug.Log($"[{owner.name}] 플레이어 도달 => 잡기 공격 상태 전이");
@@ -67,7 +66,6 @@ public class OwnerChaseState : IMonsterState
             }
         }
     }
-
     public void Exit()
     {
         Debug.Log($"[{owner.name}] OwnerChase 종료");

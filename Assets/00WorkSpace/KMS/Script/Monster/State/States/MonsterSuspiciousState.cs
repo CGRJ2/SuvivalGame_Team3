@@ -34,7 +34,7 @@ public class MonsterSuspiciousState : IMonsterState
         {
             Vector3 toTarget = target.position - monster.transform.position;
             toTarget.y = 0f;
-            monster.Move(toTarget.normalized * 0.7f); // Suspicious 상태는 느리게 접근
+            monster.MoveTo(toTarget.normalized * 0.7f); // Suspicious 상태는 느리게 접근
         }
 
         // 상태 전이/유지 분기

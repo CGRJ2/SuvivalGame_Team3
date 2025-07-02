@@ -260,7 +260,7 @@ public class CatAI : BaseMonster
             return;
         }
 
-        agent.speed = CatData.chaseMoveSpeed; // Owner 스테이터스 반영
+        agent.speed = CatData.chaseMoveSpeed;
         agent.SetDestination(destination);
     }
     public void MoveToRespawn()

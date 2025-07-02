@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class OwnerAI : BaseMonster
 {
+
     public enum OwnerDetectionTarget { None, OwnerBait, Player }
     public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
     public bool IsInvincible { get; private set; } = true;
+
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
     public Transform respawnPoint;
