@@ -18,9 +18,9 @@ public class Item : ScriptableObject
     protected virtual void OnEnable()
     {
         // 기본 아이템인스턴스 프리펩 설정. 특수 아이템의 경우 아이템인스턴스 프리펩을 다른걸로 달아주면 됨
-        instancePrefab = Resources.Load<GameObject>("ItemInstancePrefabs/ItemInstance_Noraml");
+        //instancePrefab = Resources.Load<GameObject>("Prefabs/ItemInstancePrefabs/ItemInstance_Noraml");
 
-        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
+        //imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
     }
     
     // 사용 => 인벤토리 우클릭 상호작용 시 호출

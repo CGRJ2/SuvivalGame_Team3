@@ -50,6 +50,7 @@ public class StageData : ScriptableObject
 
     public void InitUnlockState()
     {
+        if (stageKey == StageKey.°Å½Ç) return;
         IsUnlocked = false;
     }
 }
