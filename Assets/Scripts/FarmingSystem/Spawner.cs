@@ -14,12 +14,23 @@ public class Spawner : MonoBehaviour
     // 현재 소환된 파밍오브젝트.. 소환 안되어 있는 상태면 null로
     public GameObject currentSpawned_Instance;
 
+    // 대기 상태
+    public bool isStandByOn;
+
+    // 리스폰 루틴 상태
+    public Coroutine spawnRoutineInProgress;
+
     private void Awake() => Init();
 
     private void Init()
     {
         StageManager sm = StageManager.Instance;
         sm.GetSpawnerListGroup(stageOrigin.stageKey).AddToSpawnerList(this);
+    }
+
+    private void OnDisable()
+    {
+        CancelSpawning();
     }
 
     private SpawnTable GetSpawnTable()
@@ -93,7 +104,7 @@ public class Spawner : MonoBehaviour
         return null;
     }
 
-    public GameObject GetSpawnStandByObject()
+    private GameObject GetSpawnStandByObject()
     {
         SpawnTable instanceSpawnTable = GetSpawnTable();
         if (instanceSpawnTable == null)
@@ -125,37 +136,68 @@ public class Spawner : MonoBehaviour
         return null;
     }
 
-    public void Spawn()
+    private void Spawn()
     {
         GameObject selectedPrefabs = GetSpawnStandByObject();
+
         if (selectedPrefabs != null)
         {
             // 인스턴스 소환
             GameObject instance = Instantiate(selectedPrefabs, transform);
 
+            // 예외처리
+            if (instance.GetComponent<ISpawnable>() == null) { Debug.LogError("ISpawnable 인터페이스가 없는 오브젝트를 소환하려함!"); return; }
+
             // 해당 리스트 그룹에 활성된 오브젝트 리스트 찾기
             SpawnerListGroup tartgetSpawnerListGroup = StageManager.Instance.GetSpawnerListGroup(stageOrigin.stageKey);
             List<GameObject> targetActiveList = null;
             if (spawnerType == SpawnerType.FO)
-                targetActiveList = tartgetSpawnerListGroup.activedFOInstances;
+                targetActiveList = tartgetSpawnerListGroup.activateInstances_FO;
             else if (spawnerType == SpawnerType.Monster)
-                targetActiveList =  tartgetSpawnerListGroup.activedMonsterInstances;
+                targetActiveList =  tartgetSpawnerListGroup.activateInstances_Monster;
 
             // 활성된 오브젝트 리스트에 인스턴스 추가
             if (targetActiveList != null)
                 targetActiveList.Add(instance);
+            
+            currentSpawned_Instance = instance;
 
             // 해당 오브젝트 파괴(or 비활성화) 시 실행될 Action에 (활성된 오브젝트 리스트에 인스턴스 제거) 함수 저장
             instance.GetComponent<ISpawnable>().DeactiveAction = () =>
             {
                 targetActiveList.Remove(instance);
+                currentSpawned_Instance = null;
             };
-
-            currentSpawned_Instance = instance;
         }
         else
         {
-            Debug.LogError("선택된 오브젝트 프리펩이 없음");
+            Debug.LogError($"선택된 오브젝트 프리펩이 없음! 오류 발생 위치 : {gameObject.name}({spawnerType}타입 스포너)");
+        }
+    }
+
+    // 스포너 개개인 리스폰 매커니즘
+    private IEnumerator SpawnRoutine(float respawnTime)
+    {
+        yield return new WaitForSeconds(respawnTime);
+
+        Spawn();
+
+        // 스폰 완료 시 코루틴 삭제
+        spawnRoutineInProgress = null;
+    }
+
+    public void StartSpawning(float respawnTime)
+    {
+        if (spawnRoutineInProgress == null)
+            spawnRoutineInProgress = StartCoroutine(SpawnRoutine(respawnTime));
+    }
+
+    public void CancelSpawning()
+    {
+        if (spawnRoutineInProgress != null)
+        {
+            StopCoroutine(spawnRoutineInProgress);
+            spawnRoutineInProgress = null;
         }
     }
 }
