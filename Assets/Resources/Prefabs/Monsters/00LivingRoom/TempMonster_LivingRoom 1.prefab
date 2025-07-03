@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7f16fe46b789ae8409ea30a64d82cd54, type: 2}
+  - {fileID: 2100000, guid: e1879924b9b54454d840b3a80a404bf6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,7 +167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b48cacb6d93ee534a9c70a682d47e6b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 1575594433467681612}
   - component: {fileID: 250197504152986041}
   m_Layer: 6
-  m_Name: TempMonster_MasterRoom
+  m_Name: TempMonster_LivingRoom 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,7 +326,7 @@ MonoBehaviour:
   rotationSpeed: 7
   rb: {fileID: 0}
   stunTime: 0.5
-  dropTable: {fileID: 11400000, guid: 34e289dcf5c9a7849836390946f54ac9, type: 2}
+  dropTable: {fileID: 11400000, guid: 62d4d38828e04c34aa23863d8cc96098, type: 2}
 --- !u!114 &250197504152986041
 MonoBehaviour:
   m_ObjectHideFlags: 0

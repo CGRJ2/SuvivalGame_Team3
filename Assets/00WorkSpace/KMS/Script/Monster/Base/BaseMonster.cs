@@ -19,6 +19,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     [Header("Data")]
     public BaseMonsterData data;
     protected Animator animator;
+    public float destroyDelayTime = 3;
 
     protected UnityEngine.AI.NavMeshAgent agent;
     public NavMeshAgent Agent => agent;
@@ -174,6 +175,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         }
     }
 
+    protected void OnDisable()
+    {
+        DeactiveAction?.Invoke();
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         var damageable = collision.gameObject.GetComponent<IDamagable>();
@@ -245,7 +251,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
 
         stateMachine.ChangeState(new MonsterDeadState());
-        StartCoroutine(DestroyAfterDelay(10f));
+        StartCoroutine(DestroyAfterDelay(destroyDelayTime));
     }
     private IEnumerator DestroyAfterDelay(float seconds)
     {

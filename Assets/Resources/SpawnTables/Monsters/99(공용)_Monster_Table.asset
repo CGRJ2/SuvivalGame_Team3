@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: "99(\uACF5\uC6A9)_Monster_Table"
   m_EditorClassIdentifier: 
   level: 99
-  objectList: []
+  stageKey: 4
+  objectList:
+  - spawnObject: {fileID: 6069153757736342019, guid: 2d236803ab876cc488d4be1e392d1b54, type: 3}
+    objectWeight: 70
+  - spawnObject: {fileID: 6069153757736342019, guid: 499e13ffece7c044cad45a902c1eb9e1, type: 3}
+    objectWeight: 30
