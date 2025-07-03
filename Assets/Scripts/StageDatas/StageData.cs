@@ -50,8 +50,8 @@ public class StageData : ScriptableObject
 
     public void InitUnlockState()
     {
-        if (stageKey == StageKey.거실) IsUnlocked = true;
-        else IsUnlocked = false;
+        if (stageKey == StageKey.거실) return;
+        IsUnlocked = false;
     }
 }
 

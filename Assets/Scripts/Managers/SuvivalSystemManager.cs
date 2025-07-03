@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 {
+    // 참조한 다른 매니저들보다 후 순위에서 초기화 해야 함
+    PlayerManager pm;
+    
     ///////////////////////////////////////////
 
     [Header("생존 수치 소모 주기 설정")]
@@ -28,7 +31,7 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     public void Init()
     {
         base.SingletonInit();
-
+        pm = PlayerManager.Instance;
     }
 
     
@@ -62,24 +65,24 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     // 정신력 지속 감소 루틴
     IEnumerator DecreaseWillPowerOverTime()
     {
-        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        PlayerStatus ps = pm.instancePlayer.Status;
 
         while (true)
         {
             yield return new WaitForSeconds(TickDuration);
 
-            if (DailyManager.Instance.currentTimeData.TZ_State.Value == TimeZoneState.Night)
+            if (DailyManager.Instance.TZ_State.Value == TimeZoneState.Night)
             {
-                if (pc.Status.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Night > 0)
-                    pc.Status.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Night;
-                else pc.Status.CurrentWillPower.Value = 0;
+                if (ps.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Night > 0)
+                    ps.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Night;
+                else ps.CurrentWillPower.Value = 0;
 
             }
             else
             {
-                if (pc.Status.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Idle > 0)
-                    pc.Status.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Idle;
-                else pc.Status.CurrentWillPower.Value = 0;
+                if (ps.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Idle > 0)
+                    ps.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Idle;
+                else ps.CurrentWillPower.Value = 0;
             }
         }
     }
@@ -87,24 +90,24 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     // 배터리 지속 감소 루틴
     IEnumerator DecreaseBatteryOverTime()
     {
-        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        PlayerStatus ps = pm.instancePlayer.Status;
 
         while (true)
         {
             yield return new WaitForSeconds(TickDuration);
 
             // 달리기 상태라면
-            if (pc.IsCurrentState(PlayerStateTypes.Sprint))
+            if (ps.IsCurrentState(PlayerStateTypes.Sprint))
             {
-                if (pc.Status.CurrentBattery.Value - batterySystem.DrainPerTick_Sprint > 0)
-                    pc.Status.CurrentBattery.Value -= batterySystem.DrainPerTick_Sprint;
-                else pc.Status.CurrentBattery.Value = 0;
+                if (ps.CurrentBattery.Value - batterySystem.DrainPerTick_Sprint > 0)
+                    ps.CurrentBattery.Value -= batterySystem.DrainPerTick_Sprint;
+                else ps.CurrentBattery.Value = 0;
             }
             else
             {
-                if (pc.Status.CurrentBattery.Value - batterySystem.DrainPerTick_Idle > 0)
-                    pc.Status.CurrentBattery.Value -= batterySystem.DrainPerTick_Idle;
-                else pc.Status.CurrentBattery.Value = 0;
+                if (ps.CurrentBattery.Value - batterySystem.DrainPerTick_Idle > 0)
+                    ps.CurrentBattery.Value -= batterySystem.DrainPerTick_Idle;
+                else ps.CurrentBattery.Value = 0;
             }
         }
     }
@@ -112,16 +115,16 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     // 정신력이 일정수치 이하일 때 머리 지속 데미지 루틱
     IEnumerator DotDamageByLowWillOverTime()
     {
-        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        PlayerStatus ps = pm.instancePlayer.Status;
         while (true)
         {
             yield return new WaitForSeconds(TickDuration);
 
-            if (pc.Status.CurrentWillPower.Value <= willPowerSystem.WillDangerZone)
+            if (pm.instancePlayer.Status.CurrentWillPower.Value <= willPowerSystem.WillDangerZone)
             {
-                if (pc.Status.GetPart(BodyPartTypes.Head).Hp - willPowerSystem.HeadDamagePerTick > 0)
-                    pc.Status.GetPart(BodyPartTypes.Head).Hp -= willPowerSystem.HeadDamagePerTick;
-                else pc.Status.GetPart(BodyPartTypes.Head).Hp = 0;
+                if (ps.GetPart(BodyPartTypes.Head).Hp.Value - willPowerSystem.HeadDamagePerTick > 0)
+                    ps.GetPart(BodyPartTypes.Head).Hp.Value -= willPowerSystem.HeadDamagePerTick;
+                else ps.GetPart(BodyPartTypes.Head).Hp.Value = 0;
             }
         }
     }

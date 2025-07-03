@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
 
-
-[System.Serializable]
 public class InventoryPresenter 
 {
     public InventoryModel model; // ==> DataField
@@ -14,10 +12,13 @@ public class InventoryPresenter
     public InventoryPresenter()
     {
         this.model = new InventoryModel();
-        // 데이터 로드할 때 Status를 로드한 데이터로 교체
-        
     }
 
+    // 로드용 함수
+    public void SetModel(InventoryModel model)
+    {
+        this.model = model;
+    }
 
     // 씬전환 시 인벤토리 캔버스가 달라질 때 적용. UIManager에 inventoryView 값에 구독
     public void SetView(InventoryView view)

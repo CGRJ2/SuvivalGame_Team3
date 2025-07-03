@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Switch;
 
-
-[System.Serializable]
 public class SlotData
 {
     public Item item;
@@ -60,6 +58,5 @@ public class SlotData
     }
 
 
-    
 
 }

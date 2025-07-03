@@ -7,14 +7,18 @@ public class BodyPart : IDisposable
     public BodyPartTypes type;
     // 활성화 상태, 비활성화 시 체력회복 불가능, 1차회복 시 다시 활성화
     public ObservableProperty<bool> Activate = new ObservableProperty<bool>(); 
-    public int Hp;
-    public int CurrentMaxHp;
+    public ObservableProperty<int> Hp = new ObservableProperty<int>();
+    public ObservableProperty<int> CurrentMaxHp = new ObservableProperty<int>();
     private int InitMaxHp;
+    private Action<bool> deactiveEffectAction;
 
-    public BodyPart(BodyPartTypes type, int maxHp)
+    public BodyPart(BodyPartTypes type, int maxHp, Action<bool> DeactiveEffectAction)
     {
+        Activate.Subscribe(DeactiveEffect);
+        
         this.type = type;
         this.InitMaxHp = maxHp;
+        this.deactiveEffectAction = DeactiveEffectAction;
 
         Init();
     }
@@ -22,20 +26,20 @@ public class BodyPart : IDisposable
     // 파츠 정보 초기화 & 파츠 교체 시 호출 ==> 교체하면 현재체력 & 최대내구도까지 원상복귀
     public void Init()
     {
-        Hp = InitMaxHp;
-        CurrentMaxHp = InitMaxHp;
+        Hp.Value = InitMaxHp;
+        CurrentMaxHp.Value = InitMaxHp;
 
         Activate.Value = true;
     }
 
     public void TakeDamage(int damage)
     {
-        if (Hp - damage <= 0)
+        if (Hp.Value - damage <= 0)
         {
-            Hp = 0;
+            Hp.Value = 0;
             Activate.Value = false;
         }
-        else Hp -= damage;
+        else Hp.Value -= damage;
     }
 
     // 회복 효과 => 현재 최대내구도 까지만 회복 가능
@@ -43,20 +47,26 @@ public class BodyPart : IDisposable
     {
         if (Activate.Value == false) return;
 
-        if (Hp + amount > CurrentMaxHp) Hp = CurrentMaxHp;
-        else Hp += amount;
+        if (Hp.Value + amount > CurrentMaxHp.Value) Hp.Value = CurrentMaxHp.Value;
+        else Hp.Value += amount;
     }
 
     // 회복 가능 상태로 만듦
     public void QuickRepair(int maxHP_AfterQuickRepair)
     {
-        Hp = 1;
-        CurrentMaxHp = maxHP_AfterQuickRepair;
+        Hp.Value = 1;
+        CurrentMaxHp.Value = maxHP_AfterQuickRepair;
         Activate.Value = true;
+    }
+
+    private void DeactiveEffect(bool isActive)
+    {
+        if (!isActive)
+            deactiveEffectAction?.Invoke(isActive);
     }
 
     public void Dispose()
     {
-        Activate.UnsbscribeAll();
+        Activate.Unsubscribe(DeactiveEffect);
     }
 }

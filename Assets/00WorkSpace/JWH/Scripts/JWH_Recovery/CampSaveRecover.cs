@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,4 +31,4 @@ public class CampInteract : MonoBehaviour, IInteractable
     {
         Debug.Log("세이브 & 회복");
     }
-}*/
+}

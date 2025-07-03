@@ -26,12 +26,12 @@ public class CatAI : BaseMonster
     }
     private void OnEnable()
     {
-        DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
+        DailyManager.Instance.TZ_State.Subscribe(OnTimeZoneChanged);
     }
 
     private void OnDisable()
     {
-        DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
+        DailyManager.Instance.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {
@@ -89,14 +89,14 @@ public class CatAI : BaseMonster
 
     public bool IsPlayerMakingNoise()
     {
-        var player = GetTarget()?.GetComponent<PlayerController>();
+        var player = GetTarget()?.GetComponent<PlayerStatus>();
         if (player == null) return false;
         return !player.IsCurrentState(PlayerStateTypes.Crouch) && !player.IsCurrentState(PlayerStateTypes.Idle);
     }
     public bool IsPlayerInDetectionRange()
     {
         if (playerTransform == null) return false;
-        return !GetComponent<PlayerController>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
+        return !GetComponent<PlayerStatus>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
     }
     public bool IsInDetectionRange(Transform target)
     {
@@ -175,7 +175,7 @@ public class CatAI : BaseMonster
         float baseRange = CatData.catDetectionRange;
 
         // 시간대에 따른 multiplier 적용
-        var tz = DailyManager.Instance.currentTimeData.TZ_State.Value;
+        var tz = DailyManager.Instance.TZ_State.Value;
         switch (tz)
         {
             case TimeZoneState.Morning: // 오전
@@ -252,7 +252,17 @@ public class CatAI : BaseMonster
     //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
     //    RB.MovePosition(targetPosition);
     //}
-    
+    public override void MoveTo(Vector3 destination)
+    {
+        if (agent == null)
+        {
+            Debug.LogWarning("NavMeshAgent가 없습니다!");
+            return;
+        }
+
+        agent.speed = CatData.chaseMoveSpeed;
+        agent.SetDestination(destination);
+    }
     public void MoveToRespawn()
     {
         if (respawnPoint != null)
@@ -264,9 +274,8 @@ public class CatAI : BaseMonster
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
 
-    public override void TakeDamage(int damage, Transform attackerTransform)
+    public override void TakeDamage(int damage)
     {
-
     }
     protected override void Die()
     {

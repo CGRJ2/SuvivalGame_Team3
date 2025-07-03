@@ -24,5 +24,6 @@ public class Item_Key : Item, IEquipable
         itemType = ItemType.Quest;
         maxCount = 1;
         itemName = this.name;
+        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/Sprite_Quest");
     }
 }

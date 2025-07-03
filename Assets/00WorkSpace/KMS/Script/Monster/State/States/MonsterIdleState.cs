@@ -34,7 +34,7 @@ public class MonsterIdleState : IMonsterState
         monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
 
-        //Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");
+        Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");
     }
 
 
@@ -68,7 +68,7 @@ public class MonsterIdleState : IMonsterState
         {
             timer = 0f;
             lookDuration = Random.Range(1.5f, 3f);
-            //Debug.Log($"[{monster.name}] 좌우 회전 루프 반복");
+            Debug.Log($"[{monster.name}] 좌우 회전 루프 반복");
         }
     }
 
@@ -76,11 +76,11 @@ public class MonsterIdleState : IMonsterState
     {
         float randomY = Random.Range(0f, 360f);
         baseRotationTarget = Quaternion.Euler(0, randomY, 0);
-        //Debug.Log($"[Monster] 기준 방향 목표 전환: {randomY}도");
+        Debug.Log($"[Monster] 기준 방향 목표 전환: {randomY}도");
     }
 
     public void Exit()
     {
-        //Debug.Log($"[{monster.name}] 상태: Idle 종료 (회전 초기화)");
+        Debug.Log($"[{monster.name}] 상태: Idle 종료 (회전 초기화)");
     }
 }

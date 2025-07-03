@@ -41,7 +41,7 @@ public class MonsterAlertState : IMonsterState
 
         if (monster.GetTarget() != null)
         {
-            monster.Agent.SetDestination(monster.GetTarget().position);
+            monster.MoveTo(monster.GetTarget().position);
         }
 
 

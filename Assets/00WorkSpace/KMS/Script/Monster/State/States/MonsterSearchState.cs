@@ -33,7 +33,7 @@ public class MonsterSearchState : IMonsterState
         {
             Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
             toTarget.y = 0f;
-            monster.Agent.SetDestination(toTarget.normalized);
+            monster.MoveTo(toTarget.normalized);
         }
 
         // 타이머 경과 시 상태 재평가

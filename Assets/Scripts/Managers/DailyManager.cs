@@ -26,34 +26,34 @@ public class DailyManager : Singleton<DailyManager>
     [SerializeField] TimeZoneSetting timeZoneSetting;
 
     [field: Header("현재 시간 정보")]
-    public CurrentTimeData currentTimeData = new CurrentTimeData();
-
+    [field: SerializeField] public float CurrentTime { get; private set; }
+    [field: SerializeField] public ObservableProperty<int> CurrentDay { get; private set; }
+    [field: SerializeField] public ObservableProperty<TimeZoneState> TZ_State { get; private set; }
+    
     
 
 
     public void Init()
     {
         base.SingletonInit();
-
-        // 데이터 로드할 때 currentTimeData를 로드한 데이터로 교체
-        DataManager dm = DataManager.Instance;
-        dm.loadedDataGroup.Subscribe(LoadTimeData);
     }
 
     public void InitDay()
     {
-        currentTimeData.CurrentDay.Value = 1;
+        CurrentDay.Value = 1;
     }
 
     public void InitTime()
     {
-        currentTimeData.CurrentTime = 0;
+        CurrentTime = 0;
     }
 
-    private void LoadTimeData(SaveDataGroup saveDataGroup)
+    public void LoadData(float currentTime, int currentDay)
     {
-        currentTimeData = saveDataGroup.currentTimeData;
+        this.CurrentDay.Value = currentDay;
+        this.CurrentTime = currentTime;
     }
+
 
     private void Start()
     {
@@ -66,28 +66,28 @@ public class DailyManager : Singleton<DailyManager>
         while (true)
         {
             yield return null;
-            currentTimeData.CurrentTime += Time.deltaTime;
+            CurrentTime += Time.deltaTime;
 
 
-            if (currentTimeData.CurrentTime <= timeZoneSetting.TZ_Morning)
+            if (CurrentTime <= timeZoneSetting.TZ_Morning)
             {
-                currentTimeData.TZ_State.Value = TimeZoneState.Morning;
+                TZ_State.Value = TimeZoneState.Morning;
             }
-            else if (currentTimeData.CurrentTime <= timeZoneSetting.TZ_Afternoon)
+            else if (CurrentTime <= timeZoneSetting.TZ_Afternoon)
             {
-                currentTimeData.TZ_State.Value = TimeZoneState.Afternoon;
+                TZ_State.Value = TimeZoneState.Afternoon;
             }
-            else if (currentTimeData.CurrentTime <= timeZoneSetting.TZ_Evening)
+            else if (CurrentTime <= timeZoneSetting.TZ_Evening)
             {
-                currentTimeData.TZ_State.Value = TimeZoneState.Evening;
+                TZ_State.Value = TimeZoneState.Evening;
             }
-            else if (currentTimeData.CurrentTime <= timeZoneSetting.DayCycleTime)
+            else if (CurrentTime <= timeZoneSetting.DayCycleTime)
             {
-                currentTimeData.TZ_State.Value = TimeZoneState.Night;
+                TZ_State.Value = TimeZoneState.Night;
             }
-            else if (currentTimeData.CurrentTime > timeZoneSetting.DayCycleTime)
+            else if (CurrentTime > timeZoneSetting.DayCycleTime)
             {
-                currentTimeData.CurrentTime = 0;
+                CurrentTime = 0;
                 MoveToNextDay();
             }
         }
@@ -96,9 +96,9 @@ public class DailyManager : Singleton<DailyManager>
 
     public void MoveToNextDay()
     {
-        if (currentTimeData.CurrentDay.Value < timeZoneSetting.MaxDayCount)
+        if (CurrentDay.Value < timeZoneSetting.MaxDayCount)
         {
-            currentTimeData.CurrentDay.Value++;
+            CurrentDay.Value++;
         }
         else
         {
@@ -116,12 +116,4 @@ public class DailyManager : Singleton<DailyManager>
 public enum TimeZoneState
 {
     Morning, Afternoon, Evening, Night, All
-}
-
-[System.Serializable]
-public class CurrentTimeData
-{
-    public float CurrentTime;
-    public ObservableProperty<int> CurrentDay;
-    public ObservableProperty<TimeZoneState> TZ_State;
 }

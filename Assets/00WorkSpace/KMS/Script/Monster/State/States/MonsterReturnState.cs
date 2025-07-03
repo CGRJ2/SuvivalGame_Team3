@@ -25,11 +25,10 @@ public class MonsterReturnState : IMonsterState
         //{
         //    monster.Move(toSpawn.normalized);
         //}
-        float distanceToSpawn = Vector3.Distance(monster.transform.position, monster.OriginTransform.position);
+        float distanceToSpawn = Vector3.Distance(monster.transform.position, monster.GetSpawnPoint());
         if (distanceToSpawn > 0.1f)
         {
-            monster.Agent.SetDestination(monster.OriginTransform.position);
-
+            monster.MoveTo(monster.GetSpawnPoint());
         }
         else
         {

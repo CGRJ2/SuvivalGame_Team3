@@ -92,7 +92,7 @@ public class BossMonster : BaseMonster
             var dmg = target.GetComponent<IDamagable>();
             var kb = target.GetComponent<IKnockbackable>();
             Vector3 direction = (target.position - transform.position).normalized;
-            if (dmg != null) dmg.TakeDamage(damage, transform);
+            if (dmg != null) dmg.TakeDamage(damage);
             if (kb != null) kb.ApplyKnockback(direction, knockback);
         }
         view.PlayMonsterPhase2AttackAnimation();
@@ -122,7 +122,7 @@ public class BossMonster : BaseMonster
             var dmg = target.GetComponent<IDamagable>();
             var kb = target.GetComponent<IKnockbackable>();
             Vector3 direction = (target.position - transform.position).normalized;
-            if (dmg != null) dmg.TakeDamage(damage, transform);
+            if (dmg != null) dmg.TakeDamage(damage);
             if (kb != null) kb.ApplyKnockback(direction, knockback);
         }
         view.PlayMonsterPhase3AttackAnimation();
@@ -158,7 +158,7 @@ public class BossMonster : BaseMonster
             var dmg = hit.GetComponent<IDamagable>();
             var kb = hit.GetComponent<IKnockbackable>();
             if (dmg != null)
-                dmg.TakeDamage((int)pattern.damage, transform);
+                dmg.TakeDamage((int)pattern.damage);
             if (kb != null)
             {
                 Vector3 dir = (hit.transform.position - transform.position).normalized;
@@ -192,7 +192,7 @@ public class BossMonster : BaseMonster
             var dmg = hit.GetComponent<IDamagable>();
             var kb = hit.GetComponent<IKnockbackable>();
             if (dmg != null)
-                dmg.TakeDamage((int)pattern.damage, transform);
+                dmg.TakeDamage((int)pattern.damage);
             if (kb != null)
                 kb.ApplyKnockback((hit.transform.position - center).normalized, pattern.range);
         }
@@ -216,7 +216,7 @@ public class BossMonster : BaseMonster
                 var dmg = hit.GetComponent<IDamagable>();
                 var kb = hit.GetComponent<IKnockbackable>();
                 if (dmg != null)
-                    dmg.TakeDamage((int)pattern.damage, transform);
+                    dmg.TakeDamage((int)pattern.damage);
                 if (kb != null)
                     kb.ApplyKnockback(dir, pattern.range);
             }
@@ -238,7 +238,7 @@ public class BossMonster : BaseMonster
     {
         var target = other.GetComponent<IDamagable>();
         if (target != null && currentPattern != null)
-            target.TakeDamage((int)currentPattern.damage, transform);
+            target.TakeDamage((int)currentPattern.damage);
     }
 
     public void TryCounter()
