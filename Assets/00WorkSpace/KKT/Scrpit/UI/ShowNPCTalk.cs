@@ -23,15 +23,7 @@ public class ShowNPCTalk : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canInteract = true;
-            UIController.Instance.ShowNPCTalk(true);
-        }
-    }
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            canInteract = false;
-            UIController.Instance.ShowNPCTalk(false);
+            UIController.Instance.ShowNPCTalk("어서오너라 메이플은 프로젝트가 끝난 다음에 하거라.",2f);
         }
     }
 }

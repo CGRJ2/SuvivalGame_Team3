@@ -77,7 +77,6 @@ public class DroppedItem : MonoBehaviour
             canPickup = false;
         }
     }
-
     void Pickup()
     {
         if (picked) return; // 중복 방지

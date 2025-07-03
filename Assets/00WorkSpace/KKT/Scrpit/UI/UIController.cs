@@ -90,9 +90,9 @@ public class UIController : MonoBehaviour
     }
 
     // NPC 대화 On/Off
-    public void ShowNPCTalk(bool isShow)
+    public void ShowNPCTalk(string msg, float duration = 2f)
     {
-        if(NPCTalk != null) NPCTalk.SetActive(isShow);
+        StartCoroutine(ShowAndHide(collectPanel, collectText, msg, duration));
     }
 
     // 인벤토리 On/Off
