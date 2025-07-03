@@ -1968,7 +1968,6 @@ GameObject:
   - component: {fileID: 8391142036724612433}
   - component: {fileID: 4873995486051350449}
   - component: {fileID: 4681144148690998647}
-  - component: {fileID: 8185154577950309380}
   - component: {fileID: 4394851530320877419}
   - component: {fileID: 6635004818492625376}
   m_Layer: 3
@@ -1987,7 +1986,7 @@ Transform:
   m_GameObject: {fileID: 7617150217708771105}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.33, y: 0, z: 2.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2073,7 +2072,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: 5810a82d-491f-44ac-bf01-521c7cd4b0fa
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &4681144148690998647
@@ -2089,6 +2088,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAttacking: 0
+  <Status>k__BackingField:
+    minPitch: 0
+    maxPitch: 0
+    rotateSpeed_Init: 0
+    crouchSpeed_Init: 0
+    <DamagedInvincibleTime>k__BackingField: 0
+    <AttackCoolTime>k__BackingField: 0
+    moveSpeed_Init: 0
+    sprintSpeed_Init: 0
+    jumpForce_Init: 0
+    damage_Init: 0
+    mouseSensitivity_Init: 0.1
+    CurrentWillPower:
+      _value: 0
+    CurrentBattery:
+      _value: 0
+    MaxBattery:
+      _value: 0
+    <MoveSpeed>k__BackingField: 0
+    <SprintSpeed>k__BackingField: 0
+    <JumpForce>k__BackingField: 0
+    <Damage>k__BackingField: 0
+    mouseSensitivity: 0.1
+    onHandItem: {fileID: 0}
+    bodyParts: []
+    ApplyDebuff_CraftSpeed: 0
+    ApplyDebuff_SprintSpeed: 0
+    ApplyDebuff_LockWeaponUse: 0
+    ApplyDebuff_LockSprint: 0
+    ApplyDebuff_LockAttack: 0
+    ApplyDebuff_HeadDotDamage: 0
+    isInvincible: 0
+    isControllLocked: 0
   TPS_Cameras:
   - {fileID: 0}
   - {fileID: 0}
@@ -2096,50 +2128,6 @@ MonoBehaviour:
   - {fileID: 0}
   SmoothDir: {x: 0, y: 0}
   SmoothTime: 0.1
---- !u!114 &8185154577950309380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7617150217708771105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 015b0a0cc3517304e9da8d26c222c2b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minPitch: -42
-  maxPitch: 47
-  rotateSpeed_Init: 10
-  crouchSpeed_Init: 3
-  <DamagedInvincibleTime>k__BackingField: 2
-  <AttackCoolTime>k__BackingField: 1
-  moveSpeed_Init: 5
-  sprintSpeed_Init: 8
-  jumpForce_Init: 8
-  damage_Init: 1
-  mouseSensitivity_Init: 0.3
-  CurrentWillPower:
-    _value: 0
-  CurrentBattery:
-    _value: 0
-  MaxBattery:
-    _value: 0
-  <MoveSpeed>k__BackingField: 0
-  <SprintSpeed>k__BackingField: 0
-  <JumpForce>k__BackingField: 0
-  <Damage>k__BackingField: 0
-  mouseSensitivity: 0.3
-  onHandItem: {fileID: 0}
-  bodyParts: []
-  ApplyDebuff_CraftSpeed: 0
-  ApplyDebuff_SprintSpeed: 0
-  ApplyDebuff_LockWeaponUse: 0
-  ApplyDebuff_LockSprint: 0
-  ApplyDebuff_LockAttack: 0
-  ApplyDebuff_HeadDotDamage: 0
-  isInvincible: 0
-  isControllLocked: 0
 --- !u!114 &4394851530320877419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2173,7 +2161,7 @@ MonoBehaviour:
   avatar: {fileID: 1242798646989858927}
   collisionLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 449
   rayRadius_Ground: 0.3
   offsetY_Ground: 0
   distance_Ground: 0.2

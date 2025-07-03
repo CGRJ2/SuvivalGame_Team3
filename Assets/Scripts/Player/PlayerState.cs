@@ -200,7 +200,7 @@ public class Player_Attack : PlayerState
     {
         base.Update();
         attackCoolTime += Time.deltaTime;
-        if (attackCoolTime > pc.Status.AttackCoolTime)
+        if (attackCoolTime > PlayerManager.Instance.AttackCoolTime)
         {
             pc.isAttacking = false;
         }

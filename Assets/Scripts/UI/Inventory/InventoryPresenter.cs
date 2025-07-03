@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[System.Serializable]
 public class InventoryPresenter 
 {
     public InventoryModel model; // ==> DataField

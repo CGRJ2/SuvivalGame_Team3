@@ -26,12 +26,12 @@ public class CatAI : BaseMonster
     }
     private void OnEnable()
     {
-        DailyManager.Instance.TZ_State.Subscribe(OnTimeZoneChanged);
+        DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
     }
 
     private void OnDisable()
     {
-        DailyManager.Instance.TZ_State.Unsubscribe(OnTimeZoneChanged);
+        DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {
@@ -89,14 +89,14 @@ public class CatAI : BaseMonster
 
     public bool IsPlayerMakingNoise()
     {
-        var player = GetTarget()?.GetComponent<PlayerStatus>();
+        var player = GetTarget()?.GetComponent<PlayerController>();
         if (player == null) return false;
         return !player.IsCurrentState(PlayerStateTypes.Crouch) && !player.IsCurrentState(PlayerStateTypes.Idle);
     }
     public bool IsPlayerInDetectionRange()
     {
         if (playerTransform == null) return false;
-        return !GetComponent<PlayerStatus>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
+        return !GetComponent<PlayerController>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
     }
     public bool IsInDetectionRange(Transform target)
     {
@@ -175,7 +175,7 @@ public class CatAI : BaseMonster
         float baseRange = CatData.catDetectionRange;
 
         // 시간대에 따른 multiplier 적용
-        var tz = DailyManager.Instance.TZ_State.Value;
+        var tz = DailyManager.Instance.currentTimeData.TZ_State.Value;
         switch (tz)
         {
             case TimeZoneState.Morning: // 오전

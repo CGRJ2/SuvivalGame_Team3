@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour, IDamagable
     // Transform << 정보 저장소도 만들어주세요
 
     // [세이브 & 로드 데이터]
-    public PlayerStatus Status { get; private set; }
+    private PlayerManager pm;
+
+    [field: SerializeField] public PlayerStatus Status { get; private set; }
 
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
@@ -46,8 +48,12 @@ public class PlayerController : MonoBehaviour, IDamagable
     bool isAttackInput;
 
 
+    public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
 
-
+    public bool IsCurrentState(PlayerStateTypes state)
+    {
+        return stateMachine.CurState == stateMachine.stateDic[state];
+    }
 
     private void Awake() => Init();
 
@@ -70,7 +76,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         UpdateStateCondition();
 
-        Status.stateMachine.Update();
+        stateMachine.Update();
 
         SmoothDir = Vector2.SmoothDamp(
             SmoothDir,
@@ -89,30 +95,38 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Init()
     {
-        PlayerManager.Instance.instancePlayer = this;
+        pm = PlayerManager.Instance;
+        pm.instancePlayer = this;
 
-
-
-        Status = GetComponent<PlayerStatus>();
+        Status.Init();
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
 
-        Status.Init();
         InputActionsInit();
         StateMachineInit();
+
+
+        // 데이터 로드할 때 Status를 로드한 데이터로 교체
+        DataManager dm = DataManager.Instance;
+        dm.loadedDataGroup.Subscribe(LoadPlayerData);
+    }
+
+    private void LoadPlayerData(SaveDataGroup saveDataGroup)
+    {
+        Status = saveDataGroup.playerStatusData;
     }
 
     public void StateMachineInit()
     {
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Idle, new Player_Idle(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Move, new Player_Move(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Sprint, new Player_Sprint(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Jump, new Player_Jump(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Crouch, new Player_Crouch(this));
-        Status.stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Idle, new Player_Idle(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Move, new Player_Move(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Sprint, new Player_Sprint(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Jump, new Player_Jump(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Crouch, new Player_Crouch(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
 
-        Status.stateMachine.CurState = Status.stateMachine.stateDic[PlayerStateTypes.Idle];
+        stateMachine.CurState = stateMachine.stateDic[PlayerStateTypes.Idle];
     }
 
     private void InputActionsInit()
@@ -369,14 +383,14 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
             if (isAttackInput || isAttacking)
             {
-                if ((Status.IsCurrentState(PlayerStateTypes.Idle) || Status.IsCurrentState(PlayerStateTypes.Move)))
+                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
                 {
-                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
-                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
-                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Attack]);
+                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
                 else
                 {
@@ -390,14 +404,14 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
-                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
                 else
                 {
-                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Jump]);
+                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
             }
             // => Sprint
@@ -407,37 +421,37 @@ public class PlayerController : MonoBehaviour, IDamagable
                 {
                     return;
                 }
-                else if (Status.IsCurrentState(PlayerStateTypes.Crouch))
+                else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
-                        Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]);
                 }
                 else
                 {
-                    Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Sprint]);
+                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]);
                 }
             }
             // => Crouch
             else if (isCrouchToggle)
             {
                 if (isAttacking) return;
-                else Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Crouch]);
+                else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
             else if (isMoveInput)
             {
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Move]);
+                stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
             }
             // => Idle
             else
             {
 
-                Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Idle]);
+                stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
             }
         }
         else
         {
-            Status.stateMachine.ChangeState(Status.stateMachine.stateDic[PlayerStateTypes.Fall]);
+            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]);
         }
     }
 
@@ -451,7 +465,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Status.isControllLocked) return;
 
         float moveSpeed;
-        if (Status.IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = Status.CrouchSpeed;
+        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
         else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
@@ -480,22 +494,22 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleSight()
     {
-        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, Status.MinPitch, Status.MaxPitch);
+        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, pm.MinPitch, pm.MaxPitch);
 
         Vector3 avatarDir;
         // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
         if (isFreeCamModInput) avatarDir = View.facingDir;
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
-        else if (!isMoveInput || Status.IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
+        else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
         else avatarDir = View.moveDir;
 
         // 컨트롤 락 걸리면 아바타 회전은 정지
         if (Status.isControllLocked) return;
 
-        View.SetAvatarRotation(avatarDir, Status.RotateSpeed);
+        View.SetAvatarRotation(avatarDir, pm.RotateSpeed);
 
         // Attack 상태일 때만.
-        if (Status.stateMachine.CurState == Status.stateMachine.stateDic[PlayerStateTypes.Attack])
+        if (stateMachine.CurState == stateMachine.stateDic[PlayerStateTypes.Attack])
         {
             View.animator.SetFloat("MoveX", SmoothDir.x);
             View.animator.SetFloat("MoveZ", SmoothDir.y);
@@ -529,9 +543,7 @@ public class PlayerController : MonoBehaviour, IDamagable
             damagable.TakeDamage(finalDamage, transform);
 
             Debug.Log("어택실행04");
-
         }
-
     }
 
     public void Interact()
@@ -571,7 +583,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
 
         Status.CheckCriticalState();
-        StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
+        StartCoroutine(InvincibleRoutine(pm.DamagedInvincibleTime));
     }
 
     public IEnumerator InvincibleRoutine(float time)

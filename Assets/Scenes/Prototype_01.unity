@@ -1341,6 +1341,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 72aa00dbe8f27df49b99598584b9849e, type: 2}
   count: 4
+  rigidDeactiveTime: 0
+  destroyTime: 0
 --- !u!135 &71992091
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2228,6 +2230,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 54efd86211fee77478bea6a2cc7f3590, type: 2}
   count: 1
+  rigidDeactiveTime: 0
+  destroyTime: 0
 --- !u!135 &167256606
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -17871,6 +17875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 278b3a3e40f42db488673bec2010b60a, type: 2}
   count: 1
+  rigidDeactiveTime: 0
+  destroyTime: 0
 --- !u!135 &1295320125
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -17968,6 +17974,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 341e0c903fc68704dbc9e5f09b982ed6, type: 2}
   count: 1
+  rigidDeactiveTime: 0
+  destroyTime: 0
 --- !u!135 &1298080432
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -23221,6 +23229,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 4407808d2ed2d8842b0605af709cbc9c, type: 2}
   count: 12
+  rigidDeactiveTime: 0
+  destroyTime: 0
 --- !u!135 &1654074354
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -32867,6 +32877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3348e8340ebac02418ea2de9fc6146e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSlotCount: 5
 --- !u!222 &783574796129307876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -36107,6 +36118,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instancePlayer: {fileID: 0}
+  minPitch: -42
+  maxPitch: 47
+  rotateSpeed_Init: 10
+  crouchSpeed_Init: 3
+  <DamagedInvincibleTime>k__BackingField: 2
+  <AttackCoolTime>k__BackingField: 1
+  moveSpeed_Init: 5
+  sprintSpeed_Init: 8
+  jumpForce_Init: 8
+  damage_Init: 1
+  mouseSensitivity_Init: 0.3
 --- !u!224 &2662992802009669213
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39825,14 +39847,6 @@ PrefabInstance:
       propertyPath: TPS_Cameras.Array.data[3]
       value: 
       objectReference: {fileID: 8680536742108301457}
-    - target: {fileID: 4873995486051350449, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
-      propertyPath: m_DefaultActionMap
-      value: 5810a82d-491f-44ac-bf01-521c7cd4b0fa
-      objectReference: {fileID: 0}
-    - target: {fileID: 6635004818492625376, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
-      propertyPath: collisionLayerMask.m_Bits
-      value: 449
-      objectReference: {fileID: 0}
     - target: {fileID: 7617150217708771105, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
       propertyPath: m_Name
       value: Player

@@ -149,12 +149,12 @@ public class OwnerAI : BaseMonster
 
     private void OnEnable()
     {
-        DailyManager.Instance.TZ_State.Subscribe(OnTimeZoneChanged);
+        DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
     }
 
     private void OnDisable()
     {
-        DailyManager.Instance.TZ_State.Unsubscribe(OnTimeZoneChanged);
+        DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {

@@ -35,6 +35,10 @@ public class StageManager : Singleton<StageManager>
         // 레벨에 따른 스포닝 사이클 시스템 구독
         CurrentStageLevel.Subscribe(SpawningRoutinesStartByCurrentLevel);
         SpawningRoutinesStartByCurrentLevel(0);
+
+        // 데이터 로드할 때 스테이지 별 언락 정보를 로드해 언락 적용해주기
+        DataManager dm = DataManager.Instance;
+        dm.loadedDataGroup.Subscribe(LoadStageUnlockSaveData);
     }
 
     private void OnDestroy()
@@ -209,8 +213,10 @@ public class StageManager : Singleton<StageManager>
         return instanceList;
     }
 
-    public void LoadStageUnlockSaveData(List<bool> loadedData)
+    public void LoadStageUnlockSaveData(SaveDataGroup saveDataGroup)
     {
+        List<bool> loadedData = saveDataGroup.stageUnlockData;
+        
         for (int i = 0; i < stageDatas.Length; i++)
         {
             if (loadedData[i]) stageDatas[i].UlockStage();
