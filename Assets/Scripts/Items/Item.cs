@@ -103,7 +103,13 @@ public class Item : ScriptableObject
     // 아이템 인스턴스 생성
     public void SpawnItem(Transform transform, int count = 1)
     {
-        ItemInstance instance = Instantiate(instancePrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();
+        GameObject instanceObj = Instantiate(instancePrefab, transform.position, transform.rotation);
+        Rigidbody rb = instanceObj.GetComponent<Rigidbody>();
+
+        // 힘을 커스텀할 수 있게 다른곳에 설정 가능한 변수를 받아오는 식으로 하자
+        if (rb != null) rb.AddForce(Vector3.up * 3, ForceMode.Impulse);
+
+        ItemInstance instance = instanceObj.GetComponent<ItemInstance>();
         instance.InitInstance(this, count);
     }
 }

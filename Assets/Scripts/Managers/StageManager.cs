@@ -24,6 +24,49 @@ public class StageManager : Singleton<StageManager>
     [Header("안방 스포너 정보")]
     [SerializeField] private SpawnerListGroup spawnerListGroup_MasterBedRoom;
 
+
+    public void Init()
+    {
+        base.SingletonInit();
+
+        // 스테이지 정보 초기화
+        InitStageDatas();
+
+        // 레벨에 따른 스포닝 사이클 시스템 구독
+        CurrentStageLevel.Subscribe(SpawningRoutinesStartByCurrentLevel);
+        SpawningRoutinesStartByCurrentLevel(0);
+    }
+
+    private void OnDestroy()
+    {
+        CurrentStageLevel.UnsbscribeAll();
+
+    }
+
+    // 스테이지 데이터들 초기화하기
+    private void InitStageDatas()
+    {
+        stageDatas = Resources.LoadAll<StageData>("StageDatas");
+        Array.Sort(stageDatas, (a, b) => a.StageLevel.CompareTo(b.StageLevel));
+
+        for (int i = 0; i < stageDatas.Length; i++)
+        {
+            stageDatas[i].Init();
+        }
+    }
+    private void OnDisable()
+    {
+        // 타이틀씬으로 넘어가거나 종료 시, 코루틴 중지
+        StopAllCoroutines();
+    }
+
+    // 스테이지가 해금될 때마다 CurrentStageLevel 업데이트
+    public void SetCurrentStageIndex(int stageLevel)
+    {
+        CurrentStageLevel.Value = stageLevel;
+    }
+
+    // 스테이지 키에 따른 SpawnerListGroup 반환 (스포너들 개개인 초기화 시 Key와 일치하는 그룹으로 넣기 위함)
     public SpawnerListGroup GetSpawnerListGroup(StageKey stageKey)
     {
         switch (stageKey)
@@ -39,25 +82,41 @@ public class StageManager : Singleton<StageManager>
             default: return null;
         }
     }
-    //////////////////////테스트/////////////////////////////////
-    private void Update()
+
+    // CurrentLevel의 변화에 따라, 해당 스테이지의 스포닝루틴 해금
+    public void SpawningRoutinesStartByCurrentLevel(int currentLevel)
     {
-        if (Input.GetKeyDown(KeyCode.G))
+        switch (currentLevel)
         {
-            SpawningRoutinesStart(spawnerListGroup_LivingRoom);
+            case 0:
+                Debug.LogWarning("0스테이지 스폰 사이클 실행!");
+                SpawningRoutinesStart(spawnerListGroup_LivingRoom);
+                break;
+
+            case 1:
+                Debug.LogWarning("1스테이지 스폰 사이클 실행!");
+                SpawningRoutinesStart(spawnerListGroup_Library);
+                break;
+
+            case 2:
+                Debug.LogWarning("2스테이지 스폰 사이클 실행!");
+                SpawningRoutinesStart(spawnerListGroup_DressRoom);
+                break;
+
+            case 3:
+                Debug.LogWarning("3스테이지 스폰 사이클 실행!");
+                SpawningRoutinesStart(spawnerListGroup_MasterBedRoom);
+                break;
+            
+            default:
+                break;
         }
     }
 
-    private void OnDisable()
-    {
-        // 타이틀씬으로 넘어가거나 종료 시, 코루틴 중지
-        StopAllCoroutines();
-    }
-    //////////////////////테스트/////////////////////////////////
 
 
     // 파밍오브젝트 & 몬스터 리스폰 루틴 동시 실행
-    public void SpawningRoutinesStart(SpawnerListGroup target)
+    private void SpawningRoutinesStart(SpawnerListGroup target)
     {
         // 파밍오브젝트 인스턴스 리스폰 루틴 실행
         StartCoroutine(
@@ -67,8 +126,6 @@ public class StageManager : Singleton<StageManager>
         StartCoroutine(
             SpawningRoutine(target.spawnerList_Monster, target.activateInstances_Monster, target.maxCount_Monster, respawnTime_Monster));
     }
-
-    // 리스폰 시스템 어떻게 구성할지 고민 좀 해보자
     private IEnumerator SpawningRoutine(List<Spawner> targetSpawnerList, List<GameObject> activeInstanceList, int maxCount, float respawnTime)
     {
         while (true)
@@ -93,6 +150,8 @@ public class StageManager : Singleton<StageManager>
             yield return null;
         }
     }
+
+    
 
 
     // 아직 소환 코루틴이 진행되지 않은 스포너 리스트 반환
@@ -122,7 +181,6 @@ public class StageManager : Singleton<StageManager>
         return progressingSpawnerList;
     }
 
-
     // 스폰 가능한 리스트를 받아, 그 들 중 랜덤으로 하나 선택해서 리스폰 루틴 실행
     private void RandomSpawnerStartSpawning(List<Spawner> spawnableList, int maxCount, float respawnTime)
     {
@@ -134,38 +192,7 @@ public class StageManager : Singleton<StageManager>
     }
 
 
-    public void Init()
-    {
-        base.SingletonInit();
-
-        // 스테이지 정보 초기화
-        InitStageDatas();
-    }
-
-    private void OnDestroy()
-    {
-        CurrentStageLevel.UnsbscribeAll();
-
-    }
-
-    // 스테이지 데이터들 초기화하기
-    private void InitStageDatas()
-    {
-        stageDatas = Resources.LoadAll<StageData>("StageDatas");
-        Array.Sort(stageDatas, (a, b) => a.StageLevel.CompareTo(b.StageLevel));
-
-        for (int i = 0; i < stageDatas.Length; i++)
-        {
-            stageDatas[i].Init();
-        }
-    }
-
-
-    // 스테이지가 해금될 때마다 CurrentStageLevel 업데이트
-    public void SetCurrentStageIndex(int stageLevel)
-    {
-        CurrentStageLevel.Value = stageLevel;
-    }
+    
 
 
 
