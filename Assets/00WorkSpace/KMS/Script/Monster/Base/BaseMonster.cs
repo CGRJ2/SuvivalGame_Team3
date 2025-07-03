@@ -535,6 +535,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     {
         currentHP = data.MaxHP;
         // 필요하면 추가로 회복 이펙트, 로그 등
-        Debug.Log($"[{name}] HP가 최대치로 회복됨");
+        //Debug.Log($"[{name}] HP가 최대치로 회복됨");
     }
 }
