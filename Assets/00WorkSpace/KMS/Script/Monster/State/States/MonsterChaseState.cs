@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterChaseState : IMonsterState
@@ -28,11 +26,11 @@ public class MonsterChaseState : IMonsterState
             return;
         }
 
-        if (monster.IsOutsideActionRadius())
-        {
-            monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle));
-            return;
-        }
+        //if (monster.IsOutsideActionRadius())
+        //{
+        //    monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle));
+        //    return;
+        //}
 
         if (monster.IsOutsideDetectionRadius())
         {
@@ -49,11 +47,15 @@ public class MonsterChaseState : IMonsterState
         lostTimer = 0f;
 
         // 추적 이동
+        //if (monster.GetTarget() != null)
+        //{
+        //    Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
+        //    toTarget.y = 0f;
+        //    monster.Move(toTarget.normalized);
+        //}
         if (monster.GetTarget() != null)
         {
-            Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
-            toTarget.y = 0f;
-            monster.Move(toTarget.normalized);
+            monster.MoveTo(monster.GetTarget().position);
         }
 
         // 공격 사거리 진입 시 전이

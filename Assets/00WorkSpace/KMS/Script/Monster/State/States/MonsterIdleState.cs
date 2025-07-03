@@ -18,6 +18,7 @@ public class MonsterIdleState : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
+
         this.monster = monster;
         timer = 0f;
         lookTimer = 0f;
@@ -30,6 +31,7 @@ public class MonsterIdleState : IMonsterState
         lookDuration = Random.Range(1.5f, 3f);
 
         monster.SetPerceptionState(MonsterPerceptionState.Idle);
+        monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
 
         Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");

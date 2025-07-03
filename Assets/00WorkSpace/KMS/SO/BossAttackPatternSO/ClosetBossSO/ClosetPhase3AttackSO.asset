@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 728e8249aa8dd1c44b1ccc49924bce81, type: 3}
-  m_Name: ClosetPhase2AttackSO
+  m_Name: ClosetPhase3AttackSO
   m_EditorClassIdentifier: 
   patterns:
-  - patternName: "\uD0A5"
+  - patternName: "\uC9C0\uBA74\uAC15\uD0C0"
     preludeAnimation: {fileID: 0}
     attackAnimation: {fileID: 0}
-    shape: 2
-    damage: 100
+    shape: 0
+    damage: 200
     originType: 0
-    range: 0
+    range: 5
     angle: 0
-    width: 1
-    height: 1.5
-    length: 1.5
-    cooldown: 15
+    width: 0
+    height: 0
+    length: 0
+    cooldown: 21

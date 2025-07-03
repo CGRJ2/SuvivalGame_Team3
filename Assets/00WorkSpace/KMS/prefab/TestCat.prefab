@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1936466006591890868}
   - component: {fileID: 7823807895348020964}
   - component: {fileID: 1062531684402025338}
+  - component: {fileID: -6134013558013657845}
   m_Layer: 6
   m_Name: TestCat
   m_TagString: Untagged
@@ -119,7 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b028faa1e19f943a80ef8a9c841a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: e548ff4300d84bd42b3553b1ef72d822, type: 2}
+  data: {fileID: 0}
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -133,6 +134,7 @@ MonoBehaviour:
   rotationSpeed: 7
   rb: {fileID: 1062531684402025338}
   stunTime: 0.5
+  respawnPoint: {fileID: 0}
 --- !u!54 &1062531684402025338
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -160,3 +162,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!195 &-6134013558013657845
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962036566243503757}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

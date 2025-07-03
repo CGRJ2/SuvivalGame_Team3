@@ -18,12 +18,17 @@ public class MonsterReturnState : IMonsterState
     {
         if (monster == null || monster.IsDead) return;
 
-        Vector3 toSpawn = monster.GetSpawnPoint() - monster.transform.position;
-        toSpawn.y = 0f;
+        //Vector3 toSpawn = monster.GetSpawnPoint() - monster.transform.position;
+        //toSpawn.y = 0f;
 
-        if (toSpawn.magnitude > 0.1f)
+        //if (toSpawn.magnitude > 0.1f)
+        //{
+        //    monster.Move(toSpawn.normalized);
+        //}
+        float distanceToSpawn = Vector3.Distance(monster.transform.position, monster.GetSpawnPoint());
+        if (distanceToSpawn > 0.1f)
         {
-            monster.Move(toSpawn.normalized);
+            monster.MoveTo(monster.GetSpawnPoint());
         }
         else
         {

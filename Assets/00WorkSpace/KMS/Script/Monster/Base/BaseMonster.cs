@@ -1,13 +1,17 @@
 using KMS.Monster.Interface;
-using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.Events;
 
 public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
     [Header("Data")]
     public BaseMonsterData data;
     protected Animator animator;
+
+    protected UnityEngine.AI.NavMeshAgent agent;
+    public NavMeshAgent Agent => agent;
 
     protected float currentHP;
     protected float moveSpeed;
@@ -35,31 +39,29 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     private IMonsterState searchState;
     private IMonsterState alertState;
 
-    // °æ°èµµ ¼öÄ¡ °ü·Ã
+    // ê²½ê³„ë„ ìƒìŠ¹
     [SerializeField] protected float alertDecayRate = 5f;
     [SerializeField] private float cooldownTimer = 0f;
     [SerializeField] private float alertCooldownThreshold = 2f;
     protected MonsterPerceptionController perceptionController;
 
-    // °æ°èµµ ´Ü°è
+    // ê²½ê³„ë„ ìˆ˜ì¹˜
     [SerializeField] protected float alertThreshold_Low = 20f;
     [SerializeField] protected float alertThreshold_Medium = 50f;
     [SerializeField] protected float alertThreshold_High = 80f;
 
-    // Çàµ¿ ¹İ°æ
+    // í–‰ë™ ë°˜ê²½
     [SerializeField] protected float actionRadius = 10f;
     private Vector3 spawnPoint;
 
-    // È¸Àü °ü·Ã
+    // íšŒì „ ì†ë„
     [SerializeField] protected float rotationSpeed = 7f;
 
     public float RotationSpeed => rotationSpeed;
 
-    // ·£´ı ÀÌµ¿ °ü·Ã
     private float moveTimer = 0f;
     private Vector3 currentDirection;
 
-    // ÀĞ±â Àü¿ë
     public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
@@ -71,10 +73,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     protected bool isDead;
     public bool IsDead => isDead;
 
-    // ±âÀı
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float stunTime = 0.5f;
-    public Rigidbody RB => rb; 
+    public Rigidbody RB => rb;
 
     public IMonsterState GetIdleState() => idleState;
     public IMonsterState GetAlertState() => alertState;
@@ -91,7 +92,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         stateFactory = new DefaultMonsterStateFactory(this);
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
-        spawnPoint = transform.position; //½ºÆù µÈ À§Ä¡¸¦ ±âÁ¡À¸·Î ¸ó½ºÅÍÀÇ Çàµ¿¹İ°æÀÌ Á¤ÇØÁü
+        agent = GetComponent<NavMeshAgent>();
+        if (view == null)
+        spawnPoint = transform.position;
 
 
         idleState = stateFactory.CreateIdleState();
@@ -123,13 +126,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     {
         if (stateMachine == null)
         {
-            Debug.LogError($"{name}ÀÇ stateMachineÀÌ nullÀÔ´Ï´Ù.");
             return;
         }
 
         if (perceptionController == null)
         {
-            Debug.LogError($"{name}ÀÇ perceptionController°¡ nullÀÔ´Ï´Ù.");
             return;
         }
 
@@ -137,15 +138,14 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         HandleState();
         perceptionController.Update();
 
-        if (stateMachine.CurrentState is MonsterIdleState) // Idle »óÅÂ¿¡¼±
+        if (stateMachine.CurrentState is MonsterIdleState) // Idle ìƒíƒœ ì§„ì…ì‹œ
         {
-            HandleWanderMovement(); // ·£´ı ÀÌµ¿ È£Ãâ
+            HandleWanderMovement(); //ëœë¤ ì´ë™
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Ãæµ¹ µ¥¹ÌÁö °è»ê¿¡ SO °ª »ç¿ë
         var damageable = collision.gameObject.GetComponent<IDamagable>();
         if (damageable != null)
         {
@@ -186,34 +186,22 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
                     knockbackable.ApplyKnockback(direction, knockbackDistance);
                 }
 
-                // ¾Ö´Ï¸ŞÀÌ¼Ç ¼Óµµ ¹èÀ² Àû¿ë
                 if (view != null && view.Animator != null)
                     view.Animator.SetFloat("AttackSpeed", data.AttackAnimSpeed);
 
-                // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç Æ®¸®°Å
                 view?.PlayMonsterAttackAnimation();
-
-                Debug.Log($"[{name}] °ø°İ ½Ãµµ: °Å¸® {distance}m - °ø°İ ¼º°ø");
             }
-            else
-            {
-                Debug.LogWarning($"[{name}] °ø°İ ´ë»ó¿¡ IDamageableÀÌ ¾ø½À´Ï´Ù.");
-            }
-        }
-        else
-        {
-            Debug.Log($"[{name}] °ø°İ ½ÇÆĞ: °Å¸® {distance}m - ¹üÀ§ ÃÊ°ú");
         }
     }
 
     protected abstract void Phase2TryAttack();
     protected abstract void Phase3TryAttack();
-    
+
     private bool IsFacingTarget()
     {
         Vector3 toTarget = (target.position - transform.position).normalized;
         float dot = Vector3.Dot(transform.forward, toTarget);
-        return dot > 0.7f; // 1¿¡ °¡±î¿ï ¼ö·Ï Á¤¸é
+        return dot > 0.7f; // 1ì— ê°€ê¹Œìš¸ ìˆ˜ë¡ ì •ë©´
     }
 
     protected virtual void Die()
@@ -226,7 +214,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         OnDeadEvent?.Invoke();
 
 
-        stateMachine.ChangeState(new MonsterDeadState()); // ¿©±â°¡ ÁøÀÔÁ¡
+        stateMachine.ChangeState(new MonsterDeadState());
         StartCoroutine(DestroyAfterDelay(10f));
     }
     private IEnumerator DestroyAfterDelay(float seconds)
@@ -234,7 +222,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         yield return new WaitForSeconds(seconds);
         Destroy(gameObject);
     }
-    protected abstract void HandleState(); // »óÅÂ¸Ó½Å »óÅÂ º¯°æÀº ¿©±â¼­
+    protected abstract void HandleState(); // ìƒíƒœ ë³€í™˜
 
     public void SetTarget(Transform newTarget)
     {
@@ -246,34 +234,45 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     public Vector3 GetSpawnPoint() => spawnPoint;
 
 
-    public virtual void Move(Vector3 direction, float customSpeed = -1f)
+    //public virtual void Move(Vector3 direction, float customSpeed = -1f)
+    //{
+    //    float speed = (customSpeed > 0f) ? customSpeed : moveSpeed;
+    //
+    //    //if (rb == null)
+    //    //{
+    //    //    
+    //    //    return;
+    //    //}
+    //
+    //    
+    //    
+    //    //if (IsOutsideActionRadius())
+    //    //{
+    //    //    
+    //    //    return;
+    //    //}
+    //
+    //   //íšŒì „
+    //    //if (direction != Vector3.zero)
+    //    //{
+    //    //    Quaternion lookRotation = Quaternion.LookRotation(direction);
+    //    //    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+    //    //}
+    //    //
+    //    //// ì´ë™
+    //    //Vector3 targetPosition = rb.position + (direction * speed * Time.deltaTime);
+    //    //rb.MovePosition(targetPosition);
+    //}
+    public virtual void MoveTo(Vector3 destination)
     {
-        float speed = (customSpeed > 0f) ? customSpeed : moveSpeed;
-
-        if (rb == null)
+        if (agent == null)
         {
-            Debug.LogWarning("Rigidbody°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogWarning("NavMeshAgentê°€ ì—†ìŠµë‹ˆë‹¤!");
             return;
         }
 
-        // TODO: ³×ºñ¸Ş½Ã ¼³Ä¡½Ã ÁÖ¼®Ã³¸® ¿¹Á¤ (Area/Mask·Î ÀÌµ¿Á¦ÇÑ ´ëÃ¼)
-        // Çàµ¿ ¹İ°æ Á¦ÇÑ
-        if (IsOutsideActionRadius())
-        {
-            //Debug.Log($"[{name}] Çàµ¿ ¹İ°æ ÃÊ°ú ¡æ ÀÌµ¿ ÁßÁö");
-            return;
-        }
-
-        // È¸Àü
-        if (direction != Vector3.zero)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-        }
-
-        // ÀÌµ¿
-        Vector3 targetPosition = rb.position + (direction * speed * Time.deltaTime);
-        rb.MovePosition(targetPosition);
+        agent.speed = moveSpeed;
+        agent.SetDestination(destination);
     }
     private void HandleWanderMovement()
     {
@@ -281,33 +280,32 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
         if (moveTimer <= 0f)
         {
-            float angle = UnityEngine.Random.Range(0f, 360f);
-            currentDirection = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)).normalized;
+            // NavMesh ë‚´ì—ì„œ ëœë¤ ìœ„ì¹˜ ë½‘ê¸°
+            Vector3 randomPoint = originPosition + Random.insideUnitSphere * actionRadius;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, actionRadius, NavMesh.AllAreas))
+            {
+                MoveTo(hit.position); // ìƒˆë¡œìš´ ëª©ì ì§€ë¡œ ì´ë™
+            }
 
-            moveTimer = UnityEngine.Random.Range(1f, 2f);
+            moveTimer = Random.Range(1f, 4f);
         }
-
-        Move(currentDirection);
     }
 
     public virtual void SetData(BaseMonsterData newData, MonsterTypeStatData typeStat, StageMonsterScalingData stageStat)
     {
         data = newData;
-        Debug.Log($"[SetData] stageStat is null? {stageStat == null}");
         MonsterSubType subType = data.monsterSubType;
 
         float mult = stageStat != null ? stageStat.GetHpMultiplier(subType) : 1f;
-        Debug.Log($"[SetData] GetHpMultiplier(subType) È£Ãâ, subType: {subType}, ¹İÈ¯°ª: {mult}");
 
-        // base°ª
         float baseHP = data.MaxHP;
         float basePower = data.AttackPower;
 
-        // ¹èÀ² °è»ê
+
         float hp = baseHP * typeStat.hpMultiplier * stageStat.GetHpMultiplier(subType);
         float power = basePower * typeStat.attackPowerMultiplier * stageStat.GetAttackMultiplier(subType);
 
-        // ½ÇÁ¦ Àû¿ë
         currentHP = Mathf.RoundToInt(hp);
         attackPower = Mathf.RoundToInt(power);
         moveSpeed = data.MoveSpeed * typeStat.moveSpeedMultiplier;
@@ -319,12 +317,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
         originPosition = transform.position;
         UpdateSightParameters();
-
-        Debug.Log($"[SetData:Debug] ¸ó½ºÅÍ: {data.monsterName}, Å¸ÀÔ: {subType}\n" +
-                  $"- Base HP: {baseHP}, TypeMult: {typeStat.hpMultiplier}, StageMult: {stageStat.GetHpMultiplier(subType)}\n" +
-                  $"=> ÃÖÁ¾ HP: {hp}\n" +
-                  $"- Base ATK: {basePower}, TypeMult: {typeStat.attackPowerMultiplier}, StageMult: {stageStat.GetAttackMultiplier(subType)}\n" +
-                  $"=> ÃÖÁ¾ ATK: {power}");
     }
 
     public void SetSensor(IMonsterSensor newSensor)
@@ -343,7 +335,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     //            int amount = Random.Range(entry.minAmount, entry.maxAmount + 1);
     //            for (int i = 0; i < amount; i++)
     //            {
-    //                // ¾ÆÀÌÅÛ ÇÁ¸®ÆÕ, ¾ÆÀÌÄÜ, ÀÌ¸§, ¼³¸í µîÀº itemSO¿¡¼­ °¡Á®¿Í »ı¼º
+    //                // ì•„ì´í…œ êµ¬í˜„ ë°©ì‹ì— ë”°ë¼ ìˆ˜ì • í•„ìš”.
     //                ItemFactory.SpawnItem(entry.itemSO, transform.position);
     //            }
     //        }
@@ -385,26 +377,26 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         return Vector3.Distance(originPosition, transform.position) > actionRadius;
     }
 
-    protected virtual void UpdateSightParameters() //ÀÓÀÇ ¹èÁ¤
+    protected virtual void UpdateSightParameters() //ìƒíƒœì—ë”°ë¥¸ ì‹œì•¼/ê°ì§€ë²”ìœ„ ì¡°ì ˆ ê¸°ëŠ¥
     {
-        float fovMultiplier = 1f;   //½Ã¾ß ¹èÀ²
-        float rangeMultiplier = 1f; //Å½Áö¹üÀ§ ¹èÀ²
+        float fovMultiplier = 1f;   // ì‹œì•¼ ë°°ìœ¨
+        float rangeMultiplier = 1f; // ê°ì§€ ë°°ìœ¨
 
         switch (perceptionState)
         {
-            case MonsterPerceptionState.Idle: //´ë±â »óÅÂ
+            case MonsterPerceptionState.Idle: // ëŒ€ê¸° ìƒíƒœ
                 fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Search: //Å½»ö »óÅÂ
+            case MonsterPerceptionState.Search: // íƒì§€ ìƒíƒœ
                 fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Alert: //°æ°è »óÅÂ
+            case MonsterPerceptionState.Alert: // ê²½ê³„ ìƒíƒœ
                 fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
-            case MonsterPerceptionState.Combat: //ÀüÅõ »óÅÂ
+            case MonsterPerceptionState.Combat: // ì „íˆ¬ ìƒíƒœ
                 fovMultiplier = 1f;
                 rangeMultiplier = 1f;
                 break;
@@ -471,13 +463,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         if (stateMachine.CurrentState is MonsterReturnWaitState ||
             stateMachine.CurrentState is MonsterReturnState)
         {
-            Debug.Log($"[{name}] (Perception) Return °è¿­ »óÅÂ¿¡¼­´Â »óÅÂ ÀüÀÌ ¹«½Ã");
             return;
         }
-        Debug.Log($"[{name}] »óÅÂ ÀüÀÌ ½Ãµµ ¡æ {state}");
         IMonsterState nextState = stateFactory.GetStateForPerception(state);
         stateMachine.ChangeState(nextState);
-        Debug.Log($"[MonsterSearchState] {name} Å½»ö »óÅÂ ÁøÀÔ");
     }
 
     public void ApplyKnockback(Vector3 direction, float knockbackDistance)
@@ -485,7 +474,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         if (rb == null) return;
         Vector3 knockbackPos = transform.position + (direction.normalized * knockbackDistance);
         rb.MovePosition(knockbackPos);
-        Debug.Log($"[Knockback] {name} ³Ë¹é À§Ä¡: {knockbackPos}");
     }
 
     public float CalculateKnockbackDistance()
@@ -502,16 +490,16 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     {
         if (data == null) return;
 
-        // ½Ã¾ß °¨Áö ¹üÀ§ (±âÁ¸ ÄÚµå)
+        // ê°ì§€ ë°˜ê²½
         Gizmos.color = Color.yellow;
         Vector3 eyePos = transform.position + (Vector3.up * data.EyeHeight);
         Gizmos.DrawWireSphere(eyePos, currentDetectionRange);
 
-        // Çàµ¿ ¹İ°æ (originPosition ±âÁØ)
+        // í–‰ë™ ë°˜ê²½ (originPosition ì¤‘ì‹¬)
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
 
-        // ´« ³ôÀÌ ½ÃÁ¡¿¡¼­ ¹æÇâ °¢µµ ½Ã°¢È­
+        // ì‹œì•¼ 
         Vector3 forward = transform.forward;
         Vector3 leftLimit = Quaternion.Euler(0, -currentFOV / 2, 0) * forward;
         Vector3 rightLimit = Quaternion.Euler(0, currentFOV / 2, 0) * forward;
@@ -521,7 +509,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         Gizmos.DrawLine(eyePos, eyePos + (rightLimit * currentDetectionRange));
     }
 
-    public virtual void TakeDamage(int damage) // ±âÁ¸ ÀÎÅÍÆäÀÌ½º¿ë TakeDamage
+    public virtual void TakeDamage(int damage) // ê¸°ì¡´ ì¸í„°í˜ì´ìŠ¤ìš© TakeDamage
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();
@@ -529,9 +517,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
         if (currentHP <= 0)
             Die();
     }
-
-
-    public void TakeDamage(int damage, Vector3 direction) // ³Ë¹é¿ë TakeDamage ¿À¹ö·Îµå
+    public void TakeDamage(int damage, Vector3 direction) // ë„‰ë°±ìš© TakeDamage
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();
@@ -541,5 +527,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 
         if (currentHP <= 0)
             Die();
+    }
+    public virtual void ResetMonsterHP()
+    {
+        currentHP = data.MaxHP;
+        // í•„ìš”í•˜ë©´ ì¶”ê°€ë¡œ íšŒë³µ ì´í™íŠ¸, ë¡œê·¸ ë“±
+        Debug.Log($"[{name}] HPê°€ ìµœëŒ€ì¹˜ë¡œ íšŒë³µë¨");
     }
 }

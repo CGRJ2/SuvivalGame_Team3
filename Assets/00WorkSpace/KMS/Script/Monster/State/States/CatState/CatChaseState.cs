@@ -64,7 +64,6 @@ public class CatChaseState : IMonsterState
             }
         }
 
-        // 3초간 이동속도 Lerp
         if (speedLerpTimer < lerpDuration)
         {
             speedLerpTimer += Time.deltaTime;
@@ -76,10 +75,9 @@ public class CatChaseState : IMonsterState
             currentSpeed = targetSpeed;
         }
 
-        // 타겟 방향으로 이동
-        Vector3 dir = (target.position - cat.transform.position);
-        dir.y = 0f;
-        cat.Move(dir, currentSpeed);   // 변화된 속도로 이동
+        cat.Agent.speed = currentSpeed; 
+
+        cat.MoveTo(target.position);
 
         // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;

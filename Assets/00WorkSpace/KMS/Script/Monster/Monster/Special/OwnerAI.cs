@@ -1,13 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static OwnerAI;
+using UnityEngine.AI;
 
 public class OwnerAI : BaseMonster
 {
+
     public enum OwnerDetectionTarget { None, OwnerBait, Player }
     public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
     public bool IsInvincible { get; private set; } = true;
+
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
     public Transform respawnPoint;
@@ -104,35 +105,46 @@ public class OwnerAI : BaseMonster
         foreach (var bait in baits)
             baitTransforms.Add(bait.transform);
     }
-    public void ThrowPlayer(Vector3 direction, float force)
+    //public void ThrowPlayer(Vector3 direction, float force)
+    //{
+    //    var player = GetTarget()?.GetComponent<IThrowable>();
+    //    if (player != null)
+    //    {
+    //        player.ApplyThrow(direction, force);
+    //    }
+    //}
+    //public override void Move(Vector3 direction, float customSpeed = -1f)
+    //{
+    //    if (RB == null)
+    //    {
+    //        Debug.LogWarning("Rigidbody가 없습니다!");
+    //        return;
+    //    }
+    //
+    //    if (IsOutsideActionRadius())
+    //        return;
+    //
+    //    if (direction != Vector3.zero)
+    //    {
+    //        Quaternion lookRotation = Quaternion.LookRotation(direction);
+    //        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+    //    }
+    //
+    //    // OwnerData 참조로 커스텀 속도 적용
+    //    float moveSpd = (customSpeed > 0f) ? customSpeed : OwnerData.moveSpeed;
+    //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
+    //    RB.MovePosition(targetPosition);
+    //}
+    public override void MoveTo(Vector3 destination)
     {
-        var player = GetTarget()?.GetComponent<IThrowable>();
-        if (player != null)
+        if (agent == null)
         {
-            player.ApplyThrow(direction, force);
-        }
-    }
-    public override void Move(Vector3 direction, float customSpeed = -1f)
-    {
-        if (RB == null)
-        {
-            Debug.LogWarning("Rigidbody가 없습니다!");
+            Debug.LogWarning("NavMeshAgent가 없습니다!");
             return;
         }
 
-        if (IsOutsideActionRadius())
-            return;
-
-        if (direction != Vector3.zero)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
-        }
-
-        // OwnerData 참조로 커스텀 속도 적용
-        float moveSpd = (customSpeed > 0f) ? customSpeed : OwnerData.moveSpeed;
-        Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
-        RB.MovePosition(targetPosition);
+        agent.speed = OwnerData.moveSpeed; // Owner 스테이터스 반영
+        agent.SetDestination(destination);
     }
     public void MoveToRespawn()
     {
