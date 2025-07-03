@@ -16,6 +16,8 @@ public class TemporaryCampInstance : CampInstance
 
     public void DestroyTempCamp()
     {
+        Debug.Log("간이 캠프 파괴 --- 코루틴으로 서서히 파괴 예정");
+
         // 데이터 삭제
         BaseCampManager.Instance.tempCampData = null;
         

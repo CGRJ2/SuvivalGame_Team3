@@ -14,18 +14,22 @@ public class Spawner : MonoBehaviour
     // 현재 소환된 파밍오브젝트.. 소환 안되어 있는 상태면 null로
     public GameObject currentSpawned_Instance;
 
-    // 대기 상태
-    public bool isStandByOn;
 
     // 리스폰 루틴 상태
     public Coroutine spawnRoutineInProgress;
 
-    private void Awake() => Init();
+    private void Awake() => InitToList();
 
-    private void Init()
+    private void InitToList()
     {
         StageManager sm = StageManager.Instance;
         sm.GetSpawnerListGroup(stageOrigin.stageKey).AddToSpawnerList(this);
+    }
+
+    public void Init()
+    {
+        DestroySpawnedObject();
+        CancelSpawning();
     }
 
     private void OnDisable()
@@ -54,7 +58,7 @@ public class Spawner : MonoBehaviour
         // 거실이라면 스테이지 레벨에 맞는 테이블 가중치 적용
         if (stageOrigin.stageKey == StageKey.거실)
         {
-            int currentStageLevel = StageManager.Instance.CurrentStageLevel.Value;
+            int currentStageLevel = StageManager.Instance.CurrentStageLevel;
 
             if (spawnerType == SpawnerType.FO)
             {
@@ -201,6 +205,11 @@ public class Spawner : MonoBehaviour
             StopCoroutine(spawnRoutineInProgress);
             spawnRoutineInProgress = null;
         }
+    }
+
+    public void DestroySpawnedObject()
+    {
+        if (currentSpawned_Instance != null) Destroy(currentSpawned_Instance);
     }
 }
 public enum SpawnerType { FO, Monster }

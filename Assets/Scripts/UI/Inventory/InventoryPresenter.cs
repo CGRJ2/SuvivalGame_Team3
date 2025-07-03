@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class InventoryPresenter 
+public class InventoryPresenter : IDisposable
 {
     public InventoryModel model; // ==> DataField
 
@@ -23,7 +23,7 @@ public class InventoryPresenter
     public void SetView(InventoryView view)
     {
         this.view = view;
-        view.CurrentTab.Subscribe(UpdateSlotsToCurrentTab);
+        this.view.CurrentTab.Subscribe(UpdateSlotsToCurrentTab);
     }
 
     public void AddItem(Item item, int count = 1)
@@ -61,5 +61,11 @@ public class InventoryPresenter
     public void UpdateSlotsToCurrentTab(ItemType tabType)
     {
         view.UpdateInventorySlotView(model.GetCurrentTabSlots(tabType));
+    }
+
+    public void Dispose()
+    {
+        this.view.CurrentTab.Unsubscribe(UpdateSlotsToCurrentTab);
+
     }
 }

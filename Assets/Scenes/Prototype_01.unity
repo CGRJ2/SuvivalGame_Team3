@@ -1200,7 +1200,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &65038698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,7 +1665,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &131400063
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,7 +2603,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &202905431
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,7 +2682,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &213379441
 GameObject:
   m_ObjectHideFlags: 0
@@ -2867,6 +2863,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225506453}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &237060134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 237060135}
+  - component: {fileID: 237060136}
+  m_Layer: 0
+  m_Name: Spawner_Monster (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &237060135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237060134}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.51, y: 0, z: -8.53}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2057830087}
+  m_Father: {fileID: 1012364577}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &237060136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237060134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab4b383051fe684c903ae21e8469832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerType: 1
+  stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
+  currentSpawned_Instance: {fileID: 0}
 --- !u!1 &238977702
 GameObject:
   m_ObjectHideFlags: 0
@@ -4746,7 +4790,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &360912455
 GameObject:
   m_ObjectHideFlags: 0
@@ -5186,7 +5229,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &398184878
 GameObject:
   m_ObjectHideFlags: 0
@@ -5710,7 +5752,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &439513993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5759,7 +5800,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &441144696
 GameObject:
   m_ObjectHideFlags: 0
@@ -5910,6 +5950,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441144696}
   m_CullTransparentMesh: 1
+--- !u!1 &455998455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455998456}
+  - component: {fileID: 455998457}
+  m_Layer: 0
+  m_Name: Spawner_FO (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &455998456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455998455}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.15, y: 0, z: 12.13}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 530137586}
+  m_Father: {fileID: 976133601}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &455998457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455998455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab4b383051fe684c903ae21e8469832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerType: 0
+  stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
+  currentSpawned_Instance: {fileID: 0}
 --- !u!1 &468832161
 GameObject:
   m_ObjectHideFlags: 0
@@ -6171,6 +6259,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16233ac8d8a3fd478c7b2b8d4421dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 69817081}
   countText: {fileID: 2131445480}
   countTextParent: {fileID: 1004553271}
@@ -7221,6 +7313,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514585800}
   m_CullTransparentMesh: 1
+--- !u!1 &530137585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 530137586}
+  - component: {fileID: 530137589}
+  - component: {fileID: 530137588}
+  - component: {fileID: 530137587}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &530137586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530137585}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 455998456}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &530137587
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530137585}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &530137588
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530137585}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b48cacb6d93ee534a9c70a682d47e6b5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &530137589
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530137585}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &534835195
 GameObject:
   m_ObjectHideFlags: 0
@@ -10359,7 +10556,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &710289259
 GameObject:
   m_ObjectHideFlags: 0
@@ -11116,7 +11312,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &753875819
 GameObject:
   m_ObjectHideFlags: 0
@@ -11385,7 +11580,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &794383421
 GameObject:
   m_ObjectHideFlags: 0
@@ -11461,6 +11655,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 794383421}
   m_CullTransparentMesh: 1
+--- !u!1 &795124754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 795124755}
+  - component: {fileID: 795124756}
+  m_Layer: 0
+  m_Name: Spawner_FO (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &795124755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795124754}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -10.99, y: 0, z: 5.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1579968469}
+  m_Father: {fileID: 976133601}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795124756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795124754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab4b383051fe684c903ae21e8469832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerType: 0
+  stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
+  currentSpawned_Instance: {fileID: 0}
 --- !u!1 &810970916
 GameObject:
   m_ObjectHideFlags: 0
@@ -12068,7 +12310,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &856235799
 GameObject:
   m_ObjectHideFlags: 0
@@ -12173,6 +12414,111 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856235799}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &856593649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 856593650}
+  - component: {fileID: 856593653}
+  - component: {fileID: 856593652}
+  - component: {fileID: 856593651}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &856593650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856593649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 960553655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &856593651
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856593649}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &856593652
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856593649}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7f16fe46b789ae8409ea30a64d82cd54, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &856593653
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856593649}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &861928597
 GameObject:
@@ -12641,7 +12987,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1001 &885762439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13109,15 +13454,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageDatas: []
-  CurrentStageLevel:
-    _value: 0
-  respawnTime_FO: 2
-  respawnTime_Monster: 2
+  CurrentStageLevel: 0
+  respawnTime_FO: 5
+  respawnTime_Monster: 5
   spawnerListGroup_LivingRoom:
-    maxCount_FO: 3
+    maxCount_FO: 4
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 3
+    maxCount_Monster: 4
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_Library:
@@ -13424,6 +13768,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959021415}
   m_CullTransparentMesh: 1
+--- !u!1 &960553654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 960553655}
+  - component: {fileID: 960553656}
+  m_Layer: 0
+  m_Name: Spawner_Monster (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &960553655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960553654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -23.34, y: 0, z: -8.77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 856593650}
+  m_Father: {fileID: 1012364577}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960553656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960553654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab4b383051fe684c903ae21e8469832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerType: 1
+  stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
+  currentSpawned_Instance: {fileID: 0}
 --- !u!1 &963743868
 GameObject:
   m_ObjectHideFlags: 0
@@ -13784,6 +14176,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1818477005}
+  - {fileID: 795124755}
+  - {fileID: 455998456}
   - {fileID: 1052676962}
   - {fileID: 439513994}
   - {fileID: 787028041}
@@ -13837,7 +14231,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1002808318
 GameObject:
   m_ObjectHideFlags: 0
@@ -14288,6 +14681,8 @@ Transform:
   m_Children:
   - {fileID: 1312789754}
   - {fileID: 1887881681}
+  - {fileID: 960553655}
+  - {fileID: 237060135}
   - {fileID: 1961239067}
   - {fileID: 356191035}
   m_Father: {fileID: 1883738222}
@@ -14966,7 +15361,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1054759970
 GameObject:
   m_ObjectHideFlags: 0
@@ -15910,7 +16304,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1099518374
 GameObject:
   m_ObjectHideFlags: 0
@@ -16658,7 +17051,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1155446921
 GameObject:
   m_ObjectHideFlags: 0
@@ -17382,6 +17774,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16233ac8d8a3fd478c7b2b8d4421dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 60090039}
   countText: {fileID: 605495241}
   countTextParent: {fileID: 1966011814}
@@ -18528,7 +18924,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1319422155
 GameObject:
   m_ObjectHideFlags: 0
@@ -19943,7 +20338,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1404651267
 GameObject:
   m_ObjectHideFlags: 0
@@ -20100,6 +20494,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16233ac8d8a3fd478c7b2b8d4421dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 1310850976}
   countText: {fileID: 959021417}
   countTextParent: {fileID: 5352329}
@@ -21250,7 +21648,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1488942610
 GameObject:
   m_ObjectHideFlags: 0
@@ -22277,6 +22674,111 @@ MonoBehaviour:
   image_StageImage: {fileID: 1679787687}
   lockedImage: {fileID: 1327386950}
   tmp_StageNameAndUnlockedCondition: {fileID: 1850105806}
+--- !u!1 &1579968468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579968469}
+  - component: {fileID: 1579968472}
+  - component: {fileID: 1579968471}
+  - component: {fileID: 1579968470}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579968469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579968468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 795124755}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1579968470
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579968468}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1579968471
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579968468}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: b48cacb6d93ee534a9c70a682d47e6b5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1579968472
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579968468}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1582356548
 GameObject:
   m_ObjectHideFlags: 0
@@ -22430,7 +22932,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1602332909
 GameObject:
   m_ObjectHideFlags: 0
@@ -22479,7 +22980,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1603189310
 GameObject:
   m_ObjectHideFlags: 0
@@ -23195,7 +23695,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1654074352
 GameObject:
   m_ObjectHideFlags: 0
@@ -23674,7 +24173,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1676651164 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5317103314229426644, guid: fc5a676d2c90b3d4f8a22e369c35950d, type: 3}
@@ -24269,7 +24767,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1710208389
 GameObject:
   m_ObjectHideFlags: 0
@@ -25322,7 +25819,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1800053487
 GameObject:
   m_ObjectHideFlags: 0
@@ -25671,7 +26167,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1828940263
 GameObject:
   m_ObjectHideFlags: 0
@@ -26433,7 +26928,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1878822428
 GameObject:
   m_ObjectHideFlags: 0
@@ -26808,7 +27302,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1888244094
 GameObject:
   m_ObjectHideFlags: 0
@@ -26857,7 +27350,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1889231779
 GameObject:
   m_ObjectHideFlags: 0
@@ -27675,7 +28167,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1939365392
 GameObject:
   m_ObjectHideFlags: 0
@@ -28422,7 +28913,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 1b3ccad070fbf5b4b9e67ee9f2ce3639, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1966011814
 GameObject:
   m_ObjectHideFlags: 0
@@ -28834,7 +29324,6 @@ MonoBehaviour:
   spawnerType: 1
   stageOrigin: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &1986109891
 GameObject:
   m_ObjectHideFlags: 0
@@ -29753,7 +30242,111 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
+--- !u!1 &2057830086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057830087}
+  - component: {fileID: 2057830090}
+  - component: {fileID: 2057830089}
+  - component: {fileID: 2057830088}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2057830087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057830086}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 237060135}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2057830088
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057830086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &2057830089
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057830086}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7f16fe46b789ae8409ea30a64d82cd54, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2057830090
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057830086}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2058931157
 GameObject:
   m_ObjectHideFlags: 0
@@ -30860,7 +31453,6 @@ MonoBehaviour:
   spawnerType: 0
   stageOrigin: {fileID: 11400000, guid: 7f532285e99262041b6b38b0dea06f6c, type: 2}
   currentSpawned_Instance: {fileID: 0}
-  isStandByOn: 0
 --- !u!1 &2126696749
 GameObject:
   m_ObjectHideFlags: 0
@@ -31865,6 +32457,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16233ac8d8a3fd478c7b2b8d4421dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 1828940265}
   countText: {fileID: 564085934}
   countTextParent: {fileID: 740278005}
@@ -32382,6 +32978,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 7227622139898075306}
   countText: {fileID: 630035268838751092}
   countTextParent: {fileID: 2011234485774923453}
@@ -32825,16 +33425,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeZoneSetting:
-    <DayCycleTime>k__BackingField: 1200
+    <DayCycleTime>k__BackingField: 1440
     <MaxDayCount>k__BackingField: 15
     <TZ_Morning>k__BackingField: 540
     <TZ_Afternoon>k__BackingField: 720
     <TZ_Evening>k__BackingField: 900
-  <CurrentTime>k__BackingField: 0
-  <CurrentDay>k__BackingField:
-    _value: 0
-  <TZ_State>k__BackingField:
-    _value: 0
+  currentTimeData:
+    CurrentTime: 0
+    CurrentDay:
+      _value: 0
+    TZ_State:
+      _value: 0
+  timeToString: 
 --- !u!114 &733829589874939694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32878,6 +33480,968 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSlotCount: 5
+  loadedDataGroup:
+    _value:
+      currentPosition: {x: 0, y: 0, z: 0}
+      playerStatusData:
+        onHandItem: {fileID: 0}
+        CurrentWillPower:
+          _value: 0
+        CurrentBattery:
+          _value: 0
+        MaxBattery:
+          _value: 0
+        bodyParts: []
+        <MoveSpeed>k__BackingField: 0
+        <SprintSpeed>k__BackingField: 0
+        <JumpForce>k__BackingField: 0
+        <Damage>k__BackingField: 0
+        inventory:
+          model:
+            ingredientSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            consumableSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            equipmentSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            functionSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            questSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            slotCount: 30
+          view: {fileID: 0}
+        ApplyDebuff_CraftSpeed: 0
+        ApplyDebuff_SprintSpeed: 0
+        ApplyDebuff_LockWeaponUse: 0
+        ApplyDebuff_LockSprint: 0
+        ApplyDebuff_LockAttack: 0
+        ApplyDebuff_HeadDotDamage: 0
+        isInvincible: 0
+        isControllLocked: 0
+        mouseSensitivity: 0
+      inventoryModel:
+        ingredientSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        consumableSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        equipmentSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        functionSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        questSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        slotCount: 30
+      slotDataListsData:
+        ingredientSlots: []
+        consumableSlots: []
+        equipmentSlots: []
+        functionSlots: []
+        questSlots: []
+      currentTimeData:
+        CurrentTime: 0
+        CurrentDay:
+          _value: 0
+        TZ_State:
+          _value: 0
+      stageUnlockData: 
+      baseCampData:
+        CurrentCampLevel:
+          _value: 0
+        upgradingProcess:
+          isUpgrading: 0
+          proceededTime: 0
+      tempCampData:
+        respawnPoint: {fileID: 0}
 --- !u!222 &783574796129307876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33720,6 +35284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 7261091104513575880}
   countText: {fileID: 6827370959076910680}
   countTextParent: {fileID: 789209388697696410}
@@ -33925,6 +35493,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 7650728306916720846}
   countText: {fileID: 8643306384111001686}
   countTextParent: {fileID: 5285197145756080404}
@@ -34113,6 +35685,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 9105890262500780293}
   countText: {fileID: 6213254301241454079}
   countTextParent: {fileID: 8535775605730409524}
@@ -34154,6 +35730,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 140298505428685425}
   countText: {fileID: 7353562683550192181}
   countTextParent: {fileID: 6264886991187600832}
@@ -34918,6 +36498,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 4313807096546027243}
   countText: {fileID: 3826215495304074605}
   countTextParent: {fileID: 7760242018531103078}
@@ -34953,6 +36537,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 6352587213511778014}
   countText: {fileID: 1168432109404092862}
   countTextParent: {fileID: 3054345431592652035}
@@ -35149,6 +36737,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 7521832939867042073}
   countText: {fileID: 2916981426956424399}
   countTextParent: {fileID: 3803625707092145184}
@@ -35781,6 +37373,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxLevel>k__BackingField: 4
+  baseCampInstance: {fileID: 0}
+  currentTempCampInstance: {fileID: 0}
+  TemporaryCampInstance_Prefab: {fileID: 0}
   baseCampData:
     CurrentCampLevel:
       _value: 0
@@ -35791,8 +37386,6 @@ MonoBehaviour:
     respawnPoint: {fileID: 0}
   allRecipeList: []
   UpgradeConditions: []
-  baseCampInstance: {fileID: 0}
-  currentTempCampInstance: {fileID: 0}
 --- !u!224 &2383654588709031351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36751,6 +38344,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 6203535304212911133}
   countText: {fileID: 8482541978409610137}
   countTextParent: {fileID: 427378972460469153}
@@ -36814,6 +38411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 2336422101337512905}
   countText: {fileID: 1029791604304910217}
   countTextParent: {fileID: 2007238858384405713}
@@ -37832,6 +39433,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 1085911411041620816}
   countText: {fileID: 7137210716040387053}
   countTextParent: {fileID: 8109579145977903337}
@@ -39457,6 +41062,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 3559066596072700620}
   countText: {fileID: 7917770352214487049}
   countTextParent: {fileID: 3703139630084543044}
@@ -39642,6 +41251,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 341820105161510390}
   countText: {fileID: 8077173723286632640}
   countTextParent: {fileID: 4851166237568775995}
@@ -41110,6 +42723,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 2519719701538309146}
   countText: {fileID: 6442177873808527656}
   countTextParent: {fileID: 182215975535289987}
@@ -41543,6 +43160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 2347167463120534352}
   countText: {fileID: 4579109115937119342}
   countTextParent: {fileID: 6446933089322490255}
@@ -41715,6 +43336,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 3556976371869222355}
   countText: {fileID: 4366355384066788776}
   countTextParent: {fileID: 6297183038536253919}
@@ -41891,6 +43516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 1126908194065101374}
   countText: {fileID: 2339528297789514413}
   countTextParent: {fileID: 3325051488826611319}
@@ -41990,6 +43619,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 3249178456658357816}
   countText: {fileID: 4998335803377420561}
   countTextParent: {fileID: 4880153534484446767}
@@ -42446,6 +44079,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 467753871714432866}
   countText: {fileID: 3568799107227706995}
   countTextParent: {fileID: 3311918098650387216}
@@ -43318,6 +44955,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 8218547736184636518}
   countText: {fileID: 5758934865247349208}
   countTextParent: {fileID: 7802447994631402126}
@@ -43780,6 +45421,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 5523564011306793931}
   countText: {fileID: 792282307657933155}
   countTextParent: {fileID: 5988538305729247550}
@@ -44071,6 +45716,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 7659216622590442986}
   countText: {fileID: 7815812555821458557}
   countTextParent: {fileID: 976529027418824420}
@@ -44586,6 +46235,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 5748626187479793941}
   countText: {fileID: 2013281811087764825}
   countTextParent: {fileID: 3403887983110494300}
@@ -44906,6 +46559,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 3136636477534712481}
   countText: {fileID: 8561920693058071705}
   countTextParent: {fileID: 1940814360658794612}
@@ -45128,6 +46785,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 5981880239374393897}
   countText: {fileID: 6893985764827585623}
   countTextParent: {fileID: 1868764319771998820}
@@ -45207,6 +46868,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 2636987126253259318}
   countText: {fileID: 6453353596856655991}
   countTextParent: {fileID: 8524790158491482998}
@@ -45395,6 +47060,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 6365060129153117570}
   countText: {fileID: 2358304994754430777}
   countTextParent: {fileID: 100662117115852048}
@@ -45681,6 +47350,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 6055842350191942917}
   countText: {fileID: 9084728642008301464}
   countTextParent: {fileID: 2205560559526019201}
@@ -46076,6 +47749,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 8210022687880560609}
   countText: {fileID: 3664276536746202525}
   countTextParent: {fileID: 8184396198987499994}
@@ -46146,6 +47823,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5deae6f1c074ef45b0f05d0d10209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotData:
+    item: {fileID: 0}
+    currentCount: 0
+    maxCount: 0
   itemSprite: {fileID: 6666561849684784776}
   countText: {fileID: 6183563684397013032}
   countTextParent: {fileID: 427113695667276780}

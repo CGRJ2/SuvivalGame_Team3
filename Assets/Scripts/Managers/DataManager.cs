@@ -54,11 +54,14 @@ public class DataManager : Singleton<DataManager>
         // 저장할 데이터들
         SaveDataGroup instanceSaveDataGroup = new SaveDataGroup()
         {
+            currentPosition = PlayerManager.Instance.instancePlayer.transform.position,
             playerStatusData = PlayerManager.Instance.instancePlayer.Status,
             inventoryModel = PlayerManager.Instance.instancePlayer.Status.inventory.model,
             slotDataListsData = PlayerManager.Instance.instancePlayer.Status.inventory.model.SaveSlotItemData(),
             currentTimeData = DailyManager.Instance.currentTimeData,
-            stageUnlockData = StageManager.Instance.GetStageUnlockSaveData()
+            stageUnlockData = StageManager.Instance.GetStageUnlockSaveData(),
+            baseCampData = BaseCampManager.Instance.baseCampData,
+            tempCampData = BaseCampManager.Instance.tempCampData,
 
         };
 
@@ -66,22 +69,28 @@ public class DataManager : Singleton<DataManager>
         File.WriteAllText(GetSavePath(slotIndex), json);
         Debug.Log($"[저장 완료] 슬롯 {slotIndex} 저장");
     }
-    public void LoadData(int slotIndex)
+    
+
+    public SaveDataGroup GetLoadData(int slotIndex)
     {
-        if (!IsValidSlot(slotIndex)) return;
+        if (!IsValidSlot(slotIndex)) return null;
 
         string path = GetSavePath(slotIndex);
         if (!File.Exists(path))
         {
             Debug.LogWarning($"[불러오기 실패] 슬롯 {slotIndex}");
-            return;
+            return null;
         }
 
         string json = File.ReadAllText(path);
-        loadedDataGroup.Value = JsonUtility.FromJson<SaveDataGroup>(json);
         Debug.Log($"[불러오기 완료] 슬롯 {slotIndex} ");
+        return JsonUtility.FromJson<SaveDataGroup>(json);
     }
 
+    public void LoadData(int slotIndex)
+    {
+        loadedDataGroup.Value = GetLoadData(slotIndex);
+    }
 
     public void DeleteSlot(int slotIndex)
     {
@@ -117,9 +126,12 @@ public class DataManager : Singleton<DataManager>
 [System.Serializable]
 public class SaveDataGroup
 {
+    public Vector3 currentPosition;
     public PlayerStatus playerStatusData;
     public InventoryModel inventoryModel;
     public SlotDataListsData slotDataListsData;
     public CurrentTimeData currentTimeData;
     public List<bool> stageUnlockData;
+    public BaseCampData baseCampData;
+    public TempCampData tempCampData;
 }

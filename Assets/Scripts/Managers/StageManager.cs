@@ -7,7 +7,7 @@ public class StageManager : Singleton<StageManager>
 {
     [HideInInspector] public StageData[] stageDatas;
     [Header("현재 스테이지 단계")]
-    public ObservableProperty<int> CurrentStageLevel = new ObservableProperty<int>();
+    public int CurrentStageLevel;
 
     [Header("파밍오브젝트 리스폰 시간")]
     [SerializeField] int respawnTime_FO = 2;
@@ -31,21 +31,15 @@ public class StageManager : Singleton<StageManager>
 
         // 스테이지 정보 초기화
         InitStageDatas();
+        SetCurrentStageIndex(0);
+        SpawningRoutinesStartByCurrentLevel(CurrentStageLevel);
 
-        // 레벨에 따른 스포닝 사이클 시스템 구독
-        CurrentStageLevel.Subscribe(SpawningRoutinesStartByCurrentLevel);
-        SpawningRoutinesStartByCurrentLevel(0);
 
         // 데이터 로드할 때 스테이지 별 언락 정보를 로드해 언락 적용해주기
         DataManager dm = DataManager.Instance;
         dm.loadedDataGroup.Subscribe(LoadStageUnlockSaveData);
     }
 
-    private void OnDestroy()
-    {
-        CurrentStageLevel.UnsbscribeAll();
-
-    }
 
     // 스테이지 데이터들 초기화하기
     private void InitStageDatas()
@@ -58,6 +52,7 @@ public class StageManager : Singleton<StageManager>
             stageDatas[i].Init();
         }
     }
+
     private void OnDisable()
     {
         // 타이틀씬으로 넘어가거나 종료 시, 코루틴 중지
@@ -67,7 +62,9 @@ public class StageManager : Singleton<StageManager>
     // 스테이지가 해금될 때마다 CurrentStageLevel 업데이트
     public void SetCurrentStageIndex(int stageLevel)
     {
-        CurrentStageLevel.Value = stageLevel;
+        if (stageLevel <= CurrentStageLevel) return;
+        CurrentStageLevel = stageLevel;
+        SpawningRoutinesStartByCurrentLevel(CurrentStageLevel);
     }
 
     // 스테이지 키에 따른 SpawnerListGroup 반환 (스포너들 개개인 초기화 시 Key와 일치하는 그룹으로 넣기 위함)
@@ -111,13 +108,11 @@ public class StageManager : Singleton<StageManager>
                 Debug.LogWarning("3스테이지 스폰 사이클 실행!");
                 SpawningRoutinesStart(spawnerListGroup_MasterBedRoom);
                 break;
-            
+
             default:
                 break;
         }
     }
-
-
 
     // 파밍오브젝트 & 몬스터 리스폰 루틴 동시 실행
     private void SpawningRoutinesStart(SpawnerListGroup target)
@@ -132,6 +127,8 @@ public class StageManager : Singleton<StageManager>
     }
     private IEnumerator SpawningRoutine(List<Spawner> targetSpawnerList, List<GameObject> activeInstanceList, int maxCount, float respawnTime)
     {
+        int firstInitCount = maxCount / 2;
+
         while (true)
         {
             // 활성화된 오브젝트들의 수가 maxCount를 넘어가면 일시 정지
@@ -148,14 +145,21 @@ public class StageManager : Singleton<StageManager>
             // 소환 대기 중인 애들의 수가 앞으로 소환할 수 있는 수량보다 적으면 => 추가 소환 가능
             if (progressingList.Count < spawnableCount)
             {
-                RandomSpawnerStartSpawning(notStartedList,maxCount, respawnTime);
+                if (firstInitCount > 0)
+                {
+                    RandomSpawnerStartSpawning(notStartedList, maxCount, 0.2f);
+                    firstInitCount--;
+                }
+                else
+                {
+                    RandomSpawnerStartSpawning(notStartedList, maxCount, respawnTime);
+                }
             }
 
             yield return null;
         }
     }
 
-    
 
 
     // 아직 소환 코루틴이 진행되지 않은 스포너 리스트 반환
@@ -196,7 +200,7 @@ public class StageManager : Singleton<StageManager>
     }
 
 
-    
+
 
 
 
@@ -215,8 +219,34 @@ public class StageManager : Singleton<StageManager>
 
     public void LoadStageUnlockSaveData(SaveDataGroup saveDataGroup)
     {
+        // 1-1. 스포너 코루틴 초기화
+        StopAllCoroutines();
+
+        // 1-2. 현재 스포너 상태 초기화 & 스폰 객체들 전체 삭제
+        List<GameObject> activedAllObjects = new List<GameObject>();
+        activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_FO);
+        activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
+        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
+
+        foreach (GameObject gameObject in activedAllObjects)
+        {
+            // 오브젝트풀로 바꿔야됨
+            Destroy(gameObject);
+        }
+
+
+        // 2-1. 스테이지 레벨 초기화 & 0단계 코루틴 실행
+        CurrentStageLevel = 0;
+        SpawningRoutinesStartByCurrentLevel(CurrentStageLevel);
+
+        // 2-2. 스테이지 데이터 언락 데이터 동기화
         List<bool> loadedData = saveDataGroup.stageUnlockData;
-        
+
         for (int i = 0; i < stageDatas.Length; i++)
         {
             if (loadedData[i]) stageDatas[i].UlockStage();
@@ -262,6 +292,20 @@ public class SpawnerListGroup
             spawnerList_Monster.Add(spawner);
         }
     }
+
+    public void InitSpawners()
+    {
+        foreach (Spawner spawner in spawnerList_FO)
+        {
+            spawner.Init();
+        }
+
+        foreach (Spawner spawner in spawnerList_Monster)
+        {
+            spawner.Init();
+        }
+    }
+
 
 
 }

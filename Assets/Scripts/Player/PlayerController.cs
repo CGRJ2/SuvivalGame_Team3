@@ -122,7 +122,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // Model 내부 슬롯 리스트(5종) 내부의 SlotData 안 아이템(SO)의 Key데이터를 Item으로 재변환 후 배치시키기
         Status.inventory.model.LoadSlotData(saveDataGroup);
-        Status.inventory.view.CurrentTab.UnsbscribeAll();
 
         // 배치 완료 후 뷰 업데이트
         Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);

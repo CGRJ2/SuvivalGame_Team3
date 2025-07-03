@@ -28,7 +28,10 @@ public class DailyManager : Singleton<DailyManager>
     [field: Header("현재 시간 정보")]
     public CurrentTimeData currentTimeData = new CurrentTimeData();
 
-    
+    [Header("시간 단위로 변환")]
+    [SerializeField] string timeToString;
+
+
 
 
     public void Init()
@@ -52,13 +55,32 @@ public class DailyManager : Singleton<DailyManager>
 
     private void LoadTimeData(SaveDataGroup saveDataGroup)
     {
-        currentTimeData = saveDataGroup.currentTimeData;
+        currentTimeData.CurrentDay.Value = saveDataGroup.currentTimeData.CurrentDay.Value;
+        currentTimeData.CurrentTime = saveDataGroup.currentTimeData.CurrentTime;
+        currentTimeData.TZ_State.Value = saveDataGroup.currentTimeData.TZ_State.Value;
     }
 
     private void Start()
     {
         // 테스트 용도
         StartCoroutine(UpdateTime());
+    }
+
+    // 리얼타임(float) -> 00:00 AM/PM 형식(string) 변환
+    string GetGameTimeStringAMPM(float realTimeSeconds)
+    {
+        int totalMinutes = Mathf.FloorToInt(realTimeSeconds); // 소수점 버림
+
+        int startHour = 9;
+        int currentHour24 = (startHour + totalMinutes / 60) % 24;
+        int currentMinute = totalMinutes % 60;
+
+        int hour12 = currentHour24 % 12;
+        if (hour12 == 0) hour12 = 12;
+
+        string ampm = currentHour24 < 12 ? "AM" : "PM";
+
+        return $"{hour12:D2}:{currentMinute:D2} {ampm}";
     }
 
     IEnumerator UpdateTime()
@@ -90,6 +112,8 @@ public class DailyManager : Singleton<DailyManager>
                 currentTimeData.CurrentTime = 0;
                 MoveToNextDay();
             }
+
+            timeToString = GetGameTimeStringAMPM(currentTimeData.CurrentTime);
         }
     }
 
