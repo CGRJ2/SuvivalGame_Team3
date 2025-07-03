@@ -7,8 +7,6 @@ public class JumpPad : MonoBehaviour
     [SerializeField] private float jumpForce = 10f; // 점프 힘
     [SerializeField] private bool resetVerticalVelocity = true; // 수직 속도 초기화 여부
     [SerializeField] private bool preserveHorizontalVelocity = true; // 수평 속도 유지 여부
-    [SerializeField] private ParticleSystem jumpEffect; // 점프 이펙트 (옵션)
-    [SerializeField] private AudioClip jumpSound; // 점프 사운드 (옵션)
 
     private void OnTriggerEnter(Collider other)
     {
@@ -47,18 +45,6 @@ public class JumpPad : MonoBehaviour
 
             // 위쪽 방향으로 힘 가하기
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-            // 이펙트 재생 (옵션)
-            if (jumpEffect != null)
-            {
-                jumpEffect.Play();
-            }
-
-            // 사운드 재생 (옵션)
-            if (jumpSound != null && GetComponent<AudioSource>() != null)
-            {
-                GetComponent<AudioSource>().PlayOneShot(jumpSound);
-            }
 
             Debug.Log("플레이어가 점프대에서 발사되었습니다!");
         }
