@@ -22,11 +22,11 @@ public class QuickHandItem : MonoBehaviour
 
     private void UpdateHandItem(Item item)
     {
-        if (item != null && item.itemName == "연습무기")//프리팹 탐색-나중에 아이템에서 전용 필드를 추가하는게 가장 쉬운듯함
-        {
-            item.instancePrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>
-                ("Assets/00WorkSpace/JWH/Scripts/JWH_QuickHandItem/연습무기.prefab");
-        }
+        //if (item != null && item.itemName == "연습무기")//프리팹 탐색-나중에 아이템에서 전용 필드를 추가하는게 가장 쉬운듯함
+        //{
+        //    item.instancePrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>
+        //        ("Assets/00WorkSpace/JWH/Scripts/JWH_QuickHandItem/연습무기.prefab");
+        //}
 
         // 기존 손 아이템 제거
         if (curHandObject != null)
