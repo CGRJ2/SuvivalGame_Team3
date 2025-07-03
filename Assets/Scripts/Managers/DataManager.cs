@@ -62,12 +62,13 @@ public class DataManager : Singleton<DataManager>
             stageUnlockData = StageManager.Instance.GetStageUnlockSaveData(),
             baseCampData = BaseCampManager.Instance.baseCampData,
             tempCampData = BaseCampManager.Instance.tempCampData,
-
+            // 이거 왜 인스턴스가 생기는 거죠??? 저장된 클래스를 불러올 때, null값은 기본값으로 대체되나?
         };
 
+
+        Debug.LogWarning(instanceSaveDataGroup.tempCampData);
         string json = JsonUtility.ToJson(instanceSaveDataGroup, true);
         File.WriteAllText(GetSavePath(slotIndex), json);
-        Debug.Log($"[저장 완료] 슬롯 {slotIndex} 저장");
     }
     
 

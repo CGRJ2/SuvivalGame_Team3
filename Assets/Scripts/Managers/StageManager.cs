@@ -127,6 +127,10 @@ public class StageManager : Singleton<StageManager>
     }
     private IEnumerator SpawningRoutine(List<Spawner> targetSpawnerList, List<GameObject> activeInstanceList, int maxCount, float respawnTime)
     {
+        // 첫 스폰 개수를 지정할 수 있게 할까요?
+        // 1번. maxCount만큼 바로 소환되게 만들지
+        // 2번. maxCount의 절반(혹은 특정 비율)만큼 바로 소환되게 만들지
+        // 3번. 하나하나 초기 소환 수량을 설정할 건지 ----> 비추천...
         int firstInitCount = maxCount / 2;
 
         while (true)
@@ -219,6 +223,20 @@ public class StageManager : Singleton<StageManager>
 
     public void LoadStageUnlockSaveData(SaveDataGroup saveDataGroup)
     {
+        // 1. 스테이지 데이터 <- 언락 정보 동기화
+        List<bool> loadedData = saveDataGroup.stageUnlockData;
+
+        for (int i = 0; i < stageDatas.Length; i++)
+        {
+            if (loadedData[i]) stageDatas[i].UlockStage();
+        }
+
+        // 2. 스포너 초기화 후 루틴 재시작
+        InitSpawnerRoutines();
+    }
+
+    public void InitSpawnerRoutines()
+    {
         // 1-1. 스포너 코루틴 초기화
         StopAllCoroutines();
 
@@ -239,18 +257,15 @@ public class StageManager : Singleton<StageManager>
             Destroy(gameObject);
         }
 
-
-        // 2-1. 스테이지 레벨 초기화 & 0단계 코루틴 실행
-        CurrentStageLevel = 0;
-        SpawningRoutinesStartByCurrentLevel(CurrentStageLevel);
-
-        // 2-2. 스테이지 데이터 언락 데이터 동기화
-        List<bool> loadedData = saveDataGroup.stageUnlockData;
-
-        for (int i = 0; i < stageDatas.Length; i++)
+        // 현재 레벨까지 스테이지 코루틴 다시 시작
+        if (CurrentStageLevel > 0)
         {
-            if (loadedData[i]) stageDatas[i].UlockStage();
+            for (int i = 0; i < CurrentStageLevel; i++)
+            {
+                SpawningRoutinesStartByCurrentLevel(i);
+            }
         }
+        else SpawningRoutinesStartByCurrentLevel(0);
     }
 
     #endregion

@@ -1,14 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 
 [System.Serializable] // 세이브 & 로드 가능
-public class PlayerStatus 
+public class PlayerStatus : IDisposable
 {
-
-    SuvivalSystemManager ssm;
-
     [Header("장착 중인 아이템")]
     public Item onHandItem;
 
@@ -27,7 +25,6 @@ public class PlayerStatus
     [field: SerializeField] public int Damage { get; set; }
 
 
-    // 우선 캔버스에 직접 연결하지만, MVP 구조로 리팩토링 필요 (데이터 & UI & 로직 처리(상태 업데이트, Input처리 등)로 분리)
     [SerializeField] public InventoryPresenter inventory;
 
     [Header("디버프 상태")]
@@ -53,7 +50,7 @@ public class PlayerStatus
     // 플레이어 데이터 초기 상태
     public void Init()
     {
-        ssm = SuvivalSystemManager.Instance;
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
         PlayerManager pm = PlayerManager.Instance;
 
         // 정신력 초기화
@@ -62,7 +59,6 @@ public class PlayerStatus
         // 배터리 초기화
         InitBattery();
 
-
         MouseSensitivity = pm.mouseSensitivity_Init;
 
         Damage = pm.damage_Init;
@@ -70,18 +66,26 @@ public class PlayerStatus
         SprintSpeed = pm.sprintSpeed_Init;
         JumpForce = pm.jumpForce_Init;
 
-        BodyPartsInit();
+        Init_Load();
 
         // 인벤토리 초기화
         inventory = new InventoryPresenter();
     }
 
+    // 데이터 로드 시에만 초기화 할 것들
+    public void Init_Load()
+    {
+        BodyPartsInit();
 
+        CurrentBattery.Subscribe(PlayerManager.Instance.PlayerFaint);
+    }
 
 
     // 플레이어 죽고 리스폰 할 때 초기화
     public void Init_AfterDead()
     {
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+
         // 일반 로드 함수 실행
         Debug.Log("마지막에 저장한 데이터 로드해서 붙이기");
 
@@ -96,8 +100,14 @@ public class PlayerStatus
     // 플레이어 기절 후 리스폰 할 때 초기화
     public void Init_AfterFaint()
     {
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+
+        Debug.Log("충전 왜 안돼");
+
         // 최대 배터리 감소
+        Debug.Log($"[MaxBattery.Value]1 : {MaxBattery.Value}");
         MaxBattery.Value = ssm.batterySystem.MaxBattery_AfterFaint;
+        Debug.Log($"[MaxBattery.Value]2 : {MaxBattery.Value}");
         CurrentBattery.Value = MaxBattery.Value;
     }
 
@@ -203,6 +213,8 @@ public class PlayerStatus
 
     public void InitBattery()
     {
+        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+
         MaxBattery.Value = ssm.batterySystem.MaxBattery_Init;
         CurrentBattery.Value = MaxBattery.Value;
     }
@@ -251,8 +263,13 @@ public class PlayerStatus
             PlayerManager.Instance.PlayerDead();
     }
 
-    
-}
+    public void Dispose()
+    {
+        CurrentWillPower.UnsbscribeAll(); 
+        CurrentBattery.UnsbscribeAll();
+        MaxBattery.UnsbscribeAll();
+    }                                    
+}       
 public enum PlayerStateTypes
 {
     Idle, Attack, Damaged, Dead, Move, Sprint, Jump, Fall, Crouch //Exhausted,

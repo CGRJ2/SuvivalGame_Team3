@@ -40,10 +40,15 @@ public class PlayerManager : Singleton<PlayerManager>
         dm = DataManager.Instance;
     }
 
+    private void OnDestroy()
+    {
+    }
 
     // => 배터리가 0이 되었을 때 호출
-    public void PlayerFaint(SaveDataGroup saveDataGroup) 
+    public void PlayerFaint(int currentBattery) 
     {
+        if (currentBattery > 0) return;
+
         Debug.Log("다음날 오전 9시로 / 맵 내의 몬스터 정보 초기화 / 맵 내 파밍 오브젝트 정보 초기화");
 
         // 다음날 오전 9시로 이동
@@ -52,7 +57,10 @@ public class PlayerManager : Singleton<PlayerManager>
         DailyManager.Instance.currentTimeData.TZ_State.Value = TimeZoneState.Morning;
 
         // 배터리 최대량 감소
-        instancePlayer.Status.Init_AfterFaint(); 
+        instancePlayer.Status.Init_AfterFaint();
+
+        // 몬스터 & 파밍오브젝트 초기화
+        StageManager.Instance.InitSpawnerRoutines();
 
         // 위치 이동
         MoveToLastCamp();
@@ -85,7 +93,7 @@ public class PlayerManager : Singleton<PlayerManager>
         Debug.Log("마지막으로 저장된 캠프로 이동");
 
         // 간이 캠프 데이터가 있다면 
-        if (bcm.tempCampData != null)
+        if (bcm.tempCampData.respawnPoint != null)
         {
             Debug.Log("간이캠프로 이동");
             instancePlayer.Respawn(bcm.tempCampData.respawnPoint);

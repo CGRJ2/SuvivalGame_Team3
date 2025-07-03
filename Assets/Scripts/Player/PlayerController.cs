@@ -72,6 +72,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
         ///
         /////////////////////////////
+
+
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 
 
@@ -98,13 +100,16 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         pm = PlayerManager.Instance;
         pm.instancePlayer = this;
-
         Status.Init();
+
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
 
         InputActionsInit();
         StateMachineInit();
+
+        
+
 
 
         // 데이터 로드할 때 Status를 로드한 데이터로 교체
@@ -116,6 +121,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         // 플레이어 데이터 동기화
         Status = saveDataGroup.playerStatusData;
+
+        Status.Init_Load();
 
         // 인벤토리 Model 동기화
         Status.inventory.model = saveDataGroup.inventoryModel;
@@ -535,26 +542,19 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void Attack()
     {
-        Debug.Log("어택실행");
         IDamagable[] damagables = Cc.GetDamagablesInRange();
 
         if (damagables.Length < 1) return;
-        Debug.Log("어택실행01");
 
         int finalDamage = Status.Damage;
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
         }
-        Debug.Log("어택실행02");
 
         foreach (IDamagable damagable in damagables)
         {
-            Debug.Log("어택실행03");
-
             damagable.TakeDamage(finalDamage, transform);
-
-            Debug.Log("어택실행04");
         }
     }
 
@@ -613,6 +613,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     // 단순 위치만 이동해주기
     public void Respawn(Transform transform)
     {
+        if (transform == null) { Debug.LogError("매개변수 Transform이 null임"); return; }
         this.transform.position = transform.position;
         this.transform.rotation = transform.rotation;
     }

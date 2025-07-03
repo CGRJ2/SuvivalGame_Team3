@@ -12,7 +12,8 @@ public class BaseCampData
     // 진행중인 업그레이드 정보
     public UpgradingProcess upgradingProcess = new UpgradingProcess();
 
-    
+    // 
+    public Transform baseCampTransform;
 }
 
 [System.Serializable]

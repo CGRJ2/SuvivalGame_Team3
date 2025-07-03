@@ -24,12 +24,20 @@ public class BaseCampManager : Singleton<BaseCampManager>
 
     [HideInInspector] public BaseCampUpgradeCondition[] UpgradeConditions;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            Debug.Log(tempCampData);
+        }
+    }
+
 
     public void Init()
     {
         base.SingletonInit();
         baseCampData = new BaseCampData();
-        tempCampData = null;
+        tempCampData = new TempCampData(null);
         InitUpgradeConditions();
         InitAllRecipes();
 

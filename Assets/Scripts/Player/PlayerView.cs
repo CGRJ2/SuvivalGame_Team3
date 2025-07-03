@@ -13,9 +13,9 @@ public class PlayerView : MonoBehaviour
     [HideInInspector] public Vector3 moveDir;
     [HideInInspector] public Vector3 facingDir;
 
-
     Vector3 freeCamForward;
     Vector3 freeCamRight;
+
 
     private void Start()
     {

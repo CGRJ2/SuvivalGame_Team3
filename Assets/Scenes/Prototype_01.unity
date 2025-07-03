@@ -34440,6 +34440,7 @@ MonoBehaviour:
         upgradingProcess:
           isUpgrading: 0
           proceededTime: 0
+        baseCampTransform: {fileID: 0}
       tempCampData:
         respawnPoint: {fileID: 0}
 --- !u!222 &783574796129307876
@@ -37382,6 +37383,7 @@ MonoBehaviour:
     upgradingProcess:
       isUpgrading: 0
       proceededTime: 0
+    baseCampTransform: {fileID: 0}
   tempCampData:
     respawnPoint: {fileID: 0}
   allRecipeList: []
@@ -40374,7 +40376,7 @@ MonoBehaviour:
     <LegMaxHP_AfterDestroyed>k__BackingField: 5
   <batterySystem>k__BackingField:
     <MaxBattery_Init>k__BackingField: 100
-    <MaxBattery_AfterFaint>k__BackingField: 0
+    <MaxBattery_AfterFaint>k__BackingField: 50
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
     <RecoverAmount_MonsterSlay>k__BackingField: 10
