@@ -12,7 +12,7 @@ public class FakeSave : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("³·Àá ÀÚ¸é ´Ù Á×¾î~");
+            //Debug.LogWarning("³·Àá ÀÚ¸é ´Ù Á×¾î~");
         }
     }
 
