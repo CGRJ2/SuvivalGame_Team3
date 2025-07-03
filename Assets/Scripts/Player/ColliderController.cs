@@ -98,6 +98,7 @@ public class ColliderController : MonoBehaviour
         {
             damagables.Add(col.GetComponent<IDamagable>());
         }
+
         this.damagablesInRange = damagables.ToArray();
     }
     /*public void InteractRangeCheck()
