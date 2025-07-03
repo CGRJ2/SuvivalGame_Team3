@@ -11,6 +11,5 @@ public class Item_Quest : Item
         itemType = ItemType.Quest;
         maxCount = 1;
         itemName = this.name;
-        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/Sprite_Quest");
     }
 }

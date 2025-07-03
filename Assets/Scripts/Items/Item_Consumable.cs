@@ -11,7 +11,6 @@ public class Item_Consumable : Item, IConsumable
         itemType = ItemType.Consumalbe;
         maxCount = 10;
         itemName = this.name;
-        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/Sprite_Consumable");
     }
 
 

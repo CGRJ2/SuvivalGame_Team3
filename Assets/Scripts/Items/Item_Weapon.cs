@@ -14,7 +14,6 @@ public class Item_Weapon : Item, IEquipable
         itemType = ItemType.Equipment;
         maxCount = 1;
         itemName = this.name;
-        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/Sprite_Weapon");
     }
 
     public void EquipToQuickSlot()

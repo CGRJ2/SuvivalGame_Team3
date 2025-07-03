@@ -30,7 +30,7 @@ public class MonsterController : MonoBehaviour
 
         // 이동
         Vector3 direction = toTarget.normalized;
-        monster.MoveTo(direction);
+        monster.Agent.SetDestination(direction);
 
         // 회전
         Quaternion targetRotation = Quaternion.LookRotation(direction);

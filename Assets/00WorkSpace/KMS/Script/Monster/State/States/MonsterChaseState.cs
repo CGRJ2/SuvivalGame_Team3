@@ -55,7 +55,8 @@ public class MonsterChaseState : IMonsterState
         //}
         if (monster.GetTarget() != null)
         {
-            monster.MoveTo(monster.GetTarget().position);
+            monster.Agent.SetDestination(monster.GetTarget().position);
+
         }
 
         // 공격 사거리 진입 시 전이

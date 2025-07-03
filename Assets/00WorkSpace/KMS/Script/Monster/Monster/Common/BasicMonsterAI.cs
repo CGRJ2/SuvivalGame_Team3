@@ -35,7 +35,7 @@ public class BasicMonsterAI : BaseMonster
         float range = currentDetectionRange > 0.1f ? currentDetectionRange : 5f;
         float fov = currentFOV > 0.1f ? currentFOV : 90f;
 
-        Debug.Log($"[Gizmo] EyePos: {eyePos}, Range: {range}");
+        //Debug.Log($"[Gizmo] EyePos: {eyePos}, Range: {range}");
 
         // 시야 감지 범위
         Gizmos.color = Color.yellow;
@@ -50,10 +50,10 @@ public class BasicMonsterAI : BaseMonster
         Gizmos.DrawLine(eyePos, eyePos + rightLimit * range);
 
         // 행동 반경 시각화
-        if (OriginPosition != Vector3.zero)
+        if (OriginTransform != null)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(OriginPosition, data.ActionRadius);
+            Gizmos.DrawWireSphere(OriginTransform.position, data.ActionRadius);
         }
     }
     protected override void Phase2TryAttack()

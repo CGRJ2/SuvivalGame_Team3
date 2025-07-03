@@ -77,7 +77,7 @@ public class CatChaseState : IMonsterState
 
         cat.Agent.speed = currentSpeed; 
 
-        cat.MoveTo(target.position);
+        cat.Agent.SetDestination(target.position);
 
         // 정신력 데미지 주기 (인터페이스 기반)
         mentalTickTimer += Time.deltaTime;

@@ -47,7 +47,7 @@ public class OwnerChaseState : IMonsterState
         destination.y = owner.transform.position.y; // y º¸Á¤
 
         owner.Agent.speed = owner.OwnerData.moveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
-        owner.MoveTo(destination);
+        owner.Agent.SetDestination(destination);
 
         if (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait)
         {

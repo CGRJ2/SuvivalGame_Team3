@@ -18,9 +18,11 @@ public class Item : ScriptableObject
     protected virtual void OnEnable()
     {
         // 기본 아이템인스턴스 프리펩 설정. 특수 아이템의 경우 아이템인스턴스 프리펩을 다른걸로 달아주면 됨
-        //instancePrefab = Resources.Load<GameObject>("Prefabs/ItemInstancePrefabs/ItemInstance_Noraml");
+        if (instancePrefab == null)
+        instancePrefab = Resources.Load<GameObject>("ItemInstancePrefabs/ItemInstance_Noraml");
 
-        //imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
+        if (imageSprite == null)
+        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
     }
     
     // 사용 => 인벤토리 우클릭 상호작용 시 호출
@@ -103,7 +105,13 @@ public class Item : ScriptableObject
     // 아이템 인스턴스 생성
     public void SpawnItem(Transform transform, int count = 1)
     {
-        ItemInstance instance = Instantiate(instancePrefab, transform.position, transform.rotation).GetComponent<ItemInstance>();
+        GameObject instanceObj = Instantiate(instancePrefab, transform.position, transform.rotation);
+        Rigidbody rb = instanceObj.GetComponent<Rigidbody>();
+
+        // 힘을 커스텀할 수 있게 다른곳에 설정 가능한 변수를 받아오는 식으로 하자
+        if (rb != null) rb.AddForce(Vector3.up * 3, ForceMode.Impulse);
+
+        ItemInstance instance = instanceObj.GetComponent<ItemInstance>();
         instance.InitInstance(this, count);
     }
 }

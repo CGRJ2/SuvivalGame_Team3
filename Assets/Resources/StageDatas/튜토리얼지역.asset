@@ -18,19 +18,17 @@ MonoBehaviour:
   <StageName>k__BackingField: "\uD29C\uD1A0\uB9AC\uC5BC\uC9C0\uC5ED"
   stageKey: 0
   unlockCondition:
-    needItemList:
-    - item: {fileID: 11400000, guid: 341e0c903fc68704dbc9e5f09b982ed6, type: 2}
-      count: 1
+    needItemList: []
     needTimeState: 04000000
   SpawnTableGroup_FO:
   - tableWeightInfos:
     - spawnTable: {fileID: 11400000, guid: 7dcbea31d0151e845bf0690c694ac431, type: 2}
       weight: 45
     - spawnTable: {fileID: 11400000, guid: c85986e94f9c18d4a86d9a07a0d9a1b3, type: 2}
-      weight: 50
+      weight: 55
   SpawnTableGroup_Monster:
   - tableWeightInfos:
     - spawnTable: {fileID: 11400000, guid: b8fb4bb55fb465a409a21c45c2a3607f, type: 2}
       weight: 45
     - spawnTable: {fileID: 11400000, guid: 5b3dda69849ba204b926f8eacc5b1506, type: 2}
-      weight: 50
+      weight: 55
