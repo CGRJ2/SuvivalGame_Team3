@@ -28,7 +28,7 @@ public class PlayerStatus
 
 
     // 우선 캔버스에 직접 연결하지만, MVP 구조로 리팩토링 필요 (데이터 & UI & 로직 처리(상태 업데이트, Input처리 등)로 분리)
-    public InventoryPresenter inventory;
+    [SerializeField] public InventoryPresenter inventory;
 
     [Header("디버프 상태")]
     public bool ApplyDebuff_CraftSpeed;

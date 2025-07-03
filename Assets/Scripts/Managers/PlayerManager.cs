@@ -37,20 +37,6 @@ public class PlayerManager : Singleton<PlayerManager>
         base.SingletonInit();
     }
 
-    public void SavePlayerData()
-    {
-        // 아래 2가지 데이터 저장
-        // PlayerStatus status = instancePlayer.Status;
-        // Transform playerTranform = instancePlayer.transform;
-    }
-
-    public void LoadPlayerData()
-    {
-        // 아래 2가지 데이터 불러오기
-        // PlayerStatus status = instancePlayer.Status;
-        // Transform playerTranform = instancePlayer.transform;
-    }
-
 
     // => 배터리가 0이 되었을 때 호출
     public void PlayerFaint() 

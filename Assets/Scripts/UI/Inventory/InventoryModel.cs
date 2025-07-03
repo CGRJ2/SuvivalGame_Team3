@@ -4,13 +4,13 @@ using UnityEngine;
 [System.Serializable]
 public class InventoryModel
 {
-    List<SlotData> ingredientSlots = new List<SlotData>();
-    List<SlotData> consumableSlots = new List<SlotData>();
-    List<SlotData> equipmentSlots = new List<SlotData>();
-    List<SlotData> functionSlots = new List<SlotData>();
-    List<SlotData> questSlots = new List<SlotData>();
+    [SerializeField] List<SlotData> ingredientSlots = new List<SlotData>();
+    [SerializeField] List<SlotData> consumableSlots = new List<SlotData>();
+    [SerializeField] List<SlotData> equipmentSlots = new List<SlotData>();
+    [SerializeField] List<SlotData> functionSlots = new List<SlotData>();
+    [SerializeField] List<SlotData> questSlots = new List<SlotData>();
 
-    int slotCount = 30;
+    [SerializeField] int slotCount = 30;
 
 
     // 생성자 => slotCount만큼의 인벤토리 슬롯 추가
@@ -202,4 +202,123 @@ public class InventoryModel
         }
 
     }
+
+
+
+    // 인벤토리 내 아이템 데이터 세이브 용도
+    private string GetSlotItemKey(Item item)
+    {
+        if (item != null) return item.itemName;
+        else return "Empty";
+    }
+
+    private List<string> GetItemDatasByKey(List<SlotData> currentTab)
+    {
+        List<string> keyDatas = new List<string>();
+        foreach(SlotData slotData in currentTab)
+        {
+            keyDatas.Add(GetSlotItemKey(slotData.item));
+        }
+        return keyDatas;
+    }
+
+
+    public SlotDataListsData SaveSlotItemData()
+    {
+        SlotDataListsData slotDataListsData = new SlotDataListsData()
+        {
+            ingredientSlots = GetItemDatasByKey(ingredientSlots),
+            consumableSlots = GetItemDatasByKey(consumableSlots),
+            equipmentSlots = GetItemDatasByKey(equipmentSlots),
+            functionSlots = GetItemDatasByKey(functionSlots),
+            questSlots = GetItemDatasByKey(questSlots)
+        };
+
+        return slotDataListsData;
+    }
+
+    public void LoadSlotData(SaveDataGroup saveDataGroup)
+    {
+        SlotDataListsData loadedSDListData = saveDataGroup.slotDataListsData;
+        
+        // 재료 탭 동기화
+        for(int i = 0; i < loadedSDListData.ingredientSlots.Count; i++)
+        {
+            if (loadedSDListData.ingredientSlots[i] == "Empty")
+            {
+                ingredientSlots[i].item = null;
+            }
+            else if (loadedSDListData.ingredientSlots[i].Contains("설계도"))
+            {
+                ingredientSlots[i].item = Resources.Load<Item>($"ItemDatabase/99 Recipes/{loadedSDListData.ingredientSlots[i]}");
+            }
+            else
+            {
+                ingredientSlots[i].item = Resources.Load<Item>($"ItemDatabase/01 Ingredient_Item/{loadedSDListData.ingredientSlots[i]}");
+            }
+        }
+
+        // 소비 탭 동기화
+        for (int i = 0; i < loadedSDListData.consumableSlots.Count; i++)
+        {
+            if (loadedSDListData.consumableSlots[i] == "Empty")
+            {
+                consumableSlots[i].item = null;
+            }
+            else
+            {
+                consumableSlots[i].item = Resources.Load<Item>($"ItemDatabase/02 Consumable_Item/{loadedSDListData.consumableSlots[i]}");
+            }
+        }
+
+        // 장비 탭 동기화
+        for (int i = 0; i < loadedSDListData.equipmentSlots.Count; i++)
+        {
+            if (loadedSDListData.equipmentSlots[i] == "Empty")
+            {
+                equipmentSlots[i].item = null;
+            }
+            else
+            {
+                equipmentSlots[i].item = Resources.Load<Item>($"ItemDatabase/03 Equipment_Item/{loadedSDListData.equipmentSlots[i]}");
+            }
+        }
+
+        // 기능아이템 탭 동기화
+        for (int i = 0; i < loadedSDListData.functionSlots.Count; i++)
+        {
+            if (loadedSDListData.functionSlots[i] == "Empty")
+            {
+                functionSlots[i].item = null;
+            }
+            else
+            {
+                functionSlots[i].item = Resources.Load<Item>($"ItemDatabase/04 Function_Item/{loadedSDListData.functionSlots[i]}");
+            }
+        }
+
+        // 퀘스트아이템 탭 동기화
+        for (int i = 0; i < loadedSDListData.questSlots.Count; i++)
+        {
+            if (loadedSDListData.questSlots[i] == "Empty")
+            {
+                questSlots[i].item = null;
+            }
+            else
+            {
+                questSlots[i].item = Resources.Load<Item>($"ItemDatabase/05 Quest_Item/{loadedSDListData.questSlots[i]}");
+            }
+        }
+
+    }
+}
+
+[System.Serializable]
+public class SlotDataListsData
+{
+    public List<string> ingredientSlots;
+    public List<string> consumableSlots;
+    public List<string> equipmentSlots;
+    public List<string> functionSlots;
+    public List<string> questSlots;
 }

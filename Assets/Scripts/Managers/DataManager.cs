@@ -55,6 +55,8 @@ public class DataManager : Singleton<DataManager>
         SaveDataGroup instanceSaveDataGroup = new SaveDataGroup()
         {
             playerStatusData = PlayerManager.Instance.instancePlayer.Status,
+            inventoryModel = PlayerManager.Instance.instancePlayer.Status.inventory.model,
+            slotDataListsData = PlayerManager.Instance.instancePlayer.Status.inventory.model.SaveSlotItemData(),
             currentTimeData = DailyManager.Instance.currentTimeData,
             stageUnlockData = StageManager.Instance.GetStageUnlockSaveData()
 
@@ -116,6 +118,8 @@ public class DataManager : Singleton<DataManager>
 public class SaveDataGroup
 {
     public PlayerStatus playerStatusData;
+    public InventoryModel inventoryModel;
+    public SlotDataListsData slotDataListsData;
     public CurrentTimeData currentTimeData;
     public List<bool> stageUnlockData;
 }
