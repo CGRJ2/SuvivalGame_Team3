@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +6,7 @@ using TMPro;
 
 public class StarForce : MonoBehaviour
 {
+    public GameObject starforcePanel;
     public RectTransform starImage;
     public RectTransform barBG;
     public RectTransform successZoneImage;
@@ -18,6 +19,13 @@ public class StarForce : MonoBehaviour
 
     private float leftLimit, rightLimit;
 
+    void OnEnable()
+    {
+        isPlaying = true;
+        movingRight = true;
+        resultText.gameObject.SetActive(false);
+        starImage.anchoredPosition = new Vector2(0, starImage.anchoredPosition.y); // 원하는 위치로 초기화
+    }
     private void Start()
     {
         resultText.gameObject.SetActive(false);
@@ -65,6 +73,7 @@ public class StarForce : MonoBehaviour
             return;
         }
 
+        
         // 별이 성공 존인지 확인
         float starX = starImage.position.x;
         float zoneMin = successZoneImage.position.x - successZoneImage.rect.width * 0.5f;
@@ -78,8 +87,18 @@ public class StarForce : MonoBehaviour
         {
             resultText.text = "<color=red>실패!</color>";
         }
+
         resultText.gameObject.SetActive(true);
 
         isPlaying = false;
+
+        StartCoroutine(Hide(1.5f));
+    }
+    // 결과창 끄기
+    IEnumerator Hide(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        starforcePanel.SetActive(false);
+        resultText.gameObject.SetActive(false);
     }
 }
