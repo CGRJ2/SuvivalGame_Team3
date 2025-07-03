@@ -509,20 +509,28 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void Attack()
     {
+        Debug.Log("어택실행");
         IDamagable[] damagables = Cc.GetDamagablesInRange();
 
         if (damagables.Length < 1) return;
+        Debug.Log("어택실행01");
 
         int finalDamage = Status.Damage;
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
         }
+        Debug.Log("어택실행02");
 
         foreach (IDamagable damagable in damagables)
         {
+            Debug.Log("어택실행03");
+
             damagable.TakeDamage(finalDamage);
+            Debug.Log("어택실행04");
+
         }
+
     }
 
     public void Interact()

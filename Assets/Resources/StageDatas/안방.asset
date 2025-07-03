@@ -16,7 +16,7 @@ MonoBehaviour:
   <StageLevel>k__BackingField: 3
   <StageImage>k__BackingField: {fileID: 0}
   <StageName>k__BackingField: "\uC548\uBC29"
-  stageKey: 0
+  stageKey: 3
   unlockCondition:
     needItemList:
     - item: {fileID: 11400000, guid: 341e0c903fc68704dbc9e5f09b982ed6, type: 2}
@@ -27,10 +27,10 @@ MonoBehaviour:
     - spawnTable: {fileID: 11400000, guid: 7dcbea31d0151e845bf0690c694ac431, type: 2}
       weight: 45
     - spawnTable: {fileID: 11400000, guid: 1ed8861cb4044414ebfbbbaa16430be4, type: 2}
-      weight: 50
+      weight: 55
   SpawnTableGroup_Monster:
   - tableWeightInfos:
     - spawnTable: {fileID: 11400000, guid: b8fb4bb55fb465a409a21c45c2a3607f, type: 2}
       weight: 45
     - spawnTable: {fileID: 11400000, guid: abba9405317b8f445bb86991f02ad92f, type: 2}
-      weight: 50
+      weight: 55

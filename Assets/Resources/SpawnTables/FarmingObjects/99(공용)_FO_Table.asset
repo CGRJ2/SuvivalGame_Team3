@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 99
   stageKey: 4
-  objectList: []
+  objectList:
+  - spawnObject: {fileID: 151546371286991669, guid: 3f96cc519ca33514cbc41565dbef9c76, type: 3}
+    objectWeight: 60
+  - spawnObject: {fileID: 151546371286991669, guid: 1f78bbd99a624a2408a65b3334cc95a0, type: 3}
+    objectWeight: 40

@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable_Farming : InteractableBase
+public class Interactable_Farming : InteractableBase, ISpawnable
 {
     enum FarmingType
     {
@@ -12,7 +13,13 @@ public class Interactable_Farming : InteractableBase
     [SerializeField] Transform itemSpawnPoint;
     [SerializeField] FarmingType dropType;
 
-    
+    public Action DeactiveAction { get; set; }
+
+    private void OnDisable()
+    {
+        DeactiveAction?.Invoke();
+    }
+
     public override void Interact()
     {
         base.Interact();
