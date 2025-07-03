@@ -6,6 +6,15 @@ using UnityEngine.Events;
 
 public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
 {
+    // 이 값들을 설정하면 매니저 없이도 프리팹만으로 동작 테스트 가능
+    // 초기화 시점: Start()
+    // 사용 조건: autoInitialize == true && data == null
+    [Header("자체 초기화용")]
+    [SerializeField] private bool autoInitialize = true; // 인스펙터에서 제어 가능
+    [SerializeField] private BaseMonsterData defaultDataSO;
+    [SerializeField] private MonsterTypeStatData defaultTypeStatSO;
+    [SerializeField] private StageMonsterScalingData defaultStageStatSO;
+
     [Header("Data")]
     public BaseMonsterData data;
     protected Animator animator;
@@ -119,7 +128,18 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable
     }
     protected virtual void Start()
     {
-
+        if (autoInitialize && !isDead && data == null)
+        {
+            if (defaultDataSO == null || defaultTypeStatSO == null || defaultStageStatSO == null)
+            {
+                Debug.LogWarning($"{name} 자동 초기화 실패: 초기화용 SO가 비어 있음");
+                return;
+            }
+            Debug.Log($"[{name}] 자동 초기화 시작");
+            SetData(defaultDataSO, defaultTypeStatSO, defaultStageStatSO);
+            InitTargetByType();
+            StateMachine.ChangeState(stateFactory.CreateIdleState());
+        }
     }
 
     protected virtual void Update()
