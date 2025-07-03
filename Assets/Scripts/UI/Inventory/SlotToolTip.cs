@@ -15,7 +15,7 @@ public class SlotToolTip : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.inventoryUI.tooltip = this;
+        UIManager.Instance.inventoryGroup.tooltip = this;
     }
 
     public void ShowToolTip(Item _item, Vector3 _pos)

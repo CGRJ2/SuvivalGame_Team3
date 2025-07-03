@@ -17,7 +17,7 @@ public class QuickSlotParent : MonoBehaviour
             qs.slotData = new SlotData();
         }
 
-        UIManager.Instance.inventoryUI.quickSlotParent = this;
+        UIManager.Instance.inventoryGroup.quickSlotParent = this;
 
         // 첫 초기화 시 맨앞 슬롯 선택중으로
         NowSelectedSlot = quickSlots[0];

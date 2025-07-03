@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4feca833a5714e4a803b858caa7dd51, type: 3}
+  m_Name: "\uC548\uBC29"
+  m_EditorClassIdentifier: 
+  <IsUnlocked>k__BackingField: 0
+  <StageLevel>k__BackingField: 3
+  <StageImage>k__BackingField: {fileID: 0}
+  <StageName>k__BackingField: "\uC548\uBC29"
+  stageKey: 0
+  unlockCondition:
+    needItemList:
+    - item: {fileID: 11400000, guid: 341e0c903fc68704dbc9e5f09b982ed6, type: 2}
+      count: 1
+    needTimeState: 04000000
+  SpawnTableGroup_FO:
+  - tableWeightInfos:
+    - spawnTable: {fileID: 11400000, guid: 7dcbea31d0151e845bf0690c694ac431, type: 2}
+      weight: 45
+    - spawnTable: {fileID: 11400000, guid: 1ed8861cb4044414ebfbbbaa16430be4, type: 2}
+      weight: 50
+  SpawnTableGroup_Monster:
+  - tableWeightInfos:
+    - spawnTable: {fileID: 11400000, guid: b8fb4bb55fb465a409a21c45c2a3607f, type: 2}
+      weight: 45
+    - spawnTable: {fileID: 11400000, guid: abba9405317b8f445bb86991f02ad92f, type: 2}
+      weight: 50

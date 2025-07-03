@@ -47,7 +47,7 @@ public class SlotView : MonoBehaviour,
             // 현재 활성화 중인 퀵슬롯에 아이템이 없으면 => 손에 든 아이템 제거
             if (this is QuickSlot)
             {
-                if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this)
+                if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this)
                 {
                     PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
                 }
@@ -107,7 +107,7 @@ public class SlotView : MonoBehaviour,
                 if (slotData.item is IEquipable equipable)
                 {
                     // 이미 퀵슬롯에 있으면 추가 안됨
-                    QuickSlot alreayIn = UIManager.Instance.inventoryUI.quickSlotParent.IsAlreadyInQuickSlot(slotData);
+                    QuickSlot alreayIn = UIManager.Instance.inventoryGroup.quickSlotParent.IsAlreadyInQuickSlot(slotData);
                     if (alreayIn != null) 
                     {
                         Debug.Log($"이미 퀵슬롯에 존재 :  {alreayIn}, 현재 데이터 {slotData}");
@@ -115,7 +115,7 @@ public class SlotView : MonoBehaviour,
                     }
 
                     // 빈칸 없으면 추가 안됨
-                    QuickSlot emptyQuickSlot = UIManager.Instance.inventoryUI.quickSlotParent.GetEmptyQuickSlot();
+                    QuickSlot emptyQuickSlot = UIManager.Instance.inventoryGroup.quickSlotParent.GetEmptyQuickSlot();
                     if (emptyQuickSlot == null)
                     {
                         Debug.Log("퀵슬롯 빈칸 없음");
@@ -145,7 +145,7 @@ public class SlotView : MonoBehaviour,
         if (slotData == null) return;
         if (slotData.item != null)
         {
-            DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+            DragSlotView dragSlotInstance = UIManager.Instance.inventoryGroup.dragSlotInstance;
             dragSlotInstance.slotView = this;
             dragSlotInstance.DragSetImage(itemSprite);
             dragSlotInstance.transform.position = eventData.position;
@@ -157,7 +157,7 @@ public class SlotView : MonoBehaviour,
     {
         if (slotData != null)
         {
-            DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+            DragSlotView dragSlotInstance = UIManager.Instance.inventoryGroup.dragSlotInstance;
 
             dragSlotInstance.transform.position = eventData.position;
         }
@@ -166,7 +166,7 @@ public class SlotView : MonoBehaviour,
     //IEndDragHandler - OnEndDrag - 드래그가 종료됐을 때 드래그 오브젝트에서 호출됩니다.
     public void OnEndDrag(PointerEventData eventData)
     {
-        DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+        DragSlotView dragSlotInstance = UIManager.Instance.inventoryGroup.dragSlotInstance;
 
         dragSlotInstance.DropClearImage();
         dragSlotInstance.slotView = null;
@@ -175,7 +175,7 @@ public class SlotView : MonoBehaviour,
     //IDropHandler - OnDrop - 드래그를 멈췄을 때 해당 오브젝트에서 호출됩니다.
     public void OnDrop(PointerEventData eventData)
     {
-        DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+        DragSlotView dragSlotInstance = UIManager.Instance.inventoryGroup.dragSlotInstance;
 
         // 드랍이 이루어지는 슬롯 => this
 
@@ -193,7 +193,7 @@ public class SlotView : MonoBehaviour,
                 draggedQuickSlot.slotData = A;
 
                 // 현재 슬롯에다 놓았으면 손에 업데이트
-                if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this)
+                if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this)
                 {
                     if (dragSlotInstance.slotView.slotData.item is IEquipable equipable)
                         equipable.EquipToQuickSlot();
@@ -209,7 +209,7 @@ public class SlotView : MonoBehaviour,
             if (this is QuickSlot quick)
             {
                 //QuickSlot AlreadyIn
-                if (UIManager.Instance.inventoryUI.quickSlotParent.IsAlreadyInQuickSlot(dragSlotInstance.slotView.slotData))
+                if (UIManager.Instance.inventoryGroup.quickSlotParent.IsAlreadyInQuickSlot(dragSlotInstance.slotView.slotData))
                 {
                     Debug.Log("이미 아이템이 퀵슬롯에 장착되어 있습니다");
 
@@ -221,7 +221,7 @@ public class SlotView : MonoBehaviour,
                     slotData = dragSlotInstance.slotView.slotData;
 
                     // 장착 아이템을 현재 슬롯에다 놓았으면 손에 업데이트
-                    if (UIManager.Instance.inventoryUI.quickSlotParent.NowSelectedSlot == this 
+                    if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this 
                         && dragSlotInstance.slotView.slotData.item is IEquipable equipable)
                     {
                         equipable.EquipToQuickSlot();
@@ -312,7 +312,7 @@ public class SlotView : MonoBehaviour,
         if (slotData == null) return;
         if (this is QuickSlot) return;
         if (slotData.item != null)
-            UIManager.Instance.inventoryUI.tooltip.ShowToolTip(slotData.item, transform.position);
+            UIManager.Instance.inventoryGroup.tooltip.ShowToolTip(slotData.item, transform.position);
     }
 
     //IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
@@ -321,7 +321,7 @@ public class SlotView : MonoBehaviour,
         if (slotData == null) return;
         if (this is QuickSlot) return;
 
-        UIManager.Instance.inventoryUI.tooltip.HideToolTip();
+        UIManager.Instance.inventoryGroup.tooltip.HideToolTip();
     }
 
 

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BaseCamp_Interactable_Upgrade : InteractableBase
 {
-    // Start is called before the first frame update
     public override void Interact()
     {
         Debug.Log($"업그레이드 UI 활성화");
+        UIManager.Instance.upgradeGroup.OpenPanel_Base();
+
     }
 
     public override void SetInteractableEnable()

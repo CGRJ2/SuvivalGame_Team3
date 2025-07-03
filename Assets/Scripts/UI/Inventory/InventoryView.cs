@@ -17,7 +17,7 @@ public class InventoryView : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.inventoryUI.inventoryView = this;
+        UIManager.Instance.inventoryGroup.inventoryView = this;
 
         slots = itemSlots.GetComponentsInChildren<SlotView>();
 
@@ -38,7 +38,7 @@ public class InventoryView : MonoBehaviour
         }
 
         // Äü½½·Ôµéµµ ¾÷µ¥ÀÌÆ®
-        UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
+        UIManager.Instance.inventoryGroup.quickSlotParent.UpdateQuickSlotView();
     }
 
     private void OnDestroy()
@@ -58,12 +58,12 @@ public class InventoryView : MonoBehaviour
 
     private void OpenInventory()
     {
-        go_inventoryBase.SetActive(true);
+        UIManager.Instance.OpenPanelNotChangeActionMap(go_inventoryBase);
     }
 
     private void CloseInventory()
     {
-        go_inventoryBase.SetActive(false);
+        UIManager.Instance.CloseTargetPanel(go_inventoryBase);
     }
 
     public void OnClickEquipmentTab() => CurrentTab.Value = ItemType.Equipment;

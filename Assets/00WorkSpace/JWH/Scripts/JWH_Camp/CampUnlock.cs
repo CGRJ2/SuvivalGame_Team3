@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,3 +44,4 @@ public class RealUnlockItem
     public string requiredRoomId; // 여기 비어 있으면 방 조건 없음
 }
 
+*/

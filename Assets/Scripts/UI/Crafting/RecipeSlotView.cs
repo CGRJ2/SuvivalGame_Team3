@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class RecipeSlotView : MonoBehaviour
 {
-    [HideInInspector] public Item_Recipe recipeItem;
+     public Item_Recipe recipeItem;
     [SerializeField] private Image image;
     [SerializeField] private Sprite sprite_BlockedSlot;
     
@@ -19,5 +19,5 @@ public class RecipeSlotView : MonoBehaviour
     {
         image.sprite = sprite_BlockedSlot;
     }
-
+    
 }

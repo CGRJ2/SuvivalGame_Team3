@@ -115,5 +115,5 @@ public class DailyManager : Singleton<DailyManager>
 
 public enum TimeZoneState
 {
-    Morning, Afternoon, Evening, Night
+    Morning, Afternoon, Evening, Night, All
 }

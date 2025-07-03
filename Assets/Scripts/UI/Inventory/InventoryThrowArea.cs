@@ -7,7 +7,7 @@ public class InventoryThrowArea : MonoBehaviour, IDropHandler
     // ¾ÆÀÌÅÛ ¹ö¸®±â ¿µ¿ª
     public void OnDrop(PointerEventData eventData)
     {
-        DragSlotView dragSlotInstance = UIManager.Instance.inventoryUI.dragSlotInstance;
+        DragSlotView dragSlotInstance = UIManager.Instance.inventoryGroup.dragSlotInstance;
 
         // Äü½½·ÔÀ» ¿µ¿ª ¹ÛÀ¸·Î »©¸é -> Äü½½·Ô ÇØÁ¦
         if (dragSlotInstance.slotView is QuickSlot quick)
@@ -27,7 +27,7 @@ public class InventoryThrowArea : MonoBehaviour, IDropHandler
             dragSlotInstance.slotView.SlotViewUpdate();
 
             // Äü½½·Ô ºä ¾÷µ¥ÀÌÆ®
-            UIManager.Instance.inventoryUI.quickSlotParent.UpdateQuickSlotView();
+            UIManager.Instance.inventoryGroup.quickSlotParent.UpdateQuickSlotView();
         }
     }
 }

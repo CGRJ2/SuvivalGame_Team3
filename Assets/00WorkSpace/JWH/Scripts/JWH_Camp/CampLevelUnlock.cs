@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,3 +28,4 @@ public class BaseCamp : MonoBehaviour, IInteractable
         Debug.Log("캠프 인터렉");
     }
 }
+*/

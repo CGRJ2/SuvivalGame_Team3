@@ -44,9 +44,15 @@ public class InventoryPresenter
         }
     }
 
+    public void RemoveItem(Item item, int count = 1)
+    {
+        model.RemoveItem(item, count);
+        UpdateUI();
+    }
+
     public void UpdateUI()
     {
-        if (view == null) SetView(UIManager.Instance.inventoryUI.inventoryView);
+        if (view == null) SetView(UIManager.Instance.inventoryGroup.inventoryView);
         // 1. 인벤토리를 열었을 때
         // 2. 인벤토리 내부에서 드래그 앤 드롭이 발생했을 때
         // 3. 인벤토리가 활성화 되어있는 상태에서 아이템이 추가/제거되었을 때

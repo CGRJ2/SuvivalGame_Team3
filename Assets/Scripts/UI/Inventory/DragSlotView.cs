@@ -15,7 +15,7 @@ public class DragSlotView : MonoBehaviour
 
     public void Init()
     {
-        UIManager.Instance.inventoryUI.dragSlotInstance = this;
+        UIManager.Instance.inventoryGroup.dragSlotInstance = this;
     }
 
     public void DragSetImage(Image _itemImage)

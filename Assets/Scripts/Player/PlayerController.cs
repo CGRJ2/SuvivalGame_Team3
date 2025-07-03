@@ -8,7 +8,12 @@ public class PlayerController : MonoBehaviour, IDamagable
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public bool isAttacking;
 
+    // [세이브 & 로드 데이터]
+    // Transform << 정보 저장소도 만들어주세요
+
+    // [세이브 & 로드 데이터]
     public PlayerStatus Status { get; private set; }
+
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
 
@@ -41,7 +46,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     bool isAttackInput;
 
 
-    
+
 
 
     private void Awake() => Init();
@@ -86,6 +91,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         PlayerManager.Instance.instancePlayer = this;
 
+
+
         Status = GetComponent<PlayerStatus>();
         View = GetComponent<PlayerView>();
         Cc = GetComponent<ColliderController>();
@@ -118,13 +125,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 1. 자유 카메라
         freeCamAction = playerControlMap.FindAction("FreeCamMod");
         freeCamAction.Enable();
-        freeCamAction.started += HandleFreeCam;
+        freeCamAction.performed += HandleFreeCam;
         freeCamAction.canceled += HandleFreeCam;
 
         // 2. 상호 작용
         interactAction = playerControlMap.FindAction("Interaction");
         interactAction.Enable();
-        interactAction.started += HandleInteract;
+        interactAction.performed += HandleInteract;
 
         /*// 조준 (포커싱)
         AimingAction = playerControlMap.FindAction("Aiming");
@@ -155,13 +162,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 6. 공격 액션
         attackAction = playerControlMap.FindAction("Attack");
         attackAction.Enable();
-        attackAction.started += HandleAttack;
+        attackAction.performed += HandleAttack;
         attackAction.canceled += HandleAttack;
 
         // 7. 인벤토리 열기(I)
         inventoryOpenAction = playerControlMap.FindAction("Inventory");
         inventoryOpenAction.Enable();
-        inventoryOpenAction.started += OpenInventory;
+        inventoryOpenAction.performed += OpenInventory;
 
         // 8. 퀵슬롯 핫키
         quickSlotActions = playerControlMap.FindAction("QuickSlots");
@@ -172,11 +179,11 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void InputActionsDelete()
     {
         // 1. 자유 카메라
-        freeCamAction.started -= HandleFreeCam;
+        freeCamAction.performed -= HandleFreeCam;
         freeCamAction.canceled -= HandleFreeCam;
 
         // 2. 상호작용
-        interactAction.started -= HandleInteract;
+        interactAction.performed -= HandleInteract;
 
         /*AimingAction.performed -= HandleAiming;
         AimingAction.canceled -= HandleAiming;*/
@@ -193,13 +200,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 5. 앉기 액션
         crouchAction.performed -= HandleCrouch;
         crouchAction.canceled -= HandleCrouch;
-        
+
         // 6. 공격 액션
         attackAction.performed -= HandleAttack;
         attackAction.canceled -= HandleAttack;
 
         // 7. 인벤토리 열기(I)
-        attackAction.started -= OpenInventory;
+        attackAction.performed -= OpenInventory;
 
         // 8. 퀵슬롯 핫키
         quickSlotActions.performed -= OnQuickSlotPerformed;
@@ -251,7 +258,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleFreeCam(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
         {
             isFreeCamModInput = true;
             View.FreeCamSet(true);
@@ -309,7 +316,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
             isAttackInput = true;
         if (context.canceled)
             isAttackInput = false;
@@ -317,14 +324,14 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleInteract(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.performed)
             Interact();
     }
 
     public void OpenInventory(InputAction.CallbackContext context)
     {
-        if (context.started)
-            UIManager.Instance.inventoryUI.inventoryView.TryOpenInventory();
+        if (context.performed)
+            UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
     }
 
     private void OnQuickSlotPerformed(InputAction.CallbackContext context)
@@ -341,7 +348,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void SelectQuickSlot(int index)
     {
         Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryUI.quickSlotParent.SelectQuickSlot(index - 1);
+        UIManager.Instance.inventoryGroup.quickSlotParent.SelectQuickSlot(index - 1);
         // 손에 드는 아이템 교체
     }
     #endregion
@@ -506,9 +513,15 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if (damagables.Length < 1) return;
 
+        int finalDamage = Status.Damage;
+        if (Status.onHandItem is Item_Weapon weapon)
+        {
+            finalDamage += weapon.Damage;
+        }
+
         foreach (IDamagable damagable in damagables)
         {
-            damagable.TakeDamage(Status.Damage);
+            damagable.TakeDamage(finalDamage);
         }
     }
 
@@ -516,7 +529,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         IInteractable interactable = Cc.InteractableObj;
 
-        if (interactable != null) 
+        if (interactable != null)
             interactable.Interact();
     }
 
@@ -536,9 +549,17 @@ public class PlayerController : MonoBehaviour, IDamagable
                 activeBodyPart.Add(part);
         }
 
-        // 부위 랜덤 데미지
-        int r = Random.Range(1, activeBodyPart.Count);
-        activeBodyPart[r].TakeDamage(damage);
+        if (activeBodyPart.Count > 1)
+        {
+            // 부위 랜덤 데미지
+            int r = Random.Range(1, activeBodyPart.Count);
+            activeBodyPart[r].TakeDamage(damage);
+        }
+        else if (activeBodyPart.Count > 0)
+        {
+            // 머리만 남은 상태면 머리에 데미지
+            activeBodyPart[0].TakeDamage(damage);
+        }
 
         Status.CheckCriticalState();
         StartCoroutine(InvincibleRoutine(Status.DamagedInvincibleTime));
@@ -555,6 +576,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
 
+
+    // 단순 위치만 이동해주기
+    public void Respawn(Transform transform)
+    {
+        this.transform.position = transform.position;
+        this.transform.rotation = transform.rotation;
+    }
     #endregion
 
 
