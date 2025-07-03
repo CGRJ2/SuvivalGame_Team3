@@ -252,17 +252,7 @@ public class CatAI : BaseMonster
     //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
     //    RB.MovePosition(targetPosition);
     //}
-    public override void MoveTo(Vector3 destination)
-    {
-        if (agent == null)
-        {
-            Debug.LogWarning("NavMeshAgent가 없습니다!");
-            return;
-        }
-
-        agent.speed = CatData.chaseMoveSpeed;
-        agent.SetDestination(destination);
-    }
+    
     public void MoveToRespawn()
     {
         if (respawnPoint != null)
@@ -274,8 +264,9 @@ public class CatAI : BaseMonster
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Transform attackerTransform)
     {
+
     }
     protected override void Die()
     {

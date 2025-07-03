@@ -144,9 +144,10 @@ public class Spawner : MonoBehaviour
         {
             // 인스턴스 소환
             GameObject instance = Instantiate(selectedPrefabs, transform);
+            ISpawnable spawnable = instance.GetComponent<ISpawnable>();
 
             // 예외처리
-            if (instance.GetComponent<ISpawnable>() == null) { Debug.LogError("ISpawnable 인터페이스가 없는 오브젝트를 소환하려함!"); return; }
+            if (spawnable == null) { Debug.LogError("ISpawnable 인터페이스가 없는 오브젝트를 소환하려함!"); return; }
 
             // 해당 리스트 그룹에 활성된 오브젝트 리스트 찾기
             SpawnerListGroup tartgetSpawnerListGroup = StageManager.Instance.GetSpawnerListGroup(stageOrigin.stageKey);
@@ -163,8 +164,9 @@ public class Spawner : MonoBehaviour
             currentSpawned_Instance = instance;
 
             // 해당 오브젝트 파괴(or 비활성화) 시 실행될 Action에 (활성된 오브젝트 리스트에 인스턴스 제거) 함수 저장
-            instance.GetComponent<ISpawnable>().DeactiveAction = () =>
+            spawnable.DeactiveAction = () =>
             {
+                spawnable.OriginTransform = transform;
                 targetActiveList.Remove(instance);
                 currentSpawned_Instance = null;
             };

@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         /// 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            TakeDamage(10);
+            TakeDamage(10, transform);
         }
         ///
         /////////////////////////////
@@ -526,7 +526,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         {
             Debug.Log("어택실행03");
 
-            damagable.TakeDamage(finalDamage);
+            damagable.TakeDamage(finalDamage, transform);
+
             Debug.Log("어택실행04");
 
         }
@@ -541,7 +542,7 @@ public class PlayerController : MonoBehaviour, IDamagable
             interactable.Interact();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform transform)
     {
         // 무적 상태라면 return;
         if (Status.isInvincible) return;

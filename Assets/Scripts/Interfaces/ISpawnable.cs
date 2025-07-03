@@ -7,4 +7,6 @@ using UnityEngine;
 public interface ISpawnable
 {
     public Action DeactiveAction { get; set; }
+    public Transform OriginTransform { get; set; }
+
 }

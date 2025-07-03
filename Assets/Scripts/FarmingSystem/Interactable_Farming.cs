@@ -14,6 +14,7 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     [SerializeField] FarmingType dropType;
 
     public Action DeactiveAction { get; set; }
+    public Transform OriginTransform { get; set; }
 
     private void OnDisable()
     {

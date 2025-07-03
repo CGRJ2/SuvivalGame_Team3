@@ -89,7 +89,7 @@ public class MonsterFactory : MonoBehaviour
             }
 
 
-            monster.SetData(data, typeStat, stageStat);
+            //monster.SetData(data, typeStat, stageStat);
             return monster;
         }
 

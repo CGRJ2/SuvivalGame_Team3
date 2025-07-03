@@ -135,17 +135,7 @@ public class OwnerAI : BaseMonster
     //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
     //    RB.MovePosition(targetPosition);
     //}
-    public override void MoveTo(Vector3 destination)
-    {
-        if (agent == null)
-        {
-            Debug.LogWarning("NavMeshAgent가 없습니다!");
-            return;
-        }
-
-        agent.speed = OwnerData.moveSpeed; // Owner 스테이터스 반영
-        agent.SetDestination(destination);
-    }
+    
     public void MoveToRespawn()
     {
         if (respawnPoint != null)
@@ -177,7 +167,7 @@ public class OwnerAI : BaseMonster
             Debug.Log("[Owner] , 수면 상태 진입");
         }
     }
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Transform attackerTransform)
     {
     }
     protected override void Die()
