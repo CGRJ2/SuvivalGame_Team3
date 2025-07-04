@@ -35,9 +35,6 @@ using static PlayerView;
 //        case CutsceneType.Room:
 //            switch (cutsceneType)
 //            {
-
-//                //case 0: animator.SetTrigger("RoomCutsceneA"); break;
-//                //case 1: animator.SetTrigger("RoomCutsceneB"); break;
 //                case 0: Debug.Log("RoomCutsceneA 트리거 실행"); break;
 //                case 1: Debug.Log("RoomCutsceneB 트리거 실행"); break;
 
