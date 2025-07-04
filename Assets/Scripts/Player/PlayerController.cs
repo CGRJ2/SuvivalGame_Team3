@@ -20,13 +20,13 @@ public class PlayerController : MonoBehaviour, IDamagable
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
 
-    public Vector3 InputDir { get; private set; }
-    public Vector2 MouseInputDir { get; private set; }
+    [HideInInspector] public Vector3 InputDir { get; private set; }
+    [HideInInspector] public Vector2 MouseInputDir { get; private set; }
 
     [SerializeField] Transform[] TPS_Cameras;
     int currentZoomIndex = 1;
 
-    private InputAction AimingAction;
+    //private InputAction AimingAction;
     private InputAction sprintAction;
     private InputAction jumpAction;
     private InputAction crouchAction;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private InputAction freeCamAction;
     private InputAction interactAction;
     private InputAction inventoryOpenAction;
-    private InputAction inventoryOffAction;
+    //private InputAction inventoryOffAction;
     private InputAction quickSlotActions;
 
 
@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour, IDamagable
     bool isFreeCamModInput;
     bool isAttackInput;
 
+    private Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
+    private float SmoothTime = 0.1f; // 보간 속도
+    private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
 
     public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
 
@@ -58,9 +61,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Awake() => Init();
 
-    public Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
-    public float SmoothTime = 0.1f; // 보간 속도
-    private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
+    
     private void Update()
     {
         ///////////////////////////
@@ -94,7 +95,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         HandleMove();
     }
 
-    private void OnDestroy() => InputActionsDelete();
+    private void OnDestroy() 
+    {
+        DataManager dm = DataManager.Instance;
+        dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
+
+        InputActionsDelete(); 
+    }
 
     private void Init()
     {
@@ -107,10 +114,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         InputActionsInit();
         StateMachineInit();
-
-        
-
-
 
         // 데이터 로드할 때 Status를 로드한 데이터로 교체
         DataManager dm = DataManager.Instance;
@@ -133,6 +136,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 배치 완료 후 뷰 업데이트
         Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
         Status.inventory.UpdateUI();
+
+        Debug.Log("플레이어 데이터 구독자 함수 완료");
     }
 
     public void StateMachineInit()

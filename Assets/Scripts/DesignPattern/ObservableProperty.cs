@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -41,4 +43,5 @@ public class ObservableProperty<T>
     {
         _onValueChanged?.Invoke(Value);
     }
+
 }

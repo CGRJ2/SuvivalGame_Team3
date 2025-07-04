@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class CampInstance : MonoBehaviour
 {
-    [SerializeField] protected Transform respawnPoint;
+    public Transform respawnPoint;
 }

@@ -237,6 +237,8 @@ public class StageManager : Singleton<StageManager>
 
         // 2. 스포너 초기화 후 루틴 재시작
         InitSpawnerRoutines();
+
+        Debug.Log("스테이지 매니저 데이터 구독자 함수 완료");
     }
 
     public void InitSpawnerRoutines()

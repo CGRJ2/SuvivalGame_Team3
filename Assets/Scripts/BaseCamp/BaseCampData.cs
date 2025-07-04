@@ -13,7 +13,8 @@ public class BaseCampData
     public UpgradingProcess upgradingProcess = new UpgradingProcess();
 
     // 
-    public Transform baseCampTransform;
+    public Vector3 baseCampPosition;
+    public Quaternion baseCampRotation;
 }
 
 [System.Serializable]

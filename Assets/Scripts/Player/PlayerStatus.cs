@@ -86,9 +86,6 @@ public class PlayerStatus : IDisposable
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
 
-        // 일반 로드 함수 실행
-        Debug.Log("마지막에 저장한 데이터 로드해서 붙이기");
-
         // 정신력, 배터리만 최대로 맞춰주기
         CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
         InitBattery();
@@ -207,7 +204,9 @@ public class PlayerStatus : IDisposable
                     bodyParts[i].CurrentMaxHp = ssm.bodyPartSystem.LegMaxHP_AfterDestroyed;
                     break;
             }
-        } 
+
+            bodyParts[i].Hp = bodyParts[i].CurrentMaxHp;
+        }
 
     }
 

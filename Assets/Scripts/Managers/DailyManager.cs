@@ -58,6 +58,9 @@ public class DailyManager : Singleton<DailyManager>
         currentTimeData.CurrentDay.Value = saveDataGroup.currentTimeData.CurrentDay.Value;
         currentTimeData.CurrentTime = saveDataGroup.currentTimeData.CurrentTime;
         currentTimeData.TZ_State.Value = saveDataGroup.currentTimeData.TZ_State.Value;
+
+
+        Debug.Log("데일리 매니저 구독자 함수 실행 완료");
     }
 
     private void Start()

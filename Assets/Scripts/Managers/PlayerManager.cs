@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -29,8 +27,6 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] public float jumpForce_Init;
     [SerializeField] public int damage_Init;
     [SerializeField][Range(0.1f, 2)] public float mouseSensitivity_Init;
-    
-
 
 
 
@@ -42,10 +38,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void OnDestroy()
     {
+
     }
 
     // => 배터리가 0이 되었을 때 호출
-    public void PlayerFaint(int currentBattery) 
+    public void PlayerFaint(int currentBattery)
     {
         if (currentBattery > 0) return;
 
@@ -63,67 +60,29 @@ public class PlayerManager : Singleton<PlayerManager>
         StageManager.Instance.InitSpawnerRoutines();
 
         // 위치 이동
-        MoveToLastCamp();
+        BaseCampManager.Instance.MoveToLastCamp(false);
 
         // 자동 저장
         //dm.SaveData(0);
     }
 
     // => 머리 내구도가 0이 되었을 때 호출
-    public void PlayerDead() 
+    public void PlayerDead()
     {
-        //마지막 세이브 데이터로 이동(날짜, 시간 / 맵 내의 몬스터 & 파밍 오브젝트 정보 초기화 / 플레이어 정보 초기화)
+        // 로드
+        // 마지막 세이브 데이터로 이동(날짜, 시간 / 맵 내의 몬스터 & 파밍 오브젝트 정보 초기화 / 플레이어 정보 초기화), 위치 이동
         dm.LoadData(0);
 
         // 부위별 최대 내구도 깎고 시작
-        instancePlayer.Status.Init_AfterDead(); 
+        instancePlayer.Status.Init_AfterDead();
 
-        // 위치 이동
-        MoveToLastCamp();
+        // 최근 임시텐트 있다면 파괴
+        if (BaseCampManager.Instance.currentTempCampInstance != null)
+            BaseCampManager.Instance.currentTempCampInstance.DestroyWithData();
 
         // 자동 저장
         dm.SaveData(0);
-
     }
 
-    // 마지막으로 저장된 캠프로 이동
-    public void MoveToLastCamp()
-    {
-        BaseCampManager bcm = BaseCampManager.Instance;
-        Debug.Log("마지막으로 저장된 캠프로 이동");
-
-        // 간이 캠프 데이터가 있다면 
-        if (bcm.tempCampData.respawnPoint != null)
-        {
-            Debug.Log("간이캠프로 이동");
-            instancePlayer.Respawn(bcm.tempCampData.respawnPoint);
-
-            // 인스턴스가 있다면 
-            if (bcm.currentTempCampInstance != null)
-            {
-                // 간이캠프 소모(파괴)
-                bcm.currentTempCampInstance.DestroyTempCamp();
-            }
-            // 인스턴스가 없다면 
-            else
-            {
-                // 현재 리스폰 포인트(이전에 저장된 간이 캠프 위치)에 간이 캠프 프리펩 소환
-                GameObject tempCampInstance = bcm.SpawnTempBaseCampInstance(bcm.tempCampData.respawnPoint);
-                TemporaryCampInstance temp = tempCampInstance.GetComponent<TemporaryCampInstance>();
-                
-                // 간이캠프 소모(파괴)
-                if (temp != null) temp.DestroyTempCamp();
-            }
-
-            // 간이 캠프에서 리스폰 되면서 간이캠프 제거
-            bcm.tempCampData = null;
-        }
-        // 없으면 베이스캠프로 이동
-        else
-        {
-            Debug.Log("베이스캠프로 이동");
-            instancePlayer.Respawn(bcm.baseCampInstance.GetRespawnPointTransform());
-        }
-    }
 
 }
