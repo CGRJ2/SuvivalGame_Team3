@@ -59,7 +59,7 @@ public class BossMonster : BaseMonster
         if (SetPerceptionState(MonsterPerceptionState.Alert))
             stateMachine.ChangeState(new BossPhase1AttackState());
         else
-            stateMachine.ChangeState(new MonsterIdleState());
+            stateMachine.ChangeState(new MonsterIdleState(this));
     }
     // 오버라이드 
     public void phase2TryAttack(BossAttackPattern pattern)

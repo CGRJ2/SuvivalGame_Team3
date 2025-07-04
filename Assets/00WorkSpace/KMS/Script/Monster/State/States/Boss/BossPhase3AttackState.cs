@@ -43,7 +43,7 @@ public class BossPhase3AttackState : IMonsterState
         }
         if (monster.IsOutsideActionRadius())
         {
-            monster.StateMachine.ChangeState(new MonsterIdleState());
+            monster.StateMachine.ChangeState(new MonsterIdleState(bossMonster));
             return;
         }
 

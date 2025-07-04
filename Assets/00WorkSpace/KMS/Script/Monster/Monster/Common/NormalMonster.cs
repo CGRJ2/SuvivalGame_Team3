@@ -18,7 +18,7 @@ public class NormalMonster : BaseMonster
         }
         else
         {
-            stateMachine.ChangeState(new MonsterIdleState());
+            stateMachine.ChangeState(new MonsterIdleState(this));
         }
     }
     protected override void Phase2TryAttack()

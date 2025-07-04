@@ -16,6 +16,7 @@ public class MonsterAlertState : IMonsterState
 
     public void Execute()
     {
+        Debug.Log($"[Alert] 공격범위 체크: {monster.IsInAttackRange()} target: {(monster.GetTarget() == null ? "null" : monster.GetTarget().name)} attackRange: {monster.data.AttackRange}");
         //float distanceFromOrigin = Vector3.Distance(monster.OriginPosition, monster.transform.position);
         //float triggerDistance = monster.ActionRadius * returnTriggerRatio;
 
@@ -29,6 +30,7 @@ public class MonsterAlertState : IMonsterState
 
         // (이하 기존 Alert 상태 동작)
         if (monster.checkTargetVisible)
+
             monster.IncreaseAlert(15f);
 
         //var target = monster.GetTarget();
