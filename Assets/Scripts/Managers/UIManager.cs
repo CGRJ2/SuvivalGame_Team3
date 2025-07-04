@@ -8,6 +8,9 @@ public class UIManager : Singleton<UIManager>
 {
     PlayerManager pm;
 
+    // Popup
+    public PopUpUIGroup popUpUIGroup;
+
     // HUD
     public HUD_UIGroup hudGroup;
 

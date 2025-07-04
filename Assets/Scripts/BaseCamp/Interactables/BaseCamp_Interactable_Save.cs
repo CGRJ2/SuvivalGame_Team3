@@ -6,12 +6,15 @@ public class BaseCamp_Interactable_Save : InteractableBase
 {
     public override void Interact()
     {
+        base.Interact();
+
         //UIManager.Instance.SaveUI
         Debug.Log($"Save UI 활성화");
     }
 
-    public override void SetInteractableEnable()
+    public override void ShowInteractableUI()
     {
-        Debug.Log($"{gameObject.name} : 상호작용 범위 진입");
+        base.ShowInteractableUI();
+        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"하루 마무리: (E)";
     }
 }

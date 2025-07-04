@@ -16,10 +16,7 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     public Action DeactiveAction { get; set; }
     public Transform OriginTransform { get; set; }
 
-    private void OnDisable()
-    {
-        DeactiveAction?.Invoke();
-    }
+        
 
     // 드랍테이블 정보에 기입된 개수만큼 아이템 인스턴스 생성 반복
     public void DropItemInstances(DropInfo dropInfo)
@@ -35,6 +32,12 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     {
         // 일단 파괴 ===> 오브젝트풀 패턴으로 수정해야됨
         Destroy(gameObject);
+    }
+
+    public override void OnDisableActions()
+    {
+        base.OnDisableActions();
+        DeactiveAction?.Invoke();
     }
 
     public override void Interact()
@@ -74,11 +77,12 @@ public class Interactable_Farming : InteractableBase, ISpawnable
         }
     }
 
-    public override void SetInteractableEnable()
+    public override void ShowInteractableUI()
     {
-        base.SetInteractableEnable();
+        base.ShowInteractableUI();
 
-        Debug.Log($"{gameObject.name} : 채집(E) 팝업 UI 활성화");
+        // 파밍 오브젝트 종류별로 다르게 설정 필요
+        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"채집: (E)";
     }
     
     

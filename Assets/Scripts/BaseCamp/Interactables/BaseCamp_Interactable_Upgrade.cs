@@ -6,13 +6,17 @@ public class BaseCamp_Interactable_Upgrade : InteractableBase
 {
     public override void Interact()
     {
+        base.Interact();
+
         Debug.Log($"업그레이드 UI 활성화");
         UIManager.Instance.upgradeGroup.OpenPanel_Base();
 
     }
 
-    public override void SetInteractableEnable()
+    public override void ShowInteractableUI()
     {
-        Debug.Log($"{gameObject.name} : 상호작용 범위 진입");
+        base.ShowInteractableUI();
+
+        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"캠프 업그레이드: (E)";
     }
 }
