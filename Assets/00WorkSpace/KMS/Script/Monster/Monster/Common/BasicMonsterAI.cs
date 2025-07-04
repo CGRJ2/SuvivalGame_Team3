@@ -18,7 +18,7 @@ public class BasicMonsterAI : BaseMonster
     {
         if (IsDead) return;
 
-        Debug.Log($"[AI] target: {(target == null ? "null" : target.name)} checkTargetVisible: {checkTargetVisible}");
+        //Debug.Log($"[AI] target: {(target == null ? "null" : target.name)} checkTargetVisible: {checkTargetVisible}");
 
         if (checkTargetVisible)
         {
