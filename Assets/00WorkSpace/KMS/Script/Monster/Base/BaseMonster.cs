@@ -95,7 +95,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     private IMonsterSensor sensor;
 
     protected IMonsterStateFactory stateFactory;
-    protected virtual void Awake()
+    protected virtual void Awake() => Init();
+    
+    public virtual void Init()
     {
 
         stateMachine = new MonsterStateMachine(this);

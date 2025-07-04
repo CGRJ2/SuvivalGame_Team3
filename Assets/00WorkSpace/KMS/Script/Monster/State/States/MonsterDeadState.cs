@@ -11,7 +11,7 @@ public class MonsterDeadState : IMonsterState
     {
         this.monster = monster;
         animationPlayed = false;
-
+        monster.Agent.enabled = false;
         if (monster.IsDead)
         {
             monster.GetComponent<MonsterView>()?.PlayMonsterDeathAnimation();
