@@ -3,7 +3,7 @@ using UnityEngine;
 public class MonsterSuspiciousState : IMonsterState
 {
     private BaseMonster monster;
-    private float stateDuration = 4f;
+    private float stateDuration = 3f;
     private float stateTimer = 0f;
 
     public void Enter(BaseMonster monster)
@@ -24,7 +24,7 @@ public class MonsterSuspiciousState : IMonsterState
 
         // Suspicious 상태에서는 경계도만 점진적으로 상승
         if (monster.checkTargetVisible)
-            monster.IncreaseAlert(Time.deltaTime * 5f);
+            monster.IncreaseAlert(Time.deltaTime * 15f);
 
         // Suspicious 최소 유지 시간 경과 후에만 상태 평가
         if (stateTimer >= stateDuration)
