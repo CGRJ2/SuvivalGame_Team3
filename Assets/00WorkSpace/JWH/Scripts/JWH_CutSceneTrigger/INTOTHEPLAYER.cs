@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerView;
 
 
 
-
+////아마도 플레이어 컨트롤러?
 //public void StartCatCutscene(CatAI cat)
 //{
 //    int rand = Random.Range(0, 2);
 
-//    player.view.PlayCutscene(rand, CutsceneType.Cat);
+//    View.PlayCutscene(rand, CutsceneType.Cat);
 //    cat.PlayCutsceneAnim(rand);
 
 //    // 추가 연출 작성
@@ -17,9 +18,10 @@ using UnityEngine;
 
 
 
-
+//플레이어 뷰에서 사용?
 //public void PlayCutscene(int cutsceneType, CutsceneType source)
 //{
+//    Debug.Log($"PlayCutscene Type: {source}, Index: {cutsceneType}");
 //    switch (source)
 //    {
 //        case CutsceneType.Cat:
@@ -33,11 +35,15 @@ using UnityEngine;
 //        case CutsceneType.Room:
 //            switch (cutsceneType)
 //            {
-//                //Debug.Log($"컷씬 테스트 타입={source}, 번호={cutsceneType}");
-//                case 0: animator.SetTrigger("RoomCutsceneA"); break;
-//                case 1: animator.SetTrigger("RoomCutsceneB"); break;
+
+//                //case 0: animator.SetTrigger("RoomCutsceneA"); break;
+//                //case 1: animator.SetTrigger("RoomCutsceneB"); break;
+//                case 0: Debug.Log("RoomCutsceneA 트리거 실행"); break;
+//                case 1: Debug.Log("RoomCutsceneB 트리거 실행"); break;
+
 //            }
 //            break;
+
 
 //            //추가 가능
 //    }
