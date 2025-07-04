@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebd6f6dcb2a45344fb7e775a01c1b434, type: 3}
+  m_Script: {fileID: 11500000, guid: 017eac00d41321945923724b337478dd, type: 3}
   m_Name: "02(\uC637\uBC29)_FO_Table"
   m_EditorClassIdentifier: 
-  level: 2
   stageKey: 2
-  objectList: []
+  objectList:
+  - spawnObject: {fileID: 151546371286991669, guid: c52ccafff6bf0324ba5e0edf4dd44150, type: 3}
+    objectWeight: 60
+  - spawnObject: {fileID: 151546371286991669, guid: 94060d429c9e0914aa6ca6c806ff1b89, type: 3}
+    objectWeight: 40

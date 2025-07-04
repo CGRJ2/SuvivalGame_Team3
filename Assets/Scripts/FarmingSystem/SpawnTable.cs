@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawnTable : ScriptableObject
 {
-    public int level;
     public StageKey stageKey;
     public List<SpawnObjectInfo> objectList;
 

@@ -11,23 +11,23 @@ public class SpawnTable_Monster : SpawnTable
         switch (stageKey)
         {
             case StageKey.All:
-                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monster/99Generic");
+                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/99Generic");
                 break;
 
             case StageKey.거실:
-                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monster/00LivingRoom");
+                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/00LivingRoom");
                 break;
 
             case StageKey.서재:
-                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monster/01Library");
+                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/01Library");
                 break;
 
             case StageKey.옷방:
-                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monster/02DressRoom");
+                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/02DressRoom");
                 break;
 
             case StageKey.안방:
-                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monster/03MasterBedroom");
+                prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/03MasterBedroom");
                 break;
 
             default: prefabs = new GameObject[0]; break;

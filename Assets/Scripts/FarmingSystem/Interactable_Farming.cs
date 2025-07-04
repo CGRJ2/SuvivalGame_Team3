@@ -12,6 +12,7 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     [SerializeField] DropTable dropTable;
     [SerializeField] Transform itemSpawnPoint;
     [SerializeField] FarmingType dropType;
+    [SerializeField] GameObject destroyFxPrefab;
 
     public Action DeactiveAction { get; set; }
     public Transform OriginTransform { get; set; }
@@ -31,6 +32,23 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     public void DeactiveAfterFarmingDone()
     {
         // 일단 파괴 ===> 오브젝트풀 패턴으로 수정해야됨
+        StartCoroutine(DestroyRouinte(1f));
+    }
+
+    private IEnumerator DestroyRouinte(float duration)
+    {
+        // 파괴 FX 실행(gameObject활성화)
+        destroyFxPrefab.SetActive(true);
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        // 파괴 FX 비활성화
+        destroyFxPrefab.SetActive(false);
         Destroy(gameObject);
     }
 
