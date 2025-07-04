@@ -197,7 +197,11 @@ public class StageManager : Singleton<StageManager>
     private void RandomSpawnerStartSpawning(List<Spawner> spawnableList, int maxCount, float respawnTime)
     {
         // 대기 중인 스포너들 중 랜덤 선택
-        if (spawnableList.Count == 0) { Debug.LogError("모든 스포너에 인스턴스가 생성되어있음"); return; }
+        if (spawnableList.Count == 0) 
+        {
+            //Debug.LogError("모든 스포너에 인스턴스가 생성되어있음");
+            return;
+        }
 
         int r = UnityEngine.Random.Range(0, spawnableList.Count);
         spawnableList[r].StartSpawning(respawnTime);
