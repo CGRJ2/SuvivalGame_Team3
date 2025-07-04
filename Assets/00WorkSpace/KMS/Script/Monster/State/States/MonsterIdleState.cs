@@ -16,6 +16,10 @@ public class MonsterIdleState : IMonsterState
     private Quaternion baseRotationTarget;
     private float baseRotateSmooth = 2f; // 기준방향 회전 속도
 
+    public MonsterIdleState(BaseMonster monster)
+    {
+        this.monster = monster;
+    }
     public void Enter(BaseMonster monster)
     {
 

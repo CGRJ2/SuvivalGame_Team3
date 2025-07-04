@@ -13,7 +13,7 @@ public class DefaultMonsterStateFactory : IMonsterStateFactory
 
     public DefaultMonsterStateFactory(BaseMonster owner)
     {
-        idleState = new MonsterIdleState();
+        idleState = new MonsterIdleState(owner);
         suspiciousState = new MonsterSuspiciousState();
         searchState = new MonsterSearchState();
         alertState = new MonsterAlertState();
