@@ -24,6 +24,9 @@ public class UIController : MonoBehaviour
     [Header("Quick Slot")]
     public GameObject quickSlot;
 
+    [Header("NPCTalk")]
+    public GameObject NPCTalk;
+
     [Header("Location Notification")]
     public GameObject locationPanel;
     public TextMeshProUGUI locationText;
@@ -80,13 +83,19 @@ public class UIController : MonoBehaviour
         panel.SetActive(false);
     }
 
-    // ==== 상호작용 안내 On/Off ====
+    // 상호작용 안내 On/Off
     public void ShowInteractionPrompt(bool isShow)
     {
         if (interactionPrompt != null) interactionPrompt.SetActive(isShow);
     }
 
-    // ==== 인벤토리 On/Off ====
+    // NPC 대화 On/Off
+    public void ShowNPCTalk(string msg, float duration = 2f)
+    {
+        StartCoroutine(ShowAndHide(collectPanel, collectText, msg, duration));
+    }
+
+    // 인벤토리 On/Off
     public void ShowInventory(bool isShow)
     {
         if (inventoryPanel != null) inventoryPanel.SetActive(isShow);
@@ -99,13 +108,13 @@ public class UIController : MonoBehaviour
         else Cursor.visible = false;
     }
 
-    // ==== 커맨드 On/Off ====
+    // 커맨드 On/Off
     public void ShowCommand(bool isShow)
     {
         if (commandPanel != null) commandPanel.SetActive(isShow);
     }
 
-    // ==== 크래프트 On/Off ====
+    // 크래프트 On/Off
     public void ShowCraftPanel(bool isShow)
     {
         if(craftPanel != null) craftPanel.SetActive(isShow);
@@ -127,6 +136,7 @@ public class UIController : MonoBehaviour
             if (quickSlot != null) quickSlot.SetActive(true);
         }
     }
+    // 제작 창 닫기
     public void CloseCraftPanel(bool isShow)
     {
         if (isShow) craftPanel.SetActive(false);

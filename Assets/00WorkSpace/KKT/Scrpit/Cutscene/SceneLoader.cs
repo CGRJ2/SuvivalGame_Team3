@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class SceneLoader : MonoBehaviour
@@ -28,6 +29,12 @@ public class SceneLoader : MonoBehaviour
     public void GoToGameScene()
     {
         SceneManager.LoadScene("KKT_GameSceneTest");
+    }
+
+    // 세이브 이동
+    public void GoToPayloadScene()
+    {
+        SceneManager.LoadScene("KKT_PayloadSceneTest");
     }
 
     // 특정 인덱스의 씬으로 이동
