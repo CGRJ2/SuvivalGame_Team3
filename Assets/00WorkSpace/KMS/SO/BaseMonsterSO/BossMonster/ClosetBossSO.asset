@@ -29,6 +29,8 @@ MonoBehaviour:
   eyeHeight: 1.5
   targetType: 0
   actionRadius: 20
+  WaitTimeMin: 1
+  WaitTimeMax: 4
   dropItemPrefab: {fileID: 0}
   monsterPrefab: {fileID: 0}
   spawnPosition: {x: 0, y: 0, z: 0}
@@ -42,3 +44,5 @@ MonoBehaviour:
   phase3AttackCooldown: 25
   phase2AnimSpeed: 2.5
   phase3AnimSpeed: 3
+  phase2PatternSO: {fileID: 11400000, guid: efa331d66d87f904aa4c48182f28ba5b, type: 2}
+  phase3PatternSO: {fileID: 11400000, guid: 969990ddee5a9964fab83274b52babd7, type: 2}
