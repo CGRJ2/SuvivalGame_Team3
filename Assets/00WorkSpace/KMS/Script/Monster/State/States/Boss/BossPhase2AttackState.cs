@@ -41,7 +41,7 @@ public class BossPhase2AttackState : IMonsterState
             return;
         }
         // 감지범위 밖으로 나가면 Idle상태
-        if (monster.IsOutsideActionRadius())
+        if (monster.IsOutsideDetectionRadius())
         {
             monster.StateMachine.ChangeState(new MonsterIdleState(bossMonster));
             return;

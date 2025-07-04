@@ -64,8 +64,7 @@ public class MonsterAlertState : IMonsterState
 
         if (monster.AlertLevel < monster.AlertThreshold_Low)
         {
-            monster.SetPerceptionState(MonsterPerceptionState.Idle);
-            monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle));
+            monster.StateMachine.ChangeState(new MonsterIdleState(monster));
             Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
         }
     }

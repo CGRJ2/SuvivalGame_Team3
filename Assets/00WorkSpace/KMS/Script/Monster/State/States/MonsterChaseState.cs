@@ -39,7 +39,7 @@ public class MonsterChaseState : IMonsterState
             if (lostTimer >= chaseLoseDelay)
             {
                 Debug.Log($"[{monster.name}] 추적 실패 → Idle 전이");
-                monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle));
+                monster.StateMachine.ChangeState(new MonsterIdleState(monster));
             }
             return;
         }

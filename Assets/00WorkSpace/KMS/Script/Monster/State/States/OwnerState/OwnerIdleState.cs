@@ -14,7 +14,7 @@ public class OwnerIdleState : IMonsterState
         idleTimer = 0f;
         idleDuration = Random.Range(1f, 3f); // 어린이라 가만히 있지를 못함.
 
-        monster.SetPerceptionState(MonsterPerceptionState.Idle);
+        monster.StateMachine.ChangeState(new MonsterIdleState(monster));
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
 
         Debug.Log($"[{monster.name}] 상태: Owner 진입 (대기 {idleDuration:F1}s)");

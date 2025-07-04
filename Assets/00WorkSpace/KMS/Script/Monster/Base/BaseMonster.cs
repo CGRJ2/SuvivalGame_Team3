@@ -31,7 +31,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     protected float currentFOV;
     protected float currentDetectionRange;
     protected float attackRange;
-    
+
     protected MonsterTargetType targetType;
     protected MonsterPerceptionState perceptionState = MonsterPerceptionState.Idle;
 
@@ -60,21 +60,20 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     // 행동 반경
     [SerializeField] protected float actionRadius = 10f;
-    
+
 
     // 회전 속도
     [SerializeField] protected float rotationSpeed = 7f;
 
     public float RotationSpeed => rotationSpeed;
 
-    private float moveTimer = 0f;
     private Vector3 currentDirection;
 
     public float AlertLevel => perceptionController.GetAlertLevel();
     public float AlertThreshold_Low => alertThreshold_Low;
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
-    
+
     public float ActionRadius => actionRadius;
 
 
@@ -88,10 +87,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     [SerializeField] private DropTable dropTable;
 
 
-   public IMonsterState GetIdleState() => idleState;
-   public IMonsterState GetAlertState() => alertState;
-   public IMonsterState GetSearchState() => searchState;
-   public IMonsterState GetSuspiciousState() => suspiciousState;
+    public IMonsterState GetIdleState() => idleState;
+    public IMonsterState GetAlertState() => alertState;
+    public IMonsterState GetSearchState() => searchState;
+    public IMonsterState GetSuspiciousState() => suspiciousState;
 
     private IMonsterSensor sensor;
 
@@ -106,7 +105,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         agent = GetComponent<NavMeshAgent>();
         if (view == null)
 
-        idleState = stateFactory.CreateIdleState();
+            idleState = stateFactory.CreateIdleState();
         suspiciousState = stateFactory.CreateSuspiciousState();
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
@@ -166,14 +165,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         stateMachine.Update();
         HandleState();
         perceptionController.Update();
-
-        if (stateMachine.CurrentState is MonsterIdleState) // Idle 상태 진입시
-        {
-            HandleWanderMovement(); //랜덤 이동
-        }
     }
 
-    protected void OnDisable()
+    protected virtual void OnDisable()
     {
         DeactiveAction?.Invoke();
     }
@@ -252,23 +246,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     public Transform GetTarget() => target;
 
-    private void HandleWanderMovement()
-    {
-        moveTimer -= Time.deltaTime;
 
-        if (moveTimer <= 0f)
-        {
-            // NavMesh 내에서 랜덤 위치 뽑기
-            Vector3 randomPoint = OriginTransform.position + UnityEngine.Random.insideUnitSphere * actionRadius;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPoint, out hit, actionRadius, NavMesh.AllAreas))
-            {
-                agent.SetDestination(hit.position); // 새로운 목적지로 이동
-            }
-
-            moveTimer = UnityEngine.Random.Range(1f, 4f);
-        }
-    }
 
     public virtual void SetData(BaseMonsterData newData)
     {
@@ -329,11 +307,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
         float distance = Vector3.Distance(transform.position, target.position);
         return distance > currentDetectionRange;
-    }
-
-    public bool IsOutsideActionRadius()
-    {
-        return Vector3.Distance(OriginTransform.position, transform.position) > actionRadius;
     }
 
     protected virtual void UpdateSightParameters() //상태에따른 시야/감지범위 조절 기능
@@ -419,11 +392,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     protected virtual void ChangeStateAccordingToPerception(MonsterPerceptionState state)
     {
-        if (stateMachine.CurrentState is MonsterReturnWaitState ||
-            stateMachine.CurrentState is MonsterReturnState)
-        {
-            return;
-        }
+
         IMonsterState nextState = stateFactory.GetStateForPerception(state);
         stateMachine.ChangeState(nextState);
     }
@@ -468,13 +437,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         Gizmos.DrawLine(eyePos, eyePos + (rightLimit * currentDetectionRange));
     }
 
-    
-    
+
+
     public virtual void TakeDamage(int damage, Transform attackerTransform) // 넉백용 TakeDamage
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();
-        
+
         Vector3 direction = transform.position - attackerTransform.position;
 
         float knockbackDistance = CalculateKnockbackDistance();

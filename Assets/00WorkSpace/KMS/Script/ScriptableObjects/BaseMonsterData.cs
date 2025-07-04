@@ -38,6 +38,10 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private MonsterTargetType targetType;
     [SerializeField] private float actionRadius = 20f;
 
+    [Header("Idle 대기시간 랜덤 범위")]
+    public float WaitTimeMin = 1f;
+    public float WaitTimeMax = 4f;
+
 
 
 
@@ -54,7 +58,6 @@ public class BaseMonsterData : ScriptableObject
     public MonsterTargetType TargetType => targetType;
     public float ActionRadius => actionRadius;
     public float AttackAnimSpeed => attackAnimSpeed;
-
 
 
     [Header("프리팹")]

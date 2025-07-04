@@ -38,7 +38,7 @@ public class OwnerAttackState : IMonsterState
         // 공격 후 일정 시간 뒤 Idle 전이
         if (attackTimer >= 2.0f)
         {
-            monster.StateMachine.ChangeState(monster.GetIdleState());
+            monster.StateMachine.ChangeState(new MonsterIdleState(monster));
         }
     }
 

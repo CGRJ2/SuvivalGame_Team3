@@ -1,18 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterIdleState : IMonsterState
 {
+    enum WanderState { Idle, Moving, Waiting }
+    private WanderState wanderState = WanderState.Idle;
+    private float waitTimer = 0f;
     private BaseMonster monster;
+    private BaseMonsterData data;
     private float timer;
-    private float direction = 1f;
-    private float lookDuration = 2f;
-    private float rotateSpeed = 30f;
+    private float lookDuration;
     private Quaternion baseRotation;
-    private float lookTimer = 0f;
-    private float lookInterval;
-    private Quaternion targetRotation;
     private Quaternion baseRotationTarget;
     private float baseRotateSmooth = 2f; // 기준방향 회전 속도
 
@@ -22,69 +20,83 @@ public class MonsterIdleState : IMonsterState
     }
     public void Enter(BaseMonster monster)
     {
-
         this.monster = monster;
+        this.data = monster.data;
+        wanderState = WanderState.Idle;
+        waitTimer = 0f;
         timer = 0f;
-        lookTimer = 0f;
-        lookInterval = 2.5f + Random.Range(0f, 1.5f);
+        monster.ResetAlert();
+
+        if (monster.Agent != null)
+        {
+            monster.Agent.ResetPath();
+            monster.Agent.isStopped = false;
+            monster.Agent.speed = data.MoveSpeed;
+            monster.Agent.enabled = true;
+        }
 
         float startY = monster.transform.rotation.eulerAngles.y;
         baseRotation = Quaternion.Euler(0, startY, 0);
         baseRotationTarget = baseRotation;
 
-        lookDuration = Random.Range(1.5f, 3f);
+        lookDuration = UnityEngine.Random.Range(1.5f, 3f);
 
-        monster.SetPerceptionState(MonsterPerceptionState.Idle);
         monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
-
-        //Debug.Log($"[{monster.name}] 상태: Idle 진입 (좌우 회전)");
     }
-
 
     public void Execute()
     {
         if (monster == null || monster.IsDead) return;
 
-        timer += Time.deltaTime;
-        lookTimer += Time.deltaTime;
-
-        // 2~4초마다 기준 방향 목표값을 변경
-        if (lookTimer >= lookInterval)
+        switch (wanderState)
         {
-            SetRandomBaseRotationTarget();
-            lookTimer = 0f;
-            lookInterval = 2.5f + Random.Range(0f, 1.5f);
+            case WanderState.Idle:
+                SetRandomDestination();
+                wanderState = WanderState.Moving;
+                break;
+
+            case WanderState.Moving:
+                if (monster.Agent.remainingDistance <= monster.Agent.stoppingDistance && !monster.Agent.pathPending)
+                {
+                    wanderState = WanderState.Waiting;
+                    waitTimer = UnityEngine.Random.Range(data.WaitTimeMin, data.WaitTimeMax);
+                }
+                break;
+
+            case WanderState.Waiting:
+                waitTimer -= Time.deltaTime;
+                if (waitTimer <= 0f)
+                    wanderState = WanderState.Idle;
+                break;
         }
 
+        // 시선 흔들림
+        timer += Time.deltaTime;
         baseRotation = Quaternion.Slerp(baseRotation, baseRotationTarget, Time.deltaTime * baseRotateSmooth);
-
         float angleOffset = Mathf.Sin(timer * Mathf.PI / lookDuration) * 20f;
         Quaternion targetRotation = baseRotation * Quaternion.Euler(0f, angleOffset, 0f);
 
-        monster.transform.rotation = Quaternion.Slerp(
-            monster.transform.rotation,
-            targetRotation,
-            Time.deltaTime * 3f
-        );
-
-        if (timer >= lookDuration * 2f)
+        if (!monster.Agent.hasPath || monster.Agent.velocity.sqrMagnitude < 0.01f)
         {
-            timer = 0f;
-            lookDuration = Random.Range(1.5f, 3f);
-            //Debug.Log($"[{monster.name}] 좌우 회전 루프 반복");
+            monster.transform.rotation = Quaternion.Slerp(
+                monster.transform.rotation,
+                targetRotation,
+                Time.deltaTime * 3f
+            );
         }
     }
 
-    private void SetRandomBaseRotationTarget()
+    void SetRandomDestination()
     {
-        float randomY = Random.Range(0f, 360f);
-        baseRotationTarget = Quaternion.Euler(0, randomY, 0);
-        //Debug.Log($"[Monster] 기준 방향 목표 전환: {randomY}도");
+        Vector3 randomPoint = monster.transform.position + (UnityEngine.Random.insideUnitSphere * monster.ActionRadius);
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, monster.ActionRadius, NavMesh.AllAreas))
+            monster.Agent.SetDestination(hit.position);
     }
 
     public void Exit()
     {
-        //Debug.Log($"[{monster.name}] 상태: Idle 종료 (회전 초기화)");
+        // 특별히 할 일 없음 (필요 시 추가)
     }
 }

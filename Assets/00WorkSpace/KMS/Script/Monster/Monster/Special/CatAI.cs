@@ -29,7 +29,7 @@ public class CatAI : BaseMonster
         DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }

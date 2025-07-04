@@ -22,34 +22,25 @@ public class MonsterSuspiciousState : IMonsterState
 
         stateTimer += Time.deltaTime;
 
-        // 플레이어 감지시 경계도 상승
+        // Suspicious 상태에서는 경계도만 점진적으로 상승
         if (monster.checkTargetVisible)
-        {
-            monster.IncreaseAlert(5f);
-        }
+            monster.IncreaseAlert(Time.deltaTime * 5f);
 
-        // 대상 추적
-        var target = monster.GetTarget();
-        if (target != null)
-        {
-            monster.Agent.SetDestination(target.position); // Suspicious 상태는 느리게 접근
-        }
-
-        // 상태 전이/유지 분기
+        // Suspicious 최소 유지 시간 경과 후에만 상태 평가
         if (stateTimer >= stateDuration)
         {
-            var current = monster.GetCurrentPerceptionState();
-            var next = monster.StateFactory.GetStateForPerception(current);
+            // Perception 평가(경계도+조건 등)
+            MonsterPerceptionState nextPerception = monster.GetCurrentPerceptionState();
 
-            if (next != this)
+            if (nextPerception == MonsterPerceptionState.Alert)
             {
-                monster.StateMachine.ChangeState(next);
-                Debug.Log($"[{monster.name}] Suspicious 종료 → {current} 상태 전이");
+                monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert));
+                Debug.Log($"[{monster.name}] Suspicious → Alert 상태 전이");
             }
             else
             {
-                stateTimer = 0f;
-                Debug.Log($"[{monster.name}] Suspicious 상태 유지");
+                monster.StateMachine.ChangeState(new MonsterIdleState(monster));
+                Debug.Log($"[{monster.name}] Suspicious → Idle 상태 전이");
             }
         }
     }

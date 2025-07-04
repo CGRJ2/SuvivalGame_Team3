@@ -161,6 +161,7 @@ MonoBehaviour:
     <LegMaxHP_AfterDestroyed>k__BackingField: 5
   <batterySystem>k__BackingField:
     <MaxBattery_Init>k__BackingField: 100
+    <MaxBattery_AfterFaint>k__BackingField: 0
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
     <RecoverAmount_MonsterSlay>k__BackingField: 10
@@ -251,6 +252,10 @@ PrefabInstance:
       propertyPath: TPS_Cameras.Array.data[3]
       value: 
       objectReference: {fileID: 2137193352}
+    - target: {fileID: 4873995486051350449, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 7617150217708771105, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
       propertyPath: m_Name
       value: Player
@@ -403,6 +408,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instancePlayer: {fileID: 0}
+  minPitch: 0
+  maxPitch: 0
+  rotateSpeed_Init: 0
+  crouchSpeed_Init: 0
+  <DamagedInvincibleTime>k__BackingField: 0
+  <AttackCoolTime>k__BackingField: 0
+  moveSpeed_Init: 0
+  sprintSpeed_Init: 0
+  jumpForce_Init: 0
+  damage_Init: 0
+  mouseSensitivity_Init: 0
 --- !u!4 &261631460
 Transform:
   m_ObjectHideFlags: 0
@@ -618,7 +634,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a3c7fb7b8dfa634898cc1976cae83f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelUpConditions: []
+  <MaxLevel>k__BackingField: 0
+  baseCampInstance: {fileID: 0}
+  currentTempCampInstance: {fileID: 0}
+  TemporaryCampInstance_Prefab: {fileID: 0}
+  baseCampData:
+    CurrentCampLevel:
+      _value: 0
+    upgradingProcess:
+      isUpgrading: 0
+      proceededTime: 0
+    baseCampTransform: {fileID: 0}
+  tempCampData:
+    respawnPoint: {fileID: 0}
+  allRecipeList: []
+  UpgradeConditions: []
 --- !u!4 &437728328
 Transform:
   m_ObjectHideFlags: 0
@@ -682,6 +712,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef87563324af549aca99ae8362a851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &462063464
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.010002136
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6069153757736342019, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+      propertyPath: m_Name
+      value: TempMonster_LivingRoom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
 --- !u!1 &693347434
 GameObject:
   m_ObjectHideFlags: 0
@@ -844,19 +931,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adacf4ea5022ba943b5f1501b6b86d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryUI:
+  inventoryGroup:
     inventoryView: {fileID: 0}
     tooltip: {fileID: 0}
     dragSlotInstance: {fileID: 0}
     quickSlotParent: {fileID: 0}
-  craftingUI:
-    craftingUIGroup: {fileID: 0}
-    iconImage: {fileID: 0}
-    itemNameText: {fileID: 0}
-    requiredListParent: {fileID: 0}
-    requiredSlotPrefab: {fileID: 0}
-    craftButton: {fileID: 0}
-    progressBar: {fileID: 0}
+  craftingGroup: {fileID: 0}
+  upgradeGroup: {fileID: 0}
 --- !u!4 &699410690
 Transform:
   m_ObjectHideFlags: 0
@@ -954,8 +1035,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 2
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1035137999}
-  m_Follow: {fileID: 1035137999}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 5
@@ -1091,8 +1172,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 2
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1035137999}
-  m_Follow: {fileID: 1035137999}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 5
@@ -1343,11 +1424,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!4 &1035137999 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7761267926721708425, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
-  m_PrefabInstance: {fileID: 11847499}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1063072542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,8 +1914,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 2
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1035137999}
-  m_Follow: {fileID: 1035137999}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 5
@@ -1982,6 +2058,970 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3348e8340ebac02418ea2de9fc6146e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSlotCount: 5
+  loadedDataGroup:
+    _value:
+      currentPosition: {x: 0, y: 0, z: 0}
+      playerStatusData:
+        onHandItem: {fileID: 0}
+        CurrentWillPower:
+          _value: 0
+        CurrentBattery:
+          _value: 0
+        MaxBattery:
+          _value: 0
+        bodyParts: []
+        <MoveSpeed>k__BackingField: 0
+        <SprintSpeed>k__BackingField: 0
+        <JumpForce>k__BackingField: 0
+        <Damage>k__BackingField: 0
+        inventory:
+          model:
+            ingredientSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            consumableSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            equipmentSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            functionSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            questSlots:
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            - item: {fileID: 0}
+              currentCount: 0
+              maxCount: 0
+            slotCount: 30
+          view: {fileID: 0}
+        ApplyDebuff_CraftSpeed: 0
+        ApplyDebuff_SprintSpeed: 0
+        ApplyDebuff_LockWeaponUse: 0
+        ApplyDebuff_LockSprint: 0
+        ApplyDebuff_LockAttack: 0
+        ApplyDebuff_HeadDotDamage: 0
+        isInvincible: 0
+        isControllLocked: 0
+        mouseSensitivity: 0
+      inventoryModel:
+        ingredientSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        consumableSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        equipmentSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        functionSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        questSlots:
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        - item: {fileID: 0}
+          currentCount: 0
+          maxCount: 0
+        slotCount: 30
+      slotDataListsData:
+        ingredientSlots: []
+        consumableSlots: []
+        equipmentSlots: []
+        functionSlots: []
+        questSlots: []
+      currentTimeData:
+        CurrentTime: 0
+        CurrentDay:
+          _value: 0
+        TZ_State:
+          _value: 0
+      stageUnlockData: 
+      baseCampData:
+        CurrentCampLevel:
+          _value: 0
+        upgradingProcess:
+          isUpgrading: 0
+          proceededTime: 0
+        baseCampTransform: {fileID: 0}
+      tempCampData:
+        respawnPoint: {fileID: 0}
 --- !u!4 &1412363294
 Transform:
   m_ObjectHideFlags: 0
@@ -2154,11 +3194,13 @@ MonoBehaviour:
     <TZ_Morning>k__BackingField: 100
     <TZ_Afternoon>k__BackingField: 300
     <TZ_Evening>k__BackingField: 600
-  <CurrentTime>k__BackingField: 0
-  <CurrentDay>k__BackingField:
-    _value: 0
-  <TZ_State>k__BackingField:
-    _value: 0
+  currentTimeData:
+    CurrentTime: 0
+    CurrentDay:
+      _value: 0
+    TZ_State:
+      _value: 0
+  timeToString: 
 --- !u!4 &1592018724
 Transform:
   m_ObjectHideFlags: 0
@@ -2402,6 +3444,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44a6a20da97b8ba4183b0f5116950ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageDatas: []
+  CurrentStageLevel: 0
+  respawnTime_FO: 2
+  respawnTime_Monster: 2
+  spawnerListGroup_LivingRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  spawnerListGroup_Library:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  spawnerListGroup_DressRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  spawnerListGroup_MasterBedRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
 --- !u!4 &1840008323
 Transform:
   m_ObjectHideFlags: 0
@@ -2629,6 +3703,7 @@ MonoBehaviour:
   dailyManager: {fileID: 1592018723}
   dataManager: {fileID: 1412363293}
   baseCampManager: {fileID: 437728327}
+  stageManager: {fileID: 0}
 --- !u!4 &2097031852
 Transform:
   m_ObjectHideFlags: 0
@@ -2688,7 +3763,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 94c285b2e194c144d98a360f0fa4487d, type: 2}
   m_BuildHeightMesh: 0
@@ -2923,8 +3998,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 2
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 1035137999}
-  m_Follow: {fileID: 1035137999}
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
     OrthographicSize: 5
@@ -2970,3 +4045,4 @@ SceneRoots:
   - {fileID: 1592018724}
   - {fileID: 1840008323}
   - {fileID: 2104271063}
+  - {fileID: 462063464}
