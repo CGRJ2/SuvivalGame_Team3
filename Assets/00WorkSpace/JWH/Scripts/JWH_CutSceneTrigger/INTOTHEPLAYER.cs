@@ -10,15 +10,12 @@ using static PlayerView;
 //{
 //    int rand = Random.Range(0, 2);
 
-//    View.PlayCutscene(rand, CutsceneType.Cat);
+//    PlayCutscene(rand, CutsceneType.Cat);
 //    cat.PlayCutsceneAnim(rand);
 
 //    // 추가 연출 작성
 //}
 
-
-
-//플레이어 뷰에서 사용?
 //public void PlayCutscene(int cutsceneType, CutsceneType source)
 //{
 //    Debug.Log($"PlayCutscene Type: {source}, Index: {cutsceneType}");

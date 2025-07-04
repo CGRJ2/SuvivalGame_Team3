@@ -18,7 +18,7 @@ public class JWH_sceneTrigger : MonoBehaviour//트리거에 넣는 코드입니다
             var player = other.GetComponent<PlayerController>();
             if (player != null && player.View != null)
             {
-                //player.View.PlayCutscene(cutsceneType, cutsceneSource);//
+                //player.PlayCutscene(cutsceneType, cutsceneSource);//
                 hasPlayed = true;
             }
         }
