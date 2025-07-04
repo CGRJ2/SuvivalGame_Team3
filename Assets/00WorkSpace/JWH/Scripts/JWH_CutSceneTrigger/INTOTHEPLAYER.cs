@@ -4,21 +4,20 @@ using UnityEngine;
 
 
 
-// 아마도 플레이어 컨트롤러?
+
 //public void StartCatCutscene(CatAI cat)
 //{
-//    int rand = Random.Range(0, 2); // 0 또는 1
+//    int rand = Random.Range(0, 2);
 
-//    player.view.PlayCutscene(rand, CatCutsceneType.Cat);
+//    player.view.PlayCutscene(rand, CutsceneType.Cat);
 //    cat.PlayCutsceneAnim(rand);
 
 //    // 추가 연출 작성
-//
 //}
 
 
 
-//아마도 플레이어 뷰?
+
 //public void PlayCutscene(int cutsceneType, CutsceneType source)
 //{
 //    switch (source)
@@ -34,6 +33,7 @@ using UnityEngine;
 //        case CutsceneType.Room:
 //            switch (cutsceneType)
 //            {
+//                //Debug.Log($"컷씬 테스트 타입={source}, 번호={cutsceneType}");
 //                case 0: animator.SetTrigger("RoomCutsceneA"); break;
 //                case 1: animator.SetTrigger("RoomCutsceneB"); break;
 //            }

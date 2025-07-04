@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3775245243172891434}
   - component: {fileID: 1551508846524966829}
   - component: {fileID: -6486626316424428089}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: "\uC5F0\uC2B5\uB3C4\uAD6C"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ CapsuleCollider:
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-6486626316424428089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,3 +122,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 6434bf5530dc6714eb78bc84c38b2fb1, type: 2}
   count: 1
+  rigidDeactiveTime: 12
+  destroyTime: 12
