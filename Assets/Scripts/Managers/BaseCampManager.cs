@@ -151,7 +151,7 @@ public class BaseCampManager : Singleton<BaseCampManager>
     {
         // »ý¼º
         Transform playerTransform = PlayerManager.Instance.instancePlayer.transform;
-        GameObject gameObject = Instantiate(TemporaryCampInstance_Prefab, playerTransform.position, playerTransform.rotation);
+        GameObject gameObject = SpawnTempBaseCampInstance(playerTransform.position, playerTransform.rotation);
         gameObject.transform.SetParent(null);
 
         

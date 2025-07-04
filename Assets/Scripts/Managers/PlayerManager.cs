@@ -63,13 +63,12 @@ public class PlayerManager : Singleton<PlayerManager>
         BaseCampManager.Instance.MoveToLastCamp(false);
 
         // 자동 저장
-        //dm.SaveData(0);
+        dm.SaveData(0);
     }
 
     // => 머리 내구도가 0이 되었을 때 호출
     public void PlayerDead()
     {
-        // 로드
         // 마지막 세이브 데이터로 이동(날짜, 시간 / 맵 내의 몬스터 & 파밍 오브젝트 정보 초기화 / 플레이어 정보 초기화), 위치 이동
         dm.LoadData(0);
 
