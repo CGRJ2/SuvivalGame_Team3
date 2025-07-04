@@ -5,24 +5,30 @@ using UnityEngine;
 public class Trap : MonoBehaviour, IDamagable
 {
     [Header("Trap Settings")]
-    [SerializeField] private int maxHealth = 2;          // 트랩의 내구도
-    [SerializeField] private float respawnTime = 180f;   // 재활성화까지 시간
+    [SerializeField] private int maxHealth = 2;          // 트랩의 내구도 (플레이어 공격 횟수)
+    [SerializeField] private float respawnTime = 180f;   // 재활성화까지 시간 (3분 = 180초)
     [SerializeField] private int damageAmount = 10;      // 플레이어에게 주는 데미지
     [SerializeField] private float knockbackForce = 5f;  // 플레이어 넉백 힘
 
+    // 실제 함정의 시각적/물리적 부분을 담을 자식 오브젝트
+    [Header("Child Object for Visuals & Collision")]
+    [SerializeField] private GameObject trapVisualAndCollisionObject;
+
     private int currentHealth;
-    private Collider trapCollider;
-    private Renderer trapRenderer;
+    private bool isActive = true; // 함정 활성화 상태 (로직 상의 상태)
 
     private void Awake()
     {
         currentHealth = maxHealth;
-        trapCollider = GetComponent<Collider>();
-        trapRenderer = GetComponent<Renderer>();
+        // 시작 시 자식 오브젝트 활성화 (초기 상태)
+        SetTrapState(true);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // 함정이 활성화 상태일 때만 데미지 판정
+        if (!isActive) return; // 로직 상의 상태 확인
+
         Debug.Log("Trap Trigger Enter");
 
         if (other.CompareTag("Player"))
@@ -31,48 +37,48 @@ public class Trap : MonoBehaviour, IDamagable
             if (player != null)
             {
                 player.TakeDamage(damageAmount, transform);
-
-               
+                ApplyKnockback(other.gameObject);
             }
         }
     }
 
-    public void TakeDamage(int amount, Transform attacker)
+    public void TakeDamage(int amount, Transform attacker) // 데미지 받기와 상태 체크 후 비활성
     {
-        currentHealth -= amount;
+        if (!isActive) return;
+
+        currentHealth -= 1; // 공격력과 무관하게 항상 1씩 감소
+        Debug.Log($"함정이 공격을 받았습니다. 남은 체력: {currentHealth}");
+
         if (currentHealth <= 0)
         {
-            StartCoroutine(DeactivateTrap());
+            StartCoroutine(DeactivateAndRespawn());
         }
     }
 
-
-    private void ApplyKnockback(GameObject player) // 문제가 있는 넉백기능 몬스터의 넉백이 어떻게 구현되어있는지 보자
+    private void ApplyKnockback(GameObject player)
     {
-        Rigidbody playerRb = player.GetComponent<Rigidbody>();
-        if (playerRb != null)
+       //넉백시스템
+    }
+
+    private IEnumerator DeactivateAndRespawn()
+    {
+        Debug.Log("함정 파괴! 비활성화 및 재활성화 대기 시작.");
+        SetTrapState(false); // 함정 비활성화 상태로 전환
+
+        yield return new WaitForSeconds(respawnTime); // 재활성화 시간 대기
+
+        Debug.Log("함정 재활성화.");
+        SetTrapState(true); // 함정 활성화 상태로 전환
+        currentHealth = maxHealth; // 체력 초기화
+    }
+
+    private void SetTrapState(bool active) // 함정 자식 오브젝트를 활성화/비활성화
+    {
+        isActive = active; // 로직 상의 상태 업데이트
+
+        if (trapVisualAndCollisionObject != null)
         {
-            // 현재 플레이어 속도 초기화 (기존 움직임 상쇄)
-            playerRb.velocity = Vector3.zero;
-
-            // 함정에서 플레이어 방향으로 넉백 (더 강한 힘 적용)
-            Vector3 knockbackDirection = (player.transform.position - transform.position).normalized;
-            knockbackDirection.y = 0.5f;
-
-            // 더 강한 힘 적용 (기존보다 2-3배)
-            playerRb.AddForce(knockbackDirection * knockbackForce * 2.5f, ForceMode.Impulse);
+            trapVisualAndCollisionObject.SetActive(active);
         }
-    }
-
-    private IEnumerator DeactivateTrap()
-    {
-        trapCollider.enabled = false;
-        trapRenderer.enabled = false;
-
-        yield return new WaitForSeconds(respawnTime);
-
-        currentHealth = maxHealth;
-        trapCollider.enabled = true;
-        trapRenderer.enabled = true;
     }
 }
