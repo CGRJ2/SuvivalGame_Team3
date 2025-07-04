@@ -19,7 +19,7 @@ public class Item_HealingHP : Item_Consumable
         foreach (BodyPart bodyPart in bodyParts)
         {
             // 체력이 닳아 있는 상태라면
-            if (bodyPart.CurrentMaxHp- bodyPart.Hp > nowPartDamaged)
+            if (bodyPart.CurrentMaxHp.Value- bodyPart.Hp.Value > nowPartDamaged)
             {
                 lowestBodyPart = bodyPart;
             }

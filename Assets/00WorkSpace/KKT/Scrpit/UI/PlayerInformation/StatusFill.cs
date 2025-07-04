@@ -49,7 +49,7 @@ public class StatusFill : MonoBehaviour
         // SubscribeBodyPart(playerStatus.GetPart(BodyPartTypes.Head), headHPBarFill);
     }
 
-    void UpdateWillPowerBar(int value)
+    void UpdateWillPowerBar(float value)
     {
         if (willBarFill != null)
         {
@@ -57,7 +57,7 @@ public class StatusFill : MonoBehaviour
         }
     }
 
-    void UpdateStaminaBar(int value)
+    void UpdateStaminaBar(float value)
     {
         if (staminaBarFill != null)
         {

@@ -25,7 +25,7 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] public float moveSpeed_Init;
     [SerializeField] public float sprintSpeed_Init;
     [SerializeField] public float jumpForce_Init;
-    [SerializeField] public int damage_Init;
+    [SerializeField] public float damage_Init;
     [SerializeField][Range(0.1f, 2)] public float mouseSensitivity_Init;
 
 
@@ -42,7 +42,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
 
     // => 배터리가 0이 되었을 때 호출
-    public void PlayerFaint(int currentBattery)
+    public void PlayerFaint(float currentBattery)
     {
         if (currentBattery > 0) return;
 

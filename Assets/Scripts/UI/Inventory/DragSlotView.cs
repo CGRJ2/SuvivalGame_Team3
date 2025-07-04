@@ -9,15 +9,6 @@ public class DragSlotView : MonoBehaviour
     [SerializeField]
     private Image itemSprite;
 
-    private void Start() => Init();
-
-
-
-    public void Init()
-    {
-        UIManager.Instance.inventoryGroup.dragSlotInstance = this;
-    }
-
     public void DragSetImage(Image _itemImage)
     {
         itemSprite.sprite = _itemImage.sprite;

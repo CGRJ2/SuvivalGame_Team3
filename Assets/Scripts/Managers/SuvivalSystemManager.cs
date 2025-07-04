@@ -119,13 +119,18 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 
             if (pc.Status.CurrentWillPower.Value <= willPowerSystem.WillDangerZone)
             {
-                if (pc.Status.GetPart(BodyPartTypes.Head).Hp - willPowerSystem.HeadDamagePerTick > 0)
-                    pc.Status.GetPart(BodyPartTypes.Head).Hp -= willPowerSystem.HeadDamagePerTick;
-                else pc.Status.GetPart(BodyPartTypes.Head).Hp = 0;
+                if (pc.Status.GetPart(BodyPartTypes.Head).Hp.Value - willPowerSystem.HeadDamagePerTick > 0)
+                    pc.Status.GetPart(BodyPartTypes.Head).Hp.Value -= willPowerSystem.HeadDamagePerTick;
+                else pc.Status.GetPart(BodyPartTypes.Head).Hp.Value = 0;
             }
         }
     }
 
+
+    public float GetInitBodyPartsHPSum()
+    {
+        return bodyPartSystem.HeadMaxHP_Init + 2 * bodyPartSystem.ArmMaxHP_Init + 2 * bodyPartSystem.LegMaxHP_Init;
+    }
 }
 
 /// <summary>
@@ -139,35 +144,35 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 public class BodyPartSystem
 {
     [field: Header("기본 최대 체력 초기값 설정")]
-    [field: SerializeField] public int HeadMaxHP_Init { get; private set; }
-    [field: SerializeField] public int ArmMaxHP_Init { get; private set; }
-    [field: SerializeField] public int LegMaxHP_Init { get; private set; }
+    [field: SerializeField] public float HeadMaxHP_Init { get; private set; }
+    [field: SerializeField] public float ArmMaxHP_Init { get; private set; }
+    [field: SerializeField] public float LegMaxHP_Init { get; private set; }
 
 
     [field: Header("파괴 상태에서 1차 회복 사용 시 최대체력 제한 값 설정")]
-    [field: SerializeField] public int HeadMaxHP_AfterDestroyed { get; private set; }
-    [field: SerializeField] public int ArmMaxHP_AfterDestroyed { get; private set; }
-    [field: SerializeField] public int LegMaxHP_AfterDestroyed { get; private set; }
+    [field: SerializeField] public float HeadMaxHP_AfterDestroyed { get; private set; }
+    [field: SerializeField] public float ArmMaxHP_AfterDestroyed { get; private set; }
+    [field: SerializeField] public float LegMaxHP_AfterDestroyed { get; private set; }
 }
 
 [System.Serializable]
 public class BatterySystem
 {
     [field: Header("배터리 최대량 초기값 설정")]
-    [field: SerializeField] public int MaxBattery_Init { get; private set; }
+    [field: SerializeField] public float MaxBattery_Init { get; private set; }
 
 
     [field: Header("기절 후 감소한 배터리 최대량")]
-    [field: SerializeField] public int MaxBattery_AfterFaint { get; private set; }
+    [field: SerializeField] public float MaxBattery_AfterFaint { get; private set; }
 
     [field: Header("상태 별 틱당 감소량")]
-    [field: SerializeField] public int DrainPerTick_Idle { get; private set; }
-    [field: SerializeField] public int DrainPerTick_Sprint { get; private set; }
+    [field: SerializeField] public float DrainPerTick_Idle { get; private set; }
+    [field: SerializeField] public float DrainPerTick_Sprint { get; private set; }
 
 
     [field: Header("특정 조건 별 배터리 회복량")]
-    [field: SerializeField] public int RecoverAmount_MonsterSlay { get; private set; }
-    [field: SerializeField] public int RecoverAmount_BossHit { get; private set; }
+    [field: SerializeField] public float RecoverAmount_MonsterSlay { get; private set; }
+    [field: SerializeField] public float RecoverAmount_BossHit { get; private set; }
 
     // 아이템 사용으로 인한 회복은 아이템 클래스에서 진행
     // 인터랙션으로 인한 회복은 인터랙터블 오브젝트 클래스에서 진행
@@ -182,21 +187,21 @@ public class BatterySystem
 public class WillPowerSystem
 {
     [field: Header("정신력 최대량 초기값 설정")]
-    [field: SerializeField] public int MaxWillPower_Init { get; private set; }
+    [field: SerializeField] public float MaxWillPower_Init { get; private set; }
 
 
     [field: Header("상태 별 틱당 감소량")]
-    [field: SerializeField] public int DrainPerTick_Idle { get; private set; }
-    [field: SerializeField] public int DrainPerTick_Night { get; private set; }
-    [field: SerializeField] public int HeadDamagePerTick { get; private set; }
+    [field: SerializeField] public float DrainPerTick_Idle { get; private set; }
+    [field: SerializeField] public float DrainPerTick_Night { get; private set; }
+    [field: SerializeField] public float HeadDamagePerTick { get; private set; }
 
     [field: Header("머리에 내구도를 주기 시작하는 정신력 수치 기준")]
-    [field: SerializeField] public int WillDangerZone { get; private set; }
+    [field: SerializeField] public float WillDangerZone { get; private set; }
 
 
 
     [field: Header("이벤트 별 감소량")]
-    [field: SerializeField] public int DecreaseAmount_CatEvent { get; private set; }
+    [field: SerializeField] public float DecreaseAmount_CatEvent { get; private set; }
 
     // DecreaseAmount_CustomMonster; 기획에서 추가될 시 추가
 }

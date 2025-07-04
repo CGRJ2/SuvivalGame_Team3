@@ -13,11 +13,6 @@ public class SlotToolTip : MonoBehaviour
     [SerializeField]
     private Text Text_ItemHowToUesd;
 
-    private void Start()
-    {
-        UIManager.Instance.inventoryGroup.tooltip = this;
-    }
-
     public void ShowToolTip(Item _item, Vector3 _pos)
     {
         go_Base.SetActive(true);

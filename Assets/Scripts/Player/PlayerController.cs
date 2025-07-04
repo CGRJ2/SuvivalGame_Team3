@@ -9,12 +9,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public bool isAttacking;
 
-    // [세이브 & 로드 데이터]
-    // Transform << 정보 저장소도 만들어주세요
-
-    // [세이브 & 로드 데이터]
-    private PlayerManager pm;
-
+    PlayerManager pm;
+    DataManager dm;
     [field: SerializeField] public PlayerStatus Status { get; private set; }
 
     public PlayerView View { get; private set; }
@@ -95,9 +91,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         HandleMove();
     }
 
-    private void OnDestroy() 
+    private void OnDisable() 
     {
-        DataManager dm = DataManager.Instance;
+        if(dm != null)
         dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
 
         InputActionsDelete(); 
@@ -106,6 +102,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private void Init()
     {
         pm = PlayerManager.Instance;
+        dm = DataManager.Instance;
         pm.instancePlayer = this;
         Status.Init();
 
@@ -116,7 +113,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         StateMachineInit();
 
         // 데이터 로드할 때 Status를 로드한 데이터로 교체
-        DataManager dm = DataManager.Instance;
         dm.loadedDataGroup.Subscribe(LoadPlayerData);
     }
 
@@ -551,7 +547,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         if (damagables.Length < 1) return;
 
-        int finalDamage = Status.Damage;
+        float finalDamage = Status.Damage;
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
@@ -571,7 +567,7 @@ public class PlayerController : MonoBehaviour, IDamagable
             interactable.Interact();
     }
 
-    public void TakeDamage(int damage, Transform transform)
+    public void TakeDamage(float damage, Transform transform)
     {
         // 무적 상태라면 return;
         if (Status.isInvincible) return;

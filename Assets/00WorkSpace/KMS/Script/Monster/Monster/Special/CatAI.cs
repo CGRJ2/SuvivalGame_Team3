@@ -264,7 +264,7 @@ public class CatAI : BaseMonster
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
 
-    public override void TakeDamage(int damage, Transform attackerTransform)
+    public override void TakeDamage(float damage, Transform attackerTransform)
     {
 
     }

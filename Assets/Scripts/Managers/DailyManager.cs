@@ -83,11 +83,12 @@ public class DailyManager : Singleton<DailyManager>
 
         string ampm = currentHour24 < 12 ? "AM" : "PM";
 
-        return $"{hour12:D2}:{currentMinute:D2} {ampm}";
+        return $"{currentTimeData.CurrentDay.Value + 1}ÀÏÂ÷ {ampm} {hour12:D2}:{currentMinute:D2}";
     }
 
     IEnumerator UpdateTime()
     {
+        UIManager um = UIManager.Instance;
         while (true)
         {
             yield return null;
@@ -117,6 +118,7 @@ public class DailyManager : Singleton<DailyManager>
             }
 
             timeToString = GetGameTimeStringAMPM(currentTimeData.CurrentTime);
+            um.hudGroup.HUD_Time.tmp_Time.text = timeToString;
         }
     }
 
