@@ -120,7 +120,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b028faa1e19f943a80ef8a9c841a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  autoInitialize: 1
+  data: {fileID: 11400000, guid: 41c4ece782b55724490495899871b65f, type: 2}
+  destroyDelayTime: 3
+  currentHP: 0
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -134,6 +137,7 @@ MonoBehaviour:
   rotationSpeed: 7
   rb: {fileID: 1062531684402025338}
   stunTime: 0.5
+  dropTable: {fileID: 0}
   respawnPoint: {fileID: 0}
 --- !u!54 &1062531684402025338
 Rigidbody:
