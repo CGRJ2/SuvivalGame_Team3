@@ -441,7 +441,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
 
 
-    public virtual void TakeDamage(int damage, Transform attackerTransform) // 넉백용 TakeDamage
+    public virtual void TakeDamage(float damage, Transform attackerTransform) // 넉백용 TakeDamage
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();

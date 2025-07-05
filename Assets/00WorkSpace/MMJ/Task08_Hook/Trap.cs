@@ -42,7 +42,7 @@ public class Trap : MonoBehaviour, IDamagable
         }
     }
 
-    public void TakeDamage(int amount, Transform attacker) // 데미지 받기와 상태 체크 후 비활성
+    public void TakeDamage(float amount, Transform attacker) // 데미지 받기와 상태 체크 후 비활성
     {
         if (!isActive) return;
 
