@@ -5,16 +5,30 @@ using UnityEngine;
 
 public class PopUpUIGroup : MonoBehaviour
 {
-    public Panel_CollectMessageList CollectMessageUI;
-    public Panel_InteractableUI interactableUI;
-    public Panel_RoomInfo RoomInfoUI;
-
-    public CanvasGroup message_Saved;
-
-
-    [Header("팝업 메시지 설정")]
+    [Header("팝업 메시지 기본 설정")]
     public float popFadeTime;
+
+
+    [Header("팝업 메시지 : 저장")]
+    public CanvasGroup message_Saved;
+    [Header("팝업 메시지 : 획득")]
+    public Panel_CollectMessageList CollectMessageUI;
+    
+    [Header("팝업 패널 : 상호작용 정보")]
+    public Panel_InteractableUI interactableUI;
+
+    [Header("페이드 인 앤 아웃 : 현재 위치")]
+    public Panel_RoomInfo RoomInfoUI;
+    [Header("페이드 인 앤 아웃 : 죽음 패널")]
+    public Panel_FadeInOut deadPanel;
+    [Header("페이드 인 앤 아웃 : 기절 패널")]
+    public Panel_FadeInOut faintPanel;
+
+
+
     Coroutine currentPopMessageRoutine;
+
+
 
     public void PopMessage(CanvasGroup canvasGroup, string messageText = "")
     {
@@ -32,6 +46,8 @@ public class PopUpUIGroup : MonoBehaviour
         currentPopMessageRoutine = StartCoroutine(PopMessageRoutine(canvasGroup, popFadeTime));
     }
 
+    
+
 
     private IEnumerator PopMessageRoutine(CanvasGroup canvasGroup, float duration)
     {
@@ -48,4 +64,7 @@ public class PopUpUIGroup : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.gameObject.SetActive(false);
     }
+
+    
+
 }

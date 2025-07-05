@@ -14,19 +14,19 @@ public class SpawnTable_Monster : SpawnTable
                 prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/99Generic");
                 break;
 
-            case StageKey.거실:
+            case StageKey.LivingRoom:
                 prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/00LivingRoom");
                 break;
 
-            case StageKey.서재:
+            case StageKey.Library:
                 prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/01Library");
                 break;
 
-            case StageKey.옷방:
+            case StageKey.DressRoom:
                 prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/02DressRoom");
                 break;
 
-            case StageKey.안방:
+            case StageKey.MasterBedRoom:
                 prefabs = Resources.LoadAll<GameObject>("Prefabs/Monsters/03MasterBedroom");
                 break;
 
