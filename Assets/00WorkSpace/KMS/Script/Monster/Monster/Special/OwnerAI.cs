@@ -174,15 +174,6 @@ public class OwnerAI : BaseMonster
     {
     }
 
-
-    protected override void Phase2TryAttack()
-    {
-        throw new System.NotImplementedException();
-    }
-    protected override void Phase3TryAttack()
-    {
-        throw new System.NotImplementedException();
-    }
     public void PlayCutsceneAnim(int cutsceneType)
     {
         switch (cutsceneType)

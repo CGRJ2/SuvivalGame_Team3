@@ -21,9 +21,12 @@ public class MonsterAttackState : IMonsterState
 
     public void Execute()
     {
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
+
         if (monster == null || monster.IsDead) return;
 
-        if (!monster.IsInAttackRange())
+        if (monster.playerInRange == null)
         {
             var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
             monster.StateMachine.ChangeState(chaseState);

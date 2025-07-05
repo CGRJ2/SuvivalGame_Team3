@@ -1,6 +1,8 @@
 using KMS.Monster.Interface;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -22,7 +24,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     public NavMeshAgent Agent => agent;
 
     public Action DeactiveAction { get; set; }
-    public Transform OriginTransform { get; set; }
+    [field:SerializeField] public Transform OriginTransform { get; set; }
 
     [SerializeField] protected float currentHP;
     protected int attackPower;
@@ -39,7 +41,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     protected Transform target;
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
-    protected MonsterView view;
+    [SerializeField] protected MonsterView view;
     public UnityEvent OnDeadEvent;
 
     private IMonsterState idleState;
@@ -64,6 +66,12 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     // 회전 속도
     [SerializeField] protected float rotationSpeed = 7f;
+
+    [Header("공격 범위 설정")]
+    [SerializeField] LayerMask attackableLayerMask;
+    [SerializeField] float rayRadius_Attack;
+    [SerializeField] Vector3 offset_Attack;
+    public IDamagable playerInRange;
 
     public float RotationSpeed => rotationSpeed;
 
@@ -182,13 +190,33 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
             damageable.TakeDamage(data.CollisionDamage, transform);
         }
     }
+
+    public void UpdateAttackRange()
+    {
+        Vector3 origin = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
+
+        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Attack, attackableLayerMask);
+        cols = cols.Where(c => !c.isTrigger).ToArray();
+        List<IDamagable> damagables = new List<IDamagable>();
+
+        foreach (Collider col in cols)
+        {
+            damagables.Add(col.GetComponent<IDamagable>());
+        }
+
+        if (damagables.Count > 0)
+            this.playerInRange = damagables[0];
+        else this.playerInRange = null;
+    }
+
     public void TryAttack()
     {
         if (target == null) return;
 
         float distance = Vector3.Distance(transform.position, target.position);
 
-        if (distance <= attackRange * 0.95f && IsFacingTarget())
+        //if (distance <= attackRange * 0.95f && IsFacingTarget())
+        if (playerInRange != null)
         {
             var damageable = target.GetComponent<IDamagable>();
             if (damageable != null)
@@ -209,16 +237,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
                 view?.PlayMonsterAttackAnimation();
             }
         }
-    }
-
-    protected abstract void Phase2TryAttack();
-    protected abstract void Phase3TryAttack();
-
-    private bool IsFacingTarget()
-    {
-        Vector3 toTarget = (target.position - transform.position).normalized;
-        float dot = Vector3.Dot(transform.forward, toTarget);
-        return dot > 0.7f; // 1에 가까울 수록 정면
     }
 
     protected virtual void Die()
@@ -247,8 +265,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     }
 
     public Transform GetTarget() => target;
-
-
 
     public virtual void SetData(BaseMonsterData newData)
     {
@@ -281,7 +297,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         dropInfo.dropItem.SpawnItem(transform, dropInfo.dropCount);
     }
 
-
     public bool SetPerceptionState(MonsterPerceptionState newState)
     {
         if (perceptionState == newState)
@@ -292,16 +307,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         return true;
     }
 
-    public virtual bool IsInAttackRange()
-    {
-        if (target == null) return false;
-
-        Vector3 toTarget = target.position - transform.position;
-        toTarget.y = 0f;
-
-        float distance = toTarget.magnitude;
-        return distance <= data.AttackRange;
-    }
 
     public virtual bool IsOutsideDetectionRadius()
     {
@@ -416,7 +421,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         perceptionController.ResetAlert();
     }
 
-    protected virtual void OnDrawGizmosSelected()
+    protected void OnDrawGizmosSelected()
     {
         if (data == null) return;
 
@@ -437,6 +442,12 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         Gizmos.color = Color.red;
         Gizmos.DrawLine(eyePos, eyePos + (leftLimit * currentDetectionRange));
         Gizmos.DrawLine(eyePos, eyePos + (rightLimit * currentDetectionRange));
+
+        /// 공격 범위
+        // Gizmos 색상 지정
+        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
+        Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }
 
 

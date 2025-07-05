@@ -167,7 +167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b48cacb6d93ee534a9c70a682d47e6b5, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 1575594433467681612}
   - component: {fileID: 250197504152986041}
   m_Layer: 6
-  m_Name: TempMonster_LivingRoom 1
+  m_Name: GenericA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,7 +219,7 @@ Transform:
   m_GameObject: {fileID: 6069153757736342019}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 6.25, y: 0, z: -0.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -312,7 +312,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoInitialize: 1
   data: {fileID: 11400000, guid: 3370b8cb4427b07409a2fd0682e2969d, type: 2}
+  destroyDelayTime: 3
+  <OriginTransform>k__BackingField: {fileID: 0}
   currentHP: 0
+  view: {fileID: 250197504152986041}
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -324,7 +327,12 @@ MonoBehaviour:
   alertThreshold_High: 80
   actionRadius: 20
   rotationSpeed: 7
-  rb: {fileID: 0}
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rayRadius_Attack: 0.8
+  offset_Attack: {x: 0, y: 0, z: 0.59}
+  rb: {fileID: 3010117391025012960}
   stunTime: 0.5
   dropTable: {fileID: 11400000, guid: 62d4d38828e04c34aa23863d8cc96098, type: 2}
 --- !u!114 &250197504152986041
@@ -339,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbf728b8cf202c4f8920320c4fec9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avatar: {fileID: 2520306246694987618}
   animator: {fileID: 0}
   hitEffect: {fileID: 0}
   audioSource: {fileID: 0}

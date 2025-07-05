@@ -5,6 +5,7 @@ using UnityEngine;
 public class MonsterView : MonoBehaviour
 {
     [Header("Components")]
+    public Transform avatar;
     [SerializeField] private Animator animator;
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private AudioSource audioSource;

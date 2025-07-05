@@ -21,12 +21,4 @@ public class NormalMonster : BaseMonster
             stateMachine.ChangeState(new MonsterIdleState(this));
         }
     }
-    protected override void Phase2TryAttack()
-    {
-        throw new System.NotImplementedException();
-    }
-    protected override void Phase3TryAttack()
-    {
-        throw new System.NotImplementedException();
-    }
 }
