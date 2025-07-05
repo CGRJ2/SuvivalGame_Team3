@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -62,10 +63,8 @@ public class PlayerManager : Singleton<PlayerManager>
     public void PlayerFaint(float currentBattery)
     {
         if (currentBattery > 0) return;
-
-        
+        SetGameAfterFaint();
     }
-
     public void SetGameAfterFaint()
     {
         // 다음날 오전 9시로 이동
@@ -89,6 +88,19 @@ public class PlayerManager : Singleton<PlayerManager>
     // => 머리 내구도가 0이 되었을 때 호출
     public void PlayerDead()
     {
+        StartCoroutine(WaitUntilDeadPanelClose());
+    }
+
+    private IEnumerator WaitUntilDeadPanelClose()
+    {
+        // 죽음 애니메이션 시작
+        // 죽음 애니메이션 종료 후 페이드 아웃
+        Panel_FadeInOut deadPanel = UIManager.Instance.popUpUIGroup.deadPanel;
+        deadPanel.PopMessage_FadeInOut();
+
+        // 페이드 인이 시작될 즈음까지 대기
+        yield return new WaitUntil(() => deadPanel.isOpenStandBy);
+
         // 마지막 세이브 데이터로 이동(날짜, 시간 / 맵 내의 몬스터 & 파밍 오브젝트 정보 초기화 / 플레이어 정보 초기화), 위치 이동
         dm.LoadData(0);
 
@@ -101,6 +113,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
         // 자동 저장
         dm.SaveData(0);
+
     }
 
 

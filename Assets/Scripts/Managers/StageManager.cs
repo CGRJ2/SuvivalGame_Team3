@@ -25,6 +25,9 @@ public class StageManager : Singleton<StageManager>
     [SerializeField] private SpawnerListGroup spawnerListGroup_MasterBedRoom;
 
 
+    [Header("현재 플레이어 존재 위치")]
+    public RegionInfos nowRegion;
+
     public void Init()
     {
         base.SingletonInit();
@@ -72,13 +75,13 @@ public class StageManager : Singleton<StageManager>
     {
         switch (stageKey)
         {
-            case StageKey.거실:
+            case StageKey.LivingRoom:
                 return spawnerListGroup_LivingRoom;
-            case StageKey.서재:
+            case StageKey.Library:
                 return spawnerListGroup_Library;
-            case StageKey.옷방:
+            case StageKey.DressRoom:
                 return spawnerListGroup_DressRoom;
-            case StageKey.안방:
+            case StageKey.MasterBedRoom:
                 return spawnerListGroup_MasterBedRoom;
             default: return null;
         }
@@ -197,7 +200,7 @@ public class StageManager : Singleton<StageManager>
     private void RandomSpawnerStartSpawning(List<Spawner> spawnableList, int maxCount, float respawnTime)
     {
         // 대기 중인 스포너들 중 랜덤 선택
-        if (spawnableList.Count == 0) 
+        if (spawnableList.Count == 0)
         {
             //Debug.LogError("모든 스포너에 인스턴스가 생성되어있음");
             return;
@@ -238,6 +241,7 @@ public class StageManager : Singleton<StageManager>
         // 2. 스포너 초기화 후 루틴 재시작
         InitSpawnerRoutines();
 
+        ShowNowRegionUI();
         Debug.Log("스테이지 매니저 데이터 구독자 함수 완료");
     }
 
@@ -276,11 +280,28 @@ public class StageManager : Singleton<StageManager>
 
     #endregion
 
+    public void ShowNowRegionUI()
+    {
+        string message;
+        switch (nowRegion)
+        {
+            case RegionInfos.LivingRoom: message = "거실"; break;
+            case RegionInfos.Library: message = "서재"; break;
+            case RegionInfos.DressRoom: message = "옷방"; break;
+            case RegionInfos.MasterBedRoom: message = "안방"; break;
+            case RegionInfos.CatRoom: message = "고양이방"; break;
+            case RegionInfos.TutorialRoom: message = "아이방"; break;
+            default: message = "방 정보 없음!"; break;
+        }
+        Panel_RoomInfo roomInfo = UIManager.Instance.popUpUIGroup.RoomInfoUI;
+        UIManager.Instance.popUpUIGroup.RoomInfoUI.PopMessage_FadeInOut(message);
+    }
+
 }
 
 public enum StageKey
 {
-    거실, 서재, 옷방, 안방, All
+    LivingRoom, Library, DressRoom, MasterBedRoom, CatRoom, TutorialRoom, All
 }
 
 [System.Serializable]
@@ -328,5 +349,12 @@ public class SpawnerListGroup
     }
 
 
-
+    
 }
+
+public enum RegionInfos
+{
+    LivingRoom, Library, DressRoom, MasterBedRoom, CatRoom, TutorialRoom, BaseCamp
+}
+
+
