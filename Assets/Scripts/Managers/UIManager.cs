@@ -33,7 +33,7 @@ public class UIManager : Singleton<UIManager>
     private InputAction escAction;
     private InputAction inventoryAction;
     /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     // 현재 활성화된 패널 스택
     Stack<GameObject> activedPanelStack = new Stack<GameObject>();
 
@@ -70,7 +70,10 @@ public class UIManager : Singleton<UIManager>
             UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
     }
 
-    
+    public Stack<GameObject> GetActivedPanelStack()
+    {
+        return activedPanelStack;
+    }
 
     public void OpenPanel(GameObject panel)
     {
@@ -78,12 +81,15 @@ public class UIManager : Singleton<UIManager>
         activedPanelStack.Push(panel);
         playerActionMap.Disable();
         uiActionMap.Enable();
+        Debug.Log($"현재 활성화된 패널 개수 {activedPanelStack.Count}");
+
     }
 
     public void OpenPanelNotChangeActionMap(GameObject panel)
     {
         panel.SetActive(true);
         activedPanelStack.Push(panel);
+        Debug.Log($"현재 활성화된 패널 개수 {activedPanelStack.Count}");
     }
 
     public void ClosePanel()
@@ -104,12 +110,12 @@ public class UIManager : Singleton<UIManager>
     {
         if (activedPanelStack.Count < 1) return;
 
-        target.SetActive(false);
 
         // 비활성화한 타겟 패널 스택에서 제거 후 스택 재생성
         List<GameObject> tempList = new List<GameObject>(activedPanelStack);
         tempList.Remove(target);
-        
+        target.SetActive(false);
+
         activedPanelStack = new Stack<GameObject>(tempList);
 
         if (activedPanelStack.Count < 1)

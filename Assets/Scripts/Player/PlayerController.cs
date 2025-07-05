@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private InputAction inventoryOpenAction;
     //private InputAction inventoryOffAction;
     private InputAction quickSlotActions;
+    private InputAction escActions;
 
 
     //Vector3 moveDir;
@@ -208,6 +209,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         quickSlotActions = playerControlMap.FindAction("QuickSlots");
         quickSlotActions.Enable();
         quickSlotActions.performed += OnQuickSlotPerformed;
+
+        // 9. ESC 키 처리
+        escActions = playerControlMap.FindAction("ESC");
+        escActions.Enable();
+        escActions.performed += HandleESCKeyOnGameRuning;
     }
 
     private void InputActionsDelete()
@@ -244,6 +250,9 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // 8. 퀵슬롯 핫키
         quickSlotActions.performed -= OnQuickSlotPerformed;
+
+        // 9. ESC 키 처리
+        escActions.performed -= HandleESCKeyOnGameRuning;
 
     }
 
@@ -366,6 +375,23 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (context.performed)
             UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
+    }
+
+    public void HandleESCKeyOnGameRuning(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (UIManager.Instance.GetActivedPanelStack().Count > 0)
+            {
+                UIManager.Instance.ClosePanel();
+            }
+            // 패널이 다 닫힌 상태에서 esc를 누르면
+            else
+            {
+                Debug.Log("일시정지 및 옵션패널 활성화");
+            }
+        }
+
     }
 
     private void OnQuickSlotPerformed(InputAction.CallbackContext context)
