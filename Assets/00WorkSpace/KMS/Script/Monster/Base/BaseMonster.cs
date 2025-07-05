@@ -141,10 +141,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         SetData(data);
         InitTargetByType();
 
-        if (target == null)
+        /*if (target == null)
             Debug.LogError($"{name} : 타겟이 null임! TargetType: {targetType}");
         else
-            Debug.Log($"{name} : 타겟 세팅 완료! {target.name}");
+            Debug.Log($"{name} : 타겟 세팅 완료! {target.name}");*/
 
         if (stateFactory == null)
             StateMachine.ChangeState(new MonsterIdleState(this));

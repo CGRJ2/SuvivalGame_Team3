@@ -41,13 +41,33 @@ public class PlayerManager : Singleton<PlayerManager>
 
     }
 
+    public void MoveToNextDayAndSave()
+    {
+        // 다음날 오전 9시로 이동
+        DailyManager.Instance.currentTimeData.CurrentDay.Value += 1;
+        DailyManager.Instance.currentTimeData.CurrentTime = 0;
+        DailyManager.Instance.currentTimeData.TZ_State.Value = TimeZoneState.Morning;
+
+        // 몬스터 & 파밍오브젝트 초기화
+        StageManager.Instance.InitSpawnerRoutines();
+
+        // 위치 이동
+        BaseCampManager.Instance.MoveToLastCamp(false);
+
+        // 자동 저장
+        dm.SaveData(0);
+    }
+
     // => 배터리가 0이 되었을 때 호출
     public void PlayerFaint(float currentBattery)
     {
         if (currentBattery > 0) return;
 
-        Debug.Log("다음날 오전 9시로 / 맵 내의 몬스터 정보 초기화 / 맵 내 파밍 오브젝트 정보 초기화");
+        
+    }
 
+    public void SetGameAfterFaint()
+    {
         // 다음날 오전 9시로 이동
         DailyManager.Instance.currentTimeData.CurrentDay.Value += 1;
         DailyManager.Instance.currentTimeData.CurrentTime = 0;
