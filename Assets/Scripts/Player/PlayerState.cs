@@ -218,8 +218,8 @@ public class Player_Damaged : PlayerState
 
     public override void Exit()
     {
-
         base.Exit();
+        //pc.View.animator.SetBool("IsDamaged", false);
     }
 
     public override void Update()

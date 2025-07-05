@@ -19,6 +19,9 @@ public class ItemInstance : InteractableBase
     private void Start()
     {
         StartCoroutine(AfterSpawnRoutine());
+        if (item == null) Debug.LogError("아이템 데이터가 없는 아이템인스턴스가 존재!");
+        if (count < 1) Debug.LogError("아이템 데이터에 개수가 설정되지 않은 아이템인스턴스가 존재!");
+
     }
    
     public override void OnDisableActions()

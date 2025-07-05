@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
     [HideInInspector] public bool isAttacking;
     public Transform handTransform;
+    [HideInInspector] GameObject onHandInstance;
     PlayerManager pm;
     DataManager dm;
     [field: SerializeField] public PlayerStatus Status { get; private set; }
@@ -673,6 +674,44 @@ public class PlayerController : MonoBehaviour, IDamagable
     }
     #endregion
 
+
+    public void UpdateHandItem(Item item)
+    {
+        if (item == null)
+        {
+            if (onHandInstance != null) Destroy(onHandInstance);
+
+            Status.onHandItem = null;
+            // 장착 해제 효과
+            View.animator.SetBool("Equip_Swing", false);
+            View.animator.SetBool("Equip_Thrust", false);
+        }
+        else
+        {
+            if (onHandInstance != item.instancePrefab) Destroy(onHandInstance);
+
+            onHandInstance = Instantiate(item.instancePrefab, handTransform);
+            onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
+            Status.onHandItem = item;
+
+
+            // 아이템 장착 효과
+            if (item is Item_Weapon weapon)
+            {
+                if (weapon.attackType == WeaponAttackType.Swing)
+                {
+                    View.animator.SetBool("Equip_Swing", true);
+                    View.animator.SetBool("Equip_Thrust", false);
+
+                }
+                else if (weapon.attackType == WeaponAttackType.Thrust)
+                {
+                    View.animator.SetBool("Equip_Thrust", true);
+                    View.animator.SetBool("Equip_Swing", false);
+                }
+            }
+        }
+    }
 
 
 }

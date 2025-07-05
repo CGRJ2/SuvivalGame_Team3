@@ -31,5 +31,5 @@ public class Item_Weapon : Item, IEquipable
 
 public enum WeaponAttackType
 {
-    Swing, Thrust
+    Swing, Thrust, Default
 }

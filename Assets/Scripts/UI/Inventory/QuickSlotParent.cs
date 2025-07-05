@@ -66,9 +66,9 @@ public class QuickSlotParent : MonoBehaviour
                 return;
             }
             
-            PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(quickSlots[quickSlotNumber].slotData.item);
+            PlayerManager.Instance.instancePlayer.UpdateHandItem(quickSlots[quickSlotNumber].slotData.item);
         }
-        else PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(null);
+        else PlayerManager.Instance.instancePlayer.UpdateHandItem(null);
 
         NowSelectedSlot = quickSlots[quickSlotNumber];
 

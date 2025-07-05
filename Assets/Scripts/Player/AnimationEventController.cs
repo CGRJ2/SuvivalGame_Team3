@@ -25,6 +25,7 @@ public class AnimationEventController : MonoBehaviour
     // 애니메이션 이벤트
     public void AttackMotionOver()
     {
+        pc.View.animator.SetBool("IsAttack", false);
         pc.isAttacking = false;
     }
 

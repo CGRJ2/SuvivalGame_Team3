@@ -129,7 +129,7 @@ public class SlotView : MonoBehaviour,
                     // µî·ÏµÈ Äü½½·ÔÀÌ ÇöÀç È°¼ºÈ­µÈ Äü½½·ÔÀÌ¶ó¸é ¼Õ¿¡ ÀåÂø
                     if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == emptyQuickSlot)
                     {
-                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(slotData.item);
+                        PlayerManager.Instance.instancePlayer.UpdateHandItem(slotData.item);
                     }
                 }
 
@@ -202,7 +202,7 @@ public class SlotView : MonoBehaviour,
                 if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this)
                 {
                     if (dragSlotInstance.slotView.slotData.item is IEquipable equipable)
-                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
+                        PlayerManager.Instance.instancePlayer.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
 
                 }
 
@@ -232,7 +232,7 @@ public class SlotView : MonoBehaviour,
                         && dragSlotInstance.slotView.slotData.item is IEquipable equipable)
                     {
                         //equipable.EquipToQuickSlot();
-                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
+                        PlayerManager.Instance.instancePlayer.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
                     }
                 }
             }
