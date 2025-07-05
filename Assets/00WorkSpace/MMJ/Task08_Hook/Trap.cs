@@ -8,7 +8,7 @@ public class Trap : MonoBehaviour, IDamagable
     [SerializeField] private int maxHealth = 2;          // 트랩의 내구도 (플레이어 공격 횟수)
     [SerializeField] private float respawnTime = 180f;   // 재활성화까지 시간 (3분 = 180초)
     [SerializeField] private int damageAmount = 10;      // 플레이어에게 주는 데미지
-    [SerializeField] private float knockbackForce = 5f;  // 플레이어 넉백 힘
+    [SerializeField] private float knockbackForce = 0.8f;  // 플레이어 넉백 힘
 
     // 실제 함정의 시각적/물리적 부분을 담을 자식 오브젝트
     [Header("Child Object for Visuals & Collision")]
@@ -33,9 +33,10 @@ public class Trap : MonoBehaviour, IDamagable
 
         if (other.CompareTag("Player"))
         {
-            var player = other.GetComponent<PlayerController>();
+            var player = other.GetComponent<PlayerController>(); 
             if (player != null)
             {
+                Debug.Log("플레이어가 공격받았습니다");
                 player.TakeDamage(damageAmount, transform);
                 ApplyKnockback(other.gameObject);
             }
@@ -57,9 +58,42 @@ public class Trap : MonoBehaviour, IDamagable
         }
     }
 
-    private void ApplyKnockback(GameObject player)
+private void ApplyKnockback(GameObject player)
     {
-       //넉백시스템
+        // 플레이어 컨트롤러와 리지드바디 가져오기
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        Rigidbody playerRb = player.GetComponent<Rigidbody>();
+
+        if (playerController != null && playerRb != null)
+        {
+            // 플레이어 이동 일시적으로 비활성화
+            playerController.Status.isControllLocked = true;
+
+            // 현재 플레이어 속도 초기화
+            playerRb.velocity = Vector3.zero;
+
+            // 플레이어 뒷 방향으로 넉백
+            Vector3 knockbackDirection = (player.transform.position - transform.position).normalized;
+            knockbackDirection.x *= 1.8f;
+            knockbackDirection.z *= 1.8f;
+            knockbackDirection.y = 1.0f; // 위로도 약간 띄우기
+
+            // 뒤로 밀어내기
+            playerRb.AddForce(knockbackDirection * knockbackForce * 3f, ForceMode.Impulse);
+
+            // 일정 시간 후 플레이어 이동 다시 활성화
+            StartCoroutine(EnablePlayerMovementAfterDelay(playerController, 0.5f));
+        }
+    }
+
+    // 일정 시간 후 플레이어 이동 다시 활성화하는 코루틴
+    private IEnumerator EnablePlayerMovementAfterDelay(PlayerController playerController, float delay)
+    {
+        // 지정된 시간만큼 대기
+        yield return new WaitForSeconds(delay);
+
+        // 플레이어 이동 다시 활성화
+        playerController.Status.isControllLocked = false;
     }
 
     private IEnumerator DeactivateAndRespawn()
