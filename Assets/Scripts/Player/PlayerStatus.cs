@@ -8,6 +8,20 @@ public class PlayerStatus : IDisposable
     [Header("장착 중인 아이템")]
     public Item onHandItem;
 
+    public void UpdateHandItem(Item item)
+    {
+        if (item == null)
+        {
+            onHandItem = null;
+            // 장착 해제 효과
+        }
+        else
+        {
+            onHandItem = item;
+            // 아이템 장착 효과
+        }
+    }
+
     [Header("플레이어 생존 수치 정보")]
     public ObservableProperty<float> CurrentWillPower = new ObservableProperty<float>();
     public ObservableProperty<float> CurrentBattery = new ObservableProperty<float>();
@@ -359,7 +373,10 @@ public class PlayerStatus : IDisposable
     public void Dead(bool isActive)
     {
         if (!isActive)
+        {
             PlayerManager.Instance.PlayerDead();
+        }
+            
     }
 
     public void Dispose()

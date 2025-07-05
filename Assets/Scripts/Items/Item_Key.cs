@@ -6,11 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "New Item/Äù½ºÆ® ¾ÆÀÌÅÛ/¿­¼è")]
 public class Item_Key : Item, IEquipable
 {
-    public void EquipToQuickSlot()
+    /*public void EquipToQuickSlot()
     {
         // Äü½½·Ô µî·Ï
         PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
-    }
+    }*/
 
     public void OnAttackEffect()
     {

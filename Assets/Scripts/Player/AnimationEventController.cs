@@ -17,7 +17,7 @@ public class AnimationEventController : MonoBehaviour
     }
 
     // 애니메이션 이벤트
-    public void AttackHitTime()
+    public void Hit()
     {
         pc.Attack();
     }
@@ -25,6 +25,16 @@ public class AnimationEventController : MonoBehaviour
     // 애니메이션 이벤트
     public void AttackMotionOver()
     {
-        //Debug.Log("이벤트");
+        pc.isAttacking = false;
+    }
+
+    public void DamagedMotionEnd()
+    {
+        pc.View.animator.SetBool("IsDamaged", false);
+    }
+
+    public void RespawnMotionEnd()
+    {
+        pc.Status.isControllLocked = false;
     }
 }

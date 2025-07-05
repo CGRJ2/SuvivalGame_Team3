@@ -7,8 +7,8 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, IDamagable
 {
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
-    public bool isAttacking;
-
+    [HideInInspector] public bool isAttacking;
+    public Transform handTransform;
     PlayerManager pm;
     DataManager dm;
     [field: SerializeField] public PlayerStatus Status { get; private set; }
@@ -146,6 +146,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
         stateMachine.stateDic.Add(PlayerStateTypes.Crouch, new Player_Crouch(this));
         stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
+        //
+        stateMachine.stateDic.Add(PlayerStateTypes.Damaged, new Player_Damaged(this));
+        stateMachine.stateDic.Add(PlayerStateTypes.Dead, new Player_Dead(this));
 
         stateMachine.CurState = stateMachine.stateDic[PlayerStateTypes.Idle];
     }
@@ -577,6 +580,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
+            
         }
 
         foreach (IDamagable damagable in damagables)
@@ -593,10 +597,28 @@ public class PlayerController : MonoBehaviour, IDamagable
             interactable.Interact();
     }
 
+    public void KnockBack(Transform transform, float force)
+    {
+        // 플레이어와 공격자의 방향 벡터를 얻기(dir)     ##주의: 방향 벡터의 Y값을 빼서 평면상의 벡터 방향으로 설정
+        Vector3 basicDir = this.transform.position - transform.position;
+        Vector3 basicDirToVector2 = new Vector3(basicDir.x, 0, basicDir.z);
+
+        // 공격 방향 + 위로 살짝 합친 벡터를 방향으로 함
+        Vector3 finalKnockBackDir = (basicDirToVector2.normalized + Vector3.up * 0.3f).normalized;
+
+        GetComponent<Rigidbody>().AddForce(finalKnockBackDir * force, ForceMode.Impulse);
+
+    }
+
     public void TakeDamage(float damage, Transform transform)
     {
         // 무적 상태라면 return;
         if (Status.isInvincible) return;
+        // 이미 피격 상태라면 X
+        if (IsCurrentState(PlayerStateTypes.Damaged)) return;
+
+        // 죽음 상태라면 실행X
+        if (IsCurrentState(PlayerStateTypes.Dead)) return;
 
         // 활성 상태인 신체 부위 중 랜덤 선택
         List<BodyPart> bodyPart = Status.GetBodyPartsList();
@@ -621,18 +643,23 @@ public class PlayerController : MonoBehaviour, IDamagable
             activeBodyPart[0].TakeDamage(damage);
         }
 
+        KnockBack(transform, pm.knockBackForce_Init);
+
         Status.CheckCriticalState();
+        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]);
         StartCoroutine(InvincibleRoutine(pm.DamagedInvincibleTime));
     }
 
     public IEnumerator InvincibleRoutine(float time)
     {
         Status.isInvincible = true;
+
         // TODO : 플레이어 피격 이펙트 or 셰이더 실행
 
         yield return new WaitForSeconds(time);
 
         Status.isInvincible = false;
+
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
 

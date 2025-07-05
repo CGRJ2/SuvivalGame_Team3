@@ -11,7 +11,7 @@ public class MonsterAlertState : IMonsterState
     {
         this.monster = monster;
         monster.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
-        Debug.Log($"[{monster.name}] 상태: Alert 진입");
+        //Debug.Log($"[{monster.name}] 상태: Alert 진입");
     }
 
     public void Execute()
@@ -44,19 +44,19 @@ public class MonsterAlertState : IMonsterState
         {
             var nextState = monster.StateFactory.GetStateForPerception(monster.GetCurrentPerceptionState());
             monster.StateMachine.ChangeState(nextState);
-            Debug.Log($"[{monster.name}] Alert 시간 종료 → 상태 전이: {nextState.GetType().Name}");
+            //Debug.Log($"[{monster.name}] Alert 시간 종료 → 상태 전이: {nextState.GetType().Name}");
         }
 
 
         if (monster.AlertLevel < monster.AlertThreshold_Low)
         {
             monster.StateMachine.ChangeState(new MonsterIdleState(monster));
-            Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
+            //Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] Alert 상태 종료");
+        //Debug.Log($"[{monster.name}] Alert 상태 종료");
     }
 }

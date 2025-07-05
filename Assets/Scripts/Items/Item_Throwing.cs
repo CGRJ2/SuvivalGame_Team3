@@ -11,11 +11,11 @@ public class Item_Throwing : Item_Consumable, IEquipable
     }
 
 
-    public void EquipToQuickSlot()
+    /*public void EquipToQuickSlot()
     {
         // Äü½½·Ô ºóÄ­ ÆÇ´Ü & ºó Äü½½·Ô¿¡ ÀåÂø
         PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
-    }
+    }*/
 
     public void OnAttackEffect()
     {

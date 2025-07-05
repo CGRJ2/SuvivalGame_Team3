@@ -12,7 +12,7 @@ public class BasicMonsterAI : BaseMonster
     {
         base.Start();
         InitTargetByType();
-        Debug.Log($"{name}: BaseMonster.Start() 진입, target: {(target == null ? "null" : target.name)}");
+        //Debug.Log($"{name}: BaseMonster.Start() 진입, target: {(target == null ? "null" : target.name)}");
     }
     protected override void HandleState()
     {

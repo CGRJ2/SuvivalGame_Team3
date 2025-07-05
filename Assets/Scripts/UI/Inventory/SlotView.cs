@@ -125,6 +125,12 @@ public class SlotView : MonoBehaviour,
                     // 퀵슬롯에 데이터 참조 및 상태 업데이트
                     emptyQuickSlot.slotData = this.slotData;
                     emptyQuickSlot.SlotViewUpdate();
+
+                    // 등록된 퀵슬롯이 현재 활성화된 퀵슬롯이라면 손에 장착
+                    if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == emptyQuickSlot)
+                    {
+                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(slotData.item);
+                    }
                 }
 
                 // 아이템 종류 별로 인벤토리 내 사용 효과 실행
@@ -196,7 +202,8 @@ public class SlotView : MonoBehaviour,
                 if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this)
                 {
                     if (dragSlotInstance.slotView.slotData.item is IEquipable equipable)
-                        equipable.EquipToQuickSlot();
+                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
+
                 }
 
                 dragSlotInstance.slotView.SlotViewUpdate(); // => 기존 슬롯 업데이트
@@ -224,7 +231,8 @@ public class SlotView : MonoBehaviour,
                     if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this 
                         && dragSlotInstance.slotView.slotData.item is IEquipable equipable)
                     {
-                        equipable.EquipToQuickSlot();
+                        //equipable.EquipToQuickSlot();
+                        PlayerManager.Instance.instancePlayer.Status.UpdateHandItem(dragSlotInstance.slotView.slotData.item);
                     }
                 }
             }
