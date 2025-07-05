@@ -44,6 +44,8 @@ public class Trap : MonoBehaviour, IDamagable
 
     public void TakeDamage(float amount, Transform attacker) // 데미지 받기와 상태 체크 후 비활성
     {
+
+        Debug.Log($"함정이 공격을 받았습니다. 남은 체력: {currentHealth}");
         if (!isActive) return;
 
         currentHealth -= 1; // 공격력과 무관하게 항상 1씩 감소
