@@ -20,10 +20,12 @@ public class ItemInstance : InteractableBase
     {
         StartCoroutine(AfterSpawnRoutine());
     }
-
-    private void OnDisable()
+   
+    public override void OnDisableActions()
     {
+        base.OnDisableActions();
         StopAllCoroutines();
+
     }
 
     IEnumerator AfterSpawnRoutine()
@@ -49,10 +51,9 @@ public class ItemInstance : InteractableBase
         Destroy(gameObject);
     }
 
-    public override void SetInteractableEnable()
+    public override void ShowInteractableUI()
     {
-        base.SetInteractableEnable();
-
-        Debug.Log($"{gameObject.name} : 아이템 습득(E) 팝업 UI 활성화");
+        base.ShowInteractableUI();
+        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"{item.itemName}: 줍기(E)";
     }
 }

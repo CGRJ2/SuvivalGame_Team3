@@ -8,22 +8,39 @@ public class UIManager : Singleton<UIManager>
 {
     PlayerManager pm;
 
+    // Popup
+    public PopUpUIGroup popUpUIGroup;
+
+    // HUD
+    public HUD_UIGroup hudGroup;
+
+    // 인벤토리
     public InventoryUIGroup inventoryGroup;
+
+    // 제작대
     public CraftingUIGroup craftingGroup;
+
+    // 업그레이드
     public UpgradeUIGroup upgradeGroup;
 
+
+
+
+
+    // InputSystem => UI액션맵 정보 //////////////////////////////////////////////////////////
     private InputActionMap playerActionMap;
     private InputActionMap uiActionMap;
-
     private InputAction escAction;
     private InputAction inventoryAction;
-
+    /////////////////////////////////////////////////////////////////////////////////////////
+    
+    // 현재 활성화된 패널 스택
     Stack<GameObject> activedPanelStack = new Stack<GameObject>();
 
     public void Init()
     {
         base.SingletonInit();
-        
+
     }
 
     private void Start()
@@ -104,12 +121,5 @@ public class UIManager : Singleton<UIManager>
     }
 }
 
-[System.Serializable]
-public class InventoryUIGroup
-{
-    public InventoryView inventoryView;
-    public SlotToolTip tooltip;
-    public DragSlotView dragSlotInstance;
-    public QuickSlotParent quickSlotParent;
-}
+
 

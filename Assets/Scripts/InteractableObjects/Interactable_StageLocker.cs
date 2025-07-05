@@ -52,9 +52,9 @@ public class Interactable_StageLocker : InteractableBase
         
     }
 
-    public override void SetInteractableEnable()
+    public override void ShowInteractableUI()
     {
-        base.SetInteractableEnable();
+        base.ShowInteractableUI();
 
         // 손에 들고 있는 아이템이 요구 아이템과 같을 경우 => 상호작용 가능
         /*if (pc.Status.onHandItem == itemForUnlock)
@@ -64,12 +64,17 @@ public class Interactable_StageLocker : InteractableBase
         {
             if (chainedStageData.unlockCondition.needItemList.Count > 0)
             {
-                Debug.Log($"[{chainedStageData.unlockCondition.needItemList[0].item.itemName} 사용: (E)]");
+                UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = 
+                    $"{chainedStageData.unlockCondition.needItemList[0].item.itemName} 사용: (E)";
             }
             else
             {
                 Debug.LogError("언락 조건이 설정되지 않은 잠금장치 사용");
             }
+        }
+        else
+        {
+            UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"굳게 잠겨있다...";
         }
     }
 }

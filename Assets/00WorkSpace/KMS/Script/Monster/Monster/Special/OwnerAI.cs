@@ -167,7 +167,7 @@ public class OwnerAI : BaseMonster
             Debug.Log("[Owner] , 수면 상태 진입");
         }
     }
-    public override void TakeDamage(int damage, Transform attackerTransform)
+    public override void TakeDamage(float damage, Transform attackerTransform)
     {
     }
     protected override void Die()

@@ -7,7 +7,8 @@ public class BaseCampInstance : CampInstance
     void Start()
     {
         BaseCampManager.Instance.baseCampInstance = this;
-        BaseCampManager.Instance.baseCampData.baseCampTransform = transform;
+        BaseCampManager.Instance.baseCampData.baseCampPosition = transform.position;
+        BaseCampManager.Instance.baseCampData.baseCampRotation = transform.rotation;
     }
 
     public Transform GetRespawnPointTransform()

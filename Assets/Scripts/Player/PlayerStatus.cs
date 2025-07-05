@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 [System.Serializable] // 세이브 & 로드 가능
@@ -11,18 +9,41 @@ public class PlayerStatus : IDisposable
     public Item onHandItem;
 
     [Header("플레이어 생존 수치 정보")]
-    public ObservableProperty<int> CurrentWillPower = new ObservableProperty<int>();
-    public ObservableProperty<int> CurrentBattery = new ObservableProperty<int>();
-    public ObservableProperty<int> MaxBattery = new ObservableProperty<int>();
+    public ObservableProperty<float> CurrentWillPower = new ObservableProperty<float>();
+    public ObservableProperty<float> CurrentBattery = new ObservableProperty<float>();
+    public ObservableProperty<float> MaxBattery = new ObservableProperty<float>();
+    public ObservableProperty<float> SumCurrentHP = new ObservableProperty<float>();
+    public ObservableProperty<float> SumCurrentMaxHP = new ObservableProperty<float>();
+
+    public void CalculateCurrentHPSum(float hp)
+    {
+        float sumHP = 0;
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            sumHP += bodyPart.Hp.Value;
+        }
+        SumCurrentHP.Value = sumHP;
+    }
+    public void CalculateCurrentMaxHPSum(float hp)
+    {
+        float sumMaxHP = 0;
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            sumMaxHP += bodyPart.CurrentMaxHp.Value;
+        }
+        SumCurrentMaxHP.Value = sumMaxHP;
+    }
+
+
     [Header("신체 부위 데이터")]
     [SerializeField] private List<BodyPart> bodyParts;
 
 
-    [field: Header("플레이어 스탯 정보")] 
+    [field: Header("플레이어 스탯 정보")]
     [field: SerializeField] public float MoveSpeed { get; set; }
     [field: SerializeField] public float SprintSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
-    [field: SerializeField] public int Damage { get; set; }
+    [field: SerializeField] public float Damage { get; set; }
 
 
     [SerializeField] public InventoryPresenter inventory;
@@ -86,9 +107,6 @@ public class PlayerStatus : IDisposable
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
 
-        // 일반 로드 함수 실행
-        Debug.Log("마지막에 저장한 데이터 로드해서 붙이기");
-
         // 정신력, 배터리만 최대로 맞춰주기
         CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
         InitBattery();
@@ -115,6 +133,7 @@ public class PlayerStatus : IDisposable
     public void BodyPartsInit()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
+        Panel_PlayerStatus playerStatusUI = UIManager.Instance.inventoryGroup.panel_PlayerStatus;
         List<BodyPart> tempBodyParts = new List<BodyPart>();
 
         // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.
@@ -123,28 +142,106 @@ public class PlayerStatus : IDisposable
         BodyPart head = new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_Init);
         head.Activate.Subscribe(Dead);
         tempBodyParts.Add(head);
+        // UI연동
+        playerStatusUI.head.initMaxHp = ssm.bodyPartSystem.HeadMaxHP_Init;
+        /// 구독
+        head.Hp.Subscribe(playerStatusUI.head.UpdateHP_View);
+        head.CurrentMaxHp.Subscribe(playerStatusUI.head.UpdateCurrentMaxHP_View);
+        head.Hp.Subscribe(CalculateCurrentHPSum);
+        head.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
+        /// 업데이트
+        playerStatusUI.head.UpdateHP_View(head.Hp.Value);
+        playerStatusUI.head.UpdateCurrentMaxHP_View(head.CurrentMaxHp.Value);
+        //
+
 
         // 왼팔
         BodyPart leftArm = new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_Init);
         leftArm.Activate.Subscribe(Debuff_CraftSpeed);
         tempBodyParts.Add(leftArm);
+        // UI연동
+        playerStatusUI.leftArm.initMaxHp = ssm.bodyPartSystem.ArmMaxHP_Init;
+        /// 구독
+        leftArm.Hp.Subscribe(playerStatusUI.leftArm.UpdateHP_View);
+        leftArm.CurrentMaxHp.Subscribe(playerStatusUI.leftArm.UpdateCurrentMaxHP_View);
+        leftArm.Hp.Subscribe(CalculateCurrentHPSum);
+        leftArm.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
+        /// 업데이트
+        playerStatusUI.leftArm.UpdateHP_View(leftArm.Hp.Value);
+        playerStatusUI.leftArm.UpdateCurrentMaxHP_View(leftArm.CurrentMaxHp.Value);
+        //
+
 
         // 오른팔
         BodyPart rightArm = new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_Init);
         rightArm.Activate.Subscribe(Debuff_LockWeaponUse);
         tempBodyParts.Add(rightArm);
+        // UI연동
+        playerStatusUI.rightArm.initMaxHp = ssm.bodyPartSystem.ArmMaxHP_Init;
+        /// 구독
+        rightArm.Hp.Subscribe(playerStatusUI.rightArm.UpdateHP_View);
+        rightArm.CurrentMaxHp.Subscribe(playerStatusUI.rightArm.UpdateCurrentMaxHP_View);
+        rightArm.Hp.Subscribe(CalculateCurrentHPSum);
+        rightArm.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
+        /// 업데이트
+        playerStatusUI.rightArm.UpdateHP_View(rightArm.Hp.Value);
+        playerStatusUI.rightArm.UpdateCurrentMaxHP_View(rightArm.CurrentMaxHp.Value);
+        //
+
 
         // 왼다리
         BodyPart leftLeg = new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_Init);
         leftLeg.Activate.Subscribe(Debuff_SprintSpeed);
         tempBodyParts.Add(leftLeg);
+        // UI연동
+        playerStatusUI.leftLeg.initMaxHp = ssm.bodyPartSystem.LegMaxHP_Init;
+        /// 구독
+        leftLeg.Hp.Subscribe(playerStatusUI.leftLeg.UpdateHP_View);
+        leftLeg.CurrentMaxHp.Subscribe(playerStatusUI.leftLeg.UpdateCurrentMaxHP_View);
+        leftLeg.Hp.Subscribe(CalculateCurrentHPSum);
+        leftLeg.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
+        /// 업데이트
+        playerStatusUI.leftLeg.UpdateHP_View(leftLeg.Hp.Value);
+        playerStatusUI.leftLeg.UpdateCurrentMaxHP_View(leftLeg.CurrentMaxHp.Value);
+        //
+
 
         // 오른다리
         BodyPart rightLeg = new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_Init);
         rightLeg.Activate.Subscribe(Debuff_SprintSpeed);
         tempBodyParts.Add(rightLeg);
+        // UI연동
+        playerStatusUI.rightLeg.initMaxHp = ssm.bodyPartSystem.LegMaxHP_Init;
+        /// 구독
+        rightLeg.Hp.Subscribe(playerStatusUI.rightLeg.UpdateHP_View);
+        rightLeg.CurrentMaxHp.Subscribe(playerStatusUI.rightLeg.UpdateCurrentMaxHP_View);
+        rightLeg.Hp.Subscribe(CalculateCurrentHPSum);
+        rightLeg.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
+        /// 업데이트
+        playerStatusUI.rightLeg.UpdateHP_View(rightLeg.Hp.Value);
+        playerStatusUI.rightLeg.UpdateCurrentMaxHP_View(rightLeg.CurrentMaxHp.Value);
+        //
 
+        
+        // 신체 데이터 초기화
         bodyParts = tempBodyParts;
+
+        // 체력 합산 수치 UI구독
+        SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
+        SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
+        playerStatusUI.state_HpSum.initMax = ssm.GetInitBodyPartsHPSum();
+
+        // 배터리 수치 UI 구독
+        CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
+        MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
+        playerStatusUI.state_Battery.initMax = ssm.batterySystem.MaxBattery_Init;
+
+        // 정신력 수치 UI 구독
+        CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
+        playerStatusUI.state_WillPower.UpdateMaxStateNumb_View(ssm.willPowerSystem.MaxWillPower_Init);
+
+        CalculateCurrentHPSum(0);
+        CalculateCurrentMaxHPSum(0);
     }
 
     // 디버프 효과들
@@ -189,25 +286,27 @@ public class PlayerStatus : IDisposable
     public void BodyPartsInit_AfterDead()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        for(int i = 0; i < bodyParts.Count; i++)
+        for (int i = 0; i < bodyParts.Count; i++)
         {
             switch (bodyParts[i].type)
             {
                 case BodyPartTypes.Head:
-                    bodyParts[i].CurrentMaxHp = ssm.bodyPartSystem.HeadMaxHP_AfterDestroyed;
+                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.HeadMaxHP_AfterDestroyed;
                     break;
 
                 case BodyPartTypes.LeftArm:
                 case BodyPartTypes.RightArm:
-                    bodyParts[i].CurrentMaxHp = ssm.bodyPartSystem.ArmMaxHP_AfterDestroyed;
+                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.ArmMaxHP_AfterDestroyed;
                     break;
 
                 case BodyPartTypes.LeftLeg:
                 case BodyPartTypes.RightLeg:
-                    bodyParts[i].CurrentMaxHp = ssm.bodyPartSystem.LegMaxHP_AfterDestroyed;
+                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.LegMaxHP_AfterDestroyed;
                     break;
             }
-        } 
+
+            bodyParts[i].Hp = bodyParts[i].CurrentMaxHp;
+        }
 
     }
 
@@ -219,7 +318,7 @@ public class PlayerStatus : IDisposable
         CurrentBattery.Value = MaxBattery.Value;
     }
 
-    public void ChargeBattery(int amount)
+    public void ChargeBattery(float amount)
     {
         if (CurrentBattery.Value + amount < MaxBattery.Value)
             CurrentBattery.Value += amount;
@@ -265,11 +364,13 @@ public class PlayerStatus : IDisposable
 
     public void Dispose()
     {
-        CurrentWillPower.UnsbscribeAll(); 
+        CurrentWillPower.UnsbscribeAll();
         CurrentBattery.UnsbscribeAll();
         MaxBattery.UnsbscribeAll();
-    }                                    
-}       
+        SumCurrentHP.UnsbscribeAll();
+        SumCurrentMaxHP.UnsbscribeAll();
+    }
+}
 public enum PlayerStateTypes
 {
     Idle, Attack, Damaged, Dead, Move, Sprint, Jump, Fall, Crouch //Exhausted,

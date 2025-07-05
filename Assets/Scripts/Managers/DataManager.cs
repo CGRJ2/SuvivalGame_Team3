@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,11 +18,11 @@ public class DataManager : Singleton<DataManager>
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            SaveData(1);
+            SaveData(0);
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            LoadData(1);
+            LoadData(0);
         }
     }
     /// </summary>
@@ -61,7 +62,7 @@ public class DataManager : Singleton<DataManager>
             currentTimeData = DailyManager.Instance.currentTimeData,
             stageUnlockData = StageManager.Instance.GetStageUnlockSaveData(),
             baseCampData = BaseCampManager.Instance.baseCampData,
-            tempCampData = BaseCampManager.Instance.tempCampData,
+            tempCampData = BaseCampManager.Instance.GetTempCampData(),
             // 이거 왜 인스턴스가 생기는 거죠??? 저장된 클래스를 불러올 때, null값은 기본값으로 대체되나?
         };
 
@@ -136,3 +137,4 @@ public class SaveDataGroup
     public BaseCampData baseCampData;
     public TempCampData tempCampData;
 }
+

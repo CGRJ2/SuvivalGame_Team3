@@ -4,42 +4,52 @@ using UnityEngine;
 
 public class TemporaryCampInstance : CampInstance
 {
-    public GameObject fbx_DestroyCamp;
+    public GameObject fx_DestroyCamp;
 
-    void Start()
-    {
-        BaseCampManager.Instance.tempCampData = new TempCampData(respawnPoint);
-        BaseCampManager.Instance.currentTempCampInstance = this;
-        Debug.Log("간이 캠프 생성");
-    }
-
-
-    public void DestroyTempCamp()
+    // 데이터에서 삭제 후 객체 파괴
+    public void DestroyWithData()
     {
         Debug.Log("간이 캠프 파괴 --- 코루틴으로 서서히 파괴 예정");
 
-        // 데이터 삭제
-        BaseCampManager.Instance.tempCampData = null;
+        // 데이터 초기화
+        BaseCampManager.Instance.tempCampData = new TempCampData();
         
         // 인스턴스 참조 삭제
         if (BaseCampManager.Instance.currentTempCampInstance == this)
             BaseCampManager.Instance.currentTempCampInstance = null;
 
-        GameObject explosion = Instantiate(fbx_DestroyCamp);
-        explosion.transform.SetParent(null);
 
-        Destroy(gameObject);
+        // 객체 파괴 실행
+        DestroyOnlyInstacne();
     }
 
+    // 객체 파괴(인게임 로드 & 새로운 임시텐트 설치 시 호출)
+    public void DestroyOnlyInstacne()
+    {
+        GameObject explosion = Instantiate(fx_DestroyCamp);
+        explosion.transform.SetParent(null);
+        Destroy(gameObject);
+    }
 }
 
 [System.Serializable]
 public class TempCampData
 {
-    public Transform respawnPoint;
+    public bool isActive;
+    public Vector3 tempCampPosition;
+    public Quaternion tempCampRotation;
 
-    public TempCampData(Transform respawnPoint)
+    public TempCampData() 
     {
-        this.respawnPoint = respawnPoint;
+        isActive = false;
+        this.tempCampPosition = Vector3.zero;
+        this.tempCampRotation = Quaternion.identity;
+    }
+
+    public TempCampData(Transform tempCampTransform)
+    {
+        isActive = true;
+        this.tempCampPosition = tempCampTransform.position;
+        this.tempCampRotation = tempCampTransform.rotation;
     }
 }

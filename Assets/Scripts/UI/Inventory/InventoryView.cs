@@ -17,8 +17,6 @@ public class InventoryView : MonoBehaviour
 
     private void Start()
     {
-        UIManager.Instance.inventoryGroup.inventoryView = this;
-
         slots = itemSlots.GetComponentsInChildren<SlotView>();
 
         // 기본 무기 탭으로 설정

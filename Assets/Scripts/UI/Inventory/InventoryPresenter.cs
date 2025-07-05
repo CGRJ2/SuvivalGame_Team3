@@ -35,6 +35,9 @@ public class InventoryPresenter : IDisposable
             model.AddItem(item, count);
             // ui π›øµ
             UpdateUI();
+
+            // æ∆¿Ã≈€ »πµÊ UI ∆Àæ˜ ∏ﬁºº¡ˆ Ω««‡
+            UIManager.Instance.popUpUIGroup.CollectMessageUI.PopMessage($"æ∆¿Ã≈€ »πµÊ : {item.itemName} x{count}");
         }
         else
         {
