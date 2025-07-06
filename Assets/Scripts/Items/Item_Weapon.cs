@@ -7,6 +7,8 @@ using UnityEngine;
 public class Item_Weapon : Item, IEquipable
 {
     [field: SerializeField] public int Damage { get; private set; } = 1;
+    public WeaponAttackType attackType;
+    
 
     protected override void OnEnable()
     {
@@ -16,13 +18,18 @@ public class Item_Weapon : Item, IEquipable
         itemName = this.name;
     }
 
-    public void EquipToQuickSlot()
+    /*public void EquipToQuickSlot()
     {
         PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
-    }
+    }*/
 
     public void OnAttackEffect()
     {
         Debug.Log("아직 별 효과는 없음. 무기 공격력만 플레이어의 Attack에서 반영될거임");
     }
+}
+
+public enum WeaponAttackType
+{
+    Swing, Thrust, Default
 }

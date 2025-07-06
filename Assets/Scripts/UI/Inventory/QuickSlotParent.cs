@@ -52,16 +52,25 @@ public class QuickSlotParent : MonoBehaviour
     // 아이템 인스턴스(or 아이템 모델링을 업데이트)를 손에 활성화
     public void SelectQuickSlot(int quickSlotNumber)
     {
-        NowSelectedSlot = quickSlots[quickSlotNumber];
 
-        if (NowSelectedSlot.slotData.item != null)
+        
+
+
+
+        if (quickSlots[quickSlotNumber].slotData.item != null)
         {
-            Debug.Log(NowSelectedSlot.slotData.item);
-            PlayerManager.Instance.instancePlayer.Status.onHandItem = NowSelectedSlot.slotData.item;
+            // 즉발 소비템이면(소비 & 던지기 아이템 아닌,)  여기서 소비 효과 실행, 퀵슬롯 이동 X
+            if (quickSlots[quickSlotNumber].slotData.item is IConsumable consumable && !(consumable is Item_Throwing))
+            {
+                quickSlots[quickSlotNumber].slotData.item.UseInInventory(quickSlots[quickSlotNumber].slotData);
+                return;
+            }
+            
+            PlayerManager.Instance.instancePlayer.UpdateHandItem(quickSlots[quickSlotNumber].slotData.item);
         }
-        else PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
+        else PlayerManager.Instance.instancePlayer.UpdateHandItem(null);
 
-        // 즉발 소비템이면  여기서 소비 효과 실행
+        NowSelectedSlot = quickSlots[quickSlotNumber];
 
         SelectedImageUpdate();
         //UpdateQuickSlotView();

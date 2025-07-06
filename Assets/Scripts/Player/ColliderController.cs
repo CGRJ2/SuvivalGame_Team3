@@ -22,13 +22,6 @@ public class ColliderController : MonoBehaviour
     [SerializeField] float offsetY_Head;
     [SerializeField] float distance_Head;
 
-    [Header("Attack Range Set")]
-    [SerializeField] LayerMask attackableLayerMask;
-    [SerializeField] float rayRadius_Attack;
-    [SerializeField] Vector3 offset_Attack;
-    IDamagable[] damagablesInRange;
-
-
     /*[SerializeField] LayerMask interactableLayerMask;
     [SerializeField] float rayRadius_Interact;
     [SerializeField] Vector3 offset_Interact;
@@ -38,6 +31,21 @@ public class ColliderController : MonoBehaviour
     [Header("Crouching Collider Set")]
     [SerializeField] Vector3 crouchCenter_MC;
     [SerializeField] float crouchHeight_MC;
+
+    [Header("Attack Range Set")]
+    [SerializeField] LayerMask attackableLayerMask;
+    WeaponAttackType attackType;
+    [SerializeField] float rayRadius_Attack;
+    [SerializeField] Vector3 offset_Attack;
+    IDamagable[] damagablesInRange;
+
+    [Header("Weapon Range Set : Swing")]
+    [SerializeField] float rayRadius_Weapon_Swing;
+    [SerializeField] Vector3 offset_Weapon_Swing;
+    
+    [Header("Weapon Range Set : Thrust")]
+    [SerializeField] float rayRadius_Weapon_Thrust;
+    [SerializeField] Vector3 offset_Weapon_Thrust;
 
     private void Awake()
     {
@@ -50,8 +58,14 @@ public class ColliderController : MonoBehaviour
     {
         GroundCheck();
         HeadCheck();
-        AttackRangeCheck();
-        //InteractRangeCheck();
+
+        switch (attackType)
+        {
+            case WeaponAttackType.Swing: WeaponRangeCheck_Swing(); break;
+            case WeaponAttackType.Thrust: WeaponRangeCheck_Thrust(); break;
+            case WeaponAttackType.Default: 
+            default: AttackRangeCheck(); break;
+        }
     }
 
     public void GroundCheck()
@@ -101,19 +115,40 @@ public class ColliderController : MonoBehaviour
 
         this.damagablesInRange = damagables.ToArray();
     }
-    /*public void InteractRangeCheck()
-    {
-        Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Interact.z + avatar.transform.up * offset_Interact.y + avatar.transform.right * offset_Interact.x;
 
-        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Interact, interactableLayerMask);
-        List<IInteractable> interactables = new List<IInteractable>();
+    public void WeaponRangeCheck_Swing()
+    {
+        Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Weapon_Swing.z + avatar.transform.up * offset_Weapon_Swing.y + avatar.transform.right * offset_Weapon_Swing.x;
+
+        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Weapon_Swing, attackableLayerMask);
+        cols = cols.Where(c => !c.isTrigger).ToArray();
+        List<IDamagable> damagables = new List<IDamagable>();
 
         foreach (Collider col in cols)
         {
-            interactables.Add(col.GetComponent<IInteractable>());
+            damagables.Add(col.GetComponent<IDamagable>());
         }
-        this.interactablesInRange = interactables.ToArray();
-    }*/
+
+        this.damagablesInRange = damagables.ToArray();
+    }
+    public void WeaponRangeCheck_Thrust()
+    {
+        Vector3 origin = avatar.transform.position + avatar.transform.forward * offset_Weapon_Thrust.z + avatar.transform.up * offset_Weapon_Thrust.y + avatar.transform.right * offset_Weapon_Thrust.x;
+
+        Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Weapon_Thrust, attackableLayerMask);
+        cols = cols.Where(c => !c.isTrigger).ToArray();
+        List<IDamagable> damagables = new List<IDamagable>();
+
+        foreach (Collider col in cols)
+        {
+            damagables.Add(col.GetComponent<IDamagable>());
+        }
+
+        this.damagablesInRange = damagables.ToArray();
+    }
+
+
+
 
     public IDamagable[] GetDamagablesInRange()
     {
@@ -197,10 +232,21 @@ public class ColliderController : MonoBehaviour
 
         /// 공격 범위
         // Gizmos 색상 지정
+        
+        // 일반 공격
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
         Vector3 origin_Attack = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
 
+        // 휘두르기 무기
+        Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 붉은색 투명
+        Vector3 origin_Swing = avatar.transform.position + avatar.transform.forward * offset_Weapon_Swing.z + avatar.transform.up * offset_Weapon_Swing.y + avatar.transform.right * offset_Weapon_Swing.x;
+        Gizmos.DrawSphere(origin_Swing, rayRadius_Weapon_Swing);
+
+        // 찌르기 무기
+        Gizmos.color = new Color(0f, 0f, 1f, 0.3f); // 붉은색 투명
+        Vector3 origin_Thrust = avatar.transform.position + avatar.transform.forward * offset_Weapon_Thrust.z + avatar.transform.up * offset_Weapon_Thrust.y + avatar.transform.right * offset_Weapon_Thrust.x;
+        Gizmos.DrawSphere(origin_Thrust, rayRadius_Weapon_Thrust);
 
         /*/// 상호작용 범위
         // Gizmos 색상 지정
@@ -210,3 +256,5 @@ public class ColliderController : MonoBehaviour
     }
 
 }
+
+

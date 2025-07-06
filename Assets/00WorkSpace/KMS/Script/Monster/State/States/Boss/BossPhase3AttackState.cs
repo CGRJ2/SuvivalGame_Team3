@@ -35,7 +35,11 @@ public class BossPhase3AttackState : IMonsterState
     {
         if (monster == null || monster.IsDead) return;
 
-        if (!monster.IsInAttackRange())
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
+
+        // 플레이어가 공격범위에 있는지 체크
+        if (monster.playerInRange != null)
         {
             var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
             monster.StateMachine.ChangeState(chaseState);

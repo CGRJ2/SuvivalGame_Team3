@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -11,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] DataManager dataManager;
     [SerializeField] BaseCampManager baseCampManager;
     [SerializeField] StageManager stageManager;
+    [SerializeField] CameraManager cameraManager;
 
     private void Awake() => Init();
 
@@ -18,7 +17,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Update() => UpdateByOreder();
 
-        private void Init()
+    private void Init()
     {
         base.SingletonInit();
         InitalizeOrderSetting();
@@ -31,6 +30,7 @@ public class GameManager : Singleton<GameManager>
         dataManager.Init();
         playerManager.Init();
         uiManager.Init();
+        cameraManager.Init();
         suvivalSystemManager.Init();
         baseCampManager.Init();
         dailyManager.Init();

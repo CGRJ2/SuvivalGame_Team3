@@ -16,14 +16,17 @@ public class MonsterAttackState : IMonsterState
 
         monster.SetPerceptionState(MonsterPerceptionState.Combat); // 전투 상태 설정
 
-        Debug.Log($"[{monster.name}] 상태: Attack 진입");
+        //Debug.Log($"[{monster.name}] 상태: Attack 진입");
     }
 
     public void Execute()
     {
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
+
         if (monster == null || monster.IsDead) return;
 
-        if (!monster.IsInAttackRange())
+        if (monster.playerInRange == null)
         {
             var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
             monster.StateMachine.ChangeState(chaseState);
@@ -40,7 +43,7 @@ public class MonsterAttackState : IMonsterState
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: Attack 종료");
+        //Debug.Log($"[{monster.name}] 상태: Attack 종료");
     }
 }
 

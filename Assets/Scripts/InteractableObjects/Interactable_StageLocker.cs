@@ -4,6 +4,8 @@ using UnityEngine;
 public class Interactable_StageLocker : InteractableBase
 {
     public GameObject blockWall;
+    public GameObject afterUnlock;
+    
     [SerializeField] StageData chainedStageData;
 
     public bool IsCanUlock()
@@ -45,8 +47,9 @@ public class Interactable_StageLocker : InteractableBase
         if (IsCanUlock())
         {
             Debug.Log($"[{chainedStageData.StageName}] 잠금 해제");
-            chainedStageData.UlockStage(); ;
-            gameObject.SetActive(false);
+            chainedStageData.UlockStage();
+            blockWall.SetActive(false);
+            afterUnlock.SetActive(true);
         }
 
         

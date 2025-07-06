@@ -12,13 +12,11 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
     public virtual void ShowInteractableUI()
     {
-        Debug.Log("패널 열기");
         UIManager.Instance.popUpUIGroup.interactableUI.gameObject.SetActive(true);
     }
 
     public virtual void CloseInteractableUI()
     {
-        Debug.Log("패널 닫기");
         UIManager.Instance.popUpUIGroup.interactableUI.gameObject.SetActive(false);
     }
 

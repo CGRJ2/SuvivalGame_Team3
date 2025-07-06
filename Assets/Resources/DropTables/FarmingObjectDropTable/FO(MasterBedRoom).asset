@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee90372340dddc4f9a62b42d244a39d, type: 3}
+  m_Name: FO(MasterBedRoom)
+  m_EditorClassIdentifier: 
+  <DropTableName>k__BackingField: FO(MasterBedRoom)
+  dropTable:
+  - dropItem: {fileID: 11400000, guid: 5e1c25c0415298543ab8a2f5b82c632a, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: b469b4e4ebd9bf94bb0c1e7344057740, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: 5c426e94f7144654181e77984e513cb7, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: b4a6946724b9bcc49af8086d41b24cd3, type: 2}
+    dropCount: 1
+    dropWeight: 1
