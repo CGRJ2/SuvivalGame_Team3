@@ -456,6 +456,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
     {
         currentHP -= damage;
         view.PlayMonsterHitEffect();
+        view.PlayMonsterHitAnimation();
 
         Vector3 direction = transform.position - attackerTransform.position;
 

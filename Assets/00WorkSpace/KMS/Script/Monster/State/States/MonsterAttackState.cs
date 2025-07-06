@@ -21,6 +21,7 @@ public class MonsterAttackState : IMonsterState
 
     public void Execute()
     {
+        Debug.Log($"{monster.name}공격 상태 진입");
         // 공격 범위 체크
         monster.UpdateAttackRange();
 

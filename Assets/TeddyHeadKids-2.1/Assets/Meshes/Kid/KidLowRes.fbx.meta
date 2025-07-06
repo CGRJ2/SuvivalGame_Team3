@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: b57f13e7ec6f7fd4ea8a0085651b5e5e
+timeCreated: 1520274482
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: bottomLip
+    100002: bottomLip_end
+    100004: chest
+    100006: eybrow.L
+    100008: eybrow.L_end
+    100010: eyebrow.R
+    100012: eyebrow.R_end
+    100014: eyelid.L
+    100016: eyelid.L_end
+    100018: eyelid.R
+    100020: eyelid.R_end
+    100022: eyes
+    100024: f_index.01.L
+    100026: f_index.01.R
+    100028: f_index.02.L
+    100030: f_index.02.L_end
+    100032: f_index.02.R
+    100034: f_index.02.R_end
+    100036: f_middle.01.L
+    100038: f_middle.01.R
+    100040: f_middle.02.L
+    100042: f_middle.02.L_end
+    100044: f_middle.02.R
+    100046: f_middle.02.R_end
+    100048: f_pinky.01.L
+    100050: f_pinky.01.R
+    100052: f_pinky.02.L
+    100054: f_pinky.02.L_end
+    100056: f_pinky.02.R
+    100058: f_pinky.02.R_end
+    100060: f_ring.01.L
+    100062: f_ring.01.R
+    100064: f_ring.02.L
+    100066: f_ring.02.L_end
+    100068: f_ring.02.R
+    100070: f_ring.02.R_end
+    100072: foot.L
+    100074: foot.L_end
+    100076: foot.R
+    100078: foot.R_end
+    100080: forearm.L
+    100082: forearm.R
+    100084: hand.L
+    100086: hand.R
+    100088: head
+    100090: hips
+    100092: //RootNode
+    100094: lip.L
+    100096: lip.L_end
+    100098: lip.R
+    100100: lip.R_end
+    100102: metarig
+    100104: neck
+    100106: palm.01.L
+    100108: palm.01.R
+    100110: palm.02.L
+    100112: palm.02.R
+    100114: palm.03.L
+    100116: palm.03.R
+    100118: palm.04.L
+    100120: palm.04.R
+    100122: shin.L
+    100124: shin.R
+    100126: shoulder.L
+    100128: shoulder.R
+    100130: spine
+    100132: TeddyHeadKidMesh
+    100134: thigh.L
+    100136: thigh.R
+    100138: thumb.01.L
+    100140: thumb.01.R
+    100142: thumb.02.L
+    100144: thumb.02.R
+    100146: thumb.03.L
+    100148: thumb.03.L_end
+    100150: thumb.03.R
+    100152: thumb.03.R_end
+    100154: topLip
+    100156: topLip_end
+    100158: upper_arm.L
+    100160: upper_arm.R
+    100162: BlenderHat
+    100164: Jumper
+    100166: Runners
+    100168: Skin
+    100170: Trunks
+    100172: TShirt
+    100174: WoodenChassis.Scooter.007
+    400000: bottomLip
+    400002: bottomLip_end
+    400004: chest
+    400006: eybrow.L
+    400008: eybrow.L_end
+    400010: eyebrow.R
+    400012: eyebrow.R_end
+    400014: eyelid.L
+    400016: eyelid.L_end
+    400018: eyelid.R
+    400020: eyelid.R_end
+    400022: eyes
+    400024: f_index.01.L
+    400026: f_index.01.R
+    400028: f_index.02.L
+    400030: f_index.02.L_end
+    400032: f_index.02.R
+    400034: f_index.02.R_end
+    400036: f_middle.01.L
+    400038: f_middle.01.R
+    400040: f_middle.02.L
+    400042: f_middle.02.L_end
+    400044: f_middle.02.R
+    400046: f_middle.02.R_end
+    400048: f_pinky.01.L
+    400050: f_pinky.01.R
+    400052: f_pinky.02.L
+    400054: f_pinky.02.L_end
+    400056: f_pinky.02.R
+    400058: f_pinky.02.R_end
+    400060: f_ring.01.L
+    400062: f_ring.01.R
+    400064: f_ring.02.L
+    400066: f_ring.02.L_end
+    400068: f_ring.02.R
+    400070: f_ring.02.R_end
+    400072: foot.L
+    400074: foot.L_end
+    400076: foot.R
+    400078: foot.R_end
+    400080: forearm.L
+    400082: forearm.R
+    400084: hand.L
+    400086: hand.R
+    400088: head
+    400090: hips
+    400092: //RootNode
+    400094: lip.L
+    400096: lip.L_end
+    400098: lip.R
+    400100: lip.R_end
+    400102: metarig
+    400104: neck
+    400106: palm.01.L
+    400108: palm.01.R
+    400110: palm.02.L
+    400112: palm.02.R
+    400114: palm.03.L
+    400116: palm.03.R
+    400118: palm.04.L
+    400120: palm.04.R
+    400122: shin.L
+    400124: shin.R
+    400126: shoulder.L
+    400128: shoulder.R
+    400130: spine
+    400132: TeddyHeadKidMesh
+    400134: thigh.L
+    400136: thigh.R
+    400138: thumb.01.L
+    400140: thumb.01.R
+    400142: thumb.02.L
+    400144: thumb.02.R
+    400146: thumb.03.L
+    400148: thumb.03.L_end
+    400150: thumb.03.R
+    400152: thumb.03.R_end
+    400154: topLip
+    400156: topLip_end
+    400158: upper_arm.L
+    400160: upper_arm.R
+    400162: BlenderHat
+    400164: Jumper
+    400166: Runners
+    400168: Skin
+    400170: Trunks
+    400172: TShirt
+    400174: WoodenChassis.Scooter.007
+    2300000: eyes
+    2300002: WoodenChassis.Scooter.007
+    3300000: eyes
+    3300002: WoodenChassis.Scooter.007
+    4300000: eyes
+    4300002: TeddyHeadKidMesh
+    4300004: WoodenChassis.Scooter.007
+    4300006: Skin
+    4300008: Trunks
+    4300010: Runners
+    4300012: Jumper
+    4300014: TShirt
+    7400000: metarig|Apose
+    7400002: metarig|Dance1
+    7400004: metarig|Dance2
+    7400006: metarig|DrivingFWD
+    7400008: metarig|FallBKW
+    7400010: metarig|FallFWD
+    7400012: metarig|GrabHighIdle
+    7400014: metarig|GrabToClimb
+    7400016: metarig|IdleAlert
+    7400018: metarig|IdleImpatient
+    7400020: metarig|IdleSimple
+    7400022: metarig|JumpBWD
+    7400024: metarig|JumpFWD
+    7400026: metarig|JumpGrab
+    7400028: metarig|JumpRoll
+    7400030: metarig|JumpUp
+    7400032: metarig|LeapingFrog
+    7400034: metarig|OpenChest
+    7400036: metarig|OpenDoor
+    7400038: metarig|PawAttack
+    7400040: metarig|PickItemDown
+    7400042: metarig|Run
+    7400044: metarig|SittingIdle
+    7400046: metarig|SittingIdleHangingLegs
+    7400048: metarig|Throw
+    7400050: metarig|TurnOnSpot180
+    7400052: metarig|TurnOnSpot90
+    7400054: metarig|Walk
+    7400056: metarig|WalkDraggingObject
+    7400058: metarig|WalkPushingObject
+    9500000: //RootNode
+    13700000: TeddyHeadKidMesh
+    13700002: Jumper
+    13700004: Runners
+    13700006: Skin
+    13700008: Trunks
+    13700010: TShirt
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'metarig|Dance1' has import animation warnings
+      that might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'chest' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'bottomLip' has translation
+      animation that will be discarded.\n\t'palm.01.L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'palm.02.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|Dance2' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'lip.R' has translation
+      animation that will be discarded.\n\t'palm.01.L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'palm.02.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|DrivingFWD' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|FallBKW' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'lip.R' has translation
+      animation that will be discarded.\n\nClip 'metarig|FallFWD' has import animation
+      warnings that might lower retargeting quality:\nNote: Activate translation DOF
+      on avatar to improve retargeting quality.\n\t'chest' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'bottomLip' has translation
+      animation that will be discarded.\n\t'lip.R' has translation animation that
+      will be discarded.\n\t'palm.01.L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'palm.02.L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'palm.03.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|GrabHighIdle' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|GrabToClimb' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|IdleAlert' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|IdleImpatient' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\nClip 'metarig|IdleSimple'
+      has import animation warnings that might lower retargeting quality:\nNote: Activate
+      translation DOF on avatar to improve retargeting quality.\n\t'chest' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|JumpBWD' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\nClip 'metarig|JumpFWD'
+      has import animation warnings that might lower retargeting quality:\nNote: Activate
+      translation DOF on avatar to improve retargeting quality.\n\t'chest' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|JumpGrab' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|JumpRoll' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|JumpUp' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\nClip 'metarig|LeapingFrog'
+      has import animation warnings that might lower retargeting quality:\nNote: Activate
+      translation DOF on avatar to improve retargeting quality.\n\t'chest' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\nClip 'metarig|OpenChest'
+      has import animation warnings that might lower retargeting quality:\nNote: Activate
+      translation DOF on avatar to improve retargeting quality.\n\t'chest' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|OpenDoor' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|PawAttack' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|PickItemDown' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|Run' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|SittingIdle' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|Throw' has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'palm.01.L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|TurnOnSpot180' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|TurnOnSpot90' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'chest'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.01.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.02.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.03.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'palm.04.R'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'metarig|WalkDraggingObject' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'chest' is inbetween humanoid transforms and has rotation animation
+      that will be discarded.\n\t'bottomLip' has translation animation that will be
+      discarded.\n\t'lip.R' has translation animation that will be discarded.\n\nClip
+      'metarig|WalkPushingObject' has import animation warnings that might lower retargeting
+      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'bottomLip'
+      has translation animation that will be discarded.\n\t'lip.R' has translation
+      animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

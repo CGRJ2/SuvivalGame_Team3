@@ -19,7 +19,7 @@ MonoBehaviour:
   maxHP: 80
   moveSpeed: 2
   attackPower: 7
-  attackRange: 2
+  attackRange: 1.5
   attackCooldown: 1
   collisionDamage: 5
   knockbackDistance: 2
@@ -32,7 +32,7 @@ MonoBehaviour:
   WaitTimeMin: 1
   WaitTimeMax: 4
   dropItemPrefab: {fileID: 0}
-  monsterPrefab: {fileID: 4031380374999181221, guid: 59d5516449e49004fa8f060c9c379290, type: 3}
+  monsterPrefab: {fileID: 100000, guid: 0b9f20f2dc04f4b1b98f92fb30fd0393, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
