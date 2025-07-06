@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113010738592863910}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -49,10 +49,10 @@ MonoBehaviour:
   respawnTime_FO: 5
   respawnTime_Monster: 5
   spawnerListGroup_LivingRoom:
-    maxCount_FO: 4
+    maxCount_FO: 20
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 4
+    maxCount_Monster: 10
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_Library:
@@ -74,6 +74,13 @@ MonoBehaviour:
     spawnerList_FO: []
     activateInstances_FO: []
     maxCount_Monster: 2
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  spawnerListGroup_CatRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
     spawnerList_Monster: []
     activateInstances_Monster: []
   nowRegion: 0

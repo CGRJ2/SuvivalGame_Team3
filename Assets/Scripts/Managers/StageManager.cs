@@ -15,6 +15,8 @@ public class StageManager : Singleton<StageManager>
     [Header("몬스터 리스폰 시간")]
     [SerializeField] int respawnTime_Monster = 2;
 
+    [Header("튜토리얼룸 스포너 정보")]
+    [SerializeField] private SpawnerListGroup spawnerListGroup_TutorialRoom;
     [Header("거실 스포너 정보")]
     [SerializeField] private SpawnerListGroup spawnerListGroup_LivingRoom;
     [Header("서재 스포너 정보")]
@@ -23,7 +25,8 @@ public class StageManager : Singleton<StageManager>
     [SerializeField] private SpawnerListGroup spawnerListGroup_DressRoom;
     [Header("안방 스포너 정보")]
     [SerializeField] private SpawnerListGroup spawnerListGroup_MasterBedRoom;
-
+    [Header("고양이방 스포너 정보")]
+    [SerializeField] private SpawnerListGroup spawnerListGroup_CatRoom;
 
     [Header("현재 플레이어 존재 위치")]
     public RegionInfos nowRegion;
@@ -83,6 +86,10 @@ public class StageManager : Singleton<StageManager>
                 return spawnerListGroup_DressRoom;
             case StageKey.MasterBedRoom:
                 return spawnerListGroup_MasterBedRoom;
+            case StageKey.CatRoom:
+                return spawnerListGroup_CatRoom;
+            case StageKey.TutorialRoom:
+                return spawnerListGroup_TutorialRoom;
             default: return null;
         }
     }
@@ -95,6 +102,8 @@ public class StageManager : Singleton<StageManager>
             case 0:
                 Debug.LogWarning("0스테이지 스폰 사이클 실행!");
                 SpawningRoutinesStart(spawnerListGroup_LivingRoom);
+                SpawningRoutinesStart(spawnerListGroup_CatRoom);
+                SpawningRoutinesStart(spawnerListGroup_TutorialRoom);
                 break;
 
             case 1:
@@ -252,14 +261,23 @@ public class StageManager : Singleton<StageManager>
 
         // 1-2. 현재 스포너 상태 초기화 & 스폰 객체들 전체 삭제
         List<GameObject> activedAllObjects = new List<GameObject>();
+        activedAllObjects.AddRange(spawnerListGroup_TutorialRoom.activateInstances_FO);
+        activedAllObjects.AddRange(spawnerListGroup_TutorialRoom.activateInstances_Monster);
+
         activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_CatRoom.activateInstances_FO);
+        activedAllObjects.AddRange(spawnerListGroup_CatRoom.activateInstances_Monster);
 
         foreach (GameObject gameObject in activedAllObjects)
         {

@@ -50,7 +50,7 @@ public class StageData : ScriptableObject
 
     public void InitUnlockState()
     {
-        if (stageKey == StageKey.LivingRoom) IsUnlocked = true;
+        if (stageKey == StageKey.LivingRoom || stageKey == StageKey.CatRoom || stageKey == StageKey.TutorialRoom) IsUnlocked = true;
         else IsUnlocked = false;
     }
 }

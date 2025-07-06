@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c56aec8dad04694497b4fe219ec3a3e, type: 3}
+  m_Name: "\uC7A5\uB09C\uAC10 \uBE14\uB85D \uB108\uD074 \uC124\uACC4\uB3C4"
+  m_EditorClassIdentifier: 
+  itemType: 2
+  itemName: "\uC7A5\uB09C\uAC10 \uBE14\uB85D \uB108\uD074 \uC124\uACC4\uB3C4"
+  description: "\uB178\uB9D0 \uBB34\uAE30 \"\uC7A5\uB09C\uAC10 \uBE14\uB85D \uB108\uD074\"\uC758
+    \uC124\uACC4\uB3C4. \uD55C\uBC88 \uB9CC\uB4E4\uC5B4\uBCFC\uAE4C?\r\n"
+  imageSprite: {fileID: 21300000, guid: a617862055db2ea478986a2379520db6, type: 3}
+  instancePrefab: {fileID: 1641338830461623193, guid: d2613fe0e3017064f9be9eb266c44bbc, type: 3}
+  maxCount: 1
+  icon: {fileID: 0}
+  <RecipeData>k__BackingField:
+    recipeName: 
+    isUnlocked: 0
+    orderIndex: 20
+    craftDuration: 8
+    resultItem: {fileID: 11400000, guid: 61c7ae7a37b874a4699f3c620279ac3a, type: 2}
+    resultItemCount: 1
+    requiredItems:
+    - item: {fileID: 11400000, guid: 0a76516dd774a1b4592c18d89e10c6b7, type: 2}
+      count: 8
+    - item: {fileID: 11400000, guid: e54a2710f4854d344a8954819df668b1, type: 2}
+      count: 5
