@@ -14,9 +14,9 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     [Header("Volume")]
-    [Range(0, 10)] public float masterVolume = 10f;
-    [Range(0, 10)] public float bgmVolume = 10f;
-    [Range(0, 10)] public float seVolume = 10f;
+    [Range(0, 10)] public float masterVolume = 10f;//전체
+    [Range(0, 10)] public float bgmVolume = 10f;//배경
+    [Range(0, 10)] public float seVolume = 10f;//효과
 
     [Header("Audio Source")]
     public AudioSource bgmSource;
@@ -46,17 +46,17 @@ public class SoundManager : MonoBehaviour
     void InitializeDictionaries()
     {
         bgmDict = new Dictionary<string, AudioClip>();
-        foreach (var item in bgmClips)
+        foreach (var soundClip in bgmClips)
         {
-            if (!bgmDict.ContainsKey(item.name))
-                bgmDict.Add(item.name, item.clip);
+            if (!bgmDict.ContainsKey(soundClip.name))
+                bgmDict.Add(soundClip.name, soundClip.clip);
         }
 
         seDict = new Dictionary<string, AudioClip>();
-        foreach (var item in seClips)
+        foreach (var soundClip in seClips)
         {
-            if (!seDict.ContainsKey(item.name))
-                seDict.Add(item.name, item.clip);
+            if (!seDict.ContainsKey(soundClip.name))
+                seDict.Add(soundClip.name, soundClip.clip);
         }
     }
 
