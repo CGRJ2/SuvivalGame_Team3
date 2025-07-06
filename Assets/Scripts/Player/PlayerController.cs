@@ -1,7 +1,6 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -60,7 +59,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Awake() => Init();
 
-    
+
     private void Update()
     {
         ///////////////////////////
@@ -94,12 +93,12 @@ public class PlayerController : MonoBehaviour, IDamagable
         HandleMove();
     }
 
-    private void OnDisable() 
+    private void OnDisable()
     {
-        if(dm != null)
-        dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
+        if (dm != null)
+            dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
 
-        InputActionsDelete(); 
+        InputActionsDelete();
     }
 
     private void Init()
@@ -522,10 +521,16 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         Vector3 getMoveDir;
 
-        if (isFreeCamModInput)
+        if (CameraManager.Instance.sideViewCamera.virtualCamera.gameObject.activeSelf)
+        {
+            SideView_Camera sideViewCam = CameraManager.Instance.sideViewCamera;
+            getMoveDir = View.GetMoveDir_SideCamMode(InputDir, sideViewCam.front, sideViewCam.right);
+        }
+        else if (isFreeCamModInput)
             getMoveDir = View.GetMoveDirection(InputDir, true);
         else
             getMoveDir = View.GetMoveDirection(InputDir);
+
 
         Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
         View.moveDir = moveVec;
@@ -545,19 +550,30 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleSight()
     {
+        // 사이드 캠 활성화 상태에선 화면회전은 정지
+        if (CameraManager.Instance.sideViewCamera.virtualCamera.gameObject.activeSelf)
+        {
+            View.SetAvatarRotation(View.facingDir, pm.RotateSpeed);
+            return;
+        }
+
         Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, pm.MinPitch, pm.MaxPitch);
 
         Vector3 avatarDir;
+
         // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
         if (isFreeCamModInput) avatarDir = View.facingDir;
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
         else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
         else avatarDir = View.moveDir;
 
+        
+
         // 컨트롤 락 걸리면 아바타 회전은 정지
         if (Status.isControllLocked) return;
-
         View.SetAvatarRotation(avatarDir, pm.RotateSpeed);
+
+        
 
         // Attack 상태일 때만.
         if (stateMachine.CurState == stateMachine.stateDic[PlayerStateTypes.Attack])
@@ -582,7 +598,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
-            
+
         }
 
         foreach (IDamagable damagable in damagables)

@@ -20,15 +20,22 @@ public class CraftingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     IEnumerator CraftingPressedRoutine()
     {
         pressedTime = 0;
+        float finalCraftingTime = 0;
 
-        while (pressedTime < craftingTime)
-        {
-            if (!btnSelf.interactable) yield break;
+        // 캠프 레벨3 버프 적용
+        if (BaseCampManager.Instance.baseCampData.CurrentCampLevel.Value > 2)
+            finalCraftingTime = craftingTime / 2;
+        else
+            finalCraftingTime = craftingTime;
 
-            pressedTime += Time.deltaTime;
-            progressBar.value = Mathf.Clamp01(pressedTime / craftingTime);
-            yield return null;
-        }
+        while (pressedTime < finalCraftingTime)
+            {
+                if (!btnSelf.interactable) yield break;
+
+                pressedTime += Time.deltaTime;
+                progressBar.value = Mathf.Clamp01(pressedTime / finalCraftingTime);
+                yield return null;
+            }
 
 
         // 정상적으로 끝났을 때

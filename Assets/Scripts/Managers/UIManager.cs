@@ -41,6 +41,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.SingletonInit();
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Start()
@@ -82,6 +83,7 @@ public class UIManager : Singleton<UIManager>
         playerActionMap.Disable();
         uiActionMap.Enable();
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log($"현재 활성화된 패널 개수 {activedPanelStack.Count}");
 
     }
@@ -91,6 +93,7 @@ public class UIManager : Singleton<UIManager>
         panel.SetActive(true);
         activedPanelStack.Push(panel);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log($"현재 활성화된 패널 개수 {activedPanelStack.Count}");
     }
 
@@ -106,6 +109,7 @@ public class UIManager : Singleton<UIManager>
             playerActionMap.Enable();
             uiActionMap.Disable();
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
@@ -127,6 +131,7 @@ public class UIManager : Singleton<UIManager>
             playerActionMap.Enable();
             uiActionMap.Disable();
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }
