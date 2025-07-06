@@ -37,7 +37,7 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterIdle");
+        Debug.LogError("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -62,7 +62,7 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterMove");
+        Debug.LogError("EnterMove");
 
     }
 
@@ -109,7 +109,7 @@ public class Player_Jump : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterJump");
+        Debug.Log("EnterJump");
         pc.View.animator.SetBool("IsJump", true);
         pc.View.Jump(pc.Status.JumpForce);
     }
@@ -131,6 +131,8 @@ public class Player_Fall : PlayerState
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("EnterFalling");
+
         pc.View.animator.SetBool("IsFalling", true);
     }
     
@@ -182,7 +184,7 @@ public class Player_Attack : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterAttack");
+        Debug.LogError("EnterAttack");
         pc.isAttacking = true;
         pc.View.animator.SetBool("IsAttack", true);
     }
@@ -210,7 +212,7 @@ public class Player_Damaged : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterDamage");
+        Debug.LogError("EnterDamage");
         pc.isAttacking = false;
         pc.View.animator.SetTrigger("IsDamagedTrigger");
         pc.View.animator.SetBool("IsDamaged", true);
@@ -219,7 +221,7 @@ public class Player_Damaged : PlayerState
     public override void Exit()
     {
         base.Exit();
-        //pc.View.animator.SetBool("IsDamaged", false);
+        pc.View.animator.SetBool("IsDamaged", false);
     }
 
     public override void Update()
