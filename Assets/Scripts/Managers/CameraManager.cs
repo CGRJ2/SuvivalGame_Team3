@@ -19,4 +19,18 @@ public class CameraManager : Singleton<CameraManager>
         pc.TPS_Cameras = tpsCameraGroup.TPS_Cameras;
     }
 
+    public void SwitchSideViewCamera(bool sideCamOn)
+    {
+        if (sideCamOn)
+        {
+            sideViewCamera.virtualCamera.gameObject.SetActive(true);
+            sideViewCamera.virtualCamera.gameObject.transform.rotation = tpsCameraGroup.GetActivedCameraTransform().rotation;
+        }
+        else
+        {
+            sideViewCamera.virtualCamera.gameObject.SetActive(false);
+            tpsCameraGroup.GetActivedCameraTransform().rotation = sideViewCamera.virtualCamera.gameObject.transform.rotation;
+        }
+    }
+
 }
