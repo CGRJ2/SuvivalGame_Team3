@@ -34,4 +34,13 @@ public class TPS_Camera : MonoBehaviour
             virtualCamera.LookAt = pc.View.TPSView_CameraFocusTransform;
         }
     }
+
+    public Transform GetActivedCameraTransform()
+    {
+        foreach(CinemachineVirtualCamera cineCam in TPS_Cameras)
+        {
+            if (cineCam.gameObject.activeSelf) return cineCam.transform;
+        }
+        return null;
+    }
 }
