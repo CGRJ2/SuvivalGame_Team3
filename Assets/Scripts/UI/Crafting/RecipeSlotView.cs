@@ -12,7 +12,7 @@ public class RecipeSlotView : MonoBehaviour
 
     public void SetRecipeSprite()
     {
-        image.sprite = recipeItem.imageSprite;
+        image.sprite = recipeItem.RecipeData.resultItem.imageSprite;
     }
 
     public void SetBlockedSprite()

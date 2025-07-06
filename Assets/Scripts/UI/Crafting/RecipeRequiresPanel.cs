@@ -25,7 +25,7 @@ public class RecipeRequiresPanel : MonoBehaviour
     // 결과 아이템 데이터 View 업데이트 (사용가능한 레시피 선택 시)
     public void ShowRecipeRequiresView(Item_Recipe item_Recipe)
     {
-        resultItemImage.sprite = item_Recipe.imageSprite;
+        resultItemImage.sprite = item_Recipe.RecipeData.resultItem.imageSprite;
         resultItemNameText.text = item_Recipe.RecipeData.resultItem.itemName;
         resultItemTypeText.text = item_Recipe.itemType.ToString();
         //resultItemCraftTimeText.text = $"{Mathf.FloorToInt(item_Recipe.RecipeData.craftDuration)}s";
