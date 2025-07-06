@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item", menuName = "New Item/재료 아이템/레시피")]
 public class Item_Recipe : Item_Ingredient
 {
-    public Sprite icon;
-
     [field: Header("레시피 데이터")]
     [field: SerializeField] public RecipeData RecipeData { get; private set; }
     

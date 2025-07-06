@@ -19,18 +19,15 @@ public class MonsterChaseState : IMonsterState
 
     public void Execute()
     {
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
+
         if (monster == null || monster.IsDead)
         {
             // Dead 상태 팩토리에서 관리하지 않으면 직접 생성 유지
             monster.StateMachine.ChangeState(new MonsterDeadState());
             return;
         }
-
-        //if (monster.IsOutsideActionRadius())
-        //{
-        //    monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Idle));
-        //    return;
-        //}
 
         if (monster.IsOutsideDetectionRadius())
         {
@@ -46,13 +43,6 @@ public class MonsterChaseState : IMonsterState
 
         lostTimer = 0f;
 
-        // 추적 이동
-        //if (monster.GetTarget() != null)
-        //{
-        //    Vector3 toTarget = monster.GetTarget().position - monster.transform.position;
-        //    toTarget.y = 0f;
-        //    monster.Move(toTarget.normalized);
-        //}
         if (monster.GetTarget() != null)
         {
             monster.Agent.SetDestination(monster.GetTarget().position);
@@ -60,7 +50,7 @@ public class MonsterChaseState : IMonsterState
         }
 
         // 공격 사거리 진입 시 전이
-        if (monster.IsInAttackRange())
+        if (monster.playerInRange != null)
         {
             var attackState = monster.StateFactory.CreateAttackState();
             monster.StateMachine.ChangeState(attackState);

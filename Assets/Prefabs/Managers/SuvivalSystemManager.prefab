@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &339300593093770205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8833997750794455158}
+  - component: {fileID: 8479995521586582404}
+  m_Layer: 0
+  m_Name: SuvivalSystemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8833997750794455158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339300593093770205}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8479995521586582404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339300593093770205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54ef704ba853b534982c0389223714c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TickDuration: 1
+  <bodyPartSystem>k__BackingField:
+    <HeadMaxHP_Init>k__BackingField: 100
+    <ArmMaxHP_Init>k__BackingField: 10
+    <LegMaxHP_Init>k__BackingField: 10
+    <HeadMaxHP_AfterDestroyed>k__BackingField: 20
+    <ArmMaxHP_AfterDestroyed>k__BackingField: 5
+    <LegMaxHP_AfterDestroyed>k__BackingField: 5
+  <batterySystem>k__BackingField:
+    <MaxBattery_Init>k__BackingField: 100
+    <MaxBattery_AfterFaint>k__BackingField: 50
+    <DrainPerTick_Idle>k__BackingField: 1
+    <DrainPerTick_Sprint>k__BackingField: 2
+    <RecoverAmount_MonsterSlay>k__BackingField: 10
+    <RecoverAmount_BossHit>k__BackingField: 10
+  <willPowerSystem>k__BackingField:
+    <MaxWillPower_Init>k__BackingField: 100
+    <DrainPerTick_Idle>k__BackingField: 1
+    <DrainPerTick_Night>k__BackingField: 2
+    <HeadDamagePerTick>k__BackingField: 1
+    <WillDangerZone>k__BackingField: 30
+    <DecreaseAmount_CatEvent>k__BackingField: 20

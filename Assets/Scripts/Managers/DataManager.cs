@@ -70,6 +70,8 @@ public class DataManager : Singleton<DataManager>
         Debug.LogWarning(instanceSaveDataGroup.tempCampData);
         string json = JsonUtility.ToJson(instanceSaveDataGroup, true);
         File.WriteAllText(GetSavePath(slotIndex), json);
+
+        UIManager.Instance.popUpUIGroup.PopMessage(UIManager.Instance.popUpUIGroup.message_Saved);
     }
     
 

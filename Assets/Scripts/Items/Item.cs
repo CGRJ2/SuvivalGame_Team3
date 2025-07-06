@@ -31,7 +31,8 @@ public class Item : ScriptableObject
         // 장비 아이템
         if (this is IEquipable equipable)
         {
-            equipable.EquipToQuickSlot();
+            //equipable.EquipToQuickSlot();
+            // 이미 인벤토리에서 처리 함
         }
         // 소비 아이템 (소비 아이템인데 장착 가능한 애들은 따로 장착까지만 가능)
         else if (this is Item_Consumable consumable)
@@ -137,7 +138,7 @@ public class ItemRequirement
 
 public interface IEquipable
 {
-    public void EquipToQuickSlot();
+    //public void EquipToQuickSlot();
 
     public void OnAttackEffect();
 }

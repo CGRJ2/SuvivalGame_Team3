@@ -37,7 +37,7 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterIdle");
+        //Debug.LogError("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -62,7 +62,7 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterMove");
+        //Debug.LogError("EnterMove");
 
     }
 
@@ -174,7 +174,6 @@ public class Player_Crouch : PlayerState
 
 public class Player_Attack : PlayerState
 {
-    float attackCoolTime = 0;
     public Player_Attack(PlayerController pc) : base(pc)
     {
 
@@ -183,9 +182,7 @@ public class Player_Attack : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterAttack");
-
-        attackCoolTime = 0;
+        //Debug.LogError("EnterAttack");
         pc.isAttacking = true;
         pc.View.animator.SetBool("IsAttack", true);
     }
@@ -194,17 +191,72 @@ public class Player_Attack : PlayerState
     {
         base.Exit();
         pc.View.animator.SetBool("IsAttack", false);
-        pc.isAttacking = false;
     }
     public override void Update()
     {
         base.Update();
-        attackCoolTime += Time.deltaTime;
-        if (attackCoolTime > PlayerManager.Instance.AttackCoolTime)
-        {
-            pc.isAttacking = false;
-        }
+    }
+
+
+}
+
+public class Player_Damaged : PlayerState
+{
+    public Player_Damaged(PlayerController pc) : base(pc)
+    {
+
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        //Debug.LogError("EnterDamage");
+        pc.isAttacking = false;
+        pc.View.animator.SetTrigger("IsDamagedTrigger");
+        pc.View.animator.SetBool("IsDamaged", true);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        //pc.View.animator.SetBool("IsDamaged", false);
+    }
+
+    public override void Update()
+    {
+        base.Update();
     }
 }
+
+public class Player_Dead : PlayerState
+{
+    public Player_Dead(PlayerController pc) : base(pc)
+    {
+
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        pc.Status.isControllLocked = true;
+        //Debug.LogError("EnterDead");
+
+        //pc.View.animator.SetBool("IsDead", true);
+        pc.View.animator.SetTrigger("IsDeadTrigger");
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        pc.View.animator.SetTrigger("Respawn");
+        
+        //pc.View.animator.SetBool("IsDead", false);
+    }
+    public override void Update()
+    {
+        base.Update();
+    }
+}
+
 
 
