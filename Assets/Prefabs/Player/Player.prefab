@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856171058964792690}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.112, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8173942332375963233}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &2058694555148552934
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7761267926721708425}
   m_Layer: 3
-  m_Name: CameraFocusTransform
+  m_Name: TPSCameraFocusTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -729,7 +729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d557a8e7d1e8fc44e8794925db6b67ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraFocusTransform: {fileID: 7761267926721708425}
+  <TPSView_CameraFocusTransform>k__BackingField: {fileID: 7761267926721708425}
+  <SideView_CameraFocusTransform>k__BackingField: {fileID: 8071554349787555473}
   avatar: {fileID: 6313100791532666274}
   animator: {fileID: 0}
   FxPrefab: {fileID: 0}
@@ -757,13 +758,17 @@ MonoBehaviour:
   rayRadius_Head: 0.2
   offsetY_Head: 1.4
   distance_Head: 0.1
+  crouchCenter_MC: {x: 0, y: 0.7, z: 0}
+  crouchHeight_MC: 1.4
   attackableLayerMask:
     serializedVersion: 2
     m_Bits: 64
   rayRadius_Attack: 1.2
   offset_Attack: {x: 0, y: 1, z: 1}
-  crouchCenter_MC: {x: 0, y: 0.7, z: 0}
-  crouchHeight_MC: 1.4
+  rayRadius_Weapon_Swing: 1.5
+  offset_Weapon_Swing: {x: 0, y: 1, z: 1.2}
+  rayRadius_Weapon_Thrust: 1.2
+  offset_Weapon_Thrust: {x: 0, y: 1, z: 2}
 --- !u!1001 &5770829409157634633
 PrefabInstance:
   m_ObjectHideFlags: 0

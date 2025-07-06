@@ -27,7 +27,13 @@ public class PopUpUIGroup : MonoBehaviour
 
 
     Coroutine currentPopMessageRoutine;
+    private void Awake() => Init();
 
+
+    private void Init()
+    {
+        UIManager.Instance.popUpUIGroup = this;
+    }
 
 
     public void PopMessage(CanvasGroup canvasGroup, string messageText = "")

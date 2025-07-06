@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     [HideInInspector] public Vector3 InputDir { get; private set; }
     [HideInInspector] public Vector2 MouseInputDir { get; private set; }
 
-    [SerializeField] Transform[] TPS_Cameras;
+    [HideInInspector] public CinemachineVirtualCamera[] TPS_Cameras;
     int currentZoomIndex = 1;
 
     //private InputAction AimingAction;
