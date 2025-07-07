@@ -21,7 +21,8 @@ public class OwnerAI : BaseMonster
     {
         base.Start();
         IsInvincible = true;
-        playerTransform = GameObject.FindWithTag("Player")?.transform;
+        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        playerTransform = pc.transform;
         RefreshBaitList();
     }
     private void OnTriggerEnter(Collider other)

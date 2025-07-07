@@ -29,9 +29,9 @@ public class BossMonster : BaseMonster
         // 10% 단위로 줄어들 때마다 충전
         if (hpPercent <= prevNotifiedHpPercent - 0.1f)
         {
-            var player = GameObject.FindWithTag("Player")?.GetComponent<PlayerStatus>();
-            if (player != null)
-                player.ChargeBattery(batteryChargePerSection);
+            PlayerController pc = PlayerManager.Instance.instancePlayer;
+            if (pc != null)
+                PlayerManager.Instance.instancePlayer.Status.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_BossHit);
 
             prevNotifiedHpPercent -= 0.1f; // 다음 10%로 갱신
         }
@@ -169,6 +169,7 @@ public class BossMonster : BaseMonster
 
     public void ApplyCircleDamage(BossAttackPattern pattern)
     {
+        
         Vector3 center;
         switch (pattern.originType)
         {
@@ -176,9 +177,9 @@ public class BossMonster : BaseMonster
                 center = transform.position;
                 break;
             case CircleOriginType.Player:
-                var playerObj = GameObject.FindWithTag("Player");
-                if (playerObj == null) return;
-                center = playerObj.transform.position;
+                PlayerController pc = PlayerManager.Instance.instancePlayer;
+                if (pc == null) return;
+                center = pc.transform.position;
                 break;
             default:
                 center = transform.position;

@@ -371,12 +371,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     protected virtual void InitTargetByType()
     {
+
         switch (targetType)
         {
             case MonsterTargetType.Player:
-                GameObject player = GameObject.FindWithTag("Player");
-                if (player != null)
-                    SetTarget(player.transform);
+                PlayerController pc = PlayerManager.Instance.instancePlayer;
+                if (pc != null)
+                    SetTarget(pc.transform);
                 break;
 
             case MonsterTargetType.Ally:
