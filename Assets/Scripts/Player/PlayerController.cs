@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
 
     public bool jumpCooling;
+    public bool isSprintJump;
 
 
     public bool IsCurrentState(PlayerStateTypes state)
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
         ///
         /////////////////////////////
-
+        Debug.Log(isSprintJump);
 
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 
@@ -435,6 +436,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 바닥 체크가 없어지면 Fall상태로 전환
         if (!Cc.GetIsGroundState())
         {
+            if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
+            else isSprintJump = false;
+
             stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]); return;
         }
 
@@ -452,7 +456,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 else if (isMoveInput) { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]); return; }
                 else { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]); return; }
             }
-                
+
         }
 
         // 바닥 상태라면
@@ -490,6 +494,9 @@ public class PlayerController : MonoBehaviour, IDamagable
                 }
                 else
                 {
+                    if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
+                    else isSprintJump = false;
+
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
             }
@@ -533,7 +540,7 @@ public class PlayerController : MonoBehaviour, IDamagable
                 stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
             }
         }
-        
+
     }
 
     #endregion
@@ -549,7 +556,9 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if (IsCurrentState(PlayerStateTypes.Sprint) && !IsCurrentState(PlayerStateTypes.Attack)) moveSpeed = Status.SprintSpeed;
+        else if ( IsCurrentState(PlayerStateTypes.Sprint) || 
+            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprintJump) ) 
+            moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
