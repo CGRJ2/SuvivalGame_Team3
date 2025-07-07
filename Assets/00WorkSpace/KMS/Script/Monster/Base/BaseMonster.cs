@@ -220,7 +220,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
                 if (view != null && view.Animator != null)
                     view.Animator.SetFloat("AttackSpeed", data.AttackAnimSpeed);
 
-                view.PlayMonsterAttackAnimation();
+                //view.PlayMonsterAttackAnimation();
             }
         }
     }
@@ -396,7 +396,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ResetAlert();
     }
 
-    protected void OnDrawGizmosSelected()
+    protected void OnDrawGizmos()
     {
         if (data == null) return;
 
@@ -420,6 +420,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         /// 공격 범위
         // Gizmos 색상 지정
+        //if (stateMachine.CurrentState = stateFactory.GetAttackState())
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
         Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
