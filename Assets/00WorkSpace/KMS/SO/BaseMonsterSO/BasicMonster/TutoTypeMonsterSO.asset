@@ -16,14 +16,15 @@ MonoBehaviour:
   monsterType: 0
   monsterSubType: 0
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 80
+  maxHP: 60
   moveSpeed: 2
-  attackPower: 7
+  attackPower: 50
+  collisionDamage: 20
   attackRange: 1.5
   attackCooldown: 1
-  collisionDamage: 5
+  destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
-  <KnockBackedPower>k__BackingField: 5
+  <KnockBackedPower>k__BackingField: 3
   attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 180
