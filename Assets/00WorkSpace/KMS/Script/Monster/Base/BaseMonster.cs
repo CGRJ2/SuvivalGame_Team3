@@ -16,8 +16,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     [Header("몬스터 데이터")]
     public BaseMonsterData data;
-    [Header("죽음상태 이후 파괴까지 걸리는 시간")]
-    public float destroyDelayTime = 1;
+    
+
+    // 공격 준비 중
+    public bool isAttackReady;
 
     protected UnityEngine.AI.NavMeshAgent agent;
     public NavMeshAgent Agent => agent;
@@ -207,6 +209,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         else this.playerInRange = null;
     }
 
+
+    // 몬스터 공격 함수
     public void TryAttack()
     {
         if (target == null) return;
@@ -216,6 +220,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
             var damageable = target.GetComponent<IDamagable>();
             if (damageable != null)
             {
+                // 몬스터 공격 실행
                 damageable.TakeDamage(attackPower, transform);
 
                 if (view != null && view.Animator != null)
@@ -237,7 +242,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         OnDeadEvent?.Invoke();
 
         stateMachine.ChangeState(new MonsterDeadState());
-        StartCoroutine(DestroyAfterDelay(destroyDelayTime));
+        StartCoroutine(DestroyAfterDelay(data.destroyDelayTime));
     }
     private IEnumerator DestroyAfterDelay(float seconds)
     {
@@ -422,7 +427,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         /// 공격 범위
         // Gizmos 색상 지정
         //if (stateMachine.CurrentState = stateFactory.GetAttackState())
-        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        if (isAttackReady)
+            Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        else
+            Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 붉은색 투명
+
         Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }
@@ -443,7 +452,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
             Die();
     }
 
-    IEnumerator PauseAgent(float pauseTime)
+    public IEnumerator PauseAgent(float pauseTime)
     {
         agent.isStopped = true;
         rb.isKinematic = false;
