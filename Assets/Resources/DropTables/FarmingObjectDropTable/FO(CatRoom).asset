@@ -15,8 +15,11 @@ MonoBehaviour:
   <DropTableName>k__BackingField: FO(CatRoom)
   dropTable:
   - dropItem: {fileID: 11400000, guid: 62ebcdbf33daa79428c3e5ea592f63a5, type: 2}
-    dropCount: 1
-    dropWeight: 1
+    dropCount: 2
+    dropWeight: 50
   - dropItem: {fileID: 11400000, guid: 1ee528ab15f9bb448ac7bff49f473b9f, type: 2}
     dropCount: 1
-    dropWeight: 1
+    dropWeight: 30
+  - dropItem: {fileID: 11400000, guid: 62ebcdbf33daa79428c3e5ea592f63a5, type: 2}
+    dropCount: 3
+    dropWeight: 20
