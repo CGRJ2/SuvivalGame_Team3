@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class OwnerAI : BaseMonster
 {
     public enum OwnerDetectionTarget { None, OwnerBait, Player }
-    public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
+    public BaseMonsterData OwnerData;
 
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
@@ -19,7 +19,6 @@ public class OwnerAI : BaseMonster
     {
         base.Start();
         StateMachine.ChangeState(StateFactory.CreateIdleState());
-        IsInvincible = true;
         PlayerController pc = PlayerManager.Instance.instancePlayer;
         playerTransform = pc.transform;
         RefreshBaitList();

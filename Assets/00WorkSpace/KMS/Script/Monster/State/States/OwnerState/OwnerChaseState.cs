@@ -52,7 +52,7 @@ public class OwnerChaseState : IMonsterState
         Vector3 destination = target.position;
         destination.y = owner.transform.position.y; // y º¸Á¤
 
-        owner.Agent.speed = owner.OwnerData.moveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
+        owner.Agent.speed = owner.OwnerData.MoveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
         owner.Agent.SetDestination(destination);
 
         if (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait)
