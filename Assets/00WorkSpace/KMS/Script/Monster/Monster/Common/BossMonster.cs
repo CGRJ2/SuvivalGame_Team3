@@ -6,6 +6,7 @@ public class BossMonster : BaseMonster
     private BossMonsterDataSO bossData;
     public BossAttackPatternSO bossAttackPatternSO;
     public BossAttackPattern currentPattern;
+    public BossAttackPattern counterPattern;
 
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
     private int batteryChargePerSection = 20; // 10%마다 충전할 양
@@ -246,7 +247,11 @@ public class BossMonster : BaseMonster
     {
         if (isCounterWindow)
         {
-            Phase3TryAttack();
+            ApplyBoxDamage(counterPattern);
+        }
+        else
+        {
+            
         }
     }
 
