@@ -17,7 +17,6 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] private float rotateSpeed_Init;
     [SerializeField] private float crouchSpeed_Init;
     [field: SerializeField] public float DamagedInvincibleTime { get; private set; }
-    [field: SerializeField] public float AttackCoolTime { get; private set; }
     public float CrouchSpeed { get { return crouchSpeed_Init; } }
     public float RotateSpeed { get { return rotateSpeed_Init; } }
     //////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerState : BaseState
@@ -18,7 +19,8 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
-
+        pc.stateMachine.LastState = this;
+        Debug.Log(pc.stateMachine.LastState);
     }
 
     public override void Update()
@@ -37,7 +39,6 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -62,8 +63,6 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterMove");
-
     }
 
     public override void Exit()
@@ -85,22 +84,27 @@ public class Player_Sprint : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
         pc.View.animator.SetBool("IsSprint", true);
     }
 
     public override void Exit()
     {
+        base.Exit();
         pc.View.animator.SetBool("IsSprint", false);
     }
 
     public override void Update()
     {
+        base.Update();
         // 배터리 더 빨리 감소
     }
 }
 
 public class Player_Jump : PlayerState
 {
+    float jumpCoolTime = 0;
+
     public Player_Jump(PlayerController pc) : base(pc)
     {
 
@@ -108,17 +112,22 @@ public class Player_Jump : PlayerState
 
     public override void Enter()
     {
+        jumpCoolTime = 0;
         base.Enter();
-        //Debug.Log("EnterJump");
-        pc.View.animator.SetBool("IsJump", true);
+        pc.jumpCooling = true;
         pc.View.Jump(pc.Status.JumpForce);
-        pc.Cc.isWaitingGroundCheck = true;
+        pc.View.animator.SetBool("IsJump", true);
     }
 
     public override void Exit()
     {
         base.Exit();
-        //pc.View.animator.SetBool("IsJump", false);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
     }
 }
 
@@ -132,8 +141,7 @@ public class Player_Fall : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("EnterFalling");
-        pc.Cc.isWaitingGroundCheck = false;
+        pc.jumpCooling = false;
         pc.View.animator.SetBool("IsFalling", true);
     }
     
@@ -144,7 +152,6 @@ public class Player_Fall : PlayerState
     }
     public override void Update()
     {
-        //Debug.Log("FallingState");
         base.Update();
     }
 }
@@ -186,8 +193,6 @@ public class Player_Attack : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterAttack");
-        pc.isAttacking = true;
         pc.View.animator.SetBool("IsAttack", true);
     }
 
@@ -195,7 +200,6 @@ public class Player_Attack : PlayerState
     {
         base.Exit();
         pc.View.animator.SetBool("IsAttack", false);
-        pc.isAttacking = false;
     }
     public override void Update()
     {
@@ -205,6 +209,7 @@ public class Player_Attack : PlayerState
 
 }
 
+// 1순위 상태
 public class Player_Damaged : PlayerState
 {
     public Player_Damaged(PlayerController pc) : base(pc)
@@ -215,13 +220,10 @@ public class Player_Damaged : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterDamage");
-        pc.isAttacking = false;
+        pc.Status.isControllLocked = true;
         pc.View.animator.SetTrigger("IsDamagedTrigger");
         pc.View.animator.SetBool("IsDamaged", true);
-
         pc.View.animator.SetBool("IsAttack", false);
-        pc.isAttacking = false;
     }
 
     public override void Exit()
