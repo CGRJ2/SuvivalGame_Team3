@@ -60,6 +60,7 @@ public class Player_Move : PlayerState
 
     public override void Enter()
     {
+        pc.isSprinting = false;
         base.Enter();
     }
 
@@ -83,6 +84,7 @@ public class Player_Sprint : PlayerState
     public override void Enter()
     {
         base.Enter();
+        pc.isSprinting = true;
         pc.View.animator.SetBool("IsSprint", true);
     }
 
@@ -101,8 +103,6 @@ public class Player_Sprint : PlayerState
 
 public class Player_Jump : PlayerState
 {
-    float jumpCoolTime = 0;
-
     public Player_Jump(PlayerController pc) : base(pc)
     {
 
@@ -110,15 +110,14 @@ public class Player_Jump : PlayerState
 
     public override void Enter()
     {
-        jumpCoolTime = 0;
         base.Enter();
-        pc.jumpCooling = true;
         pc.View.Jump(pc.Status.JumpForce);
         pc.View.animator.SetBool("IsJump", true);
     }
 
     public override void Exit()
     {
+        pc.jumpCooling = true;
         base.Exit();
     }
 

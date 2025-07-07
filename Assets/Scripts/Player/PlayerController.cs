@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public bool jumpCooling;
     public bool isSprintJump;
-
+    public bool isSprinting;
 
     public bool IsCurrentState(PlayerStateTypes state)
     {
@@ -435,9 +435,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 바닥 체크가 없어지면 Fall상태로 전환
         if (!Cc.GetIsGroundState())
         {
-            if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
-            else isSprintJump = false;
-
             stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]); return;
         }
 
@@ -445,7 +442,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall))
         {
             // 점프 진행중일 때 (Idle로 안돌아감)
-            if (jumpCooling) return;
+            if (IsCurrentState(PlayerStateTypes.Jump)) return;
 
             // 바닥 체크되면 일반 상태or이동 상태 전환
 
@@ -489,13 +486,13 @@ public class PlayerController : MonoBehaviour, IDamagable
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
+                    {
                         stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
+                        isSprintJump = false;
+                    }
                 }
                 else
                 {
-                    if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
-                    else isSprintJump = false;
-
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
             }
@@ -555,8 +552,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if ( IsCurrentState(PlayerStateTypes.Sprint) || 
-            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprintJump) ) 
+        else if ( isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
+            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ ) 
             moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
