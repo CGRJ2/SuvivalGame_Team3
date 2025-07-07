@@ -13493,8 +13493,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633d2f192836a7d4f8d9261a3e3e1fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popFadeTime: 0
+  message_Saved: {fileID: 0}
   CollectMessageUI: {fileID: 399623216}
   interactableUI: {fileID: 1731929570}
+  RoomInfoUI: {fileID: 0}
+  deadPanel: {fileID: 0}
+  faintPanel: {fileID: 0}
 --- !u!1 &554524251
 GameObject:
   m_ObjectHideFlags: 0
@@ -22752,6 +22757,13 @@ MonoBehaviour:
   CurrentStageLevel: 0
   respawnTime_FO: 5
   respawnTime_Monster: 5
+  spawnerListGroup_TutorialRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
   spawnerListGroup_LivingRoom:
     maxCount_FO: 4
     spawnerList_FO: []
@@ -22780,6 +22792,14 @@ MonoBehaviour:
     maxCount_Monster: 2
     spawnerList_Monster: []
     activateInstances_Monster: []
+  spawnerListGroup_CatRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  nowRegion: 0
 --- !u!4 &941816244
 Transform:
   m_ObjectHideFlags: 0
@@ -27269,6 +27289,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basePanel: {fileID: 720989226}
   panel_MaxUpgraded: {fileID: 1603189310}
+  currentLevel: {fileID: 0}
+  targetLevel: {fileID: 0}
   panel_Upgrading: {fileID: 1447689}
   upgradeRequires: {fileID: 1310549569}
   Btn_Upgrade: {fileID: 1733065916}
@@ -48637,6 +48659,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2058931159}
   - component: {fileID: 2058931158}
+  - component: {fileID: 2058931160}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -48721,6 +48744,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &2058931160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058931157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &2060634022
 GameObject:
   m_ObjectHideFlags: 0
@@ -55666,6 +55712,9 @@ MonoBehaviour:
     tempCampRotation: {x: 0, y: 0, z: 0, w: 0}
   allRecipeList: []
   UpgradeConditions: []
+  baseCampUpgradeEffect:
+    healItemUseTimeReduce: 0
+    upgradeTimeReduce: 0
 --- !u!224 &2383654588709031351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -56000,6 +56049,7 @@ MonoBehaviour:
   moveSpeed_Init: 5
   sprintSpeed_Init: 8
   jumpForce_Init: 8
+  knockBackForce_Init: 0
   damage_Init: 1
   mouseSensitivity_Init: 0.3
 --- !u!224 &2662992802009669213
@@ -63270,6 +63320,7 @@ MonoBehaviour:
   dataManager: {fileID: 738882747358670633}
   baseCampManager: {fileID: 2372965649248585269}
   stageManager: {fileID: 941816243}
+  cameraManager: {fileID: 0}
 --- !u!114 &7261091104513575880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64528,6 +64579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef87563324af549aca99ae8362a851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPS_Cameras: []
 --- !u!222 &8000005123385942641
 CanvasRenderer:
   m_ObjectHideFlags: 0
