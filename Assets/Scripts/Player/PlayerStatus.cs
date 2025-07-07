@@ -124,7 +124,12 @@ public class PlayerStatus : IDisposable
 
         // 최대 배터리 감소
         Debug.Log($"[MaxBattery.Value]1 : {MaxBattery.Value}");
-        MaxBattery.Value = ssm.batterySystem.MaxBattery_AfterFaint;
+
+        if (MaxBattery.Value - ssm.batterySystem.MaxBatteryReduceAfterFaint > ssm.batterySystem.MinBatteryLimit)
+            MaxBattery.Value -= ssm.batterySystem.MaxBatteryReduceAfterFaint;
+        else
+            MaxBattery.Value = ssm.batterySystem.MinBatteryLimit;
+
         Debug.Log($"[MaxBattery.Value]2 : {MaxBattery.Value}");
         CurrentBattery.Value = MaxBattery.Value;
     }
@@ -235,7 +240,7 @@ public class PlayerStatus : IDisposable
         // 배터리 수치 UI 구독
         CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
         MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
-        playerStatusUI.state_Battery.initMax = ssm.batterySystem.MaxBattery_Init;
+        playerStatusUI.state_Battery.initMax = ssm.batterySystem.InitMaxBattery;
 
         // 정신력 수치 UI 구독
         CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
@@ -292,20 +297,28 @@ public class PlayerStatus : IDisposable
             switch (bodyParts[i].type)
             {
                 case BodyPartTypes.Head:
-                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.HeadMaxHP_AfterDestroyed;
+                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.HeadMaxHPReduce_AD > ssm.bodyPartSystem.MinHeadMaxHPLimit)
+                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.HeadMaxHPReduce_AD;
+                    else
+                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinHeadMaxHPLimit;
                     break;
 
                 case BodyPartTypes.LeftArm:
                 case BodyPartTypes.RightArm:
-                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.ArmMaxHP_AfterDestroyed;
+                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.ArmMaxHPReduce_AD> ssm.bodyPartSystem.MinArmMaxHPLimit)
+                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.ArmMaxHPReduce_AD;
+                    else
+                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinArmMaxHPLimit;
                     break;
 
                 case BodyPartTypes.LeftLeg:
                 case BodyPartTypes.RightLeg:
-                    bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.LegMaxHP_AfterDestroyed;
+                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.LegMaxHPReduce_AD> ssm.bodyPartSystem.MinLegMaxHPLimit)
+                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.LegMaxHPReduce_AD;
+                    else
+                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinLegMaxHPLimit;
                     break;
             }
-
             bodyParts[i].Hp = bodyParts[i].CurrentMaxHp;
         }
 
@@ -315,7 +328,7 @@ public class PlayerStatus : IDisposable
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
 
-        MaxBattery.Value = ssm.batterySystem.MaxBattery_Init;
+        MaxBattery.Value = ssm.batterySystem.InitMaxBattery;
         CurrentBattery.Value = MaxBattery.Value;
     }
 
