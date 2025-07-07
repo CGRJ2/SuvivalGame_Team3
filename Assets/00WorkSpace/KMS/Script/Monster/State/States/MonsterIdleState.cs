@@ -18,7 +18,7 @@ public class MonsterIdleState : IMonsterState
     {
         this.monster = monster;
     }
-    public void Enter(BaseMonster monster)
+    public virtual void Enter(BaseMonster monster)
     {
         this.monster = monster;
         this.data = monster.data;
@@ -45,7 +45,7 @@ public class MonsterIdleState : IMonsterState
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
     }
 
-    public void Execute()
+    public virtual void Execute()
     {
         if (monster == null || monster.IsDead) return;
 
@@ -95,7 +95,7 @@ public class MonsterIdleState : IMonsterState
             monster.Agent.SetDestination(hit.position);
     }
 
-    public void Exit()
+    public virtual void Exit()
     {
         // 특별히 할 일 없음 (필요 시 추가)
     }
