@@ -15,29 +15,8 @@ public class PlayerStatus : IDisposable
     public ObservableProperty<float> SumCurrentHP = new ObservableProperty<float>();
     public ObservableProperty<float> SumCurrentMaxHP = new ObservableProperty<float>();
 
-    public void CalculateCurrentHPSum(float hp)
-    {
-        float sumHP = 0;
-        foreach (BodyPart bodyPart in bodyParts)
-        {
-            sumHP += bodyPart.Hp.Value;
-        }
-        SumCurrentHP.Value = sumHP;
-    }
-    public void CalculateCurrentMaxHPSum(float hp)
-    {
-        float sumMaxHP = 0;
-        foreach (BodyPart bodyPart in bodyParts)
-        {
-            sumMaxHP += bodyPart.CurrentMaxHp.Value;
-        }
-        SumCurrentMaxHP.Value = sumMaxHP;
-    }
-
-
     [Header("신체 부위 데이터")]
     [SerializeField] private List<BodyPart> bodyParts;
-
 
     [field: Header("플레이어 스탯 정보")]
     [field: SerializeField] public float MoveSpeed { get; set; }
@@ -45,8 +24,8 @@ public class PlayerStatus : IDisposable
     [field: SerializeField] public float JumpForce { get; set; }
     [field: SerializeField] public float Damage { get; set; }
 
-
-    [SerializeField] public InventoryPresenter inventory;
+    // 인벤토리 데이터
+    [HideInInspector] public InventoryPresenter inventory;
 
     [Header("디버프 상태")]
     public bool ApplyDebuff_CraftSpeed;
@@ -368,6 +347,26 @@ public class PlayerStatus : IDisposable
     public BodyPart GetPart(BodyPartTypes partType)
     {
         return bodyParts.Find(p => p.type == partType);
+    }
+
+
+    public void CalculateCurrentHPSum(float hp)
+    {
+        float sumHP = 0;
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            sumHP += bodyPart.Hp.Value;
+        }
+        SumCurrentHP.Value = sumHP;
+    }
+    public void CalculateCurrentMaxHPSum(float hp)
+    {
+        float sumMaxHP = 0;
+        foreach (BodyPart bodyPart in bodyParts)
+        {
+            sumMaxHP += bodyPart.CurrentMaxHp.Value;
+        }
+        SumCurrentMaxHP.Value = sumMaxHP;
     }
 
     public void Dead(bool isActive)

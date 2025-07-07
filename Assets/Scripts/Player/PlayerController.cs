@@ -420,13 +420,6 @@ public class PlayerController : MonoBehaviour, IDamagable
     #region InputFlag들에 따른 상태 전환 조건 관리
     public void UpdateStateCondition()
     {
-        // 컨트롤 락 걸리면 
-        if (Status.isControllLocked)
-        {
-            //View.animator
-            return;
-        }
-
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {

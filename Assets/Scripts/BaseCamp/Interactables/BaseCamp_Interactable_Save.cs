@@ -8,13 +8,12 @@ public class BaseCamp_Interactable_Save : InteractableBase
     {
         base.Interact();
 
-        //UIManager.Instance.SaveUI
-        Debug.Log($"Save UI 활성화");
+        PlayerManager.Instance.SaveInBaseCamp();
     }
 
     public override void ShowInteractableUI()
     {
         base.ShowInteractableUI();
-        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"하루 마무리: (E)";
+        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"저장하고 다음날로: (E)";
     }
 }

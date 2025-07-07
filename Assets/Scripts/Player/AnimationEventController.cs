@@ -32,7 +32,9 @@ public class AnimationEventController : MonoBehaviour
     public void DamagedMotionEnd()
     {
         pc.View.animator.SetBool("IsDamaged", false);
+
         pc.View.animator.SetBool("IsJump", false);
+
         pc.View.animator.SetBool("IsFalling", false);
     }
 

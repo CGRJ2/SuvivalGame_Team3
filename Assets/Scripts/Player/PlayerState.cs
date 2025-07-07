@@ -112,6 +112,7 @@ public class Player_Jump : PlayerState
         //Debug.Log("EnterJump");
         pc.View.animator.SetBool("IsJump", true);
         pc.View.Jump(pc.Status.JumpForce);
+        pc.Cc.isWaitingGroundCheck = true;
     }
 
     public override void Exit()
@@ -132,7 +133,7 @@ public class Player_Fall : PlayerState
     {
         base.Enter();
         //Debug.Log("EnterFalling");
-
+        pc.Cc.isWaitingGroundCheck = false;
         pc.View.animator.SetBool("IsFalling", true);
     }
     
