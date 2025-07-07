@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour, IDamagable
 {
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
-    [HideInInspector] public bool isAttacking;
     public Transform handTransform;
     [HideInInspector] GameObject onHandInstance;
     PlayerManager pm;
@@ -52,6 +51,10 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
 
+    public bool jumpCooling;
+    public bool isSprintJump;
+    public bool isSprinting;
+
     public bool IsCurrentState(PlayerStateTypes state)
     {
         return stateMachine.CurState == stateMachine.stateDic[state];
@@ -71,7 +74,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
         ///
         /////////////////////////////
-
 
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 
@@ -420,16 +422,52 @@ public class PlayerController : MonoBehaviour, IDamagable
     #region InputFlag들에 따른 상태 전환 조건 관리
     public void UpdateStateCondition()
     {
-        // 바닥 상태라면
-        if (Cc.GetIsGroundState())
+        // 죽음 상태에선 처리 안함
+        if (IsCurrentState(PlayerStateTypes.Dead)) return;
+
+        // 데미지를 받으면
+        if (IsCurrentState(PlayerStateTypes.Damaged))
         {
-            // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
-            if (isAttackInput || isAttacking)
+            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]); return;
+        }
+
+
+        // 바닥 체크가 없어지면 Fall상태로 전환
+        if (!Cc.GetIsGroundState())
+        {
+            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]); return;
+        }
+
+        // 현재 공중 상태라면
+        if (IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall))
+        {
+            // 점프 진행중일 때 (Idle로 안돌아감)
+            if (IsCurrentState(PlayerStateTypes.Jump)) return;
+
+            // 바닥 체크되면 일반 상태or이동 상태 전환
+
+            if (Cc.GetIsGroundState())
             {
-                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                if (isSprintInput && isMoveInput) { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]); return; }
+                else if (isMoveInput) { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]); return; }
+                else { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]); return; }
+            }
+
+        }
+
+        // 바닥 상태라면
+        else
+        {
+            // => Attack 조건 : 1. 입력값 존재 
+            if (isAttackInput)
+            {
+                // 2. 일반 & 기본 이동 상태일 때 가능
+                if ( IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move) 
+                    || IsCurrentState(PlayerStateTypes.Sprint))
                 {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
+                // 3. 앉음 상태 & 머리위에 장애물이 막지 않은 상태일 때 가능
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
@@ -440,30 +478,35 @@ public class PlayerController : MonoBehaviour, IDamagable
                     return;
                 }
             }
-            // => Jump
+
+
+            // => Jump 조건 : 1. 입력값 존재
             else if (isJumpInput)
             {
-                if (isAttacking)
-                {
-                    return;
-                }
+                // 2. 공격 상태에선 점프 실행 안함
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
+                // 3. 앉은 상태라면 머리위에 뭔가 없어야됨.
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
+                    {
                         stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
+                        isSprintJump = false;
+                    }
                 }
                 else
                 {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
             }
-            // => Sprint
+
+            // => Sprint 조건 : 1. 입력값 존재
             else if (isSprintInput)
             {
-                if (isAttacking)
-                {
-                    return;
-                }
+                // 2. 공격상태면 달리기 상태 전환 안됨
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
+
+                // 3. 앉은 상태라면 머리위에 뭔가 없어야됨.
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
@@ -477,25 +520,26 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Crouch
             else if (isCrouchToggle)
             {
-                if (isAttacking) return;
+                // 2. 공격상태면 앉기 상태 전환 안됨
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
                 else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Crouch]);
             }
             // => Move
             else if (isMoveInput)
             {
+                // 이동의 경우 애니메이션 setbool을 컨트롤러에서 하자
+                // 2. 공격상태면 이동 상태 전환 안됨
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
                 stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
             }
             // => Idle
             else
             {
-
+                if (IsCurrentState(PlayerStateTypes.Attack)) return;
                 stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
             }
         }
-        else
-        {
-            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]);
-        }
+
     }
 
     #endregion
@@ -511,7 +555,9 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if (isSprintInput && !isAttacking) moveSpeed = Status.SprintSpeed;
+        else if ( isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
+            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ ) 
+            moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
         Vector3 getMoveDir;
@@ -563,13 +609,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
         else avatarDir = View.moveDir;
 
-        
+
 
         // 컨트롤 락 걸리면 아바타 회전은 정지
         if (Status.isControllLocked) return;
         View.SetAvatarRotation(avatarDir, pm.RotateSpeed);
 
-        
+
 
         // Attack 상태일 때만.
         if (stateMachine.CurState == stateMachine.stateDic[PlayerStateTypes.Attack])
@@ -704,9 +750,10 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (onHandInstance != item.instancePrefab) Destroy(onHandInstance);
 
             onHandInstance = Instantiate(item.instancePrefab, handTransform);
+            Debug.Log("소환");
+            onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
             Status.onHandItem = item;
-
 
             // 아이템 장착 효과
             if (item is Item_Weapon weapon)

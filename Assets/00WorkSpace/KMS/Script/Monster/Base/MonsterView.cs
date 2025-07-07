@@ -17,6 +17,11 @@ public class MonsterView : MonoBehaviour
 
     public Animator Animator => animator;
 
+    private void Awake()
+    {
+        animator = avatar.GetComponent<Animator>();
+    }
+
     // ===== 애니메이션 =====
     public void PlayMonsterIdleAnimation()
     {
