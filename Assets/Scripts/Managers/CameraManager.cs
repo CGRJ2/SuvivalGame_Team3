@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class CameraManager : Singleton<CameraManager>
 {
+    public CinemachineBrain cinemachineBrain;
     public TPS_Camera tpsCameraGroup;
     public SideView_Camera sideViewCamera;
+
+    public bool activeSideView;
 
     public void Init()
     {
@@ -19,18 +22,20 @@ public class CameraManager : Singleton<CameraManager>
         pc.TPS_Cameras = tpsCameraGroup.TPS_Cameras;
     }
 
-    public void SwitchSideViewCamera(bool sideCamOn)
+
+    public void SwitchSideViewCamera(bool active)
     {
-        if (sideCamOn)
+        if (active)
         {
-            sideViewCamera.virtualCamera.gameObject.SetActive(true);
-            sideViewCamera.virtualCamera.gameObject.transform.rotation = tpsCameraGroup.GetActivedCameraTransform().rotation;
+            activeSideView = true;
+            sideViewCamera.virtualCamera.Priority = 99;
         }
         else
         {
-            sideViewCamera.virtualCamera.gameObject.SetActive(false);
-            tpsCameraGroup.GetActivedCameraTransform().rotation = sideViewCamera.virtualCamera.gameObject.transform.rotation;
+            activeSideView = false;
+            sideViewCamera.virtualCamera.Priority = 0;
         }
     }
+
 
 }

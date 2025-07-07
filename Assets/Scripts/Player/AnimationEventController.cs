@@ -13,8 +13,7 @@ public class AnimationEventController : MonoBehaviour
 
     public void JumpTop()
     {
-        pc.View.animator.SetBool("IsFalling", false);
-
+        pc.View.animator.SetBool("IsJump", false);
     }
 
     // 애니메이션 이벤트
@@ -33,6 +32,10 @@ public class AnimationEventController : MonoBehaviour
     public void DamagedMotionEnd()
     {
         pc.View.animator.SetBool("IsDamaged", false);
+
+        pc.View.animator.SetBool("IsJump", false);
+
+        pc.View.animator.SetBool("IsFalling", false);
     }
 
     public void RespawnMotionEnd()

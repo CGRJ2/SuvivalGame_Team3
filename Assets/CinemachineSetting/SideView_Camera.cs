@@ -10,6 +10,8 @@ public class SideView_Camera : MonoBehaviour
     public Vector3 front;
     public Vector3 right;
 
+    public bool moveDirLock;
+
     public void Awake()
     {
         if (CameraManager.Instance == null) { Debug.LogWarning("카메라 매니저 클래스 없음"); return; }
@@ -29,4 +31,7 @@ public class SideView_Camera : MonoBehaviour
         virtualCamera.Follow = pc.View.SideView_CameraFocusTransform;
         virtualCamera.LookAt = pc.View.SideView_CameraFocusTransform;
     }
+
+    
+    
 }

@@ -417,6 +417,7 @@ MonoBehaviour:
   moveSpeed_Init: 0
   sprintSpeed_Init: 0
   jumpForce_Init: 0
+  knockBackForce_Init: 0
   damage_Init: 0
   mouseSensitivity_Init: 0
 --- !u!4 &261631460
@@ -644,9 +645,12 @@ MonoBehaviour:
     upgradingProcess:
       isUpgrading: 0
       proceededTime: 0
-    baseCampTransform: {fileID: 0}
+    baseCampPosition: {x: 0, y: 0, z: 0}
+    baseCampRotation: {x: 0, y: 0, z: 0, w: 0}
   tempCampData:
-    respawnPoint: {fileID: 0}
+    isActive: 0
+    tempCampPosition: {x: 0, y: 0, z: 0}
+    tempCampRotation: {x: 0, y: 0, z: 0, w: 1}
   allRecipeList: []
   UpgradeConditions: []
 --- !u!4 &437728328
@@ -712,63 +716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef87563324af549aca99ae8362a851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &462063464
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.010002136
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.19
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 969371147443182634, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6069153757736342019, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
-      propertyPath: m_Name
-      value: TempMonster_LivingRoom
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2c7c12c496cac284393fa4afb6493d58, type: 3}
+  TPS_Cameras: []
 --- !u!1 &693347434
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,11 +879,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adacf4ea5022ba943b5f1501b6b86d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryGroup:
-    inventoryView: {fileID: 0}
-    tooltip: {fileID: 0}
-    dragSlotInstance: {fileID: 0}
-    quickSlotParent: {fileID: 0}
+  popUpUIGroup: {fileID: 0}
+  hudGroup: {fileID: 0}
+  inventoryGroup: {fileID: 0}
   craftingGroup: {fileID: 0}
   upgradeGroup: {fileID: 0}
 --- !u!4 &699410690
@@ -1465,6 +1411,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1072900748}
   - component: {fileID: 1072900747}
+  - component: {fileID: 1072900749}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1549,6 +1496,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1072900749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1072900746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1077192836
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,6 +2039,10 @@ MonoBehaviour:
         CurrentBattery:
           _value: 0
         MaxBattery:
+          _value: 0
+        SumCurrentHP:
+          _value: 0
+        SumCurrentMaxHP:
           _value: 0
         bodyParts: []
         <MoveSpeed>k__BackingField: 0
@@ -3019,9 +2993,12 @@ MonoBehaviour:
         upgradingProcess:
           isUpgrading: 0
           proceededTime: 0
-        baseCampTransform: {fileID: 0}
+        baseCampPosition: {x: 0, y: 0, z: 0}
+        baseCampRotation: {x: 0, y: 0, z: 0, w: 0}
       tempCampData:
-        respawnPoint: {fileID: 0}
+        isActive: 0
+        tempCampPosition: {x: 0, y: 0, z: 0}
+        tempCampRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!4 &1412363294
 Transform:
   m_ObjectHideFlags: 0
@@ -3448,6 +3425,13 @@ MonoBehaviour:
   CurrentStageLevel: 0
   respawnTime_FO: 2
   respawnTime_Monster: 2
+  spawnerListGroup_TutorialRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
   spawnerListGroup_LivingRoom:
     maxCount_FO: 10
     spawnerList_FO: []
@@ -3476,6 +3460,14 @@ MonoBehaviour:
     maxCount_Monster: 10
     spawnerList_Monster: []
     activateInstances_Monster: []
+  spawnerListGroup_CatRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  nowRegion: 0
 --- !u!4 &1840008323
 Transform:
   m_ObjectHideFlags: 0
@@ -3704,6 +3696,7 @@ MonoBehaviour:
   dataManager: {fileID: 1412363293}
   baseCampManager: {fileID: 437728327}
   stageManager: {fileID: 0}
+  cameraManager: {fileID: 0}
 --- !u!4 &2097031852
 Transform:
   m_ObjectHideFlags: 0
@@ -4045,4 +4038,3 @@ SceneRoots:
   - {fileID: 1592018724}
   - {fileID: 1840008323}
   - {fileID: 2104271063}
-  - {fileID: 462063464}
