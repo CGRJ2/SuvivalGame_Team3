@@ -43,8 +43,26 @@ public class PlayerManager : Singleton<PlayerManager>
 
     }
 
-    public void MoveToNextDayAndSave()
+    public void SaveInBaseCamp()
     {
+        StartCoroutine(SaveAndWaitUntilNextDayOpen());
+
+    }
+
+    private IEnumerator SaveAndWaitUntilNextDayOpen()
+    {
+        // 죽음 애니메이션 시작
+        // 죽음 애니메이션 종료 후 페이드 아웃
+        Panel_FadeInOut dayOffSavePanel = UIManager.Instance.popUpUIGroup.dayOffSavePanel;
+        dayOffSavePanel.PopMessage_FadeInOut();
+
+        instancePlayer.Status.isControllLocked = true;
+
+        // 페이드 인이 시작될 즈음까지 대기
+        yield return new WaitUntil(() => dayOffSavePanel.isOpenStandBy);
+
+        instancePlayer.Status.isControllLocked = false;
+
         // 다음날 오전 9시로 이동
         DailyManager.Instance.currentTimeData.CurrentDay.Value += 1;
         DailyManager.Instance.currentTimeData.CurrentTime = 0;
@@ -53,12 +71,10 @@ public class PlayerManager : Singleton<PlayerManager>
         // 몬스터 & 파밍오브젝트 초기화
         StageManager.Instance.InitSpawnerRoutines();
 
-        // 위치 이동
-        BaseCampManager.Instance.MoveToLastCamp(false);
-
         // 자동 저장
         dm.SaveData(0);
     }
+
 
     // => 배터리가 0이 되었을 때 호출
     public void PlayerFaint(float currentBattery)
@@ -103,9 +119,6 @@ public class PlayerManager : Singleton<PlayerManager>
         // 자동 저장
         dm.SaveData(0);
     }
-
-    
-
 
 
     // => 머리 내구도가 0이 되었을 때 호출

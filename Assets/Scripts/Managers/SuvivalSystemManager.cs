@@ -5,7 +5,7 @@ using UnityEngine;
 public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 {
     ///////////////////////////////////////////
-
+    
     [Header("생존 수치 소모 주기 설정")]
     [SerializeField] private float TickDuration;
 
