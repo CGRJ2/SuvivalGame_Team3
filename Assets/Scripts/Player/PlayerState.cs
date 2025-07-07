@@ -19,8 +19,6 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
-        pc.stateMachine.LastState = this;
-        Debug.Log(pc.stateMachine.LastState);
     }
 
     public override void Update()

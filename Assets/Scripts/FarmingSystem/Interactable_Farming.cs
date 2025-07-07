@@ -16,8 +16,9 @@ public class Interactable_Farming : InteractableBase, ISpawnable
 
     public Action DeactiveAction { get; set; }
     public Transform OriginTransform { get; set; }
+    bool isUsed;
 
-        
+
 
     // 드랍테이블 정보에 기입된 개수만큼 아이템 인스턴스 생성 반복
     public void DropItemInstances(DropInfo dropInfo)
@@ -61,6 +62,9 @@ public class Interactable_Farming : InteractableBase, ISpawnable
     public override void Interact()
     {
         base.Interact();
+
+        if (isUsed) return;
+        isUsed = true;
         DropInfo dropInfo = dropTable.GetDropItemInfo();
 
         switch (dropType)

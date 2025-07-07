@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
         ///
         /////////////////////////////
-        Debug.Log(isSprintJump);
 
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 

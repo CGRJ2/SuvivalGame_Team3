@@ -8,7 +8,6 @@ public class StateMachine<T>
     public Dictionary<T, BaseState> stateDic;
     // 각 상태를 받아서 조건에 따라 상태를 전이시켜 줄것입니다.
     public BaseState CurState;
-    public BaseState LastState;
     public StateMachine()
     {
         stateDic = new Dictionary<T, BaseState>();
