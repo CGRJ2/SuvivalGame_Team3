@@ -25,29 +25,96 @@ public class MonsterView : MonoBehaviour
     // ===== 애니메이션 =====
     public void PlayMonsterIdleAnimation()
     {
-        if (animator != null)
-            animator.SetTrigger("Idle");
+        /*if (animator != null)
+            animator.SetTrigger("Idle");*/
     }
     public void PlayMonsterRunAnimation()
     {
-        if (animator != null)
-            animator.SetTrigger("Run");
+        /*if (animator != null)
+            animator.SetTrigger("Run");*/
     }
     public void PlayMonsterAttackAnimation()
     {
-        if (animator != null)
-            animator.SetTrigger("Attack");
+        /*if (animator != null)
+            animator.SetTrigger("Attack");*/
     }
     public void PlayMonsterPhase2PreludeAnimation()
     {
-        if (animator != null)
-            animator.SetTrigger("Phase2Prelude");
+        /*if (animator != null)
+            animator.SetTrigger("Phase2Prelude");*/
     }
     public void PlayMonsterPhase3PreludeAnimation()
     {
-        if (animator != null)
-            animator.SetTrigger("Phase3Prelude");
+        /*if (animator != null)
+            animator.SetTrigger("Phase3Prelude");*/
     }
+   
+    public void PlayMonsterPhase2AttackAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("Phase2Attack");*/
+    }
+    public void PlayMonsterPhase3AttackAnimation()
+    {
+       /* if (animator != null)
+            animator.SetTrigger("Phase3Attack");*/
+    }
+    public void PlayMonsterHitEffect()
+    {
+        /*if (hitEffect != null)
+            hitEffect.Play();
+
+        if (audioSource != null && hitSound != null)
+            audioSource.PlayOneShot(hitSound);*/
+    }
+    public void PlayMonsterHitAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("Hit");*/
+    }
+    public void PlayMonsterSuspiciousAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("Suspicious");*/
+    }
+    public void PlayMonsterDeathAnimation()
+    {
+       /* if (animator != null)
+            animator.SetTrigger("Die");
+
+        if (audioSource != null && deathSound != null)
+            audioSource.PlayOneShot(deathSound);*/
+    }
+
+    public void PlayMonsterStaggerAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("Stagger");*/
+    }
+
+    public void PlayMonsterCautiousWalkAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("CautiousWalk");*/
+    }
+
+    public void PlayMonsterPacifyAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("Pacify");*/
+    }
+
+    public void PlayMonsterGrabThrowAnimation()
+    {
+       /* if (animator != null)
+            animator.SetTrigger("GrabThrow");*/
+    }
+    public void PlayMonsterSleepAnimation()
+    {
+        /*if (animator != null)
+            animator.SetTrigger("GrabThrow");*/
+    }
+
     public void OnPhase2AttackTrigger()
     {
         var bossMonster = GetComponent<BossMonster>();
@@ -68,73 +135,6 @@ public class MonsterView : MonoBehaviour
                 bossMonster.phase3TryAttack(phase3State.CurrentPattern);
         }
     }
-    public void PlayMonsterPhase2AttackAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Phase2Attack");
-    }
-    public void PlayMonsterPhase3AttackAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Phase3Attack");
-    }
-    public void PlayMonsterHitEffect()
-    {
-        if (hitEffect != null)
-            hitEffect.Play();
-
-        if (audioSource != null && hitSound != null)
-            audioSource.PlayOneShot(hitSound);
-    }
-    public void PlayMonsterHitAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Hit");
-    }
-    public void PlayMonsterSuspiciousAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Suspicious");
-    }
-    public void PlayMonsterDeathAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Die");
-
-        if (audioSource != null && deathSound != null)
-            audioSource.PlayOneShot(deathSound);
-    }
-
-    public void PlayMonsterStaggerAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Stagger");
-    }
-
-    public void PlayMonsterCautiousWalkAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("CautiousWalk");
-    }
-
-    public void PlayMonsterPacifyAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("Pacify");
-    }
-
-    public void PlayMonsterGrabThrowAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("GrabThrow");
-    }
-    public void PlayMonsterSleepAnimation()
-    {
-        if (animator != null)
-            animator.SetTrigger("GrabThrow");
-    }
-
-
 
     // ===== 사운드 =====
 
