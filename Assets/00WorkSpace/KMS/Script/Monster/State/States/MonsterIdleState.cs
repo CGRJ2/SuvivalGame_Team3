@@ -6,7 +6,7 @@ public class MonsterIdleState : IMonsterState
     enum WanderState { Idle, Moving, Waiting }
     private WanderState wanderState = WanderState.Idle;
     private float waitTimer = 0f;
-    private BaseMonster monster;
+    protected BaseMonster monster;
     private BaseMonsterData data;
     private float timer;
     private float lookDuration;

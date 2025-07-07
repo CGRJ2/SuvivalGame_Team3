@@ -11,8 +11,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     // 이 값들을 설정하면 매니저 없이도 프리팹만으로 동작 테스트 가능
     // 초기화 시점: Start()
     // 사용 조건: autoInitialize == true && data == null
-    [Header("자체 초기화용")]
-    [SerializeField] private bool autoInitialize = true; // 인스펙터에서 제어 가능
+    
+    [field: Header("Origin 위치")]
+    [field : SerializeField] public Transform OriginTransform { get; set; }
 
     [Header("몬스터 데이터")]
     public BaseMonsterData data;
@@ -25,7 +26,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public NavMeshAgent Agent => agent;
 
     public Action DeactiveAction { get; set; }
-    public Transform OriginTransform { get; set; }
 
     [SerializeField] protected float currentHP;
     protected float attackPower;
@@ -141,8 +141,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     }
     protected virtual void Start()
     {
-        if (OriginTransform == null) OriginTransform = transform;
-
         // data가 null이면 경고
         if (data == null)
         {
@@ -268,7 +266,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         currentHP = data.MaxHP;
         attackPower = data.AttackPower;
-        agent.speed = data.MoveSpeed;
+        //agent.speed = data.MoveSpeed;
 
         attackCooldown = data.AttackCooldown;
         detectionRange = data.DetectionRange;
@@ -447,6 +445,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     public virtual void TakeDamage(float damage, Transform attackerTransform)
     {
+        if (data.isInvinvibleMonster) return;
+
         StartCoroutine(PauseAgent(data.HitStunDuration));
 
         currentHP -= damage;

@@ -18,10 +18,10 @@ public class OwnerAI : BaseMonster
     protected override void Start()
     {
         base.Start();
-        StateMachine.ChangeState(StateFactory.CreateIdleState());
+        //StateMachine.ChangeState(StateFactory.CreateIdleState());
         PlayerController pc = PlayerManager.Instance.instancePlayer;
         playerTransform = pc.transform;
-        RefreshBaitList();
+        //RefreshBaitList();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -98,13 +98,13 @@ public class OwnerAI : BaseMonster
         }
         return found;
     }
-    public void RefreshBaitList()
+    /*public void RefreshBaitList()
     {
         baitTransforms.Clear();
         var baits = GameObject.FindGameObjectsWithTag("OwnerBait");
         foreach (var bait in baits)
             baitTransforms.Add(bait.transform);
-    }
+    }*/
     //public void ThrowPlayer(Vector3 direction, float force)
     //{
     //    var player = GetTarget()?.GetComponent<IThrowable>();

@@ -15,14 +15,16 @@ MonoBehaviour:
   monsterName: 
   monsterType: 0
   monsterSubType: 0
-  typeStatData: {fileID: 0}
+  typeStatData: {fileID: 11400000, guid: 236abea4dc3bea446a8624fcefae8331, type: 2}
   maxHP: 0
   moveSpeed: 7
   attackPower: 0
+  collisionDamage: 0
   attackRange: 1
   attackCooldown: 0
-  collisionDamage: 0
-  knockbackDistance: 2
+  destroyDelayTime: 1
+  <HitStunDuration>k__BackingField: 0
+  <KnockBackedPower>k__BackingField: 0
   attackAnimSpeed: 1
   detectionRange: 50
   baseFOV: 40
@@ -36,6 +38,4 @@ MonoBehaviour:
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
   dropTable: []
-  moveSpeed: 4
-  detectionRange: 6
   preferredBaitItems: []
