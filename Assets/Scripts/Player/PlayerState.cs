@@ -144,7 +144,7 @@ public class Player_Fall : PlayerState
     }
     public override void Update()
     {
-        Debug.Log("FallingState");
+        //Debug.Log("FallingState");
         base.Update();
     }
 }

@@ -423,13 +423,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
-            Debug.Log("바닥 상태");
-
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
             if (isAttackInput || isAttacking)
             {
-                Debug.Log("공격 상태");
-
                 if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
                 {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
@@ -449,8 +445,6 @@ public class PlayerController : MonoBehaviour, IDamagable
             {
                 if (isAttacking)
                 {
-                    Debug.Log("공격&점프 상태");
-
                     return;
                 }
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
