@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class Interactable_Farming : InteractableBase, ISpawnable
 {
+    /// <summary>
+    /// 버그리스트 8번 사항 : 아이템 파밍 버그
+    /// 중복 상호작용 방지를 위한 private bool isInteracting = false; 코드 추가
+    /// </summary>
+    private bool isInteracting = false;
+
+
+
     enum FarmingType
     {
         Drop_Immediately, Drop_AfterAnimation, AddToInventory_Immediately, AddToInventory_AfterAnimation
@@ -58,8 +66,13 @@ public class Interactable_Farming : InteractableBase, ISpawnable
         DeactiveAction?.Invoke();
     }
 
-    public override void Interact()
+    public override void Interact() // 버그픽스를 위해 수정된 함수
     {
+        if (isInteracting) return;  // 이미 상호작용 중이면 무시
+
+        isInteracting = true;
+        // 수정된 코드
+
         base.Interact();
         DropInfo dropInfo = dropTable.GetDropItemInfo();
 
