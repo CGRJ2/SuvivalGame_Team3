@@ -234,7 +234,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
                 if (view != null && view.Animator != null)
                     view.Animator.SetFloat("AttackSpeed", data.AttackAnimSpeed);
 
-                view?.PlayMonsterAttackAnimation();
+                view.PlayMonsterAttackAnimation();
             }
         }
     }
