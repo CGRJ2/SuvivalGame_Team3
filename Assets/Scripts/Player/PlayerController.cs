@@ -633,7 +633,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void Attack()
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
-
+        Debug.Log("°ø°ÝÇÔ!");
         if (damagables.Length < 1) return;
 
         float finalDamage = Status.Damage;
@@ -645,6 +645,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         foreach (IDamagable damagable in damagables)
         {
+            
             damagable.TakeDamage(finalDamage, transform);
         }
     }

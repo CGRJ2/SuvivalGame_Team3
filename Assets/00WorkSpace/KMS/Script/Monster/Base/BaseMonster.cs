@@ -445,8 +445,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     public virtual void TakeDamage(float damage, Transform attackerTransform)
     {
+        Debug.Log("공격받음");
+        
         if (data.isInvinvibleMonster) return;
-
+        
         StartCoroutine(PauseAgent(data.HitStunDuration));
 
         currentHP -= damage;
