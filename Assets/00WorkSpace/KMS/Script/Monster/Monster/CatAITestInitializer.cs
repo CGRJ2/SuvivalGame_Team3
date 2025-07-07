@@ -8,10 +8,10 @@ public class CatAITestInitializer : MonoBehaviour
 
     private void Start()
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
+        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        if (pc != null)
         {
-            monster.SetTarget(player.transform);
+            monster.SetTarget(pc.transform);
             Debug.Log($"[Test] {name} 플레이어 타겟 지정 완료");
         }
 

@@ -16,6 +16,11 @@ public class MonsterDeadState : IMonsterState
         {
             monster.GetComponent<MonsterView>()?.PlayMonsterDeathAnimation();
             animationPlayed = true;
+            foreach (var rigid in monster.GetComponentsInChildren<Rigidbody>())
+            {
+                rigid.isKinematic = true;
+                rigid.detectCollisions = false;
+            }
 
             Debug.Log($"[{monster.name}] 상태: Dead 진입");
         }
@@ -23,6 +28,7 @@ public class MonsterDeadState : IMonsterState
         {
             Debug.LogWarning($"[{monster.name}] Dead 상태 진입 요청 → 그러나 isDead == false");
         }
+        PlayerManager.Instance.instancePlayer.Status.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_MonsterSlay);
     }
 
     public void Execute()

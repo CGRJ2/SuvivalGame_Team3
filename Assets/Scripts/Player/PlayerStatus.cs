@@ -42,6 +42,7 @@ public class PlayerStatus : IDisposable
     public bool isControllLocked; // 고양이한테 물리거나 주인한테 잡힐 때 사용
 
 
+
     [Header("설정된 마우스 감도(구현x)")]
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
     public float MouseSensitivity { get { return mouseSensitivity; } private set { mouseSensitivity = value; } }
