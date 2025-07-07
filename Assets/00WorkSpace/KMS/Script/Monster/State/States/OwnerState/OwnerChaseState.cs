@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class OwnerChaseState : IMonsterState
@@ -24,6 +25,9 @@ public class OwnerChaseState : IMonsterState
     public void Execute()
     {
         if (owner == null || owner.IsDead) return;
+
+        // 공격 범위 체크
+        owner.UpdateAttackRange();
 
         // 타겟 우선순위 탐색 (미끼 > 플레이어)
         OwnerAI.OwnerDetectionTarget targetType = owner.GetClosestTarget(out target);
@@ -59,7 +63,7 @@ public class OwnerChaseState : IMonsterState
         }
         else if (targetType == OwnerAI.OwnerDetectionTarget.Player)
         {
-            if (owner.IsInAttackRange())
+            if (owner.playerInRange != null)
             {
                 Debug.Log($"[{owner.name}] 플레이어 도달 => 잡기 공격 상태 전이");
                 owner.StateMachine.ChangeState(owner.GetAttackState());

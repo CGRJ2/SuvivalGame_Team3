@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fee90372340dddc4f9a62b42d244a39d, type: 3}
+  m_Name: BookGoblin
+  m_EditorClassIdentifier: 
+  <DropTableName>k__BackingField: BookGoblin
+  dropTable:
+  - dropItem: {fileID: 11400000, guid: e54a2710f4854d344a8954819df668b1, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: 46b3692f469388d469cab1b1415477bf, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: 96720bf966d479342943eec98ad11e4b, type: 2}
+    dropCount: 1
+    dropWeight: 1
+  - dropItem: {fileID: 11400000, guid: 56932a86567ad2b4ea023750a25e1780, type: 2}
+    dropCount: 1
+    dropWeight: 1

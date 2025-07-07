@@ -11,66 +11,52 @@ public class MonsterAlertState : IMonsterState
     {
         this.monster = monster;
         monster.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
-        Debug.Log($"[{monster.name}] 상태: Alert 진입");
+        //Debug.Log($"[{monster.name}] 상태: Alert 진입");
     }
 
     public void Execute()
     {
-        Debug.Log($"[Alert] 공격범위 체크: {monster.IsInAttackRange()} target: {(monster.GetTarget() == null ? "null" : monster.GetTarget().name)} attackRange: {monster.data.AttackRange}");
-        //float distanceFromOrigin = Vector3.Distance(monster.OriginPosition, monster.transform.position);
-        //float triggerDistance = monster.ActionRadius * returnTriggerRatio;
-
-        // 95% 경계 도달 시 ReturnWaitState로 전이
-        //if (distanceFromOrigin >= triggerDistance)
-        //{
-        //    Debug.Log($"[{monster.name}] 95% 경계 도달 - 복귀 대기 상태 진입");
-        //    monster.StateMachine.ChangeState(new MonsterReturnWaitState());
-        //    return;
-        //}
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
 
         // (이하 기존 Alert 상태 동작)
         if (monster.checkTargetVisible)
 
             monster.IncreaseAlert(15f);
 
-        //var target = monster.GetTarget();
-        //if (target != null)
-        //{
-        //    Vector3 toTarget = target.position - monster.transform.position;
-        //    toTarget.y = 0f;
-        //    monster.MoveTo();
-        //}
-
+        // 타겟이 있으면 타겟 위치로 추적이동
         if (monster.GetTarget() != null)
         {
             monster.Agent.SetDestination(monster.GetTarget().position);
         }
 
-
-        if (monster.IsInAttackRange())
+        // 공격 범위에 플레이어가 있다면 공격상태로 전환
+        if (monster.playerInRange != null)
         {
             var attackState = monster.CreateAttackState();
             monster.StateMachine.ChangeState(attackState);
             return;
         }
 
+
         alertTimer += Time.deltaTime;
         if (alertTimer >= maxAlertDuration)
         {
             var nextState = monster.StateFactory.GetStateForPerception(monster.GetCurrentPerceptionState());
             monster.StateMachine.ChangeState(nextState);
-            Debug.Log($"[{monster.name}] Alert 시간 종료 → 상태 전이: {nextState.GetType().Name}");
+            //Debug.Log($"[{monster.name}] Alert 시간 종료 → 상태 전이: {nextState.GetType().Name}");
         }
+
 
         if (monster.AlertLevel < monster.AlertThreshold_Low)
         {
             monster.StateMachine.ChangeState(new MonsterIdleState(monster));
-            Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
+            //Debug.Log($"[{monster.name}] 경계도 하락 → Idle 전이");
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] Alert 상태 종료");
+        //Debug.Log($"[{monster.name}] Alert 상태 종료");
     }
 }

@@ -134,12 +134,12 @@ public class BossMonster : BaseMonster
         Debug.Log("[Boss] HP가 최대치로 회복됨");
     }
 
-    protected override void Phase2TryAttack()
+    protected void Phase2TryAttack()
     {
         phase2TryAttack(null);
     }
 
-    protected override void Phase3TryAttack()
+    protected void Phase3TryAttack()
     {
         phase3TryAttack(null);
     }

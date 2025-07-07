@@ -15,6 +15,8 @@ public class StageManager : Singleton<StageManager>
     [Header("몬스터 리스폰 시간")]
     [SerializeField] int respawnTime_Monster = 2;
 
+    [Header("튜토리얼룸 스포너 정보")]
+    [SerializeField] private SpawnerListGroup spawnerListGroup_TutorialRoom;
     [Header("거실 스포너 정보")]
     [SerializeField] private SpawnerListGroup spawnerListGroup_LivingRoom;
     [Header("서재 스포너 정보")]
@@ -23,7 +25,11 @@ public class StageManager : Singleton<StageManager>
     [SerializeField] private SpawnerListGroup spawnerListGroup_DressRoom;
     [Header("안방 스포너 정보")]
     [SerializeField] private SpawnerListGroup spawnerListGroup_MasterBedRoom;
+    [Header("고양이방 스포너 정보")]
+    [SerializeField] private SpawnerListGroup spawnerListGroup_CatRoom;
 
+    [Header("현재 플레이어 존재 위치")]
+    public RegionInfos nowRegion;
 
     public void Init()
     {
@@ -72,14 +78,18 @@ public class StageManager : Singleton<StageManager>
     {
         switch (stageKey)
         {
-            case StageKey.거실:
+            case StageKey.LivingRoom:
                 return spawnerListGroup_LivingRoom;
-            case StageKey.서재:
+            case StageKey.Library:
                 return spawnerListGroup_Library;
-            case StageKey.옷방:
+            case StageKey.DressRoom:
                 return spawnerListGroup_DressRoom;
-            case StageKey.안방:
+            case StageKey.MasterBedRoom:
                 return spawnerListGroup_MasterBedRoom;
+            case StageKey.CatRoom:
+                return spawnerListGroup_CatRoom;
+            case StageKey.TutorialRoom:
+                return spawnerListGroup_TutorialRoom;
             default: return null;
         }
     }
@@ -92,6 +102,8 @@ public class StageManager : Singleton<StageManager>
             case 0:
                 Debug.LogWarning("0스테이지 스폰 사이클 실행!");
                 SpawningRoutinesStart(spawnerListGroup_LivingRoom);
+                SpawningRoutinesStart(spawnerListGroup_CatRoom);
+                SpawningRoutinesStart(spawnerListGroup_TutorialRoom);
                 break;
 
             case 1:
@@ -197,7 +209,7 @@ public class StageManager : Singleton<StageManager>
     private void RandomSpawnerStartSpawning(List<Spawner> spawnableList, int maxCount, float respawnTime)
     {
         // 대기 중인 스포너들 중 랜덤 선택
-        if (spawnableList.Count == 0) 
+        if (spawnableList.Count == 0)
         {
             //Debug.LogError("모든 스포너에 인스턴스가 생성되어있음");
             return;
@@ -238,6 +250,7 @@ public class StageManager : Singleton<StageManager>
         // 2. 스포너 초기화 후 루틴 재시작
         InitSpawnerRoutines();
 
+        ShowNowRegionUI();
         Debug.Log("스테이지 매니저 데이터 구독자 함수 완료");
     }
 
@@ -248,14 +261,23 @@ public class StageManager : Singleton<StageManager>
 
         // 1-2. 현재 스포너 상태 초기화 & 스폰 객체들 전체 삭제
         List<GameObject> activedAllObjects = new List<GameObject>();
+        activedAllObjects.AddRange(spawnerListGroup_TutorialRoom.activateInstances_FO);
+        activedAllObjects.AddRange(spawnerListGroup_TutorialRoom.activateInstances_Monster);
+
         activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_LivingRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_Library.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_DressRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_FO);
         activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
-        activedAllObjects.AddRange(spawnerListGroup_MasterBedRoom.activateInstances_Monster);
+
+        activedAllObjects.AddRange(spawnerListGroup_CatRoom.activateInstances_FO);
+        activedAllObjects.AddRange(spawnerListGroup_CatRoom.activateInstances_Monster);
 
         foreach (GameObject gameObject in activedAllObjects)
         {
@@ -276,11 +298,28 @@ public class StageManager : Singleton<StageManager>
 
     #endregion
 
+    public void ShowNowRegionUI()
+    {
+        string message;
+        switch (nowRegion)
+        {
+            case RegionInfos.LivingRoom: message = "거실"; break;
+            case RegionInfos.Library: message = "서재"; break;
+            case RegionInfos.DressRoom: message = "옷방"; break;
+            case RegionInfos.MasterBedRoom: message = "안방"; break;
+            case RegionInfos.CatRoom: message = "고양이방"; break;
+            case RegionInfos.TutorialRoom: message = "아이방"; break;
+            default: message = "방 정보 없음!"; break;
+        }
+        Panel_RoomInfo roomInfo = UIManager.Instance.popUpUIGroup.RoomInfoUI;
+        UIManager.Instance.popUpUIGroup.RoomInfoUI.PopMessage_FadeInOut(message);
+    }
+
 }
 
 public enum StageKey
 {
-    거실, 서재, 옷방, 안방, All
+    LivingRoom, Library, DressRoom, MasterBedRoom, CatRoom, TutorialRoom, All
 }
 
 [System.Serializable]
@@ -328,5 +367,12 @@ public class SpawnerListGroup
     }
 
 
-
+    
 }
+
+public enum RegionInfos
+{
+    LivingRoom, Library, DressRoom, MasterBedRoom, CatRoom, TutorialRoom, BaseCamp
+}
+
+

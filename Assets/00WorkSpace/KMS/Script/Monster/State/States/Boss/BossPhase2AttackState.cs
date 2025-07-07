@@ -32,8 +32,11 @@ public class BossPhase2AttackState : IMonsterState
     {
         if (monster == null || monster.IsDead) return;
 
-        // 공격 사거리 체크
-        if (!monster.IsInAttackRange())
+        // 공격 범위 체크
+        monster.UpdateAttackRange();
+
+        // 플레이어가 공격범위에 있는지 체크
+        if (monster.playerInRange != null)
         {
             // 추적 상태(또는 Alert 상태)로 전환
             var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);

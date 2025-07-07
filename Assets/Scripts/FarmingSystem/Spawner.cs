@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour
         // 3. Origin이 거실인지, 아닌지 확인
         List<TableInfoByWeight> tableInfos = null;
         // 거실이라면 스테이지 레벨에 맞는 테이블 가중치 적용
-        if (stageOrigin.stageKey == StageKey.거실)
+        if (stageOrigin.stageKey == StageKey.LivingRoom)
         {
             int currentStageLevel = StageManager.Instance.CurrentStageLevel;
 

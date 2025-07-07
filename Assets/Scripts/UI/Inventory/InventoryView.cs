@@ -46,9 +46,7 @@ public class InventoryView : MonoBehaviour
 
     public void TryOpenInventory()
     {
-        inventoryActivated = !inventoryActivated;
-
-        if (inventoryActivated)
+        if (!inventoryActivated)
             OpenInventory();
         else
             CloseInventory();
@@ -56,11 +54,13 @@ public class InventoryView : MonoBehaviour
 
     private void OpenInventory()
     {
+        inventoryActivated = true;
         UIManager.Instance.OpenPanelNotChangeActionMap(go_inventoryBase);
     }
 
     private void CloseInventory()
     {
+        inventoryActivated = false;
         UIManager.Instance.CloseTargetPanel(go_inventoryBase);
     }
 

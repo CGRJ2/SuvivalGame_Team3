@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField] private Transform cameraFocusTransform;
+    [field: SerializeField] public Transform TPSView_CameraFocusTransform { get; private set; }
+    [field: SerializeField] public Transform SideView_CameraFocusTransform { get; private set; }
     [SerializeField] private Transform avatar;
 
     [HideInInspector] public Animator animator;
@@ -69,21 +70,21 @@ public class PlayerView : MonoBehaviour
             _maxPitch
             );
 
-        cameraFocusTransform.rotation = Quaternion.Euler(0, currentRotation.x, 0);
+        TPSView_CameraFocusTransform.rotation = Quaternion.Euler(0, currentRotation.x, 0);
 
         // y 회전 제한
-        Vector3 currentEuler = cameraFocusTransform.localEulerAngles;
-        cameraFocusTransform.localEulerAngles = new Vector3(currentRotation.y, currentEuler.y, currentEuler.z);
+        Vector3 currentEuler = TPSView_CameraFocusTransform.localEulerAngles;
+        TPSView_CameraFocusTransform.localEulerAngles = new Vector3(currentRotation.y, currentEuler.y, currentEuler.z);
 
-        Vector3 rotateDirVector = cameraFocusTransform.forward;
+        Vector3 rotateDirVector = TPSView_CameraFocusTransform.forward;
         rotateDirVector.y = 0;
         return rotateDirVector.normalized;
     }
 
     public Vector3 GetMoveDirection(Vector2 inputDir)
     {
-        Vector3 right = cameraFocusTransform.right;
-        Vector3 forward = cameraFocusTransform.forward;
+        Vector3 right = TPSView_CameraFocusTransform.right;
+        Vector3 forward = TPSView_CameraFocusTransform.forward;
         right.y = 0;
         forward.y = 0;
 
@@ -106,10 +107,10 @@ public class PlayerView : MonoBehaviour
     }
     public void FreeCamSet(bool isActive)
     {
-        freeCamForward = cameraFocusTransform.forward;
+        freeCamForward = TPSView_CameraFocusTransform.forward;
         freeCamForward.y = 0;
         freeCamForward.Normalize();
-        freeCamRight = cameraFocusTransform.right;
+        freeCamRight = TPSView_CameraFocusTransform.right;
         freeCamRight.y = 0;
         freeCamRight.Normalize();
         
