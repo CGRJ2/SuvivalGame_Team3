@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   baseCampSprite: {fileID: 21300000, guid: 72d40a675f801e248878ba029152eb5c, type: 3}
-  upgradingTime: 10
+  upgradingTime: 20
   needUnlockStage: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
   requiredItems:
-  - item: {fileID: 11400000, guid: 8fa480d0683a12344843f9fddedf380c, type: 2}
-    count: 2
-  - item: {fileID: 11400000, guid: 9a03b406a2d9f3f4dadf0270cb871814, type: 2}
-    count: 5
-  - item: {fileID: 11400000, guid: 4407808d2ed2d8842b0605af709cbc9c, type: 2}
+  - item: {fileID: 11400000, guid: d3138c465a406c144bbad2310982c6a4, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: a9a3ed0f49f5abc46b0b191efecd37eb, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: 3a431a2f0a725e3429b88f1ecf9c059f, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: 826a0ada12e1bdf49acea9c5f749049e, type: 2}
     count: 10

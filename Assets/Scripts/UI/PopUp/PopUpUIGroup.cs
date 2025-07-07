@@ -17,8 +17,12 @@ public class PopUpUIGroup : MonoBehaviour
     [Header("팝업 패널 : 상호작용 정보")]
     public Panel_InteractableUI interactableUI;
 
+
+    
     [Header("페이드 인 앤 아웃 : 현재 위치")]
     public Panel_RoomInfo RoomInfoUI;
+    [Header("페이드 인 앤 아웃 : 하루 마무리")]
+    public Panel_FadeInOut dayOffSavePanel;
     [Header("페이드 인 앤 아웃 : 죽음 패널")]
     public Panel_FadeInOut deadPanel;
     [Header("페이드 인 앤 아웃 : 기절 패널")]

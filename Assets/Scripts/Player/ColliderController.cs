@@ -13,6 +13,7 @@ public class ColliderController : MonoBehaviour
     [SerializeField] LayerMask collisionLayerMask;
 
     [Header("Ground Collision Set")]
+    public bool isWaitingGroundCheck;
     [SerializeField] float rayRadius_Ground;
     [SerializeField] float offsetY_Ground;
     [SerializeField] float distance_Ground;
@@ -56,7 +57,8 @@ public class ColliderController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GroundCheck();
+        if (!isWaitingGroundCheck) GroundCheck();
+
         HeadCheck();
 
         switch (attackType)

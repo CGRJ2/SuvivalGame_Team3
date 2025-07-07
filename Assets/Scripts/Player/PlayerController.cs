@@ -1,7 +1,6 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -60,7 +59,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Awake() => Init();
 
-    
+
     private void Update()
     {
         ///////////////////////////
@@ -94,12 +93,12 @@ public class PlayerController : MonoBehaviour, IDamagable
         HandleMove();
     }
 
-    private void OnDisable() 
+    private void OnDisable()
     {
-        if(dm != null)
-        dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
+        if (dm != null)
+            dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
 
-        InputActionsDelete(); 
+        InputActionsDelete();
     }
 
     private void Init()
@@ -421,13 +420,6 @@ public class PlayerController : MonoBehaviour, IDamagable
     #region InputFlag들에 따른 상태 전환 조건 관리
     public void UpdateStateCondition()
     {
-        // 컨트롤 락 걸리면 
-        if (Status.isControllLocked)
-        {
-            //View.animator
-            return;
-        }
-
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
@@ -514,6 +506,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         // 컨트롤 락 걸리면 이동 로직 중지
         if (Status.isControllLocked) return;
+        if (CameraManager.Instance.cinemachineBrain.IsBlending) return;
+
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
@@ -522,10 +516,17 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         Vector3 getMoveDir;
 
-        if (isFreeCamModInput)
+        // 사이드 뷰 들어가면
+        if (CameraManager.Instance.activeSideView)
+        {
+            SideView_Camera sideViewCam = CameraManager.Instance.sideViewCamera;
+            getMoveDir = View.GetMoveDir_SideCamMode(InputDir, sideViewCam.front, sideViewCam.right);
+        }
+        else if (isFreeCamModInput)
             getMoveDir = View.GetMoveDirection(InputDir, true);
         else
             getMoveDir = View.GetMoveDirection(InputDir);
+
 
         Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
         View.moveDir = moveVec;
@@ -545,19 +546,30 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void HandleSight()
     {
+        // 사이드 캠 활성화 상태에선 화면회전은 정지
+        if (CameraManager.Instance.activeSideView)
+        {
+            View.SetAvatarRotation(View.facingDir, pm.RotateSpeed);
+            return;
+        }
+
         Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, pm.MinPitch, pm.MaxPitch);
 
         Vector3 avatarDir;
+
         // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
         if (isFreeCamModInput) avatarDir = View.facingDir;
         // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
         else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
         else avatarDir = View.moveDir;
 
+        
+
         // 컨트롤 락 걸리면 아바타 회전은 정지
         if (Status.isControllLocked) return;
-
         View.SetAvatarRotation(avatarDir, pm.RotateSpeed);
+
+        
 
         // Attack 상태일 때만.
         if (stateMachine.CurState == stateMachine.stateDic[PlayerStateTypes.Attack])
@@ -582,7 +594,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (Status.onHandItem is Item_Weapon weapon)
         {
             finalDamage += weapon.Damage;
-            
+
         }
 
         foreach (IDamagable damagable in damagables)

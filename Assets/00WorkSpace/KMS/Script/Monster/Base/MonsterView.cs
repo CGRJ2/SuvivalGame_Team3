@@ -81,6 +81,11 @@ public class MonsterView : MonoBehaviour
         if (audioSource != null && hitSound != null)
             audioSource.PlayOneShot(hitSound);
     }
+    public void PlayMonsterHitAnimation()
+    {
+        if (animator != null)
+            animator.SetTrigger("Hit");
+    }
     public void PlayMonsterSuspiciousAnimation()
     {
         if (animator != null)

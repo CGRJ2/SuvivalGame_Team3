@@ -5,21 +5,23 @@ public class BaseCampManager : Singleton<BaseCampManager>
 {
     [field: SerializeField] public int MaxLevel { get; private set; }
 
-    public BaseCampInstance baseCampInstance;
+    [HideInInspector] public BaseCampInstance baseCampInstance;
 
-    public TemporaryCampInstance currentTempCampInstance;
+    [HideInInspector] public TemporaryCampInstance currentTempCampInstance;
 
-    public GameObject TemporaryCampInstance_Prefab;
-
-    // [세이브 & 로드 데이터]
-    public BaseCampData baseCampData;
+    [HideInInspector] public GameObject TemporaryCampInstance_Prefab;
 
     // [세이브 & 로드 데이터]
-    public TempCampData tempCampData;
+    [HideInInspector] public BaseCampData baseCampData;
+
+    // [세이브 & 로드 데이터]
+    [HideInInspector] public TempCampData tempCampData;
 
     [HideInInspector] public Item_Recipe[] allRecipeList;
 
     [HideInInspector] public BaseCampUpgradeCondition[] UpgradeConditions;
+
+    public BaseCampEffect baseCampUpgradeEffect;
 
     private void Update()
     {
@@ -36,7 +38,6 @@ public class BaseCampManager : Singleton<BaseCampManager>
         {
             UseTempCampItem();
         }
-        
     }
 
 
@@ -83,7 +84,6 @@ public class BaseCampManager : Singleton<BaseCampManager>
 
         Debug.Log("베이스캠프 매니저 데이터 구독자 함수 완료");
     }
-
 
     private void InitUpgradeConditions()
     {
@@ -157,7 +157,11 @@ public class BaseCampManager : Singleton<BaseCampManager>
         
     }
 
-
-
 }
 
+[System.Serializable]
+public class BaseCampEffect
+{
+    public float healItemUseTimeReduce;
+    public float upgradeTimeReduce;
+}

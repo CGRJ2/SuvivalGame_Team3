@@ -6,7 +6,11 @@ using UnityEngine;
 public class SideView_Camera : MonoBehaviour
 {
     PlayerController pc;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    public CinemachineVirtualCamera virtualCamera;
+    public Vector3 front;
+    public Vector3 right;
+
+    public bool moveDirLock;
 
     public void Awake()
     {
@@ -24,7 +28,10 @@ public class SideView_Camera : MonoBehaviour
         pc = PlayerManager.Instance.instancePlayer;
 
         // 사이드뷰 카메라 초기화
-        virtualCamera.Follow = pc.View.TPSView_CameraFocusTransform;
-        virtualCamera.LookAt = pc.View.TPSView_CameraFocusTransform;
+        virtualCamera.Follow = pc.View.SideView_CameraFocusTransform;
+        virtualCamera.LookAt = pc.View.SideView_CameraFocusTransform;
     }
+
+    
+    
 }

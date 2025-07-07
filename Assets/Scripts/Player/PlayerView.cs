@@ -105,6 +105,14 @@ public class PlayerView : MonoBehaviour
         }
         else return Vector3.zero;
     }
+    public Vector3 GetMoveDir_SideCamMode(Vector2 inputDir, Vector3 forward, Vector3 right)
+    {
+        Vector3 direction =
+            (right * inputDir.x) +
+            (forward * inputDir.y);
+        return direction.normalized;
+    }
+
     public void FreeCamSet(bool isActive)
     {
         freeCamForward = TPSView_CameraFocusTransform.forward;
