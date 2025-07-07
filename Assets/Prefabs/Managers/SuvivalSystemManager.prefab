@@ -46,23 +46,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TickDuration: 1
   <bodyPartSystem>k__BackingField:
-    <HeadMaxHP_Init>k__BackingField: 100
-    <ArmMaxHP_Init>k__BackingField: 10
-    <LegMaxHP_Init>k__BackingField: 10
-    <HeadMaxHP_AfterDestroyed>k__BackingField: 20
-    <ArmMaxHP_AfterDestroyed>k__BackingField: 5
-    <LegMaxHP_AfterDestroyed>k__BackingField: 5
+    <HeadMaxHP_Init>k__BackingField: 600
+    <ArmMaxHP_Init>k__BackingField: 400
+    <LegMaxHP_Init>k__BackingField: 400
+    <MinHeadMaxHPLimit>k__BackingField: 600
+    <MinArmMaxHPLimit>k__BackingField: 100
+    <MinLegMaxHPLimit>k__BackingField: 100
+    <HeadMaxHPReduce_AD>k__BackingField: 0
+    <ArmMaxHPReduce_AD>k__BackingField: 100
+    <LegMaxHPReduce_AD>k__BackingField: 100
   <batterySystem>k__BackingField:
-    <MaxBattery_Init>k__BackingField: 100
-    <MaxBattery_AfterFaint>k__BackingField: 50
+    <InitMaxBattery>k__BackingField: 500
+    <MinBatteryLimit>k__BackingField: 200
+    <MaxBatteryReduceAfterFaint>k__BackingField: 100
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
-    <RecoverAmount_MonsterSlay>k__BackingField: 10
-    <RecoverAmount_BossHit>k__BackingField: 10
+    <RecoverAmount_MonsterSlay>k__BackingField: 50
+    <RecoverAmount_BossHit>k__BackingField: 25
   <willPowerSystem>k__BackingField:
-    <MaxWillPower_Init>k__BackingField: 100
-    <DrainPerTick_Idle>k__BackingField: 1
-    <DrainPerTick_Night>k__BackingField: 2
+    <MaxWillPower_Init>k__BackingField: 500
+    <DrainPerTick_Idle>k__BackingField: 0.5
+    <DrainPerTick_Night>k__BackingField: 1
     <HeadDamagePerTick>k__BackingField: 1
-    <WillDangerZone>k__BackingField: 30
+    <WillDangerZone>k__BackingField: 0
     <DecreaseAmount_CatEvent>k__BackingField: 20
