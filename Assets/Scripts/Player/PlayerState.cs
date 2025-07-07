@@ -117,7 +117,7 @@ public class Player_Jump : PlayerState
     public override void Exit()
     {
         base.Exit();
-        pc.View.animator.SetBool("IsJump", false);
+        //pc.View.animator.SetBool("IsJump", false);
     }
 }
 
@@ -143,6 +143,7 @@ public class Player_Fall : PlayerState
     }
     public override void Update()
     {
+        Debug.Log("FallingState");
         base.Update();
     }
 }
@@ -193,6 +194,7 @@ public class Player_Attack : PlayerState
     {
         base.Exit();
         pc.View.animator.SetBool("IsAttack", false);
+        pc.isAttacking = false;
     }
     public override void Update()
     {
@@ -216,6 +218,9 @@ public class Player_Damaged : PlayerState
         pc.isAttacking = false;
         pc.View.animator.SetTrigger("IsDamagedTrigger");
         pc.View.animator.SetBool("IsDamaged", true);
+
+        pc.View.animator.SetBool("IsAttack", false);
+        pc.isAttacking = false;
     }
 
     public override void Exit()

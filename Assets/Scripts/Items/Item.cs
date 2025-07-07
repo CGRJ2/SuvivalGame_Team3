@@ -82,7 +82,7 @@ public class Item : ScriptableObject
     {
         if (consumable is Item_HealingHP hp)
         {
-            hp.Hp_HealingRandomPart();
+            hp.Hp_HealingCriticalPart();
         }
         else if (consumable is Item_BodyPart part)
         {

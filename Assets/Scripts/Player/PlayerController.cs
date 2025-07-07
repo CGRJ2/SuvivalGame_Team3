@@ -430,9 +430,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 바닥 상태라면
         if (Cc.GetIsGroundState())
         {
+            Debug.Log("바닥 상태");
+
             // => Attack 조건 : 입력값 존재 && 일반 or 기본이동 상태일 때만 가능
             if (isAttackInput || isAttacking)
             {
+                Debug.Log("공격 상태");
+
                 if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
                 {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
@@ -452,6 +456,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             {
                 if (isAttacking)
                 {
+                    Debug.Log("공격&점프 상태");
+
                     return;
                 }
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
@@ -513,6 +519,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         // 컨트롤 락 걸리면 이동 로직 중지
         if (Status.isControllLocked) return;
+        if (CameraManager.Instance.cinemachineBrain.IsBlending) return;
+
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
@@ -521,7 +529,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         Vector3 getMoveDir;
 
-        if (CameraManager.Instance.sideViewCamera.virtualCamera.gameObject.activeSelf)
+        // 사이드 뷰 들어가면
+        if (CameraManager.Instance.activeSideView)
         {
             SideView_Camera sideViewCam = CameraManager.Instance.sideViewCamera;
             getMoveDir = View.GetMoveDir_SideCamMode(InputDir, sideViewCam.front, sideViewCam.right);
@@ -551,7 +560,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void HandleSight()
     {
         // 사이드 캠 활성화 상태에선 화면회전은 정지
-        if (CameraManager.Instance.sideViewCamera.virtualCamera.gameObject.activeSelf)
+        if (CameraManager.Instance.activeSideView)
         {
             View.SetAvatarRotation(View.facingDir, pm.RotateSpeed);
             return;
