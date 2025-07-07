@@ -8,7 +8,7 @@ public class Item_HealingHP : Item_Consumable
 {
     [field: SerializeField] public int HealAmount { get; private set; }
 
-    public void Hp_HealingRandomPart()
+    public void Hp_HealingCriticalPart()
     {
         PlayerStatus ps = PlayerManager.Instance.instancePlayer.Status;
 
