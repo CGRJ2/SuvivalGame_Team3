@@ -11,8 +11,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     // 이 값들을 설정하면 매니저 없이도 프리팹만으로 동작 테스트 가능
     // 초기화 시점: Start()
     // 사용 조건: autoInitialize == true && data == null
-    [Header("자체 초기화용")]
-    [SerializeField] private bool autoInitialize = true; // 인스펙터에서 제어 가능
+    
+    [field: Header("Origin 위치")]
+    [field : SerializeField] public Transform OriginTransform { get; set; }
 
     [Header("몬스터 데이터")]
     public BaseMonsterData data;
@@ -25,7 +26,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public NavMeshAgent Agent => agent;
 
     public Action DeactiveAction { get; set; }
-    public Transform OriginTransform { get; set; }
 
     [SerializeField] protected float currentHP;
     protected float attackPower;
@@ -109,17 +109,20 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public virtual void Init()
     {
         stateMachine = new MonsterStateMachine(this);
-        stateFactory = new DefaultMonsterStateFactory(this);
+
+        if (stateFactory == null)
+            stateFactory = new DefaultMonsterStateFactory(this);
+
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
         agent = GetComponent<NavMeshAgent>();
         if (view == null)
+            view = GetComponent<MonsterView>();
 
-            idleState = stateFactory.CreateIdleState();
+        idleState = stateFactory.CreateIdleState();
         suspiciousState = stateFactory.CreateSuspiciousState();
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
-
 
         perceptionController = new MonsterPerceptionController(
             this,
@@ -131,14 +134,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         );
 
         perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
-
-
         perceptionController.ForceSetState(MonsterPerceptionState.Idle);
+
+        // 임시
+        if (OriginTransform != null) OriginTransform = GameManager.Instance.transform;
     }
     protected virtual void Start()
     {
-        if (OriginTransform == null) OriginTransform = transform;
-
         // data가 null이면 경고
         if (data == null)
         {
@@ -264,7 +266,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         currentHP = data.MaxHP;
         attackPower = data.AttackPower;
-        agent.speed = data.MoveSpeed;
+        //agent.speed = data.MoveSpeed;
 
         attackCooldown = data.AttackCooldown;
         detectionRange = data.DetectionRange;
@@ -403,6 +405,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     protected void OnDrawGizmos()
     {
+        Vector3 originPosition = Vector3.zero;
+        if (OriginTransform != null) originPosition = OriginTransform.position;
+
         if (data == null) return;
 
         // 감지 반경
@@ -412,7 +417,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         // 행동 반경 (originPosition 중심)
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(OriginTransform.position, data.ActionRadius);
+        Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
 
         // 시야 
         Vector3 forward = transform.forward;
@@ -431,6 +436,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         else
             Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 붉은색 투명
 
+        if (view == null) return;
         Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }
@@ -439,6 +445,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     public virtual void TakeDamage(float damage, Transform attackerTransform)
     {
+        if (data.isInvinvibleMonster) return;
+
         StartCoroutine(PauseAgent(data.HitStunDuration));
 
         currentHP -= damage;

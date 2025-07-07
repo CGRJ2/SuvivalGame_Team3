@@ -11,6 +11,9 @@ public enum MonsterTargetType { Player, Ally, None }
 [CreateAssetMenu(menuName = "Monster/MonsterData")]
 public class BaseMonsterData : ScriptableObject
 {
+    [Header("무적몬스터인지 아닌지 여부")]
+    public bool isInvinvibleMonster;
+
     [Header("기본 정보")]
     public string monsterName;
     public MonsterType monsterType;
