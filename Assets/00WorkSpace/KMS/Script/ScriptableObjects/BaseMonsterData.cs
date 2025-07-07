@@ -25,8 +25,9 @@ public class BaseMonsterData : ScriptableObject
     [SerializeField] private float attackCooldown;
     [SerializeField] private int collisionDamage;
 
-    [Header("넉백 관련")]
-    [SerializeField] private float knockbackDistance = 2f;
+    [field: Header("넉백 관련")]
+    [field: SerializeField] public float HitStunDuration { get; private set; }
+    [field: SerializeField] public float KnockBackedPower { get; private set; }
 
     [Header("공격 애니메이션 속도 배율")]
     [SerializeField] private float attackAnimSpeed = 1f; // (1.0이 기본, 1.2 빠름, 0.8 느림 등)
@@ -51,7 +52,6 @@ public class BaseMonsterData : ScriptableObject
     public int CollisionDamage => collisionDamage;
     public float AttackRange => attackRange;
     public float AttackCooldown => attackCooldown;
-    public float KnockbackDistance => knockbackDistance;
     public float DetectionRange => detectionRange;
     public float BaseFOV => baseFOV;
     public float EyeHeight => eyeHeight;

@@ -10,7 +10,7 @@ public class ItemInstance : InteractableBase
     [SerializeField] float rigidDeactiveTime;
     [SerializeField] float destroyTime;
 
-    bool isUsed;
+    public bool isUsed;
 
     public void InitInstance(Item item, int count)
     {
@@ -45,10 +45,10 @@ public class ItemInstance : InteractableBase
 
     public override void Interact()
     {
-        base.Interact();
         if (isUsed) return;
         isUsed = true;
 
+        base.Interact();
 
         // 플레이어 인벤토리로 들어감
         pc.Status.inventory.AddItem(item, count);
@@ -62,6 +62,8 @@ public class ItemInstance : InteractableBase
 
     public override void ShowInteractableUI()
     {
+        if (isUsed) return;
+
         base.ShowInteractableUI();
         UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"{item.itemName}: 줍기(E)";
     }

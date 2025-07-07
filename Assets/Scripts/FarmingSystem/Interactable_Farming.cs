@@ -61,10 +61,11 @@ public class Interactable_Farming : InteractableBase, ISpawnable
 
     public override void Interact()
     {
-        base.Interact();
-
         if (isUsed) return;
         isUsed = true;
+
+        base.Interact();
+
         DropInfo dropInfo = dropTable.GetDropItemInfo();
 
         switch (dropType)
@@ -101,8 +102,9 @@ public class Interactable_Farming : InteractableBase, ISpawnable
 
     public override void ShowInteractableUI()
     {
-        base.ShowInteractableUI();
+        if (isUsed) return;
 
+        base.ShowInteractableUI();
         // 파밍 오브젝트 종류별로 다르게 설정 필요
         UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"채집: (E)";
     }

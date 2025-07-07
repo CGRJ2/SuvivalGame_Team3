@@ -1,4 +1,3 @@
-using KMS.Monster.Interface;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,7 +103,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     protected IMonsterStateFactory stateFactory;
     protected virtual void Awake() => Init();
-    
+
     public virtual void Init()
     {
         stateMachine = new MonsterStateMachine(this);
@@ -171,9 +170,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.Update();
     }
 
+
+
+
     protected virtual void OnDisable()
     {
         DeactiveAction?.Invoke();
+        StopAllCoroutines();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -385,7 +388,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         stateMachine.ChangeState(nextState);
     }
 
-    
+
 
 
     public void ResetAlert()
@@ -424,16 +427,27 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
 
 
-    public virtual void TakeDamage(float damage, Transform attackerTransform) 
+    public virtual void TakeDamage(float damage, Transform attackerTransform)
     {
-        currentHP -= damage;
-        view.PlayMonsterHitEffect();
-        view.PlayMonsterHitAnimation();
+        StartCoroutine(PauseAgent(data.HitStunDuration));
 
-        ApplyKnockback(attackerTransform, data.KnockbackDistance);
+        currentHP -= damage;
+        //view.PlayMonsterHitEffect();
+        //view.PlayMonsterHitAnimation();
+
+        ApplyKnockback(attackerTransform, data.KnockBackedPower);
 
         if (currentHP <= 0)
             Die();
+    }
+
+    IEnumerator PauseAgent(float pauseTime)
+    {
+        agent.isStopped = true;
+        rb.isKinematic = false;
+        yield return new WaitForSeconds(pauseTime);
+        if (agent.isOnNavMesh) agent.isStopped = false;
+        rb.isKinematic = true;
     }
 
     public void ApplyKnockback(Transform transform, float force)

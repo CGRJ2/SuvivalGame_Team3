@@ -462,8 +462,11 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (isAttackInput)
             {
                 // 2. 일반 & 기본 이동 상태일 때 가능
-                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                if ( IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move) 
+                    || IsCurrentState(PlayerStateTypes.Sprint))
+                {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
+                }
                 // 3. 앉음 상태 & 머리위에 장애물이 막지 않은 상태일 때 가능
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
@@ -747,9 +750,10 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (onHandInstance != item.instancePrefab) Destroy(onHandInstance);
 
             onHandInstance = Instantiate(item.instancePrefab, handTransform);
+            Debug.Log("소환");
+            onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
             Status.onHandItem = item;
-
 
             // 아이템 장착 효과
             if (item is Item_Weapon weapon)
