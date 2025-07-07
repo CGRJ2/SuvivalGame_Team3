@@ -13,7 +13,8 @@ public class AnimationEventController : MonoBehaviour
 
     public void JumpTop()
     {
-        pc.stateMachine.ChangeState(pc.stateMachine.stateDic[PlayerStateTypes.Fall]);
+        pc.View.animator.SetBool("IsFalling", false);
+
     }
 
     // 애니메이션 이벤트

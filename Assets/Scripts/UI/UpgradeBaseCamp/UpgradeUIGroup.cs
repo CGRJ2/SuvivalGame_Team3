@@ -8,6 +8,8 @@ public class UpgradeUIGroup : MonoBehaviour
 {
     public GameObject basePanel;
     public GameObject panel_MaxUpgraded;
+    public TMP_Text currentLevel;
+    public TMP_Text targetLevel;
     public Panel_Upgrading panel_Upgrading;
     public UpgradeRequires upgradeRequires;
     public Button Btn_Upgrade;
@@ -81,11 +83,18 @@ public class UpgradeUIGroup : MonoBehaviour
         // 업그레이드 가능 상태일 때 (최대 레벨이 아닐 때) 조건들 업데이트
         if (bcm.baseCampData.CurrentCampLevel.Value < bcm.MaxLevel)
         {
+            int currentLevel = bcm.baseCampData.CurrentCampLevel.Value + 1;
+            int targetLevel = bcm.baseCampData.CurrentCampLevel.Value + 2;
+            this.currentLevel.text = $"Lv. {currentLevel}";
+            this.targetLevel.text = $"Lv. {targetLevel}";
             UpdateUpgradeRequiresPanelState();
         }
         // 이미 최대 레벨이라면
         else
         {
+            this.currentLevel.text = "Lv. MAX";
+            this.targetLevel.text = "Lv. MAX";
+
             // 최고 등급 패널 활성화
             if (!panel_MaxUpgraded.activeSelf)
                 panel_MaxUpgraded.SetActive(true);

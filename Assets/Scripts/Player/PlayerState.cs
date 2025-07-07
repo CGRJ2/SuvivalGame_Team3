@@ -37,7 +37,7 @@ public class Player_Idle : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterIdle");
+        //Debug.Log("EnterIdle");
         pc.View.animator.SetBool("IsMove", false);
     }
 
@@ -62,7 +62,7 @@ public class Player_Move : PlayerState
     public override void Enter()
     {
         base.Enter();
-        //Debug.LogError("EnterMove");
+        //Debug.Log("EnterMove");
 
     }
 
@@ -131,6 +131,8 @@ public class Player_Fall : PlayerState
     public override void Enter()
     {
         base.Enter();
+        //Debug.Log("EnterFalling");
+
         pc.View.animator.SetBool("IsFalling", true);
     }
     
@@ -219,7 +221,7 @@ public class Player_Damaged : PlayerState
     public override void Exit()
     {
         base.Exit();
-        //pc.View.animator.SetBool("IsDamaged", false);
+        pc.View.animator.SetBool("IsDamaged", false);
     }
 
     public override void Update()
