@@ -33,9 +33,10 @@ public class FixedSpawnManager : MonoBehaviour
 
     private Transform FindTargetByType(MonsterTargetType type)
     {
+        PlayerController pc = PlayerManager.Instance.instancePlayer;
         return type switch
         {
-            MonsterTargetType.Player => GameObject.FindWithTag("Player")?.transform,
+            MonsterTargetType.Player => pc.transform,
             MonsterTargetType.Ally => GameObject.FindWithTag("Ally")?.transform,
             _ => null
         };

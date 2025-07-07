@@ -21,7 +21,8 @@ public class CatAI : BaseMonster
     {
         base.Start();
         IsInvincible = true;
-        playerTransform = GameObject.FindWithTag("Player")?.transform;
+        PlayerController pc = PlayerManager.Instance.instancePlayer;
+        playerTransform = pc.transform;
         RefreshBaitList();
     }
     private void OnEnable()
