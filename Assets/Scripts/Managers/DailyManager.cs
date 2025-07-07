@@ -151,6 +151,6 @@ public enum TimeZoneState
 public class CurrentTimeData
 {
     public float CurrentTime;
-    public ObservableProperty<int> CurrentDay;
-    public ObservableProperty<TimeZoneState> TZ_State;
+    public ObservableProperty<int> CurrentDay = new ObservableProperty<int>();
+    public ObservableProperty<TimeZoneState> TZ_State = new ObservableProperty<TimeZoneState>();
 }

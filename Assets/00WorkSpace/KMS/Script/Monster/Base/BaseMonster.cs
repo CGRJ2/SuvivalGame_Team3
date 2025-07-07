@@ -109,17 +109,20 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public virtual void Init()
     {
         stateMachine = new MonsterStateMachine(this);
-        stateFactory = new DefaultMonsterStateFactory(this);
+
+        if (stateFactory == null)
+            stateFactory = new DefaultMonsterStateFactory(this);
+
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
         agent = GetComponent<NavMeshAgent>();
         if (view == null)
+            view = GetComponent<MonsterView>();
 
-            idleState = stateFactory.CreateIdleState();
+        idleState = stateFactory.CreateIdleState();
         suspiciousState = stateFactory.CreateSuspiciousState();
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
-
 
         perceptionController = new MonsterPerceptionController(
             this,
@@ -131,9 +134,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         );
 
         perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
-
-
         perceptionController.ForceSetState(MonsterPerceptionState.Idle);
+
+        // 임시
+        if (OriginTransform != null) OriginTransform = GameManager.Instance.transform;
     }
     protected virtual void Start()
     {
@@ -403,6 +407,9 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     protected void OnDrawGizmos()
     {
+        Vector3 originPosition = Vector3.zero;
+        if (OriginTransform != null) originPosition = OriginTransform.position;
+
         if (data == null) return;
 
         // 감지 반경
@@ -412,7 +419,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         // 행동 반경 (originPosition 중심)
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(OriginTransform.position, data.ActionRadius);
+        Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
 
         // 시야 
         Vector3 forward = transform.forward;
@@ -431,6 +438,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         else
             Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 붉은색 투명
 
+        if (view == null) return;
         Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }

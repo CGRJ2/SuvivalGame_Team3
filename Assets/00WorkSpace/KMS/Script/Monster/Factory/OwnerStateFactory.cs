@@ -12,7 +12,7 @@ public class OwnerStateFactory : DefaultMonsterStateFactory
 
     public OwnerStateFactory(BaseMonster owner) : base(owner)
     {
-        ownerIdleState = new OwnerIdleState();
+        ownerIdleState = new OwnerIdleState(owner);
         ownerChaseState = new OwnerChaseState();
         ownerAttackState = new OwnerAttackState();
     }

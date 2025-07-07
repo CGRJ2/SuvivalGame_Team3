@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class OwnerChaseState : IMonsterState
 {
@@ -12,6 +13,7 @@ public class OwnerChaseState : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
+
         owner = monster as OwnerAI;
         target = null;
         lostTimer = 0f;
@@ -38,7 +40,7 @@ public class OwnerChaseState : IMonsterState
             if (lostTimer >= chaseLoseDelay)
             {
                 Debug.Log($"[{owner.name}] 추적 실패 => Idle 상태 전이");
-                owner.StateMachine.ChangeState(new OwnerIdleState());
+                owner.StateMachine.ChangeState(new OwnerIdleState(owner));
             }
             return;
         }
@@ -50,7 +52,7 @@ public class OwnerChaseState : IMonsterState
         Vector3 destination = target.position;
         destination.y = owner.transform.position.y; // y 보정
 
-        owner.Agent.speed = owner.OwnerData.moveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
+        owner.Agent.speed = owner.OwnerData.MoveSpeed * (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait ? 0.9f : 1.0f);
         owner.Agent.SetDestination(destination);
 
         if (targetType == OwnerAI.OwnerDetectionTarget.OwnerBait)

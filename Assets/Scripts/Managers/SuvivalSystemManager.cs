@@ -212,6 +212,7 @@ public class WillPowerSystem
     [field: Header("이벤트 별 감소량")]
     [field: SerializeField] public float DecreaseAmount_CatEvent { get; private set; }
 
+
     // DecreaseAmount_CustomMonster; 기획에서 추가될 시 추가
 }
 

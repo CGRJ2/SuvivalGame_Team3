@@ -17,26 +17,20 @@ MonoBehaviour:
   monsterSubType: 0
   typeStatData: {fileID: 0}
   maxHP: 0
-  moveSpeed: 0
+  moveSpeed: 7
   attackPower: 0
-  attackRange: 0
+  attackRange: 1
   attackCooldown: 0
   collisionDamage: 0
   knockbackDistance: 2
   attackAnimSpeed: 1
-  detectionRange: 0
+  detectionRange: 50
   baseFOV: 40
-  eyeHeight: 1.5
+  eyeHeight: 1
   targetType: 0
   actionRadius: 20
-  phase2AttackPower: 0
-  phase3AttackPower: 0
-  phase2KnockbackDistance: 0
-  phase3KnockbackDistance: 0
-  phase2AttackCooldown: 0
-  phase3AttackCooldown: 0
-  phase2AnimSpeed: 1
-  phase3AnimSpeed: 1
+  WaitTimeMin: 1
+  WaitTimeMax: 4
   dropItemPrefab: {fileID: 0}
   monsterPrefab: {fileID: 0}
   spawnPosition: {x: 0, y: 0, z: 0}
@@ -44,3 +38,4 @@ MonoBehaviour:
   dropTable: []
   moveSpeed: 4
   detectionRange: 6
+  preferredBaitItems: []
