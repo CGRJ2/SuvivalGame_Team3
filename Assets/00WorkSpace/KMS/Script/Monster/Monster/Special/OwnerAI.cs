@@ -20,6 +20,7 @@ public class OwnerAI : BaseMonster
     protected override void Start()
     {
         base.Start();
+        StateMachine.ChangeState(StateFactory.CreateIdleState());
         IsInvincible = true;
         PlayerController pc = PlayerManager.Instance.instancePlayer;
         playerTransform = pc.transform;
@@ -153,7 +154,7 @@ public class OwnerAI : BaseMonster
         DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }

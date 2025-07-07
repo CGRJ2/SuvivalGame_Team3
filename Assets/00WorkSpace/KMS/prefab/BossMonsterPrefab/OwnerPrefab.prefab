@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7815440799526895984}
   - component: {fileID: 743759336666886207}
   - component: {fileID: 5254951654811459612}
-  - component: {fileID: 3477037402319096871}
   - component: {fileID: 4683900013478212994}
+  - component: {fileID: 2575049038127870128}
   m_Layer: 6
   m_Name: OwnerPrefab
   m_TagString: Untagged
@@ -109,43 +109,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3477037402319096871
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9099402826984363133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: 19c74e87ecb20fc4cb6effc5841d713e, type: 2}
-  destroyDelayTime: 3
-  <OriginTransform>k__BackingField: {fileID: 0}
-  currentHP: 0
-  view: {fileID: 4683900013478212994}
-  OnDeadEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  alertDecayRate: 5
-  cooldownTimer: 0
-  alertCooldownThreshold: 2
-  alertThreshold_Low: 20
-  alertThreshold_Medium: 50
-  alertThreshold_High: 80
-  actionRadius: 20
-  rotationSpeed: 7
-  attackableLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  rayRadius_Attack: 1
-  offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 0}
-  stunTime: 0.5
-  dropTable: {fileID: 0}
 --- !u!114 &4683900013478212994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,13 +121,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbf728b8cf202c4f8920320c4fec9c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatar: {fileID: 0}
-  animator: {fileID: 0}
+  avatar: {fileID: 8220490611391962538}
+  animator: {fileID: 2663070474661939152}
   hitEffect: {fileID: 0}
   audioSource: {fileID: 0}
   attackSound: {fileID: 0}
   hitSound: {fileID: 0}
   deathSound: {fileID: 0}
+--- !u!114 &2575049038127870128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099402826984363133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95bee719a8615449bee923145065f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoInitialize: 1
+  data: {fileID: 11400000, guid: 19c74e87ecb20fc4cb6effc5841d713e, type: 2}
+  destroyDelayTime: 3
+  <OriginTransform>k__BackingField: {fileID: 0}
+  currentHP: 0
+  view: {fileID: 0}
+  OnDeadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  alertDecayRate: 5
+  cooldownTimer: 0
+  alertCooldownThreshold: 2
+  alertThreshold_Low: 20
+  alertThreshold_Medium: 50
+  alertThreshold_High: 80
+  actionRadius: 10
+  rotationSpeed: 7
+  attackableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  rayRadius_Attack: 0
+  offset_Attack: {x: 0, y: 0, z: 0}
+  rb: {fileID: 7815440799526895984}
+  stunTime: 0.5
+  dropTable: {fileID: 0}
+  respawnPoint: {fileID: 0}
 --- !u!1001 &4237255371491432703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -226,6 +227,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3370fbf023dd7d84883185ae4986345e, type: 3}
+--- !u!95 &2663070474661939152 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2177738032454737711, guid: 3370fbf023dd7d84883185ae4986345e, type: 3}
+  m_PrefabInstance: {fileID: 4237255371491432703}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8220490611391962538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5249171758982841685, guid: 3370fbf023dd7d84883185ae4986345e, type: 3}

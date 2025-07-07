@@ -104,22 +104,24 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
 
     protected IMonsterStateFactory stateFactory;
     protected virtual void Awake() => Init();
-    
+
     public virtual void Init()
     {
-
         stateMachine = new MonsterStateMachine(this);
-        stateFactory = new DefaultMonsterStateFactory(this);
+
+        if (stateFactory == null)
+            stateFactory = new DefaultMonsterStateFactory(this);
+
         sensor = new DefaultMonsterSensor();
         view = GetComponent<MonsterView>();
         agent = GetComponent<NavMeshAgent>();
         if (view == null)
+            view = GetComponent<MonsterView>();
 
-            idleState = stateFactory.CreateIdleState();
+        idleState = stateFactory.CreateIdleState();
         suspiciousState = stateFactory.CreateSuspiciousState();
         searchState = stateFactory.CreateSearchState();
         alertState = stateFactory.CreateAlertState();
-
 
         perceptionController = new MonsterPerceptionController(
             this,
@@ -131,8 +133,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, IKnockbackable, I
         );
 
         perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
-
-
         perceptionController.ForceSetState(MonsterPerceptionState.Idle);
     }
     protected virtual void Start()

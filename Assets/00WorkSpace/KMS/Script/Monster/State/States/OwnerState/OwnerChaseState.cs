@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class OwnerChaseState : IMonsterState
 {
@@ -12,6 +13,7 @@ public class OwnerChaseState : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
+
         owner = monster as OwnerAI;
         target = null;
         lostTimer = 0f;
@@ -38,7 +40,7 @@ public class OwnerChaseState : IMonsterState
             if (lostTimer >= chaseLoseDelay)
             {
                 Debug.Log($"[{owner.name}] 추적 실패 => Idle 상태 전이");
-                owner.StateMachine.ChangeState(new OwnerIdleState());
+                owner.StateMachine.ChangeState(new OwnerIdleState(owner));
             }
             return;
         }
