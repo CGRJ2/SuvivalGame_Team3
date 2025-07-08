@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 6355778608863570651}
   - component: {fileID: 1743415668623249866}
   - component: {fileID: 3637283098231639314}
+  - component: {fileID: 9002046089452491770}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -842,6 +843,19 @@ MonoBehaviour:
   MeshR:
   - {fileID: 5994684088709551745}
   Speed: 4
+--- !u!114 &9002046089452491770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8035057967390549312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67698a4e14241c4cb7ccc64b23a2815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 8227327902474419322}
 --- !u!1 &8612402096748662634
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,10 +977,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: e433e21edd3aadf489b02c5b0ef593a8, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: e433e21edd3aadf489b02c5b0ef593a8, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 4204505831381567291}
   OnDeadEvent:
@@ -985,8 +998,6 @@ MonoBehaviour:
     m_Bits: 8
   rayRadius_Attack: 1
   offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 0}
-  stunTime: 0.5
   dropTable: {fileID: 0}
 --- !u!114 &4204505831381567291
 MonoBehaviour:
