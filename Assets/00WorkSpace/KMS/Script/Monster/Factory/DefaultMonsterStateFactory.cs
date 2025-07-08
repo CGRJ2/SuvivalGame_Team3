@@ -9,8 +9,11 @@ public class DefaultMonsterStateFactory : IMonsterStateFactory
     private readonly IMonsterState searchState;
     private readonly IMonsterState alertState;
     private readonly IMonsterState attackState;
+    
     private IMonsterState staggerState;
 
+
+    // 
     public DefaultMonsterStateFactory(BaseMonster owner)
     {
         idleState = new MonsterIdleState(owner);
