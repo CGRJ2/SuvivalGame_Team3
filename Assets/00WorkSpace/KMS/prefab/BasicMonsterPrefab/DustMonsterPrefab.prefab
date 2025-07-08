@@ -131,6 +131,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8884237235530263013}
   - {fileID: 1875270885460326810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -218,10 +219,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: e433e21edd3aadf489b02c5b0ef593a8, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: e433e21edd3aadf489b02c5b0ef593a8, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 6780985469485489640}
   OnDeadEvent:
@@ -240,8 +240,6 @@ MonoBehaviour:
     m_Bits: 8
   rayRadius_Attack: 1
   offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 0}
-  stunTime: 0.5
   dropTable: {fileID: 0}
 --- !u!114 &6780985469485489640
 MonoBehaviour:
@@ -398,7 +396,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6222950138121458267}
-  - {fileID: 8884237235530263013}
   m_Father: {fileID: 1875270885460326810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2705513381944454131
@@ -457,12 +454,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3209361397790231361}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1648845570063978967}
+  m_Father: {fileID: 5687531861638355640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &1150667238985156157
 SkinnedMeshRenderer:

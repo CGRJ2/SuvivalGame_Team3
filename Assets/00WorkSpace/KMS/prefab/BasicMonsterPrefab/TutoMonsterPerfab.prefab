@@ -289,10 +289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: 120b4721538185a489af5105e9338ba2, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: 120b4721538185a489af5105e9338ba2, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 6001796318964884575}
   OnDeadEvent:
@@ -311,8 +310,6 @@ MonoBehaviour:
     m_Bits: 0
   rayRadius_Attack: 0
   offset_Attack: {x: 0, y: 0, z: 0}
-  rb: {fileID: 5052811518482397114}
-  stunTime: 0.5
   dropTable: {fileID: 0}
 --- !u!114 &6001796318964884575
 MonoBehaviour:
