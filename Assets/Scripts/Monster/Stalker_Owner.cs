@@ -2,24 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stalker_Owner : BaseMonster
+public class Stalker_Owner : BasicMonsterAI
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-    protected override void Start()
-    {
-        base.Start();
-        InitTargetByType();
-    }
-    protected override void HandleState()
-    {
-        if (IsDead) return;
+    public IMonsterState sleepState;
+    public IMonsterState returnToBed;
 
-        if (checkTargetVisible)
-        {
-            SetPerceptionState(MonsterPerceptionState.Alert);
-        }
+    [Header("잠자러 가는 위치")]
+    public Transform bedTransform;
+
+
+    public override void Init()
+    {
+        base.Init();
+        sleepState = new OwnerState_Sleep(this);
+        returnToBed = new OwnerState_ReturnToBed(this);
     }
 }

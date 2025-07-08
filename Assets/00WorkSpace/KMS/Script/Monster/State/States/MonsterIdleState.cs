@@ -22,7 +22,7 @@ public class MonsterIdleState : IMonsterState
     {
         this.monster = monster;
         this.data = monster.data;
-        wanderState = WanderState.Idle;
+        wanderState = WanderState.Waiting;
         waitTimer = 0f;
         timer = 0f;
         monster.ResetAlert();
@@ -43,20 +43,38 @@ public class MonsterIdleState : IMonsterState
 
         monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
+        
+        Debug.Log("Idle 상태 진입");
     }
 
     public virtual void Execute()
     {
         if (monster == null || monster.IsDead) return;
+        
+        // 주인 전용 (밤시간이면 자러감)
+        if (monster is Stalker_Owner stalker)
+        {
+            if (DailyManager.Instance.currentTimeData.TZ_State.Value == TimeZoneState.Night)
+                monster.StateMachine.ChangeState(stalker.returnToBed);
+        }
+
 
         switch (wanderState)
         {
             case WanderState.Idle:
+                Debug.Log("Idle-다음 이동위치 정하는 중");
+
                 SetRandomDestination();
+                
                 wanderState = WanderState.Moving;
                 break;
 
             case WanderState.Moving:
+                if (monster.Agent.isOnNavMesh)
+                    monster.Agent.isStopped = false;
+                Debug.Log("Idle-랜덤이동 상태");
+                monster.view.Animator.SetBool("IsMove", true);
+                Debug.Log($"남은 거리 {monster.Agent.remainingDistance}, 기준 거리 {monster.Agent.stoppingDistance}");
                 if (monster.Agent.remainingDistance <= monster.Agent.stoppingDistance && !monster.Agent.pathPending)
                 {
                     wanderState = WanderState.Waiting;
@@ -65,10 +83,19 @@ public class MonsterIdleState : IMonsterState
                 break;
 
             case WanderState.Waiting:
+
+                Debug.Log("Idle-정지 상태");
                 waitTimer -= Time.deltaTime;
                 if (waitTimer <= 0f)
+                {
                     wanderState = WanderState.Idle;
-                break;
+                }
+                else
+                {
+                    monster.view.Animator.SetBool("IsMove", false);
+                    monster.Agent.isStopped = true;
+                }
+                    break;
         }
 
         // 시선 흔들림
@@ -97,6 +124,8 @@ public class MonsterIdleState : IMonsterState
 
     public virtual void Exit()
     {
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
         // 특별히 할 일 없음 (필요 시 추가)
     }
 }

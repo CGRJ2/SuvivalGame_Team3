@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40e58a4fe4301a4fafe010513acc62f, type: 3}
+  m_Name: OnwerDataSO
+  m_EditorClassIdentifier: 
+  isInvinvibleMonster: 1
+  monsterName: "\uC8FC\uC778"
+  monsterType: 0
+  monsterSubType: 0
+  typeStatData: {fileID: 11400000, guid: 236abea4dc3bea446a8624fcefae8331, type: 2}
+  maxHP: 99999
+  moveSpeed: 7
+  attackPower: 20
+  collisionDamage: 10
+  attackRange: 5
+  attackCooldown: 1
+  destroyDelayTime: 1
+  <HitStunDuration>k__BackingField: 0.2
+  <KnockBackedPower>k__BackingField: 5
+  attackAnimSpeed: 1
+  detectionRange: 30
+  baseFOV: 120
+  eyeHeight: 0.5
+  targetType: 0
+  actionRadius: 20
+  WaitTimeMin: 2
+  WaitTimeMax: 4
+  dropItemPrefab: {fileID: 0}
+  monsterPrefab: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  useFixedPosition: 0
+  dropTable: []
+  preferredBaitItems: []

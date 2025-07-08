@@ -42,7 +42,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     protected Transform target;
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
-    protected MonsterView view;
+    [HideInInspector] public MonsterView view;
     public UnityEvent OnDeadEvent;
 
     private IMonsterState idleState;
@@ -89,8 +89,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     protected bool isDead;
     public bool IsDead => isDead;
 
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private float stunTime = 0.5f;
+    private Rigidbody rb;
+    
     public Rigidbody RB => rb;
 
     [SerializeField] private DropTable dropTable;
@@ -108,6 +108,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     public virtual void Init()
     {
+        rb = GetComponent<Rigidbody>();
+
         stateMachine = new MonsterStateMachine(this);
 
         if (stateFactory == null)
@@ -266,7 +268,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         currentHP = data.MaxHP;
         attackPower = data.AttackPower;
-        //agent.speed = data.MoveSpeed;
+        agent.speed = data.MoveSpeed;
 
         attackCooldown = data.AttackCooldown;
         detectionRange = data.DetectionRange;
