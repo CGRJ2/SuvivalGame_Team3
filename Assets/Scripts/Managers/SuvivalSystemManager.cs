@@ -5,7 +5,7 @@ using UnityEngine;
 public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 {
     ///////////////////////////////////////////
-
+    
     [Header("생존 수치 소모 주기 설정")]
     [SerializeField] private float TickDuration;
 
@@ -143,27 +143,36 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 [System.Serializable]
 public class BodyPartSystem
 {
-    [field: Header("기본 최대 체력 초기값 설정")]
+    [field: Header("기본 최대 내구도 초기값 설정")]
     [field: SerializeField] public float HeadMaxHP_Init { get; private set; }
     [field: SerializeField] public float ArmMaxHP_Init { get; private set; }
     [field: SerializeField] public float LegMaxHP_Init { get; private set; }
 
+    [field: Header("최대 내구도 최소값 제한(사망을 반복해도 보장받는 최소값)")]
+    [field: SerializeField] public float MinHeadMaxHPLimit { get; private set; }
+    [field: SerializeField] public float MinArmMaxHPLimit { get; private set; }
+    [field: SerializeField] public float MinLegMaxHPLimit { get; private set; }
 
-    [field: Header("파괴 상태에서 1차 회복 사용 시 최대체력 제한 값 설정")]
-    [field: SerializeField] public float HeadMaxHP_AfterDestroyed { get; private set; }
-    [field: SerializeField] public float ArmMaxHP_AfterDestroyed { get; private set; }
-    [field: SerializeField] public float LegMaxHP_AfterDestroyed { get; private set; }
+
+    [field: Header("부위 파괴 시 감소되는 최대 내구도 량")]
+    [field: SerializeField] public float HeadMaxHPReduce_AD { get; private set; }
+    [field: SerializeField] public float ArmMaxHPReduce_AD { get; private set; }
+    [field: SerializeField] public float LegMaxHPReduce_AD { get; private set; }
+
+    
 }
 
 [System.Serializable]
 public class BatterySystem
 {
     [field: Header("배터리 최대량 초기값 설정")]
-    [field: SerializeField] public float MaxBattery_Init { get; private set; }
+    [field: SerializeField] public float InitMaxBattery { get; private set; }
 
+    [field: Header("배터리 최대량 최소값 제한(기절을 반복해도 보장받는 최솟값)")]
+    [field: SerializeField] public float MinBatteryLimit { get; private set; }
 
-    [field: Header("기절 후 감소한 배터리 최대량")]
-    [field: SerializeField] public float MaxBattery_AfterFaint { get; private set; }
+    [field: Header("기절 후 배터리 감소량")]
+    [field: SerializeField] public float MaxBatteryReduceAfterFaint { get; private set; }
 
     [field: Header("상태 별 틱당 감소량")]
     [field: SerializeField] public float DrainPerTick_Idle { get; private set; }

@@ -4,10 +4,8 @@ using UnityEngine.AI;
 
 public class OwnerAI : BaseMonster
 {
-
     public enum OwnerDetectionTarget { None, OwnerBait, Player }
     public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
-    public bool IsInvincible { get; private set; } = true;
 
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
@@ -20,12 +18,11 @@ public class OwnerAI : BaseMonster
     protected override void Start()
     {
         base.Start();
-        StateMachine.ChangeState(StateFactory.CreateIdleState());
-        IsInvincible = true;
         PlayerController pc = PlayerManager.Instance.instancePlayer;
         playerTransform = pc.transform;
         RefreshBaitList();
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -149,15 +146,7 @@ public class OwnerAI : BaseMonster
         // 혹은 네비메시 경로 이동, 상태 변경 등
     }
 
-    private void OnEnable()
-    {
-        DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
-    }
 
-    protected override void OnDisable()
-    {
-        DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
-    }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {
         Debug.Log("주인 시간대 변경됨: " + newState);
@@ -180,7 +169,7 @@ public class OwnerAI : BaseMonster
     {
         switch (cutsceneType)
         {
-            case 0: animator.SetTrigger("OwnerCutsceneA"); break; // 컷씬
+            case 0: view.Animator.SetTrigger("OwnerCutsceneA"); break; // 컷씬
         }
     }
 }

@@ -48,6 +48,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 1672774279173701564}
   front: {x: 0, y: 0, z: -1}
   right: {x: -1, y: 0, z: 0}
+  moveDirLock: 0
 --- !u!1 &1955808743617067576
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +66,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7080991826555392749
 Transform:
   m_ObjectHideFlags: 0
@@ -74,14 +75,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955808743617067576}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000002177426, y: 0.99875855, z: -0.049813695, w: 0.00000004365712}
-  m_LocalPosition: {x: 0, y: 1, z: 10}
+  m_LocalRotation: {x: 1.4222878e-11, y: 0.99875855, z: -0.049813703, w: 2.8516733e-10}
+  m_LocalPosition: {x: -115.4, y: 11.37, z: 47.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1567977578122865386}
   m_Father: {fileID: 5321533105659569409}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 5.711, y: 0, z: 0}
 --- !u!114 &1672774279173701564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,7 +99,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 0
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}

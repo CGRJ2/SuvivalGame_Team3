@@ -22,7 +22,8 @@ MonoBehaviour:
   attackRange: 1.5
   attackCooldown: 1
   collisionDamage: 5
-  knockbackDistance: 2
+  <HitStunDuration>k__BackingField: 0.2
+  <KnockBackedPower>k__BackingField: 5
   attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 180

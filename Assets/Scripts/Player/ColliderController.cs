@@ -42,7 +42,7 @@ public class ColliderController : MonoBehaviour
     [Header("Weapon Range Set : Swing")]
     [SerializeField] float rayRadius_Weapon_Swing;
     [SerializeField] Vector3 offset_Weapon_Swing;
-    
+
     [Header("Weapon Range Set : Thrust")]
     [SerializeField] float rayRadius_Weapon_Thrust;
     [SerializeField] Vector3 offset_Weapon_Thrust;
@@ -57,13 +57,14 @@ public class ColliderController : MonoBehaviour
     private void FixedUpdate()
     {
         GroundCheck();
+
         HeadCheck();
 
         switch (attackType)
         {
             case WeaponAttackType.Swing: WeaponRangeCheck_Swing(); break;
             case WeaponAttackType.Thrust: WeaponRangeCheck_Thrust(); break;
-            case WeaponAttackType.Default: 
+            case WeaponAttackType.Default:
             default: AttackRangeCheck(); break;
         }
     }
@@ -107,7 +108,7 @@ public class ColliderController : MonoBehaviour
         Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Attack, attackableLayerMask);
         cols = cols.Where(c => !c.isTrigger).ToArray();
         List<IDamagable> damagables = new List<IDamagable>();
-        
+
         foreach (Collider col in cols)
         {
             damagables.Add(col.GetComponent<IDamagable>());
@@ -232,7 +233,7 @@ public class ColliderController : MonoBehaviour
 
         /// 공격 범위
         // Gizmos 색상 지정
-        
+
         // 일반 공격
         Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
         Vector3 origin_Attack = avatar.transform.position + avatar.transform.forward * offset_Attack.z + avatar.transform.up * offset_Attack.y + avatar.transform.right * offset_Attack.x;

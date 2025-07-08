@@ -22,13 +22,16 @@ MonoBehaviour:
   attackRange: 3
   attackCooldown: 1
   collisionDamage: 3
-  knockbackDistance: 2
+  <HitStunDuration>k__BackingField: 0.2
+  <KnockBackedPower>k__BackingField: 5
   attackAnimSpeed: 1
   detectionRange: 20
   baseFOV: 180
   eyeHeight: 0.5
   targetType: 0
   actionRadius: 20
+  WaitTimeMin: 1
+  WaitTimeMax: 4
   dropItemPrefab: {fileID: 0}
   monsterPrefab: {fileID: 294827814583787912, guid: e79437336068bc54f815de74d7f6e295, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
