@@ -18,15 +18,15 @@ MonoBehaviour:
   monsterSubType: 3
   typeStatData: {fileID: 11400000, guid: 8b0761508dfa1cc428a3298fa92d1f1f, type: 2}
   maxHP: 430
-  moveSpeed: 2
+  moveSpeed: 4
   attackPower: 150
   collisionDamage: 60
   attackRange: 2.5
-  attackCooldown: 1
+  attackCooldown: 0.5
   destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
   <KnockBackedPower>k__BackingField: 2
-  attackAnimSpeed: 1
+  attackAnimSpeed: 2
   detectionRange: 30
   baseFOV: 360
   eyeHeight: 0.5
