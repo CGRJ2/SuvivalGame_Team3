@@ -94,7 +94,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     
     public Rigidbody RB => rb;
 
-    [SerializeField] private DropTable dropTable;
+    [SerializeField] private List<DropTable> dropTableList;
 
 
     public IMonsterState GetIdleState() => idleState;
@@ -285,8 +285,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     private void DropItems()
     {
-        DropInfo dropInfo = dropTable.GetDropItemInfo();
-        dropInfo.dropItem.SpawnItem(transform, dropInfo.dropCount);
+        foreach (DropTable dropTable in dropTableList)
+        {
+            DropInfo dropInfo = dropTable.GetDropItemInfo();
+            dropInfo.dropItem.SpawnItem(transform, dropInfo.dropCount);
+        }
     }
 
     public bool SetPerceptionState(MonsterPerceptionState newState)
