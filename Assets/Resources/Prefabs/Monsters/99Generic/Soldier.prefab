@@ -310,9 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: 379a5e57edca84940a47e6c4137ad74d, type: 2}
-  destroyDelayTime: 1
+  <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: 3370b8cb4427b07409a2fd0682e2969d, type: 2}
+  isAttackReady: 0
   currentHP: 0
   OnDeadEvent:
     m_PersistentCalls:
