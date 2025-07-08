@@ -16,7 +16,7 @@ public class MonsterAttackState : IMonsterState
 
         monster.SetPerceptionState(MonsterPerceptionState.Combat); // 전투 상태 설정
 
-        //Debug.Log($"[{monster.name}] 상태: Attack 진입");
+        Debug.Log($"[{monster.name}] 상태: Attack 진입");
     }
 
     public void Execute()

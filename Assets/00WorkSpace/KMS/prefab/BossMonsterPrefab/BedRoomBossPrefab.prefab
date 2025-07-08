@@ -121,10 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: 42e2620a8c3afb6488cffeb192facb00, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: 42e2620a8c3afb6488cffeb192facb00, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 4501796388398637268}
   OnDeadEvent:

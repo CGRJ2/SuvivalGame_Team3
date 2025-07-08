@@ -25,18 +25,18 @@ public class MonsterView : MonoBehaviour
     // ===== 애니메이션 =====
     public void PlayMonsterIdleAnimation()
     {
-        /*if (animator != null)
-            animator.SetTrigger("Idle");*/
+        if (animator != null)
+            animator.SetTrigger("Idle");
     }
     public void PlayMonsterRunAnimation()
     {
-        /*if (animator != null)
-            animator.SetTrigger("Run");*/
+        if (animator != null)
+            animator.SetTrigger("Run");
     }
     public void PlayMonsterAttackAnimation()
     {
-        /*if (animator != null)
-            animator.SetTrigger("Attack");*/
+        if (animator != null)
+            animator.SetTrigger("Attack");
     }
     public void PlayMonsterPhase2PreludeAnimation()
     {
