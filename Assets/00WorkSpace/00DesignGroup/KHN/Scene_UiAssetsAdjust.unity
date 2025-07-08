@@ -721,6 +721,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 866847609}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &8006187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2523,6 +2524,7 @@ MonoBehaviour:
   count: 4
   rigidDeactiveTime: 0
   destroyTime: 0
+  isUsed: 0
 --- !u!135 &71992091
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3867,6 +3869,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1371614274}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &162947615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4101,6 +4104,7 @@ MonoBehaviour:
   count: 1
   rigidDeactiveTime: 0
   destroyTime: 0
+  isUsed: 0
 --- !u!135 &167256606
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8895,7 +8899,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9225,7 +9229,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10749,6 +10753,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1372453960}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &441144699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13712,6 +13717,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 621897517}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &536785954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14095,8 +14101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633d2f192836a7d4f8d9261a3e3e1fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popFadeTime: 0
+  message_Saved: {fileID: 0}
   CollectMessageUI: {fileID: 399623216}
   interactableUI: {fileID: 1731929570}
+  RoomInfoUI: {fileID: 0}
+  dayOffSavePanel: {fileID: 0}
+  deadPanel: {fileID: 0}
+  faintPanel: {fileID: 0}
 --- !u!1 &554524251
 GameObject:
   m_ObjectHideFlags: 0
@@ -15026,7 +15038,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15882,6 +15894,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 25695067}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &611834248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17765,6 +17778,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 2071735399}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &690885942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18578,7 +18592,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20432,7 +20446,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 32198ffb98dc0014e81c711bc094d5ab, type: 2}
   m_sharedMaterial: {fileID: -2927097960947695575, guid: 32198ffb98dc0014e81c711bc094d5ab, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: -2927097960947695575, guid: 32198ffb98dc0014e81c711bc094d5ab, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
@@ -21180,7 +21195,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21400,6 +21415,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1704629236}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &817628098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24131,6 +24147,13 @@ MonoBehaviour:
   CurrentStageLevel: 0
   respawnTime_FO: 5
   respawnTime_Monster: 5
+  spawnerListGroup_TutorialRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
   spawnerListGroup_LivingRoom:
     maxCount_FO: 4
     spawnerList_FO: []
@@ -24159,6 +24182,14 @@ MonoBehaviour:
     maxCount_Monster: 2
     spawnerList_Monster: []
     activateInstances_Monster: []
+  spawnerListGroup_CatRoom:
+    maxCount_FO: 10
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 10
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  nowRegion: 0
 --- !u!4 &941816244
 Transform:
   m_ObjectHideFlags: 0
@@ -26058,6 +26089,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1845939945}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1035141976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27225,6 +27257,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1705251979}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1052338026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27398,6 +27431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockWall: {fileID: 603523069}
+  afterUnlock: {fileID: 0}
   chainedStageData: {fileID: 11400000, guid: 5e7ba0c6492a2aa4cb445eed57472217, type: 2}
 --- !u!54 &1054759972
 Rigidbody:
@@ -28206,6 +28240,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1655284090}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!1 &1082387465
 GameObject:
   m_ObjectHideFlags: 0
@@ -28602,6 +28637,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basePanel: {fileID: 720989226}
   panel_MaxUpgraded: {fileID: 1603189310}
+  currentLevel: {fileID: 0}
+  targetLevel: {fileID: 0}
   panel_Upgrading: {fileID: 1447689}
   upgradeRequires: {fileID: 1310549569}
   Btn_Upgrade: {fileID: 1733065916}
@@ -28961,7 +28998,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31020,6 +31057,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 1327782807}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1216636256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32101,6 +32139,7 @@ MonoBehaviour:
   count: 1
   rigidDeactiveTime: 0
   destroyTime: 0
+  isUsed: 0
 --- !u!135 &1295320125
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -32200,6 +32239,7 @@ MonoBehaviour:
   count: 1
   rigidDeactiveTime: 0
   destroyTime: 0
+  isUsed: 0
 --- !u!135 &1298080432
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -33575,6 +33615,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 551812921}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1361287606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33767,7 +33808,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35900,6 +35941,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 829989110}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1424525921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36092,7 +36134,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -40545,7 +40587,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41021,6 +41063,7 @@ MonoBehaviour:
   count: 12
   rigidDeactiveTime: 0
   destroyTime: 0
+  isUsed: 0
 --- !u!135 &1654074354
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -43372,6 +43415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipeListParent: {fileID: 1814066394}
+  indexText: {fileID: 0}
   nowPageIndex: 0
   maxPageIndex: 3
 --- !u!1 &1781963535
@@ -48554,6 +48598,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 249992303}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &1968958642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48908,7 +48953,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -52939,6 +52984,7 @@ MonoBehaviour:
   recipeItem: {fileID: 0}
   image: {fileID: 609920445}
   sprite_BlockedSlot: {fileID: 21300000, guid: a2ebf71e7664a7b4d8b0603e8b85aaa7, type: 3}
+  text: {fileID: 0}
 --- !u!114 &2145423706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58003,6 +58049,9 @@ MonoBehaviour:
     tempCampRotation: {x: 0, y: 0, z: 0, w: 0}
   allRecipeList: []
   UpgradeConditions: []
+  baseCampUpgradeEffect:
+    healItemUseTimeReduce: 0
+    upgradeTimeReduce: 0
 --- !u!224 &2383654588709031351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58333,10 +58382,10 @@ MonoBehaviour:
   rotateSpeed_Init: 10
   crouchSpeed_Init: 3
   <DamagedInvincibleTime>k__BackingField: 2
-  <AttackCoolTime>k__BackingField: 1
   moveSpeed_Init: 5
   sprintSpeed_Init: 8
   jumpForce_Init: 8
+  knockBackForce_Init: 0
   damage_Init: 1
   mouseSensitivity_Init: 0.3
 --- !u!224 &2662992802009669213
@@ -60986,12 +61035,16 @@ MonoBehaviour:
     <HeadMaxHP_Init>k__BackingField: 100
     <ArmMaxHP_Init>k__BackingField: 10
     <LegMaxHP_Init>k__BackingField: 10
-    <HeadMaxHP_AfterDestroyed>k__BackingField: 20
-    <ArmMaxHP_AfterDestroyed>k__BackingField: 5
-    <LegMaxHP_AfterDestroyed>k__BackingField: 5
+    <MinHeadMaxHPLimit>k__BackingField: 0
+    <MinArmMaxHPLimit>k__BackingField: 0
+    <MinLegMaxHPLimit>k__BackingField: 0
+    <HeadMaxHPReduce_AD>k__BackingField: 0
+    <ArmMaxHPReduce_AD>k__BackingField: 0
+    <LegMaxHPReduce_AD>k__BackingField: 0
   <batterySystem>k__BackingField:
-    <MaxBattery_Init>k__BackingField: 100
-    <MaxBattery_AfterFaint>k__BackingField: 50
+    <InitMaxBattery>k__BackingField: 0
+    <MinBatteryLimit>k__BackingField: 0
+    <MaxBatteryReduceAfterFaint>k__BackingField: 0
     <DrainPerTick_Idle>k__BackingField: 1
     <DrainPerTick_Sprint>k__BackingField: 2
     <RecoverAmount_MonsterSlay>k__BackingField: 10
@@ -64772,6 +64825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockWall: {fileID: 1488942610}
+  afterUnlock: {fileID: 0}
   chainedStageData: {fileID: 11400000, guid: 4362959aa446a41408bb7e66bc9f2c0e, type: 2}
 --- !u!54 &6697591566540578833
 Rigidbody:
@@ -65679,6 +65733,7 @@ MonoBehaviour:
   dataManager: {fileID: 738882747358670633}
   baseCampManager: {fileID: 2372965649248585269}
   stageManager: {fileID: 941816243}
+  cameraManager: {fileID: 0}
 --- !u!114 &7261091104513575880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66937,6 +66992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef87563324af549aca99ae8362a851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TPS_Cameras: []
 --- !u!222 &8000005123385942641
 CanvasRenderer:
   m_ObjectHideFlags: 0

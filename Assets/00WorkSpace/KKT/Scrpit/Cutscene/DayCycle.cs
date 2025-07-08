@@ -27,11 +27,11 @@ public class DayCycle : MonoBehaviour
         float normalizedTime = (time % dayDuration) / dayDuration;
 
         // 태양 각도 변화 (0~360도)
-        float sunAngle = normalizedTime * 360f; // -90 시작점이 동쪽
+        float sunAngle = normalizedTime * 360f + 15f; // -90 시작점이 동쪽
         directionalLight.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
 
         // 색상과 밝기 변화
-        directionalLight.color = lightColor.Evaluate(normalizedTime);
-        directionalLight.intensity = lightIntensity.Evaluate(normalizedTime);
+        //directionalLight.color = lightColor.Evaluate(normalizedTime);
+        //directionalLight.intensity = lightIntensity.Evaluate(normalizedTime);
     }
 }
