@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,26 +14,27 @@ public class MainMenuManager : MonoBehaviour
 
     public GameObject player;
     public GameObject npc;
-
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             if (SceneManager.GetActiveScene().name == "KKT_MainSceneTest" && !EventSystem.current.IsPointerOverGameObject())
             {
-                SceneManager.LoadScene("KKT_GameSceneTest");
+                GameState.entryMode = EntryMode.Continue;
+                SceneManager.LoadScene("LoadingScene");
             }
         }
     }
-    public void OnClickContinue()
-    {
-        Debug.Log("이어하기 실행");
-        SceneManager.LoadScene("KKT_PayloadSceneTest");
-    }
     public void OnClickNewStart()
     {
-        Debug.Log("새로하기 실행");
-        SceneManager.LoadScene("EmptyTestScene");
+        GameState.entryMode = EntryMode.NewGame;
+        SceneManager.LoadScene("LoadingScene");
+    }
+    public void OnClickContinue()
+    {
+        GameState.entryMode = EntryMode.Continue;
+        SceneManager.LoadScene("LoadingScene");
     }
     public void OnClickExit()
     {
@@ -44,14 +44,5 @@ public class MainMenuManager : MonoBehaviour
         #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
         #endif
-    }
-    public void OnClickTest()
-    {
-        SceneManager.LoadScene("KKT_MainSceneTest");
-    }
-
-    public void OnClickTest2()
-    {
-        SceneManager.LoadScene("KKT_MainSceneTest");
     }
 }

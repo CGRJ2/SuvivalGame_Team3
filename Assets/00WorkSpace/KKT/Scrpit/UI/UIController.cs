@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -147,6 +148,11 @@ public class UIController : MonoBehaviour
     public void UpdateCurrentLocation(string locName)
     {
         locationNowText.text = locName;
+    }
+
+    public void GoHome()
+    {
+        SceneManager.LoadScene("KKT_MainSceneTest");
     }
 
     // ... 필요시 UI별로 Show/Hide 함수 추가!

@@ -1,0 +1,67 @@
+,,,,,,,
+,,,,*……. 는 특수문자로 입력했습니다. 입출력값이 다르니 참고해주세요!,,,
+,,,,,,,
+,,,location,튜토리얼 (아이 방),,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,0,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Right,"헉, 허억…….",,,Right
+,1,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,하마터면 위험할 뻔했구나. 그래도 이제 괜찮다.,,,Right
+,2,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,"도와주셔서 감사합니다, 할아버지.",,,Left
+,3,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,"얘기를 더 나누고 싶지만 지금은 시간이 많지 않구나. 이 집에서 탈출해야 한다.
+여기 계속 있다간 완전히 망가지고 말 거야.",,,Right
+,4,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,"ㄴ, 네?",,,Left
+,5,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,"걸을 수 있겠니? W, A, S, D. 하던 대로 하면 돼.",,,Right
+,6,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,전 아직 마음의 준비가…….,,,Left
+,7,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,꾸물거릴 시간 없어!,,,Right
+,8,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,으아악!,,,Left
+,,,,,,,
+,,,,,,,
+,,,location,아이방 (상호작용 튜토리얼),,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Left,탈출에는 여러 재료가 필요해. 가까이 다가가보렴.,,,Left
+,,,,,,,
+,,,,,,,
+,,,location,아이방 (전투 튜토리얼),,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Left,"이 집에는 널 괴롭히고 방해하는 장난감들이 가득해. 마우스 클릭으로
+맞서 싸우는 수밖에 없어. 기죽지 마. 넌 곰이야. 맹수라고! 어서 가!",,,Left
+,,,,,,,
+,,,,,,,
+,,,location,놀이방 (베이스 캠프 튜토리얼),,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,저기 베이스캠프가 있으니 가보자꾸나. 정신이 없을 테니 숨도 좀 고르고.,,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,"여기서는 진행상황을 저장하거나, 몸을 수선할 수 있단다.",,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,재료를 열심히 모으면 캠프를 업그레이드하는 것도 가능하지,,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,난 항상 이곳에 있을 테니 힘든 일 있으면 언제든 찾아오려무나.,,,Right
+,,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,"감사합니다, 할아버지.",,,Left
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,location,"놀이방 (베이스 캠프, 제작대 튜토리얼)",,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,저기 베이스캠프가 있으니 가보자꾸나. 정신이 없을 테니 숨도 좀 고르고.,,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,"여기서는 진행상황을 저장하거나, 몸을 수선할 수 있단다. 필요한 물건도 만들 수 있고.",,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,재료를 열심히 모으면 캠프를 업그레이드하는 것도 가능하지,,,Right
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,난 항상 이곳에 있을 테니 힘든 일 있으면 언제든 찾아오려무나.,,,Right
+,,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,"감사합니다, 할아버지.",,,Left
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,location,안방 베이스캠프 (엔딩 안내),,,
+,,,,,,,
+,localizingID,Character,[:C:CharacterSFX:sfxBGM:bgmPosition:Position],Script,sfx,bgm,Position
+,int,str,None,str,int,int,str
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,이제 탈출 준비가 끝났구나. 기억하고 싶지 않겠지만…… 진행상황은 지금 저장해두렴.,,,Right
+,,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,할아버지는 같이 안 가시는 건가요?,,,Left
+,,Toy_Grandfather,[:C:Toy_GrandfatherSFX:BGM:locate:Right,이 비행기는 1인승이야. 그리고 난 여기서 살아남는 법을 꿰고 있으니 괜찮단다.,,,Right
+,,TeddyBear,[:C:TeddyBearSFX:BGM:locate:Left,할아버지…… 지금까지 감사했습니다.,,,Left
