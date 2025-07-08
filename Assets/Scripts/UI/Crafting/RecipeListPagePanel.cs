@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RecipeListPagePanel : MonoBehaviour
 {
     [SerializeField] Transform recipeListParent;
     private RecipeSlotView[] recipeSlotViews;
-
+    [SerializeField] TMP_Text indexText;
     List<Item_Recipe> nowPageRecipeList = new List<Item_Recipe>();
     public int nowPageIndex;
     public int maxPageIndex;
@@ -107,6 +108,8 @@ public class RecipeListPagePanel : MonoBehaviour
             else return;
         }
 
+
+        indexText.text = $"{(nowPageIndex + 1)} / 3";
         // 변화한 페이지에 맞춰 레시피 슬롯 업데이트
         UpdateRecipePageData();
     }

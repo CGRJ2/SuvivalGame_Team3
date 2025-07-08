@@ -11,7 +11,7 @@ public class MonsterSuspiciousState : IMonsterState
         this.monster = monster;
         stateTimer = 0f;
 
-        Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 진입");
+        //Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 진입");
         
         monster.Agent.isStopped = true;
 
@@ -38,19 +38,19 @@ public class MonsterSuspiciousState : IMonsterState
             if (nextPerception == MonsterPerceptionState.Alert)
             {
                 monster.StateMachine.ChangeState(monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert));
-                Debug.Log($"[{monster.name}] Suspicious → Alert 상태 전이");
+                //Debug.Log($"[{monster.name}] Suspicious → Alert 상태 전이");
             }
             else
             {
                 monster.StateMachine.ChangeState(new MonsterIdleState(monster));
-                Debug.Log($"[{monster.name}] Suspicious → Idle 상태 전이");
+                //Debug.Log($"[{monster.name}] Suspicious → Idle 상태 전이");
             }
         }
     }
 
     public void Exit()
     {
-        Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 종료");
+        //Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 종료");
 
         if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;

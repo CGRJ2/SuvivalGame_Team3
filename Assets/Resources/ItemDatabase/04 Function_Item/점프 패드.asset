@@ -9,14 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bf4e0a632371bd428d4fe28d2a47241, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fd98712b29811148bd4a2c9b558f534, type: 3}
   m_Name: "\uC810\uD504 \uD328\uB4DC"
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 1
   itemName: "\uC810\uD504 \uD328\uB4DC"
-  description: "\uCCB4\uAC10 \uC810\uD504\uB825 300% \uC0C1\uC2B9 \uD6A8\uACFC\uAC00
-    \uC788\uB294 \uD328\uB4DC. \u203B\uCC29\uC9C0 \uC2E4\uC218\uB294 100% \uBCF8\uC778
-    \uCC45\uC784. \uBD80\uC791\uC6A9 \uC5C6\uC74C(\uC77C\uB2E8\uC740).\r\n"
+  description: "\uCCB4\uAC10\uC0C1 3\uBC30 \uB192\uC774\uAE4C\uC9C0 \uB6F4\uB2E4.\n\uC798\uBABB\uB41C
+    \uCC29\uC9C0\uB85C \uC778\uD55C \uD53C\uD574\uBCF4\uC0C1\uC740 \uC5C6\uB2E4\uACE0\uD55C\uB2E4..."
   imageSprite: {fileID: 21300000, guid: 7fb151aadeac1b348a6ae32a0ee65f70, type: 3}
-  instancePrefab: {fileID: 1641338830461623193, guid: aebbead7ab2f8e34085bed3c496afe46, type: 3}
-  maxCount: 1
+  instancePrefab: {fileID: 1641338830461623193, guid: f844234428d8fb242b2bc6e99f3874c8, type: 3}
+  maxCount: 10
+  installedJumpPad: {fileID: 1641338830461623193, guid: aebbead7ab2f8e34085bed3c496afe46, type: 3}
+  installOffset: 1

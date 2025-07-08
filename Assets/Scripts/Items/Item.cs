@@ -1,13 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Item : ScriptableObject
 {
     public ItemType itemType;       //아이템 타입
     public string itemName;         //아이템 이름
-    [TextArea(3,10)]
+    [TextArea(3, 10)]
     public string description;         //아이템 설명
     public Sprite imageSprite;        //아이템 이미지
     public GameObject instancePrefab;   //아이템 프리펩
@@ -19,12 +16,12 @@ public class Item : ScriptableObject
     {
         // 기본 아이템인스턴스 프리펩 설정. 특수 아이템의 경우 아이템인스턴스 프리펩을 다른걸로 달아주면 됨
         if (instancePrefab == null)
-        instancePrefab = Resources.Load<GameObject>("ItemInstancePrefabs/ItemInstance_Noraml");
+            instancePrefab = Resources.Load<GameObject>("ItemInstancePrefabs/ItemInstance_Noraml");
 
         if (imageSprite == null)
-        imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
+            imageSprite = Resources.Load<Sprite>("Sprites/ItemIcons/DefaultImage");
     }
-    
+
     // 사용 => 인벤토리 우클릭 상호작용 시 호출
     public void UseInInventory(SlotData slotData, int multieUseCount = 1)
     {
@@ -42,11 +39,15 @@ public class Item : ScriptableObject
 
             // 슬롯 데이터에서 개수 줄이기
             consumable.Consume(slotData, multieUseCount);
+            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
         }
         // 레시피 아이템이라면
         else if (this is Item_Recipe recipe)
         {
             recipe.UnlockThisRecipe();
+            // 만약 레시피 사용해서 언락해서 소비시켜줄거면 SlotData.C
+            slotData.CleanSlotData();
+            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
         }
     }
 
@@ -58,12 +59,13 @@ public class Item : ScriptableObject
         {
             if (this is Item_Throwing throwing)
             {
-                throwing.OnAttackEffect();
+                if (throwing is Item_JumpPad jumpPad)
+                    jumpPad.OnAttackEffect();
+                else
+                    throwing.OnAttackEffect();
                 throwing.Consume(slotData);
-            }
-            else
-            {
-                equipable.OnAttackEffect();
+
+                PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
             }
         }
         // 소비 아이템 (소비 아이템인데 장착 가능한 애들은 따로 장착까지만 가능)
@@ -74,6 +76,10 @@ public class Item : ScriptableObject
 
             // 슬롯 데이터에서 개수 줄이기
             consumable.Consume(slotData);
+
+            // 퀵슬롯 & 인벤토리 UI 업데이트
+            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+
         }
     }
 

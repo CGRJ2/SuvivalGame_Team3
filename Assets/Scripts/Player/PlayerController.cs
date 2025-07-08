@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 {
     //[field: SerializeField] public float AttackCoolTime { get; private set; }
     public Transform handTransform;
-    [HideInInspector] GameObject onHandInstance;
+    [HideInInspector] public GameObject onHandInstance;
     PlayerManager pm;
     DataManager dm;
     [field: SerializeField] public PlayerStatus Status { get; private set; }
@@ -462,9 +462,9 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Attack 조건 : 1. 입력값 존재 
             if (isAttackInput)
             {
-                Debug.Log("공격입력값 때문에 일로 들어옴");
+                //Debug.Log("공격입력값 때문에 일로 들어옴");
                 // 2. 일반 & 기본 이동 상태일 때 가능
-                if ( IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move) 
+                if (IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)
                     || IsCurrentState(PlayerStateTypes.Sprint))
                 {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
@@ -478,9 +478,10 @@ public class PlayerController : MonoBehaviour, IDamagable
                 // 공격 상태일 때 공격 계속 누르면 연속공격 가능  (일반 상태 or 무브 상태로)
                 else if (IsCurrentState(PlayerStateTypes.Attack))
                 {
-                    if (stateMachine.LastState == stateMachine.stateDic[PlayerStateTypes.Move])
+                    return;
+                    /*if (stateMachine.LastState == stateMachine.stateDic[PlayerStateTypes.Move])
                         stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
-                    else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
+                    else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);*/
                 }
             }
 
@@ -540,7 +541,6 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Idle
             else
             {
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
                 stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
             }
         }
@@ -560,8 +560,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if ( isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
-            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ ) 
+        else if (isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
+            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ )
             moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
@@ -637,19 +637,26 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void Attack()
     {
+        Debug.Log("어택 실행됨");
+
         IDamagable[] damagables = Cc.GetDamagablesInRange();
         if (damagables.Length < 1) return;
 
         float finalDamage = Status.Damage;
-        if (Status.onHandItem is Item_Weapon weapon)
-        {
-            finalDamage += weapon.Damage;
 
+        if (Status.onHandItem != null)
+        {
+
+            if (Status.onHandItem is Item_Weapon weapon)
+            {
+                finalDamage += weapon.Damage;
+            }
+           
         }
 
         foreach (IDamagable damagable in damagables)
         {
-            
+
             damagable.TakeDamage(finalDamage, transform);
         }
     }
@@ -774,6 +781,10 @@ public class PlayerController : MonoBehaviour, IDamagable
                     View.animator.SetBool("Equip_Thrust", true);
                     View.animator.SetBool("Equip_Swing", false);
                 }
+            }
+            else if (item is Item_Throwing throwings)
+            {
+
             }
         }
     }

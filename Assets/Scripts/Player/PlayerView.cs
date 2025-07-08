@@ -4,7 +4,7 @@ public class PlayerView : MonoBehaviour
 {
     [field: SerializeField] public Transform TPSView_CameraFocusTransform { get; private set; }
     [field: SerializeField] public Transform SideView_CameraFocusTransform { get; private set; }
-    [SerializeField] private Transform avatar;
+    [SerializeField] public Transform avatar;
 
     [HideInInspector] public Animator animator;
     [SerializeField] private GameObject FxPrefab;

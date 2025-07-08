@@ -44,7 +44,7 @@ public class MonsterIdleState : IMonsterState
         monster.ResetMonsterHP();
 
         monster.view.Animator.SetTrigger("Idle");
-        Debug.Log("Idle 상태 진입");
+        //Debug.Log("Idle 상태 진입");
     }
 
     public virtual void Execute()
@@ -124,7 +124,7 @@ public class MonsterIdleState : IMonsterState
 
     public virtual void Exit()
     {
-        Debug.Log("Idle 상태 나감");
+        //Debug.Log("Idle 상태 나감");
 
         monster.view.Animator.SetBool("IsMove", true);
         if (monster.Agent.isOnNavMesh)

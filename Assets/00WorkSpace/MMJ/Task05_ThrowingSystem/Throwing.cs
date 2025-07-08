@@ -186,11 +186,6 @@ public class Throwing : MonoBehaviour
             // 일정 시간 후 오브젝트 파괴
             Destroy(thrownObject, destroyDelay);
 
-            // Item_Throwing의 OnAttackEffect 메서드 호출 (필요시)
-            throwingItem.OnAttackEffect();
-
-            // 아이템 소비 처리
-            throwingItem.Consume(currentSlot.slotData);
 
             // 슬롯 UI 업데이트
             currentSlot.SlotViewUpdate();

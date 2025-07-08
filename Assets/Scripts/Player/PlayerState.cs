@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerState : BaseState
@@ -48,7 +45,7 @@ public class Player_Idle : PlayerState
 
     public override void Exit()
     {
-        
+
         base.Exit();
     }
 }
@@ -143,7 +140,7 @@ public class Player_Fall : PlayerState
         pc.jumpCooling = false;
         pc.View.animator.SetBool("IsFalling", true);
     }
-    
+
     public override void Exit()
     {
         base.Exit();
@@ -194,6 +191,11 @@ public class Player_Attack : PlayerState
         base.Enter();
         //Debug.LogError("공격 상태 진입");
         pc.View.animator.SetBool("IsAttack", true);
+
+        if (pc.Status.onHandItem != null)
+        {
+            pc.Status.onHandItem.ActivateEffectOnAttack(UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot.slotData);
+        }
     }
 
     public override void Exit()
@@ -260,7 +262,7 @@ public class Player_Dead : PlayerState
     {
         base.Exit();
         pc.View.animator.SetTrigger("Respawn");
-        
+
         //pc.View.animator.SetBool("IsDead", false);
     }
     public override void Update()

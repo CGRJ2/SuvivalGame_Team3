@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class Item_Throwing : Item_Consumable, IEquipable
 {
-    public void ActivateEffectOnAttack()
-    {
 
+    
+    
+
+    // 던지기 실행
+    public void ThrowingPrefab()
+    {
+        /*Transform playerTransform = PlayerManager.Instance.instancePlayer.transform;
+        Instantiate(installedPrefab, playerTransform.position, playerTransform.rotation);*/
     }
-
-
-    /*public void EquipToQuickSlot()
-    {
-        // 퀵슬롯 빈칸 판단 & 빈 퀵슬롯에 장착
-        PlayerManager.Instance.instancePlayer.Status.onHandItem = this;
-    }*/
 
     public virtual void OnAttackEffect()
     {
-        // 던지기 기능을 위해 임시로 추가한 내용
-        Debug.Log($"{itemName} 아이템을 던졌습니다!");
-        // 여기에 던지기 효과 관련 코드 추가 (소리, 파티클 등)
+        /*InstallPrefab();
+        Destroy(PlayerManager.Instance.instancePlayer.onHandInstance);*/
     }
+
 }
