@@ -9,13 +9,6 @@ public class InventoryTabs : MonoBehaviour
     public GameObject itemPanel;
     public GameObject systemPanel;
 
-    [Header("ItemPanel")]
-    public GameObject materialItemPanel;
-    public GameObject useItemPanel;
-    public GameObject weaponItemPanel;
-    public GameObject functionItemPanel;
-    public GameObject questItemPanel;
-
     [Header("SystemPanel")]
     public GameObject HomeWarning;
 
@@ -30,12 +23,6 @@ public class InventoryTabs : MonoBehaviour
         mapPanel.SetActive(false);
         itemPanel.SetActive(true);
         systemPanel.SetActive(false);
-
-        if (materialItemPanel != null) materialItemPanel.SetActive(true);
-        if (useItemPanel != null) useItemPanel.SetActive(false);
-        if (weaponItemPanel != null) weaponItemPanel.SetActive(false);
-        if (functionItemPanel != null) functionItemPanel.SetActive(false);
-        if (questItemPanel != null) questItemPanel.SetActive(false);
     }
     public void ShowSystem()
     {
