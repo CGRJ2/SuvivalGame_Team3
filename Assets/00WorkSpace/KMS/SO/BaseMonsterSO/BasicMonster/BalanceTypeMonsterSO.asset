@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
   m_Name: BalanceTypeMonsterSO
   m_EditorClassIdentifier: 
+  isInvinvibleMonster: 0
   monsterName: "\uBAA8\uB4E0\uC2A4\uD14C\uC774\uC9C0\uB4F1\uC7A5A"
   monsterType: 0
   monsterSubType: 0
   typeStatData: {fileID: 11400000, guid: c179e73121eadb6469f71f6736295f4a, type: 2}
-  maxHP: 20
-  moveSpeed: 3
-  attackPower: 5
-  attackRange: 0.5
-  attackCooldown: 1
-  collisionDamage: 1
+  maxHP: 250
+  moveSpeed: 2
+  attackPower: 120
+  collisionDamage: 50
+  attackRange: 2
+  attackCooldown: 1.5
+  destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
-  <KnockBackedPower>k__BackingField: 5
+  <KnockBackedPower>k__BackingField: 3
   attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 180
