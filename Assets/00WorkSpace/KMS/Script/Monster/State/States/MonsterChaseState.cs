@@ -14,6 +14,10 @@ public class MonsterChaseState : IMonsterState
         monster.SetPerceptionState(MonsterPerceptionState.Alert);
         monster.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
 
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
+
         Debug.Log($"[{monster.name}] 상태: Chase 진입");
     }
 
@@ -60,5 +64,9 @@ public class MonsterChaseState : IMonsterState
     public void Exit()
     {
         Debug.Log($"[{monster.name}] 상태: Chase 종료");
+        monster.view.Animator.SetBool("IsMove", false);
+
+        monster.Agent.isStopped = true;
     }
+
 }

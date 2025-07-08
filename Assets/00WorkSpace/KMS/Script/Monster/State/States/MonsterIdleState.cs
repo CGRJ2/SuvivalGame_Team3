@@ -42,8 +42,8 @@ public class MonsterIdleState : IMonsterState
         lookDuration = UnityEngine.Random.Range(1.5f, 3f);
 
         monster.ResetMonsterHP();
-        monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
-        
+
+        monster.view.Animator.SetTrigger("Idle");
         Debug.Log("Idle 상태 진입");
     }
 
@@ -124,6 +124,9 @@ public class MonsterIdleState : IMonsterState
 
     public virtual void Exit()
     {
+        Debug.Log("Idle 상태 나감");
+
+        monster.view.Animator.SetBool("IsMove", true);
         if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;
         // 특별히 할 일 없음 (필요 시 추가)

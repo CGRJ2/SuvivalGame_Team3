@@ -7,7 +7,7 @@ using UnityEngine;
 public class DailyManager : Singleton<DailyManager>
 {
     [System.Serializable]
-    private class TimeZoneSetting
+    public class TimeZoneSetting
     {
         [field: Header("ÇÏ·ç ÃÑ ½Ã°£")]
         [field: SerializeField] public float DayCycleTime { get; private set; }
@@ -138,6 +138,11 @@ public class DailyManager : Singleton<DailyManager>
     public void DayStart()
     {
 
+    }
+
+    public TimeZoneSetting GetTimeZoneSetting()
+    {
+        return timeZoneSetting;
     }
 
 }

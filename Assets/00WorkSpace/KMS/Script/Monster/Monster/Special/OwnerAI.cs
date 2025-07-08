@@ -166,7 +166,7 @@ public class OwnerAI : BaseMonster
     public override void TakeDamage(float damage, Transform attackerTransform)
     {
     }
-    protected override void Die()
+    protected override void Dead()
     {
     }
 

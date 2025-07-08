@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OwnerState_ReturnToBed : IMonsterState
@@ -18,10 +16,12 @@ public class OwnerState_ReturnToBed : IMonsterState
         Debug.Log("잠자러 돌아가는 중");
 
         monster.view.Animator.SetBool("IsMove", true);
-
-        monster.Agent.SetDestination(stalker.bedTransform.position);
         if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;
+
+
+        monster.Agent.SetDestination(stalker.bedTransform.position);
+
     }
 
     public void Execute()
@@ -37,6 +37,6 @@ public class OwnerState_ReturnToBed : IMonsterState
 
     public void Exit()
     {
-        monster.view.Animator.SetBool("IsMove", false);
+       
     }
 }

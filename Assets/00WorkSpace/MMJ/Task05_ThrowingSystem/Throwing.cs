@@ -26,6 +26,8 @@ public class Throwing : MonoBehaviour
 
     private void Start()
     {
+        throwPosition = transform;
+        quickSlotParent = UIManager.Instance.inventoryGroup.quickSlotParent;
         //quickSlotParent = UIManager.Instance.inventoryGroup.quickSlotParent; // 이상하게 이걸로 하면 오류나서 직접 연결해서 사용했음...
 
         if (quickSlotParent == null)
@@ -140,6 +142,8 @@ public class Throwing : MonoBehaviour
 
             // 슬롯 UI 업데이트
             currentSlot.SlotViewUpdate();
+
+            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
         }
     }
 

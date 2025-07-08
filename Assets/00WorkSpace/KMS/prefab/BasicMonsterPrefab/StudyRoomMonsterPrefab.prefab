@@ -121,10 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: a1f74ec795a23fd46a25a72ed9879c24, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: a1f74ec795a23fd46a25a72ed9879c24, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 6697909993165368954}
   OnDeadEvent:
@@ -143,8 +142,6 @@ MonoBehaviour:
     m_Bits: 8
   rayRadius_Attack: 1
   offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 0}
-  stunTime: 0.5
   dropTable: {fileID: 0}
 --- !u!114 &6697909993165368954
 MonoBehaviour:
@@ -217,7 +214,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: 4b8270ed051731b498eae85662c2e0e4, type: 3}
+  - {fileID: -5334285999106487671, guid: 7cada774f0f604e4597eca90e6b18696, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -571,6 +568,7 @@ GameObject:
   m_Component:
   - component: {fileID: 570300569128909089}
   - component: {fileID: 3051012981897938169}
+  - component: {fileID: 3699623019223448539}
   m_Layer: 0
   m_Name: BedRoomMonster
   m_TagString: Untagged
@@ -605,7 +603,7 @@ Animator:
   m_GameObject: {fileID: 4053381777674607269}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4b8270ed051731b498eae85662c2e0e4, type: 3}
-  m_Controller: {fileID: 9100000, guid: 1d061675548f8cc419764f1fbf2faf01, type: 2}
+  m_Controller: {fileID: 9100000, guid: db4cc2d67f4da8740b04156f6992a234, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -616,6 +614,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3699623019223448539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053381777674607269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67698a4e14241c4cb7ccc64b23a2815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 7629428734186170138}
 --- !u!1 &4191247656204805728
 GameObject:
   m_ObjectHideFlags: 0

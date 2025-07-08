@@ -15,7 +15,9 @@ public class MonsterSearchState : IMonsterState
 
         monster.SetPerceptionState(MonsterPerceptionState.Search);
         Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 진입");
-        //monster.StateMachine.SetAnimation("IsSearching", true);
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
     }
 
     public void Execute()
@@ -60,7 +62,10 @@ public class MonsterSearchState : IMonsterState
     public void Exit()
     {
         Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 종료");
-        // monster.StateMachine.SetAnimation("IsSearching", false);
+        monster.view.Animator.SetBool("IsMove", false);
+
+        monster.Agent.isStopped = true;
+
     }
 }
 

@@ -22,6 +22,10 @@ public class MonsterStaggerState : IMonsterState
         monster.GetComponent<MonsterView>()?.PlayMonsterStaggerAnimation();
 
         Debug.Log($"[{monster.name}] 상태: Stagger 진입 ({duration:F1}초)");
+
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
     }
 
     public void Execute()

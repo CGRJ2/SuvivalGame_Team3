@@ -14,7 +14,11 @@ public class OwnerState_Sleep :  IMonsterState
     public void Enter(BaseMonster monster)
     {
         Debug.Log("수면상태 진입");
-        monster.view.Animator.SetBool("IsSleep", true);
+        
+        monster.view.Animator.SetBool("IsMove", false);
+        monster.Agent.isStopped = true;
+
+        monster.view.Animator.SetTrigger("IsSleep");
     }
 
     public void Execute()
@@ -29,9 +33,6 @@ public class OwnerState_Sleep :  IMonsterState
 
     public void Exit()
     {
-        //수면 애니메이션 종료
-        monster.view.Animator.SetBool("IsSleep", false);
-
 
     }
 }
