@@ -127,7 +127,7 @@ public class LoadingSceneTest : Singleton<LoadingSceneTest>
             timer += Time.deltaTime;
             yield return null;
         }
-        fadeImage.gameObject.SetActive(true);
+        fadeImage.gameObject.SetActive(false);
     }
 
     public IEnumerator FadeOutAndVideoPlayer()
