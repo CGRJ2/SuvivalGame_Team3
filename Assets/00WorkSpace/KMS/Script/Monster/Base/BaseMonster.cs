@@ -408,7 +408,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ResetAlert();
     }
 
-    protected void OnDrawGizmosSelected()
+   /* protected void OnDrawGizmosSelected()
     {
         Vector3 originPosition = Vector3.zero;
         if (OriginTransform != null) originPosition = OriginTransform.position;
@@ -444,7 +444,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         if (view == null) return;
         Vector3 origin_Attack = view.avatar.transform.position + (view.avatar.transform.forward * offset_Attack.z) + (view.avatar.transform.up * offset_Attack.y) + (view.avatar.transform.right * offset_Attack.x);
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
-    }
+    }*/
 
 
 
