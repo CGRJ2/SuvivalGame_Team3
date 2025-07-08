@@ -4,6 +4,11 @@ public class MonsterAnimationEventHandler : MonoBehaviour
 {
     public BaseMonster monster;
 
+    private void Awake() => Init();
+    private void Init()
+    {
+        monster = GetComponentInParent<BaseMonster>();
+    }
     public void ApplyDamage()
     {
         monster.ApplyDamage();

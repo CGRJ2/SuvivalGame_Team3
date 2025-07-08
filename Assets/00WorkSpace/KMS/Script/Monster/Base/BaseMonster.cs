@@ -224,6 +224,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     }
     public void ApplyDamage()
     {
+        Debug.Log(playerInRange);
         if (playerInRange != null)
         {
             var damageable = target.GetComponent<IDamagable>();
