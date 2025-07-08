@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterAnimationEventHandler : MonoBehaviour
 {
-    protected BaseMonster monster;
-    protected BossMonster bossMonster;
+    public BaseMonster monster;
 
     public void ApplyDamage()
     {
@@ -13,18 +10,37 @@ public class MonsterAnimationEventHandler : MonoBehaviour
     }
     public void ApplyBoxDamage()
     {
-        bossMonster.ApplyBoxDamage(bossMonster.currentPattern);
+        if (monster is BossMonster boss)
+            boss.ApplyBoxDamage(boss.currentPattern);
     }
     public void ApplyCircleDamage()
     {
-        bossMonster.ApplyCircleDamage(bossMonster.currentPattern);
+        if (monster is BossMonster boss)
+            boss.ApplyCircleDamage(boss.currentPattern);
     }
     public void ApplyConeDamage()
     {
-        bossMonster.ApplyConeDamage(bossMonster.currentPattern);
+        if (monster is BossMonster boss)
+            boss.ApplyConeDamage(boss.currentPattern);
     }
-    public void OnCounterWindowOpen() => bossMonster.OnCounterWindowOpen();
-    public void OnCounterWindowClose() => bossMonster.OnCounterWindowClose();
-    public void OnHitboxTrigger() => bossMonster.OnHitboxTrigger();
-    public void OffHitboxTrigger() => bossMonster.OffHitboxTrigger();
+    public void OnCounterWindowOpen()
+    {
+        if (monster is BossMonster boss)
+            boss.OnCounterWindowOpen();
+    }
+    public void OnCounterWindowClose()
+    {
+        if (monster is BossMonster boss)
+            boss.OnCounterWindowClose();
+    }
+    public void OnHitboxTrigger()
+    {
+        if (monster is BossMonster boss)
+            boss.OnHitboxTrigger();
+    }
+    public void OffHitboxTrigger()
+    {
+        if (monster is BossMonster boss)
+            boss.OffHitboxTrigger();
+    }
 }
