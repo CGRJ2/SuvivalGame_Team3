@@ -52,11 +52,6 @@ public class QuickSlotParent : MonoBehaviour
     // 아이템 인스턴스(or 아이템 모델링을 업데이트)를 손에 활성화
     public void SelectQuickSlot(int quickSlotNumber)
     {
-
-        
-
-
-
         if (quickSlots[quickSlotNumber].slotData.item != null)
         {
             // 즉발 소비템이면(소비 & 던지기 아이템 아닌,)  여기서 소비 효과 실행, 퀵슬롯 이동 X

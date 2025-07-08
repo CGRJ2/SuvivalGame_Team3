@@ -66,16 +66,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        ///////////////////////////
-        /// 테스트
-        /// 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10, transform);
-        }
-        ///
-        /////////////////////////////
-
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 
 
@@ -134,8 +124,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         // Model 내부 슬롯 리스트(5종) 내부의 SlotData 안 아이템(SO)의 Key데이터를 Item으로 재변환 후 배치시키기
         Status.inventory.model.LoadSlotData(saveDataGroup);
 
+        
+
         // 배치 완료 후 뷰 업데이트
-        Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
+        //Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
         Status.inventory.UpdateUI();
 
         Debug.Log("플레이어 데이터 구독자 함수 완료");

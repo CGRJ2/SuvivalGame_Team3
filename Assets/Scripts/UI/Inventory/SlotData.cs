@@ -11,6 +11,7 @@ public class SlotData
     public int currentCount = 0;
     public int maxCount;
 
+    public int quickChainedIndex = 99;
     // 빈 슬롯 판정 용 기본 생성자
     public SlotData() { }
 

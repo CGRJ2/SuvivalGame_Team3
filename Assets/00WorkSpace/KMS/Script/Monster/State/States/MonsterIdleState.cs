@@ -75,7 +75,7 @@ public class MonsterIdleState : IMonsterState
                 //Debug.Log("Idle-랜덤이동 상태");
                 monster.view.Animator.SetBool("IsMove", true);
                 //Debug.Log($"남은 거리 {monster.Agent.remainingDistance}, 기준 거리 {monster.Agent.stoppingDistance}");
-                if (monster.Agent.remainingDistance <= monster.Agent.stoppingDistance && !monster.Agent.pathPending)
+                if (monster.Agent.remainingDistance < 0.8f)
                 {
                     wanderState = WanderState.Waiting;
                     waitTimer = UnityEngine.Random.Range(data.WaitTimeMin, data.WaitTimeMax);
@@ -116,9 +116,9 @@ public class MonsterIdleState : IMonsterState
 
     void SetRandomDestination()
     {
-        Vector3 randomPoint = monster.transform.position + (UnityEngine.Random.insideUnitSphere * monster.ActionRadius);
+        Vector3 randomPoint = monster.transform.position + (UnityEngine.Random.insideUnitSphere * monster.data.ActionRadius);
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, monster.ActionRadius, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomPoint, out hit, monster.data.ActionRadius, NavMesh.AllAreas))
             monster.Agent.SetDestination(hit.position);
     }
 

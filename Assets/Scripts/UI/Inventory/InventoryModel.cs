@@ -256,6 +256,8 @@ public class InventoryModel
             {
                 ingredientSlots[i].item = Resources.Load<Item>($"ItemDatabase/01 Ingredient_Item/{loadedSDListData.ingredientSlots[i]}");
             }
+
+            //이 슬롯과 연결된 퀵슬롯이 있다면?
         }
 
         // 소비 탭 동기화

@@ -53,7 +53,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     // 경계도 상승
     [SerializeField] protected float alertDecayRate = 5f;
-    [SerializeField] private float cooldownTimer = 0f;
     [SerializeField] private float alertCooldownThreshold = 2f;
     protected MonsterPerceptionController perceptionController;
 
@@ -61,10 +60,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     [SerializeField] protected float alertThreshold_Low = 20f;
     [SerializeField] protected float alertThreshold_Medium = 50f;
     [SerializeField] protected float alertThreshold_High = 80f;
-
-    // 행동 반경
-    [SerializeField] protected float actionRadius = 10f;
-
 
     // 회전 속도
     [SerializeField] protected float rotationSpeed = 7f;
@@ -84,7 +79,6 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public float AlertThreshold_Medium => alertThreshold_Medium;
     public float AlertThreshold_High => alertThreshold_High;
 
-    public float ActionRadius => actionRadius;
 
 
     protected bool isDead;

@@ -220,6 +220,7 @@ public class PlayerStatus : IDisposable
         CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
         MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
         playerStatusUI.state_Battery.initMax = ssm.batterySystem.InitMaxBattery;
+        playerStatusUI.state_Battery.UpdateMaxStateNumb_View(ssm.batterySystem.InitMaxBattery);
 
         // 정신력 수치 UI 구독
         CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);

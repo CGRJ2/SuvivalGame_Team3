@@ -31,7 +31,7 @@ public class DayCycle : MonoBehaviour
         directionalLight.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
 
         // 색상과 밝기 변화
-        //directionalLight.color = lightColor.Evaluate(normalizedTime);
+        directionalLight.color = lightColor.Evaluate(normalizedTime);
         //directionalLight.intensity = lightIntensity.Evaluate(normalizedTime);
     }
 }

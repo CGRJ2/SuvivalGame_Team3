@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Threading;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class LoadingSceneTest :MonoBehaviour
+public class LoadingSceneTest : Singleton<LoadingSceneTest>
 {
+    [SerializeField] Canvas canvas;
     [SerializeField] TMP_Text loadingText;
     [SerializeField] Image fadeImage;
     [SerializeField] float fadeTime;
@@ -49,6 +51,7 @@ public class LoadingSceneTest :MonoBehaviour
     }
     void Init()
     {
+        base.SingletonInit();
     }
 
     public void GameStart()
@@ -90,6 +93,12 @@ public class LoadingSceneTest :MonoBehaviour
 
     public IEnumerator FadeAndSceneChange(string sceneName)
     {
+        // 새 씬 로드 (Additive)
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName);
+        loadOp.allowSceneActivation = false;
+
+
+        canvas.gameObject.SetActive(false);
         fadeImage.gameObject.SetActive(true);
         videoImage.gameObject.SetActive(true);
         float timer = 0;
@@ -104,13 +113,8 @@ public class LoadingSceneTest :MonoBehaviour
         }
 
         videoImage.gameObject.SetActive(false);
-
-        // 현재 씬 이름을 저장 (씬 객체는 언로드 후 무효화될 수 있음)
-        string currentSceneName = SceneManager.GetActiveScene().name;
-
-        // 새 씬 로드 (Additive)
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName);
-        loadOp.allowSceneActivation = false;
+        yield return new WaitUntil(() => loadOp.progress >= 0.9f);
+        loadOp.allowSceneActivation = true;
 
         // 페이드 인
         timer = 0;
@@ -123,9 +127,7 @@ public class LoadingSceneTest :MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-
-        yield return new WaitUntil(() => loadOp.progress >= 0.9f);
-        loadOp.allowSceneActivation = true;
+        fadeImage.gameObject.SetActive(true);
     }
 
     public IEnumerator FadeOutAndVideoPlayer()
@@ -156,5 +158,11 @@ public class LoadingSceneTest :MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public void OnClickExit()
+    {
+        Debug.Log("게임 종료!");
+        Application.Quit();
     }
 }
