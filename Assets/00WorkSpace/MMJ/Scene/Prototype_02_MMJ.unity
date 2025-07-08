@@ -1279,13 +1279,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 117421006}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.24876052, y: -0, z: -0, w: 0.96856505}
-  m_LocalPosition: {x: 0, y: 0.83, z: 0.73}
+  m_LocalRotation: {x: -0.24238162, y: -0, z: -0, w: 0.970181}
+  m_LocalPosition: {x: 0, y: 0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1796197046}
-  m_LocalEulerAnglesHint: {x: -28.808, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -28.054, y: 0, z: 0}
 --- !u!1 &131400063
 GameObject:
   m_ObjectHideFlags: 0
@@ -12168,13 +12168,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673528ac6f0706c4bb26a29d3cc16377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 10
-  destroyDelay: 3
+  throwForce: 8
+  destroyDelay: 8
   throwPosition: {fileID: 117421007}
   quickSlotParent: {fileID: 918005026}
   minThrowForce: 5
-  maxThrowForce: 30
-  chargeRate: 20
+  maxThrowForce: 15
+  chargeRate: 7
   trajectoryLine: {fileID: 588274708}
   linePointCount: 50
   lineTimeStep: 0.1
@@ -13317,7 +13317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7304599127820881216, guid: 9ab55026354193946b3f8a6508d7089f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.79
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7304599127820881216, guid: 9ab55026354193946b3f8a6508d7089f, type: 3}
       propertyPath: m_LocalPosition.z
