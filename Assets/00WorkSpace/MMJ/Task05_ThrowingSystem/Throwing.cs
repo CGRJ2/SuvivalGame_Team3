@@ -68,43 +68,95 @@ public class Throwing : MonoBehaviour
             return;
         }
 
-        // 마우스 좌클릭을 누르는 순간 (차징 시작)
-        if (Input.GetMouseButtonDown(0))
+
+
+
+
+        // 현재 선택된 아이템 확인
+        QuickSlot currentSlot = quickSlotParent.NowSelectedSlot;
+        if (currentSlot == null || currentSlot.slotData.item == null)
+            return;
+
+        // 점프패드 아이템인지 확인
+        if (currentSlot.slotData.item is Item_JumpPad)
         {
-            // item 체크
-            if (quickSlotParent.NowSelectedSlot.slotData.item != null &&
-                quickSlotParent.NowSelectedSlot.slotData.item is Item_Throwing)
+            // 마우스 좌클릭을 누르는 순간 즉시 사용
+            if (Input.GetMouseButtonDown(0))
+            {
+                UseJumpPad();
+                return; // 점프패드는 특별 처리하므로 여기서 리턴
+            }
+        }
+        // 일반 투척 아이템 처리 (기존 코드)
+        else if (currentSlot.slotData.item is Item_Throwing)
+        {
+            // 기존 투척 로직 유지...
+            // 마우스 좌클릭을 누르는 순간 (차징 시작)
+            if (Input.GetMouseButtonDown(0))
             {
                 isCharging = true;
                 currentChargeTime = 0f;
                 ShowTrajectory(); // 궤적 표시
             }
-        }
-        // 마우스 좌클릭을 누르고 있는 동안 (차징 진행 및 궤적 업데이트)
-        else if (isCharging && Input.GetMouseButton(0))
-        {
-            currentChargeTime += Time.deltaTime;
+            // 마우스 좌클릭을 누르고 있는 동안 (차징 진행 및 궤적 업데이트)
+            else if (isCharging && Input.GetMouseButton(0))
+            {
+                currentChargeTime += Time.deltaTime;
 
-            // 현재 차징된 힘으로 궤적 업데이트
-            float currentForce = Mathf.Clamp(minThrowForce + currentChargeTime * chargeRate, minThrowForce, maxThrowForce);
-            UpdateTrajectory(currentForce);
-        }
-        // 마우스 좌클릭을 떼는 순간 (던지기)
-        else if (isCharging && Input.GetMouseButtonUp(0))
-        {
-            isCharging = false; // 차징 상태 해제
+                // 현재 차징된 힘으로 궤적 업데이트
+                float currentForce = Mathf.Clamp(minThrowForce + currentChargeTime * chargeRate, minThrowForce, maxThrowForce);
+                UpdateTrajectory(currentForce);
+            }
+            // 마우스 좌클릭을 떼는 순간 (던지기)
+            else if (isCharging && Input.GetMouseButtonUp(0))
+            {
+                isCharging = false; // 차징 상태 해제
 
-            // 최종 던질 힘 계산
-            float finalThrowForce = minThrowForce + currentChargeTime * chargeRate;
-            finalThrowForce = Mathf.Clamp(finalThrowForce, minThrowForce, maxThrowForce);
+                // 최종 던질 힘 계산
+                float finalThrowForce = minThrowForce + currentChargeTime * chargeRate;
+                finalThrowForce = Mathf.Clamp(finalThrowForce, minThrowForce, maxThrowForce);
 
-            // 아이템 던지기 함수 호출
-            ThrowCurrentItem(finalThrowForce);
+                // 아이템 던지기 함수 호출
+                ThrowCurrentItem(finalThrowForce);
 
-            currentChargeTime = 0f; // 차징 시간 초기화
-            HideTrajectory(); // 궤적 숨김
+                currentChargeTime = 0f; // 차징 시간 초기화
+                HideTrajectory(); // 궤적 숨김
+            }
         }
     }
+
+
+    // 점프패드 즉시 사용 메서드
+    private void UseJumpPad()
+    {
+        // 현재 선택된 슬롯 확인
+        QuickSlot currentSlot = quickSlotParent.NowSelectedSlot;
+
+        // 슬롯에 아이템이 있고 Item_JumpPad 타입인지 확인
+        if (currentSlot != null && currentSlot.slotData.item != null && currentSlot.slotData.item is Item_JumpPad jumpPadItem)
+        {
+            // 플레이어 위치 가져오기
+            GameObject player = PlayerManager.Instance.instancePlayer.gameObject;
+            Vector3 playerPosition = player.transform.position;
+
+            // 플레이어 바로 아래에 점프패드 생성 (약간 아래로 오프셋)
+            Vector3 spawnPosition = new Vector3(playerPosition.x, playerPosition.y - 0.1f, playerPosition.z);
+
+            // 점프패드 프리팹 인스턴스화
+            GameObject jumpPad = Instantiate(jumpPadItem.instancePrefab, spawnPosition, Quaternion.identity);
+
+            // 점프패드가 일정 시간 후 사라지도록 설정
+            Destroy(jumpPad, 2f);
+
+            // 아이템 소비 처리
+            jumpPadItem.Consume(currentSlot.slotData);
+
+            // 슬롯 UI 업데이트
+            currentSlot.SlotViewUpdate();
+            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+        }
+    }
+
 
     // 수정된 ThrowCurrentItem 메서드 - 힘 매개변수 추가
     public void ThrowCurrentItem(float force = 10f) // 기본값 설정
