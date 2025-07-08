@@ -9089,6 +9089,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1329770363}
   m_CullTransparentMesh: 1
+--- !u!1 &1334477710 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6403865991112175247, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+  m_PrefabInstance: {fileID: 5040089554052840715}
+  m_PrefabAsset: {fileID: 0}
 --- !u!120 &1344030195 stripped
 LineRenderer:
   m_CorrespondingSourceObject: {fileID: 9203209710727071705, guid: 9ab55026354193946b3f8a6508d7089f, type: 3}
@@ -9169,13 +9174,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1354234672}
   - component: {fileID: 1354234673}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: ThrowPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1354234672
 Transform:
   m_ObjectHideFlags: 0
@@ -9184,13 +9189,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354234671}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.333116, y: -0, z: -0, w: 0.9428859}
-  m_LocalPosition: {x: 0, y: 0.89, z: 0.423}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.271, z: 0.621}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1960471881}
-  m_LocalEulerAnglesHint: {x: -38.916, y: 0, z: 0}
+  m_Father: {fileID: 1752359251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1354234673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11682,6 +11687,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1752359251 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3826936513006084214, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+  m_PrefabInstance: {fileID: 5040089554052840715}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1779575668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12901,11 +12911,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934784972}
   m_CullTransparentMesh: 1
---- !u!4 &1960471881 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6313100791532666274, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
-  m_PrefabInstance: {fileID: 5040089554052840715}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1968574029
 GameObject:
   m_ObjectHideFlags: 0
@@ -14261,6 +14266,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7761267926721708425, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
   m_PrefabInstance: {fileID: 5040089554052840715}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4854306666710730457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334477710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673528ac6f0706c4bb26a29d3cc16377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 10
+  destroyDelay: 3
+  throwPosition: {fileID: 0}
+  quickSlotParent: {fileID: 0}
+  minThrowForce: 5
+  maxThrowForce: 30
+  chargeRate: 20
+  trajectoryLine: {fileID: 1344030195}
+  linePointCount: 50
+  lineTimeStep: 0.1
 --- !u!1001 &5040089554052840715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14340,10 +14367,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6313100791532666274, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
-      insertIndex: -1
+    - targetCorrespondingSourceObject: {fileID: 3826936513006084214, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      insertIndex: 0
       addedObject: {fileID: 1354234672}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6403865991112175247, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4854306666710730457}
   m_SourcePrefab: {fileID: 100100000, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
 --- !u!1001 &6301197496080390470
 PrefabInstance:
