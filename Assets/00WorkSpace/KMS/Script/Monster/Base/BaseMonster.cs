@@ -402,7 +402,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ResetAlert();
     }
 
-    protected void OnDrawGizmos()
+    protected void OnDrawGizmosSelected()
     {
         Vector3 originPosition = Vector3.zero;
         if (OriginTransform != null) originPosition = OriginTransform.position;
