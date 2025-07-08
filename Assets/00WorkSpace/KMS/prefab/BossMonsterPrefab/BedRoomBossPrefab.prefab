@@ -141,9 +141,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rayRadius_Attack: 1
-  offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 6159424682391686505}
-  stunTime: 0.5
+  offset_Attack: {x: 0, y: 1, z: 0.5}
   dropTable: {fileID: 0}
 --- !u!114 &4501796388398637268
 MonoBehaviour:
@@ -176,6 +174,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 7552ece1c7bb343439d8f3c084f8b17a, type: 2}
+    - target: {fileID: 4371023074289635837, guid: b1b9cbd6532ce85419788374a79878f9, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927124928427079179, guid: b1b9cbd6532ce85419788374a79878f9, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 7819423990662309313}
     - target: {fileID: 6990433433803313469, guid: b1b9cbd6532ce85419788374a79878f9, type: 3}
       propertyPath: m_Name
       value: BedRoomBoss

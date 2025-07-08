@@ -112,7 +112,6 @@ GameObject:
   - component: {fileID: 3614560020931311971}
   - component: {fileID: 8778238700791240094}
   - component: {fileID: 2528385359136227190}
-  - component: {fileID: 9200733723146484636}
   m_Layer: 19
   m_Name: Flat Mint Bush 2
   m_TagString: Untagged
@@ -206,20 +205,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.0014196108
   m_Center: {x: -0.00014848326, y: 0.00034695113, z: -0.00017559109}
---- !u!114 &9200733723146484636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6528127922783629663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d757734813818946bc7566d99229a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  count: 0
-  rigidDeactiveTime: 0
-  destroyTime: 0
-  isUsed: 0

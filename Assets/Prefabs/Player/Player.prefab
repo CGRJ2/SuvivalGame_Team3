@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4178522286310648330}
+  - component: {fileID: 5615903231083338322}
   m_Layer: 0
   m_Name: WeaponAttachPoint
   m_TagString: Untagged
@@ -31,6 +32,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8173942332375963233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!114 &5615903231083338322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856171058964792690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673528ac6f0706c4bb26a29d3cc16377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwForce: 10
+  destroyDelay: 3
+  throwPosition: {fileID: 0}
+  quickSlotParent: {fileID: 0}
+  minThrowForce: 5
+  maxThrowForce: 30
+  chargeRate: 20
+  trajectoryLine: {fileID: 0}
+  linePointCount: 50
+  lineTimeStep: 0.1
 --- !u!1 &2058694555148552934
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +190,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7617150217708771105}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 43162bf4555439d46877c7399febad35, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -225,7 +248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5aa8266cdb855a4e905868a6b3f435e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAttacking: 0
   handTransform: {fileID: 4178522286310648330}
   <Status>k__BackingField:
     onHandItem: {fileID: 0}
@@ -717,6 +739,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  jumpCooling: 0
+  isSprintJump: 0
+  isSprinting: 0
 --- !u!114 &4394851530320877419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -751,10 +776,10 @@ MonoBehaviour:
   avatar: {fileID: 6313100791532666274}
   collisionLayerMask:
     serializedVersion: 2
-    m_Bits: 449
-  rayRadius_Ground: 0.3
-  offsetY_Ground: 0
-  distance_Ground: 0.2
+    m_Bits: 2497
+  rayRadius_Ground: 0.123
+  offsetY_Ground: 0.1
+  distance_Ground: 0.1
   rayRadius_Head: 0.2
   offsetY_Head: 1.4
   distance_Head: 0.1

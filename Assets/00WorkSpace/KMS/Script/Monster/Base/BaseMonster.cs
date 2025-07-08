@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -223,6 +224,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     }
     public void ApplyDamage()
     {
+        Debug.Log(playerInRange);
         if (playerInRange != null)
         {
             var damageable = target.GetComponent<IDamagable>();
@@ -232,10 +234,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     }
 
     // 몬스터 죽음 판정
-    protected virtual void Die()
+    protected virtual void Dead()
     {
         if (isDead) return;
         isDead = true;
+        view.Animator.SetTrigger("Dead");
 
         view.PlayMonsterDeathAnimation();
         DropItems();
@@ -402,7 +405,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ResetAlert();
     }
 
-    protected void OnDrawGizmos()
+    protected void OnDrawGizmosSelected()
     {
         Vector3 originPosition = Vector3.zero;
         if (OriginTransform != null) originPosition = OriginTransform.position;
@@ -454,10 +457,12 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         //view.PlayMonsterHitEffect();
         //view.PlayMonsterHitAnimation();
 
+        view.Animator.SetTrigger("Damaged");
+
         ApplyKnockback(attackerTransform, data.KnockBackedPower);
 
         if (currentHP <= 0)
-            Die();
+            Dead();
     }
 
     public IEnumerator PauseAgent(float pauseTime)

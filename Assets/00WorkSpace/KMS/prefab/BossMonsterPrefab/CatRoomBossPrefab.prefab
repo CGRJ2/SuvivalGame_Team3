@@ -141,9 +141,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rayRadius_Attack: 1
-  offset_Attack: {x: 0, y: 0, z: 0.5}
-  rb: {fileID: 3574471826180355826}
-  stunTime: 0.5
+  offset_Attack: {x: 0, y: 1, z: 0.5}
   dropTable: {fileID: 0}
 --- !u!114 &7780682367673935598
 MonoBehaviour:
@@ -267,3 +265,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67698a4e14241c4cb7ccc64b23a2815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monster: {fileID: 6825332855156715564}

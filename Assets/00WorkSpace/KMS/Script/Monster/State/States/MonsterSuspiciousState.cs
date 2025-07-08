@@ -12,8 +12,11 @@ public class MonsterSuspiciousState : IMonsterState
         stateTimer = 0f;
 
         Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 진입");
+        
+        monster.Agent.isStopped = true;
+
         monster.SetPerceptionState(MonsterPerceptionState.Suspicious);
-        monster.GetComponent<MonsterView>()?.PlayMonsterSuspiciousAnimation();
+        monster.view.Animator.SetTrigger("Idle");
     }
 
     public void Execute()
@@ -48,5 +51,8 @@ public class MonsterSuspiciousState : IMonsterState
     public void Exit()
     {
         Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 종료");
+
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
     }
 }

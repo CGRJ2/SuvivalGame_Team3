@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
   m_Name: AssassinTypeMonsterSO
   m_EditorClassIdentifier: 
+  isInvinvibleMonster: 0
   monsterName: "\uC637\uBC29\uBAAC\uC2A4\uD130"
   monsterType: 0
   monsterSubType: 4
   typeStatData: {fileID: 11400000, guid: d3a44bce4fb24014da57a668c4539678, type: 2}
-  maxHP: 100
-  moveSpeed: 4
-  attackPower: 13
-  attackRange: 3
+  maxHP: 310
+  moveSpeed: 5
+  attackPower: 100
+  collisionDamage: 50
+  attackRange: 2
   attackCooldown: 0.5
-  collisionDamage: 8
+  destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
-  <KnockBackedPower>k__BackingField: 5
+  <KnockBackedPower>k__BackingField: 3
   attackAnimSpeed: 0.5
   detectionRange: 40
   baseFOV: 180

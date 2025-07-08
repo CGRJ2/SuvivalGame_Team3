@@ -19,7 +19,7 @@ public class OwnerState_ReturnToOrigin : IMonsterState
 
         monster.view.Animator.SetBool("IsMove", true);
         monster.Agent.SetDestination(stalker.OriginTransform.position);
-        if (monster.Agent.isOnNavMesh && monster.Agent == true)
+        if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;
     }
 

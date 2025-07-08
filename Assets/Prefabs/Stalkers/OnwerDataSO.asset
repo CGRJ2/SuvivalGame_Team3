@@ -22,7 +22,7 @@ MonoBehaviour:
   attackPower: 20
   collisionDamage: 10
   attackRange: 5
-  attackCooldown: 1
+  attackCooldown: 3
   destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
   <KnockBackedPower>k__BackingField: 5
@@ -31,7 +31,7 @@ MonoBehaviour:
   baseFOV: 120
   eyeHeight: 0.5
   targetType: 0
-  actionRadius: 100
+  actionRadius: 200
   WaitTimeMin: 2
   WaitTimeMax: 4
   dropItemPrefab: {fileID: 0}

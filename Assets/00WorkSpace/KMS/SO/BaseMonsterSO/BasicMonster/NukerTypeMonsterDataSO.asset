@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567e6195da59a284f816c47e52c170f8, type: 3}
   m_Name: NukerTypeMonsterDataSO
   m_EditorClassIdentifier: 
+  isInvinvibleMonster: 0
   monsterName: "\uC548\uBC29\uBAAC\uC2A4\uD130"
   monsterType: 0
   monsterSubType: 3
   typeStatData: {fileID: 11400000, guid: 8b0761508dfa1cc428a3298fa92d1f1f, type: 2}
-  maxHP: 180
-  moveSpeed: 2
-  attackPower: 20
-  attackRange: 6
-  attackCooldown: 1
-  collisionDamage: 10
+  maxHP: 430
+  moveSpeed: 4
+  attackPower: 150
+  collisionDamage: 60
+  attackRange: 2.5
+  attackCooldown: 0.5
+  destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
-  <KnockBackedPower>k__BackingField: 5
+  <KnockBackedPower>k__BackingField: 2
   attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 360

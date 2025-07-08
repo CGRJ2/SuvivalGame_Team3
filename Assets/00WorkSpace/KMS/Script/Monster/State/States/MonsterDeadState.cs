@@ -9,6 +9,7 @@ public class MonsterDeadState : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
+        Debug.Log($"[{monster.name}] 상태: Dead 진입");
         this.monster = monster;
         animationPlayed = false;
         monster.Agent.enabled = false;
@@ -21,14 +22,17 @@ public class MonsterDeadState : IMonsterState
                 rigid.isKinematic = true;
                 rigid.detectCollisions = false;
             }
-
-            Debug.Log($"[{monster.name}] 상태: Dead 진입");
         }
         else
         {
             Debug.LogWarning($"[{monster.name}] Dead 상태 진입 요청 → 그러나 isDead == false");
         }
         PlayerManager.Instance.instancePlayer.Status.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_MonsterSlay);
+
+
+        monster.view.Animator.SetBool("IsMove", false);
+
+        monster.Agent.isStopped = true;
     }
 
     public void Execute()
@@ -41,5 +45,8 @@ public class MonsterDeadState : IMonsterState
     {
         // 죽음 상태는 종료되지 않으므로 특별한 처리 없음
         Debug.Log($"[{monster.name}] Dead 상태에서 Exit 호출 (예외적 상황일 수 있음)");
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
     }
 }

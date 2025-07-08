@@ -289,10 +289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fe2271a3c315447aa80e74309b7a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoInitialize: 1
-  data: {fileID: 11400000, guid: 120b4721538185a489af5105e9338ba2, type: 2}
-  destroyDelayTime: 3
   <OriginTransform>k__BackingField: {fileID: 0}
+  data: {fileID: 11400000, guid: 120b4721538185a489af5105e9338ba2, type: 2}
+  isAttackReady: 0
   currentHP: 0
   view: {fileID: 6001796318964884575}
   OnDeadEvent:
@@ -308,11 +307,9 @@ MonoBehaviour:
   rotationSpeed: 7
   attackableLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   rayRadius_Attack: 0
   offset_Attack: {x: 0, y: 0, z: 0}
-  rb: {fileID: 5052811518482397114}
-  stunTime: 0.5
   dropTable: {fileID: 0}
 --- !u!114 &6001796318964884575
 MonoBehaviour:
@@ -374,6 +371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3242847063657100570}
   - component: {fileID: 3415644865841337441}
+  - component: {fileID: 7658118126651586948}
   m_Layer: 0
   m_Name: Avtar
   m_TagString: Untagged
@@ -419,6 +417,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7658118126651586948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172275076127515044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a67698a4e14241c4cb7ccc64b23a2815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 4225581447976432085}
 --- !u!1 &2177363047943117202
 GameObject:
   m_ObjectHideFlags: 0
