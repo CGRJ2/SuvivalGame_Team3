@@ -14,20 +14,24 @@ public class OwnerState_Sleep :  IMonsterState
     public void Enter(BaseMonster monster)
     {
         Debug.Log("수면상태 진입");
-        //monster.GetComponent<MonsterView>()?.PlayMonsterSuspiciousAnimation(); 수면 애니메이션 실행
+        monster.view.Animator.SetBool("IsSleep", true);
     }
 
     public void Execute()
     {
-
+        // 아침이면 다시 일반 모드로
+        if (monster is Stalker_Owner stalker)
+        {
+            if (DailyManager.Instance.currentTimeData.TZ_State.Value == TimeZoneState.Morning)
+                monster.StateMachine.ChangeState(stalker.returnToOrigin);
+        }
     }
 
     public void Exit()
     {
-        // 주인 전용
-        if (monster is Stalker_Owner stalker)
-        {
-            monster.StateMachine.ChangeState(stalker.returnToBed);
-        }
+        //수면 애니메이션 종료
+        monster.view.Animator.SetBool("IsSleep", false);
+
+
     }
 }

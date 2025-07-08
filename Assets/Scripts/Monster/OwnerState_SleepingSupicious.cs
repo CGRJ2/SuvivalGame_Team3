@@ -15,7 +15,7 @@ public class OwnerState_SleepingSupicious : IMonsterState
         this.monster = monster;
         stateTimer = 0f;
 
-        Debug.Log($"[Sleeping SuspiciousState] {monster.name} 수면 중 수상 상태 진입");
+        //Debug.Log($"[Sleeping SuspiciousState] {monster.name} 수면 중 수상 상태 진입");
         monster.SetPerceptionState(MonsterPerceptionState.Suspicious);
         //monster.GetComponent<MonsterView>()?.PlayMonsterSuspiciousAnimation();
     }

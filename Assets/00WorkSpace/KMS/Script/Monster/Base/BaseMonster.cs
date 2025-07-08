@@ -45,10 +45,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     [HideInInspector] public MonsterView view;
     public UnityEvent OnDeadEvent;
 
-    private IMonsterState idleState;
-    private IMonsterState suspiciousState;
-    private IMonsterState searchState;
-    private IMonsterState alertState;
+    public IMonsterState idleState;
+    public IMonsterState suspiciousState;
+    public IMonsterState searchState;
+    public IMonsterState alertState;
 
     // 경계도 상승
     [SerializeField] protected float alertDecayRate = 5f;
