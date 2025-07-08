@@ -46,41 +46,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageDatas: []
   CurrentStageLevel: 0
-  respawnTime_FO: 5
+  respawnTime_FO: 50
   respawnTime_Monster: 5
-  spawnerListGroup_LivingRoom:
-    maxCount_FO: 20
+  spawnerListGroup_TutorialRoom:
+    maxCount_FO: 13
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 10
+    maxCount_Monster: 13
+    spawnerList_Monster: []
+    activateInstances_Monster: []
+  spawnerListGroup_LivingRoom:
+    maxCount_FO: 15
+    spawnerList_FO: []
+    activateInstances_FO: []
+    maxCount_Monster: 42
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_Library:
-    maxCount_FO: 2
+    maxCount_FO: 14
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 2
+    maxCount_Monster: 30
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_DressRoom:
-    maxCount_FO: 2
+    maxCount_FO: 13
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 2
+    maxCount_Monster: 25
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_MasterBedRoom:
-    maxCount_FO: 2
+    maxCount_FO: 20
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 2
+    maxCount_Monster: 42
     spawnerList_Monster: []
     activateInstances_Monster: []
   spawnerListGroup_CatRoom:
-    maxCount_FO: 10
+    maxCount_FO: 15
     spawnerList_FO: []
     activateInstances_FO: []
-    maxCount_Monster: 10
+    maxCount_Monster: 19
     spawnerList_Monster: []
     activateInstances_Monster: []
   nowRegion: 0
