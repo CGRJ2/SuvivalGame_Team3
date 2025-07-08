@@ -31,8 +31,8 @@ public class OwnerAI : BaseMonster
             var player = other.GetComponent<PlayerController>();
             if (player != null)
             {
-                //player.StartCatCutscene(this); // this = Owner ÀÎ½ºÅÏ½º
-                // (¿©±â¼­´Â ¾Æ¹« ÄÆ¾À Á¤º¸ ¾øÀ½)
+                //player.StartCatCutscene(this); // this = Owner ï¿½Î½ï¿½ï¿½Ï½ï¿½
+                // (ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ ï¿½Æ¹ï¿½ ï¿½Æ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
             }
         }
     }
@@ -62,7 +62,7 @@ public class OwnerAI : BaseMonster
 
     public void ApplyPacifyEffect(float duration)
     {
-        // ¿ÜºÎ ÀÚ±Ø(¾ÆÀÌÅÛ µî)À¸·Î ÀÎÇØ ¹«·ÂÈ­ »óÅÂ ÁøÀÔ
+        // ï¿½Üºï¿½ ï¿½Ú±ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         SetPerceptionState(MonsterPerceptionState.Idle);
         StateMachine.ChangeState(new CatPacifiedState(duration));
     }
@@ -73,7 +73,7 @@ public class OwnerAI : BaseMonster
         float minDist = float.MaxValue;
         OwnerDetectionTarget found = OwnerDetectionTarget.None;
 
-        // 1. ¹Ì³¢ ¸ÕÀú Å½»ö
+        // 1. ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ Å½ï¿½ï¿½
         foreach (var bait in baitTransforms)
         {
             if (bait == null) continue;
@@ -85,7 +85,7 @@ public class OwnerAI : BaseMonster
                 found = OwnerDetectionTarget.OwnerBait;
             }
         }
-        // 2. ÇÃ·¹ÀÌ¾î°¡ ´õ °¡±î¿ì¸é µ¤¾î¾¸
+        // 2. ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î¾¸
         if (playerTransform != null)
         {
             float playerDist = Vector3.Distance(transform.position, playerTransform.position);
@@ -117,7 +117,7 @@ public class OwnerAI : BaseMonster
     //{
     //    if (RB == null)
     //    {
-    //        Debug.LogWarning("Rigidbody°¡ ¾ø½À´Ï´Ù!");
+    //        Debug.LogWarning("Rigidbodyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
     //        return;
     //    }
     //
@@ -130,7 +130,7 @@ public class OwnerAI : BaseMonster
     //        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
     //    }
     //
-    //    // OwnerData ÂüÁ¶·Î Ä¿½ºÅÒ ¼Óµµ Àû¿ë
+    //    // OwnerData ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
     //    float moveSpd = (customSpeed > 0f) ? customSpeed : OwnerData.moveSpeed;
     //    Vector3 targetPosition = RB.position + (direction * moveSpd * Time.deltaTime);
     //    RB.MovePosition(targetPosition);
@@ -141,10 +141,10 @@ public class OwnerAI : BaseMonster
         if (respawnPoint != null)
             transform.position = respawnPoint.position;
 
-        perceptionController.ResetAlert();// °æ°èµµ °ª ¸®¼Â
+        perceptionController.ResetAlert();// ï¿½ï¿½èµµ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         SetPerceptionState(MonsterPerceptionState.Idle);
         stateMachine.ChangeState(new CatIdleState());
-        // È¤Àº ³×ºñ¸Þ½Ã °æ·Î ÀÌµ¿, »óÅÂ º¯°æ µî
+        // È¤ï¿½ï¿½ ï¿½×ºï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ìµï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     }
 
 
@@ -154,13 +154,13 @@ public class OwnerAI : BaseMonster
     }
     private void OnTimeZoneChanged(TimeZoneState newState)
     {
-        Debug.Log("ÁÖÀÎ ½Ã°£´ë º¯°æµÊ: " + newState);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½: " + newState);
 
         if (newState == TimeZoneState.Night)
         {
             MoveToRespawn();
             StateMachine.ChangeState(new OwnerSleepState());
-            Debug.Log("[Owner] , ¼ö¸é »óÅÂ ÁøÀÔ");
+            Debug.Log("[Owner] , ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
     }
     public override void TakeDamage(float damage, Transform attackerTransform)
@@ -174,7 +174,7 @@ public class OwnerAI : BaseMonster
     {
         switch (cutsceneType)
         {
-            case 0: view.Animator.SetTrigger("OwnerCutsceneA"); break; // ÄÆ¾À
+            case 0: view.Animator.SetTrigger("OwnerCutsceneA"); break; // ï¿½Æ¾ï¿½
         }
     }
 }
