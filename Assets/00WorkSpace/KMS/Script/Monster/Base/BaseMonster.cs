@@ -11,19 +11,21 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     // 이 값들을 설정하면 매니저 없이도 프리팹만으로 동작 테스트 가능
     // 초기화 시점: Start()
     // 사용 조건: autoInitialize == true && data == null
-    [Header("자체 초기화용")]
-    [SerializeField] private bool autoInitialize = true; // 인스펙터에서 제어 가능
+    
+    [field: Header("Origin 위치")]
+    [field : SerializeField] public Transform OriginTransform { get; set; }
 
     [Header("몬스터 데이터")]
     public BaseMonsterData data;
-    [Header("죽음상태 이후 파괴까지 걸리는 시간")]
-    public float destroyDelayTime = 1;
+    
+
+    // 공격 준비 중
+    public bool isAttackReady;
 
     protected UnityEngine.AI.NavMeshAgent agent;
     public NavMeshAgent Agent => agent;
 
     public Action DeactiveAction { get; set; }
-    public Transform OriginTransform { get; set; }
 
     [SerializeField] protected float currentHP;
     protected float attackPower;
@@ -133,11 +135,12 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         perceptionController.OnPerceptionStateChanged += ChangeStateAccordingToPerception;
         perceptionController.ForceSetState(MonsterPerceptionState.Idle);
+
+        // 임시
+        if (OriginTransform != null) OriginTransform = GameManager.Instance.transform;
     }
     protected virtual void Start()
     {
-        if (OriginTransform == null) OriginTransform = transform;
-
         // data가 null이면 경고
         if (data == null)
         {
@@ -207,6 +210,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         else this.playerInRange = null;
     }
 
+
+    // 몬스터 공격 함수
     public void TryAttack()
     {
         if (target == null) return;
@@ -216,12 +221,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
             var damageable = target.GetComponent<IDamagable>();
             if (damageable != null)
             {
+                // 몬스터 공격 실행
                 damageable.TakeDamage(attackPower, transform);
 
                 if (view != null && view.Animator != null)
                     view.Animator.SetFloat("AttackSpeed", data.AttackAnimSpeed);
 
-                view.PlayMonsterAttackAnimation();
+                //view.PlayMonsterAttackAnimation();
             }
         }
     }
@@ -237,7 +243,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         OnDeadEvent?.Invoke();
 
         stateMachine.ChangeState(new MonsterDeadState());
-        StartCoroutine(DestroyAfterDelay(destroyDelayTime));
+        StartCoroutine(DestroyAfterDelay(data.destroyDelayTime));
     }
     private IEnumerator DestroyAfterDelay(float seconds)
     {
@@ -260,7 +266,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         currentHP = data.MaxHP;
         attackPower = data.AttackPower;
-        agent.speed = data.MoveSpeed;
+        //agent.speed = data.MoveSpeed;
 
         attackCooldown = data.AttackCooldown;
         detectionRange = data.DetectionRange;
@@ -397,8 +403,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ResetAlert();
     }
 
-    protected void OnDrawGizmosSelected()
+    protected void OnDrawGizmos()
     {
+        Vector3 originPosition = Vector3.zero;
+        if (OriginTransform != null) originPosition = OriginTransform.position;
+
         if (data == null) return;
 
         // 감지 반경
@@ -408,7 +417,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         // 행동 반경 (originPosition 중심)
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(OriginTransform.position, data.ActionRadius);
+        Gizmos.DrawWireSphere(originPosition, data.ActionRadius);
 
         // 시야 
         Vector3 forward = transform.forward;
@@ -421,7 +430,13 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         /// 공격 범위
         // Gizmos 색상 지정
-        Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        //if (stateMachine.CurrentState = stateFactory.GetAttackState())
+        if (isAttackReady)
+            Gizmos.color = new Color(1f, 0f, 0f, 0.3f); // 붉은색 투명
+        else
+            Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // 붉은색 투명
+
+        if (view == null) return;
         Vector3 origin_Attack = view.avatar.transform.position + view.avatar.transform.forward * offset_Attack.z + view.avatar.transform.up * offset_Attack.y + view.avatar.transform.right * offset_Attack.x;
         Gizmos.DrawSphere(origin_Attack, rayRadius_Attack);
     }
@@ -430,6 +445,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     public virtual void TakeDamage(float damage, Transform attackerTransform)
     {
+        Debug.Log("공격받음");
+        
+        if (data.isInvinvibleMonster) return;
+        
         StartCoroutine(PauseAgent(data.HitStunDuration));
 
         currentHP -= damage;
@@ -442,7 +461,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
             Die();
     }
 
-    IEnumerator PauseAgent(float pauseTime)
+    public IEnumerator PauseAgent(float pauseTime)
     {
         agent.isStopped = true;
         rb.isKinematic = false;

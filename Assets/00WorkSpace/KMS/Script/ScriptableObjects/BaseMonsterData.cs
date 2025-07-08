@@ -11,6 +11,9 @@ public enum MonsterTargetType { Player, Ally, None }
 [CreateAssetMenu(menuName = "Monster/MonsterData")]
 public class BaseMonsterData : ScriptableObject
 {
+    [Header("무적몬스터인지 아닌지 여부")]
+    public bool isInvinvibleMonster;
+
     [Header("기본 정보")]
     public string monsterName;
     public MonsterType monsterType;
@@ -20,12 +23,19 @@ public class BaseMonsterData : ScriptableObject
     [Header("기본 스탯")]
     [SerializeField] private float maxHP;
     [SerializeField] private float moveSpeed;
+
+    [Header("공격 및 충돌 데미지")]
     [SerializeField] private float attackPower;
-    [SerializeField] private float attackRange;
-    [SerializeField] private float attackCooldown;
     [SerializeField] private int collisionDamage;
 
-    [field: Header("넉백 관련")]
+    [Header("공격 범위 및 쿨타임")]
+    [SerializeField] private float attackRange;
+    [SerializeField] private float attackCooldown;
+
+    [Header("죽음상태 이후 파괴까지 걸리는 시간")]
+    public float destroyDelayTime = 1;
+
+    [field: Header("넉백 관련 수치 설정(경직시간 & 넉백 힘)")]
     [field: SerializeField] public float HitStunDuration { get; private set; }
     [field: SerializeField] public float KnockBackedPower { get; private set; }
 

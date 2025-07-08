@@ -118,7 +118,6 @@ public class PlayerStatus : IDisposable
     public void BodyPartsInit()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        Debug.Log(UIManager.Instance.inventoryGroup);
         Panel_PlayerStatus playerStatusUI = UIManager.Instance.inventoryGroup.panel_PlayerStatus;
         List<BodyPart> tempBodyParts = new List<BodyPart>();
 

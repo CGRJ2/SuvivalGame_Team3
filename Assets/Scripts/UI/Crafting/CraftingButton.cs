@@ -24,9 +24,10 @@ public class CraftingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         // 캠프 레벨3 버프 적용
         if (BaseCampManager.Instance.baseCampData.CurrentCampLevel.Value > 2)
-            finalCraftingTime = craftingTime / 2;
-        else
-            finalCraftingTime = craftingTime;
+            finalCraftingTime = craftingTime * 0.5f;
+        // 캠프 레벨2 버프
+        else if (BaseCampManager.Instance.baseCampData.CurrentCampLevel.Value > 1)
+            finalCraftingTime = craftingTime * 0.75f;
 
         while (pressedTime < finalCraftingTime)
             {
