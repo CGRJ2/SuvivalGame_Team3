@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OwnerState_ReturnToBed : IMonsterState
+public class OwnerState_ReturnToOrigin : IMonsterState
 {
     protected BaseMonster monster;
     private Stalker_Owner stalker;
 
-    public OwnerState_ReturnToBed(BaseMonster monster)
+    public OwnerState_ReturnToOrigin(BaseMonster monster)
     {
         this.monster = monster;
         stalker = monster as Stalker_Owner;
@@ -15,11 +15,10 @@ public class OwnerState_ReturnToBed : IMonsterState
 
     public void Enter(BaseMonster monster)
     {
-        Debug.Log("잠자러 돌아가는 중");
+        Debug.Log("초기화 장소로 돌아가기");
 
         monster.view.Animator.SetBool("IsMove", true);
-
-        monster.Agent.SetDestination(stalker.bedTransform.position);
+        monster.Agent.SetDestination(stalker.OriginTransform.position);
         if (monster.Agent.isOnNavMesh && monster.Agent == true)
             monster.Agent.isStopped = false;
     }
@@ -31,8 +30,7 @@ public class OwnerState_ReturnToBed : IMonsterState
         //Debug.Log($"남은거리 : {remainedDistance}");
 
         if (remainedDistance <= monster.Agent.stoppingDistance)
-            monster.StateMachine.ChangeState(stalker.sleepState);
-
+            monster.StateMachine.ChangeState(stalker.idleState);
     }
 
     public void Exit()
