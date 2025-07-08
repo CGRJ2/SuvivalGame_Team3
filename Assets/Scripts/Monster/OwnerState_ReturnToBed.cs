@@ -20,7 +20,7 @@ public class OwnerState_ReturnToBed : IMonsterState
         monster.view.Animator.SetBool("IsMove", true);
 
         monster.Agent.SetDestination(stalker.bedTransform.position);
-        if (monster.Agent.isOnNavMesh && monster.Agent == true)
+        if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;
     }
 

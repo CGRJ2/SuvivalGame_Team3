@@ -44,7 +44,7 @@ public class MonsterIdleState : IMonsterState
         monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
         
-        //Debug.Log("Idle 상태 진입");
+        Debug.Log("Idle 상태 진입");
     }
 
     public virtual void Execute()
