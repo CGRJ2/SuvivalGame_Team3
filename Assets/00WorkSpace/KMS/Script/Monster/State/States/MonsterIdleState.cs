@@ -44,7 +44,7 @@ public class MonsterIdleState : IMonsterState
         monster.ResetMonsterHP();
         monster.GetComponent<MonsterView>()?.PlayMonsterIdleAnimation();
         
-        Debug.Log("Idle 상태 진입");
+        //Debug.Log("Idle 상태 진입");
     }
 
     public virtual void Execute()
@@ -62,7 +62,7 @@ public class MonsterIdleState : IMonsterState
         switch (wanderState)
         {
             case WanderState.Idle:
-                Debug.Log("Idle-다음 이동위치 정하는 중");
+                //Debug.Log("Idle-다음 이동위치 정하는 중");
 
                 SetRandomDestination();
                 
@@ -72,9 +72,9 @@ public class MonsterIdleState : IMonsterState
             case WanderState.Moving:
                 if (monster.Agent.isOnNavMesh)
                     monster.Agent.isStopped = false;
-                Debug.Log("Idle-랜덤이동 상태");
+                //Debug.Log("Idle-랜덤이동 상태");
                 monster.view.Animator.SetBool("IsMove", true);
-                Debug.Log($"남은 거리 {monster.Agent.remainingDistance}, 기준 거리 {monster.Agent.stoppingDistance}");
+                //Debug.Log($"남은 거리 {monster.Agent.remainingDistance}, 기준 거리 {monster.Agent.stoppingDistance}");
                 if (monster.Agent.remainingDistance <= monster.Agent.stoppingDistance && !monster.Agent.pathPending)
                 {
                     wanderState = WanderState.Waiting;
@@ -84,7 +84,7 @@ public class MonsterIdleState : IMonsterState
 
             case WanderState.Waiting:
 
-                Debug.Log("Idle-정지 상태");
+                //Debug.Log("Idle-정지 상태");
                 waitTimer -= Time.deltaTime;
                 if (waitTimer <= 0f)
                 {
