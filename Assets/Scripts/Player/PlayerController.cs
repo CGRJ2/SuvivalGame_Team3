@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public bool isSprintJump;
     public bool isSprinting;
 
+
     public bool IsCurrentState(PlayerStateTypes state)
     {
         return stateMachine.CurState == stateMachine.stateDic[state];
@@ -461,6 +462,7 @@ public class PlayerController : MonoBehaviour, IDamagable
             // => Attack 조건 : 1. 입력값 존재 
             if (isAttackInput)
             {
+                Debug.Log("공격입력값 때문에 일로 들어옴");
                 // 2. 일반 & 기본 이동 상태일 때 가능
                 if ( IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move) 
                     || IsCurrentState(PlayerStateTypes.Sprint))
@@ -473,9 +475,12 @@ public class PlayerController : MonoBehaviour, IDamagable
                     if (!Cc.GetIsHeadTouchedState())
                         stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
                 }
-                else
+                // 공격 상태일 때 공격 계속 누르면 연속공격 가능  (일반 상태 or 무브 상태로)
+                else if (IsCurrentState(PlayerStateTypes.Attack))
                 {
-                    return;
+                    if (stateMachine.LastState == stateMachine.stateDic[PlayerStateTypes.Move])
+                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
+                    else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
                 }
             }
 
@@ -633,7 +638,6 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void Attack()
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
-        Debug.Log("공격함!");
         if (damagables.Length < 1) return;
 
         float finalDamage = Status.Damage;

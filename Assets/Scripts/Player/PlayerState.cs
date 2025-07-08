@@ -19,6 +19,7 @@ public class PlayerState : BaseState
 
     public override void Exit()
     {
+        pc.stateMachine.LastState = this;
     }
 
     public override void Update()
@@ -47,6 +48,7 @@ public class Player_Idle : PlayerState
 
     public override void Exit()
     {
+        
         base.Exit();
     }
 }
@@ -190,12 +192,14 @@ public class Player_Attack : PlayerState
     public override void Enter()
     {
         base.Enter();
+        //Debug.LogError("공격 상태 진입");
         pc.View.animator.SetBool("IsAttack", true);
     }
 
     public override void Exit()
     {
         base.Exit();
+        //Debug.LogError("공격 상태 나감");
         pc.View.animator.SetBool("IsAttack", false);
     }
     public override void Update()
