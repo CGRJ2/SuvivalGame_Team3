@@ -6,6 +6,7 @@ public class BossMonster : BaseMonster
     private BossMonsterDataSO bossData;
     public BossAttackPatternSO bossAttackPatternSO;
     public BossAttackPattern currentPattern;
+    public BossAttackPattern counterPattern;
 
     private float prevNotifiedHpPercent = 1f; // 처음엔 100%
     private int batteryChargePerSection = 20; // 10%마다 충전할 양
@@ -90,10 +91,8 @@ public class BossMonster : BaseMonster
         if (target != null)
         {
             var dmg = target.GetComponent<IDamagable>();
-            var kb = target.GetComponent<IKnockbackable>();
             Vector3 direction = (target.position - transform.position).normalized;
             if (dmg != null) dmg.TakeDamage(damage, transform);
-            if (kb != null) kb.ApplyKnockback(direction, knockback);
         }
         view.PlayMonsterPhase2AttackAnimation();
     }
@@ -120,17 +119,14 @@ public class BossMonster : BaseMonster
         if (target != null)
         {
             var dmg = target.GetComponent<IDamagable>();
-            var kb = target.GetComponent<IKnockbackable>();
             Vector3 direction = (target.position - transform.position).normalized;
             if (dmg != null) dmg.TakeDamage(damage, transform);
-            if (kb != null) kb.ApplyKnockback(direction, knockback);
         }
         view.PlayMonsterPhase3AttackAnimation();
     }
     public override void ResetMonsterHP()
     {
         currentHP = data.MaxHP;
-        //view.PlayBossHealEffect(); // 회복 연출이 있으면 호출
         Debug.Log("[Boss] HP가 최대치로 회복됨");
     }
 
@@ -156,14 +152,8 @@ public class BossMonster : BaseMonster
         foreach (var hit in hits)
         {
             var dmg = hit.GetComponent<IDamagable>();
-            var kb = hit.GetComponent<IKnockbackable>();
             if (dmg != null)
                 dmg.TakeDamage((int)pattern.damage, transform);
-            if (kb != null)
-            {
-                Vector3 dir = (hit.transform.position - transform.position).normalized;
-                kb.ApplyKnockback(dir, pattern.range);
-            }
         }
     }
 
@@ -191,11 +181,8 @@ public class BossMonster : BaseMonster
         foreach (var hit in hits)
         {
             var dmg = hit.GetComponent<IDamagable>();
-            var kb = hit.GetComponent<IKnockbackable>();
             if (dmg != null)
                 dmg.TakeDamage((int)pattern.damage, transform);
-            if (kb != null)
-                kb.ApplyKnockback((hit.transform.position - center).normalized, pattern.range);
         }
     }
 
@@ -215,11 +202,8 @@ public class BossMonster : BaseMonster
             if (hitAngle <= angle)
             {
                 var dmg = hit.GetComponent<IDamagable>();
-                var kb = hit.GetComponent<IKnockbackable>();
                 if (dmg != null)
                     dmg.TakeDamage((int)pattern.damage, transform);
-                if (kb != null)
-                    kb.ApplyKnockback(dir, pattern.range);
             }
         }
     }
@@ -246,7 +230,11 @@ public class BossMonster : BaseMonster
     {
         if (isCounterWindow)
         {
-            Phase3TryAttack();
+            ApplyBoxDamage(counterPattern);
+        }
+        else
+        {
+            
         }
     }
 

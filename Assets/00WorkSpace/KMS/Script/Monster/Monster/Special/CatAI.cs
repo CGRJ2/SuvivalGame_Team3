@@ -277,8 +277,8 @@ public class CatAI : BaseMonster
     {
         switch (cutsceneType)
         {
-            case 0: animator.SetTrigger("CatCutsceneA"); break; // ÄÆ¾À 1
-            case 1: animator.SetTrigger("CatCutsceneB"); break; // ÄÆ¾À 2
+            case 0: view.Animator.SetTrigger("CatCutsceneA"); break; // ÄÆ¾À 1
+            case 1: view.Animator.SetTrigger("CatCutsceneB"); break; // ÄÆ¾À 2
         }
     }
 }

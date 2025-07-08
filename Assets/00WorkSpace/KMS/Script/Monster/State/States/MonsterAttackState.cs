@@ -21,18 +21,28 @@ public class MonsterAttackState : IMonsterState
 
     public void Execute()
     {
-        Debug.Log($"{monster.name}공격 상태 진입");
+        //Debug.Log($"{monster.name}공격 상태 진입");
         // 공격 범위 체크
         monster.UpdateAttackRange();
 
         if (monster == null || monster.IsDead) return;
 
+        // 플레이어가 공격 범위에 없으면 다시 움직임
         if (monster.playerInRange == null)
         {
             var chaseState = monster.StateFactory.GetStateForPerception(MonsterPerceptionState.Alert);
             monster.StateMachine.ChangeState(chaseState);
+            
+            // 몬스터 다시 움직임 활성화
+            if (monster.Agent.isOnNavMesh) monster.Agent.isStopped = false;
+            monster.isAttackReady = false; // 공격 대기상태 해제
             return;
         }
+
+        // 범위 안에 플레이어가 있다면 일시 정지 이후 선딜 시간동안 대기
+        // 에이전트 정지
+        monster.Agent.isStopped = true;
+        monster.isAttackReady = true; // 공격 대기상태(선딜)
 
         timer += Time.deltaTime;
         if (timer >= attackCooldown)

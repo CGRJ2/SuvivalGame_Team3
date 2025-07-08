@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public bool jumpCooling;
     public bool isSprintJump;
-
+    public bool isSprinting;
 
     public bool IsCurrentState(PlayerStateTypes state)
     {
@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         }
         ///
         /////////////////////////////
-        Debug.Log(isSprintJump);
 
         HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
 
@@ -436,9 +435,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 바닥 체크가 없어지면 Fall상태로 전환
         if (!Cc.GetIsGroundState())
         {
-            if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
-            else isSprintJump = false;
-
             stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]); return;
         }
 
@@ -446,7 +442,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall))
         {
             // 점프 진행중일 때 (Idle로 안돌아감)
-            if (jumpCooling) return;
+            if (IsCurrentState(PlayerStateTypes.Jump)) return;
 
             // 바닥 체크되면 일반 상태or이동 상태 전환
 
@@ -466,8 +462,11 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (isAttackInput)
             {
                 // 2. 일반 & 기본 이동 상태일 때 가능
-                if ((IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)))
+                if ( IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move) 
+                    || IsCurrentState(PlayerStateTypes.Sprint))
+                {
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
+                }
                 // 3. 앉음 상태 & 머리위에 장애물이 막지 않은 상태일 때 가능
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
@@ -490,13 +489,13 @@ public class PlayerController : MonoBehaviour, IDamagable
                 else if (IsCurrentState(PlayerStateTypes.Crouch))
                 {
                     if (!Cc.GetIsHeadTouchedState())
+                    {
                         stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
+                        isSprintJump = false;
+                    }
                 }
                 else
                 {
-                    if (IsCurrentState(PlayerStateTypes.Sprint)) isSprintJump = true;
-                    else isSprintJump = false;
-
                     stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
                 }
             }
@@ -556,8 +555,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         float moveSpeed;
         if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if ( IsCurrentState(PlayerStateTypes.Sprint) || 
-            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprintJump) ) 
+        else if ( isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
+            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ ) 
             moveSpeed = Status.SprintSpeed;
         else moveSpeed = Status.MoveSpeed;
 
@@ -634,7 +633,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void Attack()
     {
         IDamagable[] damagables = Cc.GetDamagablesInRange();
-
+        Debug.Log("공격함!");
         if (damagables.Length < 1) return;
 
         float finalDamage = Status.Damage;
@@ -646,6 +645,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         foreach (IDamagable damagable in damagables)
         {
+            
             damagable.TakeDamage(finalDamage, transform);
         }
     }
@@ -751,9 +751,10 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (onHandInstance != item.instancePrefab) Destroy(onHandInstance);
 
             onHandInstance = Instantiate(item.instancePrefab, handTransform);
+            Debug.Log("소환");
+            onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
             Status.onHandItem = item;
-
 
             // 아이템 장착 효과
             if (item is Item_Weapon weapon)

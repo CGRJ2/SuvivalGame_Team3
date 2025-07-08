@@ -4,10 +4,8 @@ using UnityEngine.AI;
 
 public class OwnerAI : BaseMonster
 {
-
     public enum OwnerDetectionTarget { None, OwnerBait, Player }
-    public OwnerMonsterSO OwnerData => data as OwnerMonsterSO;
-    public bool IsInvincible { get; private set; } = true;
+    public BaseMonsterData OwnerData;
 
     private List<Transform> baitTransforms = new List<Transform>();
     private Transform playerTransform;
@@ -20,11 +18,12 @@ public class OwnerAI : BaseMonster
     protected override void Start()
     {
         base.Start();
-        IsInvincible = true;
+        //StateMachine.ChangeState(StateFactory.CreateIdleState());
         PlayerController pc = PlayerManager.Instance.instancePlayer;
         playerTransform = pc.transform;
-        RefreshBaitList();
+        //RefreshBaitList();
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -99,13 +98,13 @@ public class OwnerAI : BaseMonster
         }
         return found;
     }
-    public void RefreshBaitList()
+    /*public void RefreshBaitList()
     {
         baitTransforms.Clear();
         var baits = GameObject.FindGameObjectsWithTag("OwnerBait");
         foreach (var bait in baits)
             baitTransforms.Add(bait.transform);
-    }
+    }*/
     //public void ThrowPlayer(Vector3 direction, float force)
     //{
     //    var player = GetTarget()?.GetComponent<IThrowable>();
@@ -148,12 +147,8 @@ public class OwnerAI : BaseMonster
         // È¤Àº ³×ºñ¸Þ½Ã °æ·Î ÀÌµ¿, »óÅÂ º¯°æ µî
     }
 
-    private void OnEnable()
-    {
-        DailyManager.Instance.currentTimeData.TZ_State.Subscribe(OnTimeZoneChanged);
-    }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         DailyManager.Instance.currentTimeData.TZ_State.Unsubscribe(OnTimeZoneChanged);
     }
@@ -179,7 +174,7 @@ public class OwnerAI : BaseMonster
     {
         switch (cutsceneType)
         {
-            case 0: animator.SetTrigger("OwnerCutsceneA"); break; // ÄÆ¾À
+            case 0: view.Animator.SetTrigger("OwnerCutsceneA"); break; // ÄÆ¾À
         }
     }
 }
