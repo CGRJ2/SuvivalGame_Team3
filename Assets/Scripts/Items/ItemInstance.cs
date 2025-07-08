@@ -36,8 +36,8 @@ public class ItemInstance : InteractableBase
     IEnumerator AfterSpawnRoutine()
     {
         yield return new WaitForSeconds(rigidDeactiveTime);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().isKinematic = true;
+        GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+        GetComponentInChildren<Rigidbody>().isKinematic = true;
         yield return new WaitForSeconds(destroyTime);
         // 임시 ==> 오브젝트풀 패턴으로 수정 필요
         Destroy(gameObject);

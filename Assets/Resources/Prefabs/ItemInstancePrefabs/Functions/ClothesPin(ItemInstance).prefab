@@ -74,7 +74,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5265809504441931457}
-  - component: {fileID: 2362804819686638000}
   - component: {fileID: 2255851703774493026}
   m_Layer: 19
   m_Name: Balloon_Ghost
@@ -99,23 +98,6 @@ Transform:
   - {fileID: 6251422267028657479}
   m_Father: {fileID: 2657892774736262744}
   m_LocalEulerAnglesHint: {x: 0.063, y: 1.903, z: -1.908}
---- !u!114 &2362804819686638000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206543837980664899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d757734813818946bc7566d99229a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  count: 0
-  rigidDeactiveTime: 0
-  destroyTime: 0
-  isUsed: 0
 --- !u!65 &2255851703774493026
 BoxCollider:
   m_ObjectHideFlags: 0

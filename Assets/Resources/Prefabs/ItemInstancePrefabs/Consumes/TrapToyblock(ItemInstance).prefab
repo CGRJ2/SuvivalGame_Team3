@@ -111,7 +111,6 @@ GameObject:
   - component: {fileID: 6711108143737871662}
   - component: {fileID: 3230112758052983135}
   - component: {fileID: 4644422674364984221}
-  - component: {fileID: 2124243606568435927}
   - component: {fileID: 2651851043257589584}
   m_Layer: 19
   m_Name: Yellow_Brick_0703080226_texture
@@ -185,23 +184,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2124243606568435927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4482728220066397640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d757734813818946bc7566d99229a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  count: 0
-  rigidDeactiveTime: 0
-  destroyTime: 0
-  isUsed: 0
 --- !u!65 &2651851043257589584
 BoxCollider:
   m_ObjectHideFlags: 0

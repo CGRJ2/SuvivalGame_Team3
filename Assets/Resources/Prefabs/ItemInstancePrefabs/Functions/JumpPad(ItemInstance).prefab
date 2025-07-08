@@ -110,7 +110,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1176455831431316954}
   - component: {fileID: 5576112023414600286}
-  - component: {fileID: 8310426331034587986}
   - component: {fileID: 8307835742971014904}
   m_Layer: 19
   m_Name: jump trap
@@ -157,23 +156,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8310426331034587986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5259755909890481699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d757734813818946bc7566d99229a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  count: 0
-  rigidDeactiveTime: 0
-  destroyTime: 0
-  isUsed: 0
 --- !u!65 &8307835742971014904
 BoxCollider:
   m_ObjectHideFlags: 0
