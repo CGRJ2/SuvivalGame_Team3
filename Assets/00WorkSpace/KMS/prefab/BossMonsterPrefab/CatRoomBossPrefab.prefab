@@ -142,7 +142,9 @@ MonoBehaviour:
     m_Bits: 8
   rayRadius_Attack: 1
   offset_Attack: {x: 0, y: 1, z: 0.5}
-  dropTable: {fileID: 0}
+  dropTableList:
+  - {fileID: 11400000, guid: c8bd88c894de75249b548f2eb6965252, type: 2}
+  - {fileID: 11400000, guid: 3a0e9bd9dd506cb4eb37524aa8cd3665, type: 2}
 --- !u!114 &7780682367673935598
 MonoBehaviour:
   m_ObjectHideFlags: 0
