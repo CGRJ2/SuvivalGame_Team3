@@ -17,6 +17,11 @@ public class MonsterAttackState : IMonsterState
         monster.SetPerceptionState(MonsterPerceptionState.Combat); // 전투 상태 설정
 
         Debug.Log($"[{monster.name}] 상태: Attack 진입");
+
+        monster.view.Animator.SetBool("IsMove", false);
+        monster.view.Animator.SetTrigger("Attack");
+
+        monster.Agent.isStopped = true;
     }
 
     public void Execute()
@@ -54,7 +59,10 @@ public class MonsterAttackState : IMonsterState
 
     public void Exit()
     {
-        //Debug.Log($"[{monster.name}] 상태: Attack 종료");
+        Debug.Log($"[{monster.name}] 상태: Attack 종료");
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
     }
 }
 

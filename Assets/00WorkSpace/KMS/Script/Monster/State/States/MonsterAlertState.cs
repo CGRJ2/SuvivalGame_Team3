@@ -11,7 +11,12 @@ public class MonsterAlertState : IMonsterState
     {
         this.monster = monster;
         monster.GetComponent<MonsterView>()?.PlayMonsterRunAnimation();
-        //Debug.Log($"[{monster.name}] 상태: Alert 진입");
+        
+        Debug.Log($"[{monster.name}] 상태: Alert 진입");
+        monster.view.Animator.SetBool("IsMove", true);
+        if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;
+
     }
 
     public void Execute()
@@ -57,6 +62,9 @@ public class MonsterAlertState : IMonsterState
 
     public void Exit()
     {
-        //Debug.Log($"[{monster.name}] Alert 상태 종료");
+        Debug.Log($"[{monster.name}] Alert 상태 종료");
+        monster.view.Animator.SetBool("IsMove", false);
+
+        monster.Agent.isStopped = true;
     }
 }

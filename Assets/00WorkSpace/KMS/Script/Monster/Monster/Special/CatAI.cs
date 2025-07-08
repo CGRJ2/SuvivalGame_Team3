@@ -269,7 +269,7 @@ public class CatAI : BaseMonster
     {
 
     }
-    protected override void Die()
+    protected override void Dead()
     {
     }
 
