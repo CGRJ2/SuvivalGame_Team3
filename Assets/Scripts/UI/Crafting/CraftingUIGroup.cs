@@ -70,7 +70,6 @@ public class CraftingUIGroup : MonoBehaviour
         OpenPanel_CraftRequires();
     }
 
-    // 제작하기 (제작하기 버튼에서 참조)
     public void StartCrafting()
     {
         if (currentSelectedRecipe != null)

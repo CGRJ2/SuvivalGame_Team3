@@ -75,7 +75,6 @@ public class RecipeRequiresPanel : MonoBehaviour
             // 인벤토리 내 해당 조건 아이템 보유 수량
             InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Status.inventory;
             int owned = playerInventory.model.GetOwnedItemCount(requiredItem);
-            Debug.Log($"{requiredItem.itemName}의 현재 인식 개수 : {owned}");
 
             // 재료 슬롯에 현재 재료 조건 데이터 넣어주기
             requiresSlotViews[i].requiredItemData = requiredItem;
@@ -100,7 +99,6 @@ public class RecipeRequiresPanel : MonoBehaviour
             }
         }
 
-        Debug.Log(canCraft);
         return canCraft;
     }
 }
