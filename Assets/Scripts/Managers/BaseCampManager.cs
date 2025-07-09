@@ -25,7 +25,7 @@ public class BaseCampManager : Singleton<BaseCampManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        /*if (Input.GetKeyDown(KeyCode.F))
         {
             PlayerManager.Instance.PlayerFaint(-99);
         }
@@ -37,7 +37,7 @@ public class BaseCampManager : Singleton<BaseCampManager>
         else if (Input.GetKeyDown(KeyCode.Q))
         {
             UseTempCampItem();
-        }
+        }*/
     }
 
 

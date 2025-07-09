@@ -815,7 +815,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8035057967390549312}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: c0730f876a6e6f5409ba910b8512c7e1, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 8242d247159ec462794ba075ca8c938e, type: 3}
   m_Controller: {fileID: 9100000, guid: 0256a98ee97a1f443a674fa04d1d50db, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -885,7 +885,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8612402096748662634}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -970,12 +970,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   alertDecayRate: 5
-  cooldownTimer: 0
   alertCooldownThreshold: 2
   alertThreshold_Low: 20
   alertThreshold_Medium: 50
   alertThreshold_High: 80
-  actionRadius: 20
   rotationSpeed: 7
   attackableLayerMask:
     serializedVersion: 2

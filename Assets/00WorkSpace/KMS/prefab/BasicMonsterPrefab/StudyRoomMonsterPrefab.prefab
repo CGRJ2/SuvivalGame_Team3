@@ -130,19 +130,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   alertDecayRate: 5
-  cooldownTimer: 0
   alertCooldownThreshold: 2
   alertThreshold_Low: 20
   alertThreshold_Medium: 50
   alertThreshold_High: 80
-  actionRadius: 20
   rotationSpeed: 7
   attackableLayerMask:
     serializedVersion: 2
     m_Bits: 8
   rayRadius_Attack: 1
   offset_Attack: {x: 0, y: 0, z: 0.5}
-  dropTable: {fileID: 0}
+  dropTableList: []
 --- !u!114 &6697909993165368954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,7 +212,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5334285999106487671, guid: 7cada774f0f604e4597eca90e6b18696, type: 3}
+  - {fileID: 2100000, guid: d4e83088e15097f439d42e20c9289aa0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

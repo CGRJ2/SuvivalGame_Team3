@@ -131,8 +131,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8884237235530263013}
   - {fileID: 1875270885460326810}
+  - {fileID: 8884237235530263013}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5470467142282617206
@@ -143,7 +143,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 913193183192610818}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -228,12 +228,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   alertDecayRate: 5
-  cooldownTimer: 0
   alertCooldownThreshold: 2
   alertThreshold_Low: 20
   alertThreshold_Medium: 50
   alertThreshold_High: 80
-  actionRadius: 20
   rotationSpeed: 7
   attackableLayerMask:
     serializedVersion: 2
@@ -304,7 +302,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1838138461323221230}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 41b534ea5329d8347a36f1efeb223f52, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 9981a4f80fb95b04fb9d36e07baa17cb, type: 3}
   m_Controller: {fileID: 9100000, guid: 125dc4bfc37c1df4c994cf5cc5dcccda, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -444,7 +442,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c0fa344633747f9439041f9b0cc322de, type: 2}
+  - {fileID: -3793690528947505649, guid: d8d8ceb31df39534caf843e3057839a8, type: 3}
   - {fileID: 2100000, guid: c12dba4db4b10a34ea85b03c5b9263e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

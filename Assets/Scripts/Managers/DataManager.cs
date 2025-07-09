@@ -14,7 +14,7 @@ public class DataManager : Singleton<DataManager>
 
     /// <summary>
     /// Å×½ºÆ®
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -24,7 +24,7 @@ public class DataManager : Singleton<DataManager>
         {
             LoadData(0);
         }
-    }
+    }*/
     /// </summary>
 
 

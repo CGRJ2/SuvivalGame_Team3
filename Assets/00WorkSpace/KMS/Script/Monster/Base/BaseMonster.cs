@@ -448,24 +448,25 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         if (data.isInvinvibleMonster) return;
 
-        StartCoroutine(PauseAgent(data.HitStunDuration));
+        StartCoroutine(DamagedRoutine(data.HitStunDuration, attackerTransform));
 
         currentHP -= damage;
         //view.PlayMonsterHitEffect();
         //view.PlayMonsterHitAnimation();
 
-        view.Animator.SetTrigger("Damaged");
+        
 
-        ApplyKnockback(attackerTransform, data.KnockBackedPower);
 
         if (currentHP <= 0)
             Dead();
     }
 
-    public IEnumerator PauseAgent(float pauseTime)
+    public IEnumerator DamagedRoutine(float pauseTime, Transform attackerTransform)
     {
+        view.Animator.SetTrigger("Damaged");
         agent.isStopped = true;
         rb.isKinematic = false;
+        ApplyKnockback(attackerTransform, data.KnockBackedPower);
         yield return new WaitForSeconds(pauseTime);
         if (agent.isOnNavMesh) agent.isStopped = false;
         rb.isKinematic = true;

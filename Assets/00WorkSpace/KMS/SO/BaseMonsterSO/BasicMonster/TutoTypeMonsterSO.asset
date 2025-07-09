@@ -25,7 +25,7 @@ MonoBehaviour:
   attackCooldown: 0.5
   destroyDelayTime: 1
   <HitStunDuration>k__BackingField: 0.2
-  <KnockBackedPower>k__BackingField: 3
+  <KnockBackedPower>k__BackingField: 10
   attackAnimSpeed: 1
   detectionRange: 30
   baseFOV: 180
@@ -38,4 +38,3 @@ MonoBehaviour:
   monsterPrefab: {fileID: 100000, guid: 0b9f20f2dc04f4b1b98f92fb30fd0393, type: 3}
   spawnPosition: {x: 0, y: 0, z: 0}
   useFixedPosition: 0
-  dropTable: []
