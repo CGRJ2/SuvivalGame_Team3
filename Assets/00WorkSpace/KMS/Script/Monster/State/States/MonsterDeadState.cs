@@ -44,9 +44,9 @@ public class MonsterDeadState : IMonsterState
     public void Exit()
     {
         // 죽음 상태는 종료되지 않으므로 특별한 처리 없음
-        Debug.Log($"[{monster.name}] Dead 상태에서 Exit 호출 (예외적 상황일 수 있음)");
+        /*Debug.Log($"[{monster.name}] Dead 상태에서 Exit 호출 (예외적 상황일 수 있음)");
         monster.view.Animator.SetBool("IsMove", true);
         if (monster.Agent.isOnNavMesh) monster.Agent.isStopped = false;
-
+*/
     }
 }

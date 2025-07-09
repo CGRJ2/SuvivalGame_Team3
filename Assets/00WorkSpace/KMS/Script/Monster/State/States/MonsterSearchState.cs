@@ -61,10 +61,10 @@ public class MonsterSearchState : IMonsterState
 
     public void Exit()
     {
-        Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 종료");
+        /*Debug.Log($"[MonsterSearchState] {monster.name} 탐색 상태 종료");
         monster.view.Animator.SetBool("IsMove", false);
 
-        monster.Agent.isStopped = true;
+        monster.Agent.isStopped = true;*/
 
     }
 }

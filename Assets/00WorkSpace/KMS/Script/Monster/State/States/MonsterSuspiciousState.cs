@@ -52,7 +52,7 @@ public class MonsterSuspiciousState : IMonsterState
     {
         //Debug.Log($"[SuspiciousState] {monster.name} 수상 상태 종료");
 
-        if (monster.Agent.isOnNavMesh)
-            monster.Agent.isStopped = false;
+        /*if (monster.Agent.isOnNavMesh)
+            monster.Agent.isStopped = false;*/
     }
 }

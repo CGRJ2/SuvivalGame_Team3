@@ -126,9 +126,9 @@ public class MonsterIdleState : IMonsterState
     {
         //Debug.Log("Idle 상태 나감");
 
-        monster.view.Animator.SetBool("IsMove", true);
+        /*monster.view.Animator.SetBool("IsMove", true);
         if (monster.Agent.isOnNavMesh)
             monster.Agent.isStopped = false;
-        // 특별히 할 일 없음 (필요 시 추가)
+        // 특별히 할 일 없음 (필요 시 추가)*/
     }
 }

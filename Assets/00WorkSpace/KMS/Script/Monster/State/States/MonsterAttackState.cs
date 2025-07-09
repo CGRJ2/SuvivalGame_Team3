@@ -59,10 +59,10 @@ public class MonsterAttackState : IMonsterState
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: Attack 종료");
+        /*Debug.Log($"[{monster.name}] 상태: Attack 종료");
         monster.view.Animator.SetBool("IsMove", true);
         if (monster.Agent.isOnNavMesh)
-            monster.Agent.isStopped = false;
+            monster.Agent.isStopped = false;*/
     }
 }
 

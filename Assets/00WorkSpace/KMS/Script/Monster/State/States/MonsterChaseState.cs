@@ -63,10 +63,10 @@ public class MonsterChaseState : IMonsterState
 
     public void Exit()
     {
-        Debug.Log($"[{monster.name}] 상태: Chase 종료");
+        /*Debug.Log($"[{monster.name}] 상태: Chase 종료");
         monster.view.Animator.SetBool("IsMove", false);
 
-        monster.Agent.isStopped = true;
+        monster.Agent.isStopped = true;*/
     }
 
 }
