@@ -43,7 +43,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     protected Transform target;
     protected MonsterStateMachine stateMachine;
     public MonsterStateMachine StateMachine => stateMachine;
-    [HideInInspector] public MonsterView view;
+    public MonsterView view;
     public UnityEvent OnDeadEvent;
 
     public IMonsterState idleState;
@@ -104,6 +104,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     public virtual void Init()
     {
         rb = GetComponent<Rigidbody>();
+        view = GetComponent<MonsterView>();
+        agent = GetComponent<NavMeshAgent>();
 
         stateMachine = new MonsterStateMachine(this);
 
@@ -111,8 +113,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
             stateFactory = new DefaultMonsterStateFactory(this);
 
         sensor = new DefaultMonsterSensor();
-        view = GetComponent<MonsterView>();
-        agent = GetComponent<NavMeshAgent>();
+        
         if (view == null)
             view = GetComponent<MonsterView>();
 

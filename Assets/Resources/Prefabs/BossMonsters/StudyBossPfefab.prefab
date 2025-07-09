@@ -1184,17 +1184,15 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 7e2580e09f2baef438765ae315475bcd, type: 2}
   isAttackReady: 0
   currentHP: 0
-  view: {fileID: 0}
+  view: {fileID: 455429622160137024}
   OnDeadEvent:
     m_PersistentCalls:
       m_Calls: []
   alertDecayRate: 5
-  cooldownTimer: 0
   alertCooldownThreshold: 2
   alertThreshold_Low: 20
   alertThreshold_Medium: 50
   alertThreshold_High: 80
-  actionRadius: 20
   rotationSpeed: 7
   attackableLayerMask:
     serializedVersion: 2

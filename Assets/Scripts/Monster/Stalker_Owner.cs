@@ -18,5 +18,8 @@ public class Stalker_Owner : BasicMonsterAI
         sleepState = new OwnerState_Sleep(this);
         returnToBed = new OwnerState_ReturnToBed(this);
         returnToOrigin = new OwnerState_ReturnToOrigin(this);
+        Debug.Log($"[{gameObject.name}] ActiveSelf: {gameObject.activeSelf}, Agent.enabled: {agent.enabled}, isOnNavMesh: {agent.isOnNavMesh}");
     }
+
+        
 }
