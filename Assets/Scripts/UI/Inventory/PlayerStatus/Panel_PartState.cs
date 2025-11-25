@@ -44,12 +44,12 @@ public class Panel_PartState : MonoBehaviour
             float t = colorKey / initMaxHp;
             Color color = Color.Lerp(damagedColor, defaultColor, t);
             image.color = color;
-            imageInHUD.color = color;
+            //imageInHUD.color = color; => 동적으로 연동되도록 구조 재설계 필요
         }
         else
         {
             image.color = deactiveColor;
-            imageInHUD.color = deactiveColor;
+            //imageInHUD.color = deactiveColor;
         }
 
         // 슬라이더 수치 적용

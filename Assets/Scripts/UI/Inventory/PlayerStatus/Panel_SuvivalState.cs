@@ -23,7 +23,7 @@ public class Panel_SuvivalState : MonoBehaviour
         tmp_Current.text = now.ToString();
 
         // HUD 바 업데이트
-        HUD_ChainedCur.fillAmount = Mathf.Clamp01(now / initMax);
+        //HUD_ChainedCur.fillAmount = Mathf.Clamp01(now / initMax); HUD 동적 연결 필요
     }
 
     public void UpdateMaxStateNumb_View(float now)

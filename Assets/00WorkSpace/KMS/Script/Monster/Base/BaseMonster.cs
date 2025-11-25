@@ -135,7 +135,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         perceptionController.ForceSetState(MonsterPerceptionState.Idle);
 
         // 임시
-        if (OriginTransform != null) OriginTransform = GameManager.Instance.transform;
+        if (OriginTransform != null) OriginTransform = Manager.game.transform;
     }
     protected virtual void Start()
     {

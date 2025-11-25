@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     [HideInInspector] public GameObject onHandInstance;
     PlayerManager pm;
     DataManager dm;
-    [field: SerializeField] public PlayerStatus Status { get; private set; }
+    [field: SerializeField] public PlayerModel Status { get; private set; }
 
     public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         if (dm != null)
             dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
 
+        Debug.Log("왜 비활성화됨?");
         InputActionsDelete();
     }
 

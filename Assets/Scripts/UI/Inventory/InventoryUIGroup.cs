@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryUIGroup : MonoBehaviour
+public class InventoryUIGroup : UIGroup
 {
     public InventoryView inventoryView;
     public SlotToolTip tooltip;
@@ -14,7 +14,6 @@ public class InventoryUIGroup : MonoBehaviour
     private void Start() => LateInit();
     public void Init()
     {
-        UIManager.Instance.inventoryGroup = this;
         panel_PlayerStatus.Init();
     }
 

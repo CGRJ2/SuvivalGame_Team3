@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingUIGroup : MonoBehaviour
+public class CraftingUIGroup : UIGroup
 {
     public Item_Recipe currentSelectedRecipe;
 
@@ -18,7 +18,6 @@ public class CraftingUIGroup : MonoBehaviour
     private void Awake() => Init();
     public void Init()
     {
-        UIManager.Instance.craftingGroup = this;
         recipeListPage.Init();
         recipeRequires.Init();
     }

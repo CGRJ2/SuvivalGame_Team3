@@ -6,7 +6,7 @@ public class QuickHandItem : MonoBehaviour
 {
 
     [SerializeField] private Transform handTransform;// 손위치 변경시 사용 추천위치:B-palm_01_R
-    private PlayerStatus playerStatus;
+    private PlayerModel playerStatus;
     private Item lastItem;
     private GameObject curHandObject;
 

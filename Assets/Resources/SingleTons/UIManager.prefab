@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3778732611547278390}
-  - component: {fileID: 2672053439383258961}
+  - component: {fileID: 6184714575898622181}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2672053439383258961
+--- !u!114 &6184714575898622181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,8 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adacf4ea5022ba943b5f1501b6b86d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popUpUIGroup: {fileID: 0}
-  hudGroup: {fileID: 0}
-  inventoryGroup: {fileID: 0}
-  craftingGroup: {fileID: 0}
-  upgradeGroup: {fileID: 0}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PopUpUIGroup : MonoBehaviour
+public class PopUpUIGroup : UIGroup
 {
     [Header("팝업 메시지 기본 설정")]
     public float popFadeTime;
@@ -36,7 +36,6 @@ public class PopUpUIGroup : MonoBehaviour
 
     private void Init()
     {
-        UIManager.Instance.popUpUIGroup = this;
     }
 
 

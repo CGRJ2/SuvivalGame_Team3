@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "JWH_Test/TestRecovery/TestFullRecoveryItem")]
 public class TestFullRecoveryItem : ScriptableObject
 {
-    public void Use(PlayerStatus player)
+    public void Use(PlayerModel player)
     {
         player.CurrentWillPower.Value = 100;
         player.CurrentBattery.Value = 100;

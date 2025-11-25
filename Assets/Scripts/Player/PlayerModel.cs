@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable] // 세이브 & 로드 가능
-public class PlayerStatus : IDisposable
+public class PlayerModel : IDisposable
 {
     [Header("장착 중인 아이템")]
     public Item onHandItem;
@@ -118,7 +118,12 @@ public class PlayerStatus : IDisposable
     public void BodyPartsInit()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        Panel_PlayerStatus playerStatusUI = UIManager.Instance.inventoryGroup.panel_PlayerStatus;
+        Debug.Log("플레이어 모델 초기화 진행");
+
+        Debug.Log(Manager.ui);
+        Debug.Log(Manager.ui.inventoryGroup);
+        Debug.Log(Manager.ui.inventoryGroup.panel_PlayerStatus);
+        Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
         List<BodyPart> tempBodyParts = new List<BodyPart>();
 
         // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CampRecovery : MonoBehaviour
 {
-    public void CampRecover(PlayerStatus player)
+    public void CampRecover(PlayerModel player)
     {
         
         player.CurrentWillPower.Value = 100;

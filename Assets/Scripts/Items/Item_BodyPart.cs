@@ -10,7 +10,7 @@ public class Item_BodyPart : Item_Consumable
     // 배터리 교체 효과
     public void Hp_Init()
     {
-        PlayerStatus ps = PlayerManager.Instance.instancePlayer.Status;
+        PlayerModel ps = PlayerManager.Instance.instancePlayer.Status;
         ps.GetPart(targetPart).Init();
     }
 }

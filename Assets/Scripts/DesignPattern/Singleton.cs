@@ -10,11 +10,23 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindObjectOfType<T>();
-                DontDestroyOnLoad(_instance);
+                if (_instance != null)
+                    DontDestroyOnLoad(_instance);
             }
             return _instance;
         }
     }
+
+    public static void CreateInstance()
+    {
+        if (_instance == null)
+        {
+            T prefab = Resources.Load<T>($"SingleTons/{typeof(T).Name}");
+            _instance = Instantiate(prefab);
+            DontDestroyOnLoad(_instance.gameObject);
+        }
+    }
+
 
     protected void SingletonInit()
     {

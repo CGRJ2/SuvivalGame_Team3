@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HUD_UIGroup : MonoBehaviour
+public class HUD_UIGroup : UIGroup
 {
     public HUD_Time HUD_Time;
 
@@ -8,7 +8,7 @@ public class HUD_UIGroup : MonoBehaviour
 
     public void Init()
     {
-        UIManager.Instance.hudGroup = this;
+
     }
 }
 

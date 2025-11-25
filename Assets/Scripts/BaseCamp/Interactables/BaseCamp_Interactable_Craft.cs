@@ -8,13 +8,13 @@ public class BaseCamp_Interactable_Craft : InteractableBase
     {
         base.Interact();
         Debug.Log($"제작 UI 활성화");
-        UIManager.Instance.craftingGroup.OpenPanel_CraftRecipeList();
+        Manager.ui.craftingGroup.OpenPanel_CraftRecipeList();
     }
 
     public override void ShowInteractableUI()
     {
         base.ShowInteractableUI();
-        UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"제작대 열기: (E)";
+        Manager.ui.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = $"제작대 열기: (E)";
     }
 
 }

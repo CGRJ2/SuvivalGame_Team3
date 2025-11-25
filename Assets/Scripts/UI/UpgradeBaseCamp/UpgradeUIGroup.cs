@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeUIGroup : MonoBehaviour
+public class UpgradeUIGroup : UIGroup
 {
     public GameObject basePanel;
     public GameObject panel_MaxUpgraded;
@@ -31,7 +31,6 @@ public class UpgradeUIGroup : MonoBehaviour
     }
     public void Init()
     {
-        UIManager.Instance.upgradeGroup = this;
         upgradeRequires.Init();
     }
 

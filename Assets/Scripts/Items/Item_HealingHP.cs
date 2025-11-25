@@ -10,7 +10,7 @@ public class Item_HealingHP : Item_Consumable
 
     public void Hp_HealingCriticalPart()
     {
-        PlayerStatus ps = PlayerManager.Instance.instancePlayer.Status;
+        PlayerModel ps = PlayerManager.Instance.instancePlayer.Status;
 
         // 데미지를 가장 많이 입은 바디 파트 찾기
         List<BodyPart> bodyParts = ps.GetBodyPartsList();

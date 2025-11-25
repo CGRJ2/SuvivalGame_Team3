@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +13,7 @@ public class BodyPartUIUpdater : MonoBehaviour
 
     private void Update()
     {
-        if(playerStatus==null) return;
+        if (playerStatus == null) return;
 
         UpdateBodyPartUI(BodyPartTypes.RightArm, rightHandImage);
         UpdateBodyPartUI(BodyPartTypes.LeftArm, leftHandImage);
@@ -26,7 +26,8 @@ public class BodyPartUIUpdater : MonoBehaviour
         var part = playerStatus.GetPart(type);
         if (part == null || img == null) return;
 
-        img.color=part.Activate.Value? brokenColor : activeColor;
+        img.color = part.Activate.Value ? brokenColor : activeColor;
     }
 
 }
+*/

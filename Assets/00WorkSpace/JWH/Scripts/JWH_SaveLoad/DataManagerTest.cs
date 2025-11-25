@@ -15,11 +15,11 @@ public class DataManagerTest : Singleton<DataManagerTest>
 
     public void SaveData()
     {
-        PlayerStatus status = pm.instancePlayer.Status;
+        PlayerModel status = pm.instancePlayer.Status;
     }
 
     public void LoadData()
     {
-        PlayerStatus status = pm.instancePlayer.Status;
+        PlayerModel status = pm.instancePlayer.Status;
     }
 }

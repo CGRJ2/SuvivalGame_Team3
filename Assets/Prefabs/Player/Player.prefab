@@ -62,60 +62,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3826936513006084214}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!1 &5506994684012143368
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8507353123435941671}
-  - component: {fileID: 3441003947319040584}
-  m_Layer: 3
-  m_Name: ThrowPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8507353123435941671
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5506994684012143368}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.12899995, z: 0.621}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7761267926721708425}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3441003947319040584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5506994684012143368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 673528ac6f0706c4bb26a29d3cc16377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  throwForce: 10
-  destroyDelay: 3
-  throwPosition: {fileID: 0}
-  quickSlotParent: {fileID: 0}
-  minThrowForce: 5
-  maxThrowForce: 30
-  chargeRate: 20
-  trajectoryLine: {fileID: 0}
-  linePointCount: 50
-  lineTimeStep: 0.1
 --- !u!1 &6403865991112175247
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,8 +90,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8507353123435941671}
+  m_Children: []
   m_Father: {fileID: 3826936513006084214}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7617150217708771105
@@ -281,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 4178522286310648330}
+  onHandInstance: {fileID: 0}
   <Status>k__BackingField:
     onHandItem: {fileID: 0}
     CurrentWillPower:
@@ -304,457 +250,607 @@ MonoBehaviour:
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         consumableSlots:
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         equipmentSlots:
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         functionSlots:
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         questSlots:
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         - item: {fileID: 0}
           currentCount: 0
           maxCount: 0
+          quickChainedIndex: 99
         slotCount: 30
       view: {fileID: 0}
     ApplyDebuff_CraftSpeed: 0

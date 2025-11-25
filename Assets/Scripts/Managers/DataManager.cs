@@ -12,21 +12,7 @@ public class DataManager : Singleton<DataManager>
 
     public ObservableProperty<SaveDataGroup> loadedDataGroup = new ObservableProperty<SaveDataGroup>();
 
-    /// <summary>
-    /// Å×½ºÆ®
-    /*private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveData(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadData(0);
-        }
-    }*/
-    /// </summary>
-
+    private void Awake() => Init();
 
     public void Init()
     {
@@ -131,7 +117,7 @@ public class DataManager : Singleton<DataManager>
 public class SaveDataGroup
 {
     public Vector3 currentPosition;
-    public PlayerStatus playerStatusData;
+    public PlayerModel playerStatusData;
     public InventoryModel inventoryModel;
     public SlotDataListsData slotDataListsData;
     public CurrentTimeData currentTimeData;
