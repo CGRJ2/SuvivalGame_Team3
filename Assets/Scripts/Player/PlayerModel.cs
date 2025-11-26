@@ -118,11 +118,6 @@ public class PlayerModel : IDisposable
     public void BodyPartsInit()
     {
         SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        Debug.Log("플레이어 모델 초기화 진행");
-
-        Debug.Log(Manager.ui);
-        Debug.Log(Manager.ui.inventoryGroup);
-        Debug.Log(Manager.ui.inventoryGroup.panel_PlayerStatus);
         Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
         List<BodyPart> tempBodyParts = new List<BodyPart>();
 

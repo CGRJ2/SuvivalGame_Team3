@@ -105,7 +105,6 @@ public class UIManager : Singleton<UIManager>
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Debug.Log("UIManager 초기화 실행됨");
         CreateGroup<PopUpUIGroup>();
         CreateGroup<HUD_UIGroup>();
         CreateGroup<CraftingUIGroup>();
