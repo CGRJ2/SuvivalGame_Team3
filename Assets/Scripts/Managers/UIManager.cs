@@ -67,7 +67,7 @@ public class UIManager : Singleton<UIManager>
         var canvas = FindObjectOfType<Canvas>();
         if (canvas == null)
         {
-            Debug.LogError("[UIManager] 씬에 Canvas가 없습니다. 새로 생성함.");
+            Debug.LogWarning("[UIManager] 씬에 Canvas가 없습니다. 새로 생성함.");
             //return null;
             canvas = Instantiate(Resources.Load<GameObject>($"UIPrefabs/Canvas").GetComponent<Canvas>());
         }

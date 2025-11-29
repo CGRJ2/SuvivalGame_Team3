@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class DataManager : Singleton<DataManager>
+public partial class DataManager : Singleton<DataManager>
 {
-    PlayerManager pm;
-
     [Header("저장 가능한 최대 슬롯 수")]
     public int maxSlotCount = 5;
 
@@ -17,7 +15,8 @@ public class DataManager : Singleton<DataManager>
     public void Init()
     {
         base.SingletonInit();
-        pm = PlayerManager.Instance;
+        InitSurvialStatDatas();
+        InitPlayerFixedDatas();
     }
 
     private string GetSavePath(int slotIndex)

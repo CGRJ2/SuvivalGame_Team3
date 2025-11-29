@@ -7,7 +7,6 @@ public class PlayerView : MonoBehaviour
     [SerializeField] public Transform avatar;
 
     [HideInInspector] public Animator animator;
-    [SerializeField] private GameObject FxPrefab;
 
     Rigidbody rb;
     Vector2 currentRotation;
@@ -24,7 +23,7 @@ public class PlayerView : MonoBehaviour
         animator = avatar.GetComponent<Animator>();
     }
 
-    #region 플레이어 이동 결과 관련
+    #region 플레이어 이동 관련
     // WASD이동 결과 출력 (플레이어 Position)
     public Vector3 SetMove(Vector3 getMoveDir, float moveSpeed)
     {
@@ -123,12 +122,5 @@ public class PlayerView : MonoBehaviour
         freeCamRight.Normalize();
         
     }
-
-    // 플레이어 이동 방향 반환
-
-    #endregion
-
-    #region 상태에 따른 출력
-
     #endregion
 }
