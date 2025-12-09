@@ -4,19 +4,19 @@ using Unity.VisualScripting;
 [System.Serializable]
 public class BodyPart : IDisposable
 {
-    public BodyPartTypes type;
+    public BodyPartType type;
     // 활성화 상태, 비활성화 시 체력회복 불가능, 1차회복 시 다시 활성화
     public ObservableProperty<bool> Activate = new ObservableProperty<bool>(); 
     public ObservableProperty<float> Hp = new ObservableProperty<float>();
     public ObservableProperty<float> CurrentMaxHp = new ObservableProperty<float>();
-    private float InitMaxHp;
+    public float InitMaxHp;
 
-    public BodyPart(BodyPartTypes type, float maxHp)
+    public BodyPart(BodyPartType type, float maxHp)
     {
         this.type = type;
         this.InitMaxHp = maxHp;
 
-        Init();
+        //Init();
     }
    
     // 파츠 정보 초기화 & 파츠 교체 시 호출 ==> 교체하면 현재체력 & 최대내구도까지 원상복귀
@@ -57,8 +57,8 @@ public class BodyPart : IDisposable
 
     public void Dispose()
     {
-        Activate.UnsbscribeAll();
-        Hp.UnsbscribeAll();
-        CurrentMaxHp.UnsbscribeAll();
+        Activate.UnsubscribeAll();
+        Hp.UnsubscribeAll();
+        CurrentMaxHp.UnsubscribeAll();
     }
 }

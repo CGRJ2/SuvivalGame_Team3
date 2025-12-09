@@ -2,9 +2,10 @@ using Cinemachine;
 
 public class CameraManager : Singleton<CameraManager>
 {
+    // 해당 카메라 호출 시에 인스턴스 생성 후 전달
     public CinemachineBrain cinemachineBrain;
-    public TPS_Camera tpsCameraGroup;
-    public SideView_Camera sideViewCamera;
+    public SideView_Camera SideViewCamera;
+    public CinemachineVirtualCamera TpsViewCamera;
 
     public bool activeSideView;
 
@@ -13,24 +14,17 @@ public class CameraManager : Singleton<CameraManager>
         base.SingletonInit();
     }
 
-    public void Start()
-    {
-        PlayerController pc = PlayerManager.Instance.instancePlayer;
-        pc.TPS_Cameras = tpsCameraGroup.TPS_Cameras;
-    }
-
-
     public void SwitchSideViewCamera(bool active)
     {
         if (active)
         {
             activeSideView = true;
-            sideViewCamera.virtualCamera.Priority = 99;
+            SideViewCamera.virtualCamera.Priority = 99;
         }
         else
         {
             activeSideView = false;
-            sideViewCamera.virtualCamera.Priority = 0;
+            SideViewCamera.virtualCamera.Priority = 0;
         }
     }
 

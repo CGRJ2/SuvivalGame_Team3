@@ -1,11 +1,8 @@
-﻿생존 수치 Fixed Data,,,
-Capacity,기본 최대 내구도(초기값),내구도 최소값 제한(파괴를 반복해도 보장받는 최소값),부위 파괴 시 감소되는 최대 내구도 량
-ID,Max,Min,ReduceAmount
-HeadHP,50,50,0
-ArmHP,25,10,3
-LegHP,25,10,3
-Battry,100,30,10
-WillPower,100,0,0
+﻿생존 수치,,,
+SurvivalStats,최대값,최솟값,틱 당 감소량
+ID,Max,Min,ReducePerTick
+Battery,100,0,1
+Will,100,0,1
 ,,,
 배터리 소모 요소,,,
 BatteryConsume,소모량,,

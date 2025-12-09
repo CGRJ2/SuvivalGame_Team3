@@ -41,7 +41,7 @@ public class InventoryView : MonoBehaviour
 
     private void OnDestroy()
     {
-        CurrentTab.UnsbscribeAll();
+        CurrentTab.UnsubscribeAll();
     }
 
     public void TryOpenInventory()

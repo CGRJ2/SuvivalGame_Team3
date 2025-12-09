@@ -6,17 +6,16 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 {
     ///////////////////////////////////////////
     
-    [Header("생존 수치 소모 주기 설정")]
-    [SerializeField] private float TickDuration;
+    private float TickDuration = 1f;
 
-    [field: Header("부위별 내구도 시스템")]
+    /*[field: Header("부위별 내구도 시스템")]
     [field: SerializeField] public BodyPartSystem bodyPartSystem { get; private set; }
 
     [field: Header("배터리 시스템")]
     [field: SerializeField] public BatterySystem batterySystem { get; private set; }
 
     [field: Header("정신력 시스템")]
-    [field: SerializeField] public WillPowerSystem willPowerSystem { get; private set; }
+    [field: SerializeField] public WillPowerSystem willPowerSystem { get; private set; }*/
 
     //[Header("파밍 시스템")]
     //public FarmingSystem farmingSystem;
@@ -49,7 +48,6 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     {
         coroutine_DecreaseWillPower = StartCoroutine(DecreaseWillPowerOverTime());
         coroutine_DecreaseBattery = StartCoroutine(DecreaseBatteryOverTime());
-        coroutine_DotDamageByLowWill = StartCoroutine(DotDamageByLowWillOverTime());
     }
 
     public void StopDecreaseRoutines()
@@ -64,22 +62,26 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     {
         PlayerController pc = PlayerManager.Instance.instancePlayer;
 
+        var willConsumeTable = Manager.data.WillConsumeTable;
+        var willConsume_Idle = willConsumeTable.FindByKey("Idle").Amount;
+        var willConsume_Night = willConsumeTable.FindByKey("Night").Amount;
+
         while (true)
         {
             yield return new WaitForSeconds(TickDuration);
 
             if (DailyManager.Instance.currentTimeData.TZ_State.Value == TimeZoneState.Night)
             {
-                if (pc.Status.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Night > 0)
-                    pc.Status.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Night;
-                else pc.Status.CurrentWillPower.Value = 0;
+                if (pc.Model.CurrentWillPower.Value - willConsume_Night > 0)
+                    pc.Model.CurrentWillPower.Value -= willConsume_Night;
+                else pc.Model.CurrentWillPower.Value = 0;
 
             }
             else
             {
-                if (pc.Status.CurrentWillPower.Value - willPowerSystem.DrainPerTick_Idle > 0)
-                    pc.Status.CurrentWillPower.Value -= willPowerSystem.DrainPerTick_Idle;
-                else pc.Status.CurrentWillPower.Value = 0;
+                if (pc.Model.CurrentWillPower.Value - willConsume_Idle > 0)
+                    pc.Model.CurrentWillPower.Value -= willConsume_Idle;
+                else pc.Model.CurrentWillPower.Value = 0;
             }
         }
     }
@@ -89,47 +91,28 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
     {
         PlayerController pc = PlayerManager.Instance.instancePlayer;
 
+        var batteryConsumeTable = Manager.data.BatteryConsumeTable;
+        var batteryConsume_Idle = batteryConsumeTable.FindByKey("Idle").Amount;
+        var batteryConsume_Sprint = batteryConsumeTable.FindByKey("Sprint").Amount;
+
         while (true)
         {
             yield return new WaitForSeconds(TickDuration);
 
             // 달리기 상태라면
-            if (pc.IsCurrentState(PlayerStateTypes.Sprint))
+            /*if (pc.IsCurrentState(PlayerStateTypes.Sprint))
             {
-                if (pc.Status.CurrentBattery.Value - batterySystem.DrainPerTick_Sprint > 0)
-                    pc.Status.CurrentBattery.Value -= batterySystem.DrainPerTick_Sprint;
-                else pc.Status.CurrentBattery.Value = 0;
+                if (pc.Model.CurrentBattery.Value - batteryConsume_Sprint > 0)
+                    pc.Model.CurrentBattery.Value -= batteryConsume_Sprint;
+                else pc.Model.CurrentBattery.Value = 0;
             }
             else
             {
-                if (pc.Status.CurrentBattery.Value - batterySystem.DrainPerTick_Idle > 0)
-                    pc.Status.CurrentBattery.Value -= batterySystem.DrainPerTick_Idle;
-                else pc.Status.CurrentBattery.Value = 0;
-            }
+                if (pc.Model.CurrentBattery.Value - batteryConsume_Idle > 0)
+                    pc.Model.CurrentBattery.Value -= batteryConsume_Idle;
+                else pc.Model.CurrentBattery.Value = 0;
+            }*/
         }
-    }
-
-    // 정신력이 일정수치 이하일 때 머리 지속 데미지 루틱
-    IEnumerator DotDamageByLowWillOverTime()
-    {
-        PlayerController pc = PlayerManager.Instance.instancePlayer;
-        while (true)
-        {
-            yield return new WaitForSeconds(TickDuration);
-
-            if (pc.Status.CurrentWillPower.Value <= willPowerSystem.WillDangerZone)
-            {
-                if (pc.Status.GetPart(BodyPartTypes.Head).Hp.Value - willPowerSystem.HeadDamagePerTick > 0)
-                    pc.Status.GetPart(BodyPartTypes.Head).Hp.Value -= willPowerSystem.HeadDamagePerTick;
-                else pc.Status.GetPart(BodyPartTypes.Head).Hp.Value = 0;
-            }
-        }
-    }
-
-
-    public float GetInitBodyPartsHPSum()
-    {
-        return bodyPartSystem.HeadMaxHP_Init + 2 * bodyPartSystem.ArmMaxHP_Init + 2 * bodyPartSystem.LegMaxHP_Init;
     }
 }
 

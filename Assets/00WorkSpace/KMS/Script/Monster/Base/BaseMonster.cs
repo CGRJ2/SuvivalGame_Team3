@@ -186,7 +186,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         var damageable = collision.gameObject.GetComponent<IDamagable>();
         if (damageable != null)
         {
-            damageable.TakeDamage(data.CollisionDamage, transform);
+            //damageable.TakeDamage(data.CollisionDamage, transform);
         }
     }
 
@@ -223,8 +223,8 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         if (playerInRange != null)
         {
             var damageable = target.GetComponent<IDamagable>();
-            if (damageable != null)
-                damageable.TakeDamage(attackPower, transform);
+            /*if (damageable != null)
+                damageable.TakeDamage(attackPower, transform);*/
         }
     }
 
@@ -490,5 +490,10 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         currentHP = data.MaxHP;
         // 필요하면 추가로 회복 이펙트, 로그 등
         //Debug.Log($"[{name}] HP가 최대치로 회복됨");
+    }
+
+    public void TakeDamage(HitInfo hitInfo)
+    {
+        throw new NotImplementedException();
     }
 }

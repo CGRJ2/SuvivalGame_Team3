@@ -16,7 +16,7 @@ public class SideView_Camera : MonoBehaviour
     {
         if (CameraManager.Instance == null) { Debug.LogWarning("카메라 매니저 클래스 없음"); return; }
 
-        CameraManager.Instance.sideViewCamera = this;
+        CameraManager.Instance.SideViewCamera = this;
     }
 
     private void OnEnable()
@@ -28,8 +28,8 @@ public class SideView_Camera : MonoBehaviour
         pc = PlayerManager.Instance.instancePlayer;
 
         // 사이드뷰 카메라 초기화
-        virtualCamera.Follow = pc.View.SideView_CameraFocusTransform;
-        virtualCamera.LookAt = pc.View.SideView_CameraFocusTransform;
+        virtualCamera.Follow = pc.SideView_CameraFocusTransform;
+        virtualCamera.LookAt = pc.SideView_CameraFocusTransform;
     }
 
     

@@ -13,10 +13,10 @@ public class Item_JumpPad : Item_Throwing
         PlayerController pc = PlayerManager.Instance.instancePlayer;
 
         Transform playerTransform = pc.transform;
-        Vector3 forward = pc.View.avatar.forward;
+        Vector3 avatarForward = pc.View.transform.forward;
 
 
-        Instantiate(installedJumpPad, playerTransform.position + forward * installOffset, playerTransform.rotation);
+        Instantiate(installedJumpPad, playerTransform.position + avatarForward * installOffset, playerTransform.rotation);
     }
 
     public override void OnAttackEffect()

@@ -51,7 +51,7 @@ public class ItemInstance : InteractableBase
         base.Interact();
 
         // 플레이어 인벤토리로 들어감
-        pc.Status.inventory.AddItem(item, count);
+        pc.Model.inventory.AddItem(item, count);
 
         // 인터랙터블 상태 해제
         pc.Cc.InteractableObj = null;

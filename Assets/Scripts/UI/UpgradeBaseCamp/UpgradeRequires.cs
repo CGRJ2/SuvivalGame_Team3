@@ -55,7 +55,7 @@ public class UpgradeRequires : MonoBehaviour
             int requiredCount = currentUpgradeCondition.requiredItems[i].count;
 
             // 인벤토리 내 해당 조건 아이템 보유 수량
-            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Status.inventory;
+            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Model.inventory;
             int owned = playerInventory.model.GetOwnedItemCount(requiredItem);
             Debug.Log($"{requiredItem.itemName}의 현재 인식 개수 : {owned}");
 

@@ -39,7 +39,7 @@ public class Item : ScriptableObject
 
             // 슬롯 데이터에서 개수 줄이기
             consumable.Consume(slotData, multieUseCount);
-            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+            PlayerManager.Instance.instancePlayer.Model.inventory.UpdateUI();
         }
         // 레시피 아이템이라면
         else if (this is Item_Recipe recipe)
@@ -47,7 +47,7 @@ public class Item : ScriptableObject
             recipe.UnlockThisRecipe();
             // 만약 레시피 사용해서 언락해서 소비시켜줄거면 SlotData.C
             slotData.CleanSlotData();
-            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+            PlayerManager.Instance.instancePlayer.Model.inventory.UpdateUI();
         }
     }
 
@@ -65,7 +65,7 @@ public class Item : ScriptableObject
                     throwing.OnAttackEffect();
                 throwing.Consume(slotData);
 
-                PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+                PlayerManager.Instance.instancePlayer.Model.inventory.UpdateUI();
             }
         }
         // 소비 아이템 (소비 아이템인데 장착 가능한 애들은 따로 장착까지만 가능)
@@ -78,7 +78,7 @@ public class Item : ScriptableObject
             consumable.Consume(slotData);
 
             // 퀵슬롯 & 인벤토리 UI 업데이트
-            PlayerManager.Instance.instancePlayer.Status.inventory.UpdateUI();
+            PlayerManager.Instance.instancePlayer.Model.inventory.UpdateUI();
 
         }
     }

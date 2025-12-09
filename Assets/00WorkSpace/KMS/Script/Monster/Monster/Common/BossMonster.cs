@@ -31,8 +31,8 @@ public class BossMonster : BaseMonster
         if (hpPercent <= prevNotifiedHpPercent - 0.1f)
         {
             PlayerController pc = PlayerManager.Instance.instancePlayer;
-            if (pc != null)
-                PlayerManager.Instance.instancePlayer.Status.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_BossHit);
+            /*if (pc != null)
+                PlayerManager.Instance.instancePlayer.Model.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_BossHit);*/
 
             prevNotifiedHpPercent -= 0.1f; // 다음 10%로 갱신
         }
@@ -92,7 +92,7 @@ public class BossMonster : BaseMonster
         {
             var dmg = target.GetComponent<IDamagable>();
             Vector3 direction = (target.position - transform.position).normalized;
-            if (dmg != null) dmg.TakeDamage(damage, transform);
+            //if (dmg != null) dmg.TakeDamage(damage, transform);
         }
         view.PlayMonsterPhase2AttackAnimation();
     }
@@ -120,7 +120,7 @@ public class BossMonster : BaseMonster
         {
             var dmg = target.GetComponent<IDamagable>();
             Vector3 direction = (target.position - transform.position).normalized;
-            if (dmg != null) dmg.TakeDamage(damage, transform);
+           // if (dmg != null) dmg.TakeDamage(damage, transform);
         }
         view.PlayMonsterPhase3AttackAnimation();
     }
@@ -152,8 +152,8 @@ public class BossMonster : BaseMonster
         foreach (var hit in hits)
         {
             var dmg = hit.GetComponent<IDamagable>();
-            if (dmg != null)
-                dmg.TakeDamage((int)pattern.damage, transform);
+            //if (dmg != null)
+            //    dmg.TakeDamage((int)pattern.damage, transform);
         }
     }
 
@@ -181,8 +181,8 @@ public class BossMonster : BaseMonster
         foreach (var hit in hits)
         {
             var dmg = hit.GetComponent<IDamagable>();
-            if (dmg != null)
-                dmg.TakeDamage((int)pattern.damage, transform);
+            //if (dmg != null)
+            //    dmg.TakeDamage((int)pattern.damage, transform);
         }
     }
 
@@ -202,8 +202,8 @@ public class BossMonster : BaseMonster
             if (hitAngle <= angle)
             {
                 var dmg = hit.GetComponent<IDamagable>();
-                if (dmg != null)
-                    dmg.TakeDamage((int)pattern.damage, transform);
+                //if (dmg != null)
+                //    dmg.TakeDamage((int)pattern.damage, transform);
             }
         }
     }
@@ -222,8 +222,8 @@ public class BossMonster : BaseMonster
     void OnTriggerEnter(Collider other)
     {
         var target = other.GetComponent<IDamagable>();
-        if (target != null && currentPattern != null)
-            target.TakeDamage((int)currentPattern.damage, transform);
+        //if (target != null && currentPattern != null)
+        //    target.TakeDamage((int)currentPattern.damage, transform);
     }
 
     public void TryCounter()

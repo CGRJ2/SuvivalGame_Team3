@@ -49,7 +49,7 @@ public class SlotView : MonoBehaviour,
             {
                 if (UIManager.Instance.inventoryGroup.quickSlotParent.NowSelectedSlot == this)
                 {
-                    PlayerManager.Instance.instancePlayer.Status.onHandItem = null;
+                    PlayerManager.Instance.instancePlayer.Model.onHandItem = null;
                 }
             }
         }

@@ -6,655 +6,171 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
-    //[field: SerializeField] public float AttackCoolTime { get; private set; }
+    [field: SerializeField] public Transform TPSView_CameraFocusTransform { get; private set; }
+    [field: SerializeField] public Transform SideView_CameraFocusTransform { get; private set; }
     public Transform handTransform;
     [HideInInspector] public GameObject onHandInstance;
-    PlayerManager pm;
-    DataManager dm;
-    [field: SerializeField] public PlayerModel Status { get; private set; }
 
-    public PlayerView View { get; private set; }
+    [field: SerializeField] public PlayerModel Model { get; private set; }
+    [field: SerializeField] public PlayerView View { get; private set; }
     public ColliderController Cc { get; private set; }
+    public Rigidbody rb;
 
-    [HideInInspector] public Vector3 InputDir { get; private set; }
-    [HideInInspector] public Vector2 MouseInputDir { get; private set; }
-
-    [HideInInspector] public CinemachineVirtualCamera[] TPS_Cameras;
-    int currentZoomIndex = 1;
-
-    //private InputAction AimingAction;
-    private InputAction sprintAction;
-    private InputAction jumpAction;
-    private InputAction crouchAction;
-    private InputAction attackAction;
-    private InputAction freeCamAction;
-    private InputAction interactAction;
-    private InputAction inventoryOpenAction;
-    //private InputAction inventoryOffAction;
-    private InputAction quickSlotActions;
-    private InputAction escActions;
+    // 상태 머신
+    private PlayerStateMachine _fsm;
+    public Dictionary<PlayerStateType, PlayerState> StateDic;
 
 
-    //Vector3 moveDir;
-
-    bool isMoveInput;
-    bool isSprintInput;
-    bool isJumpInput;
-    bool isCrouchToggle;
-    bool isAimingInput;
-    bool isFreeCamModInput;
-    bool isAttackInput;
-
-    private Vector2 SmoothDir;      // 캐릭터가 실제로 쓸 방향
-    private float SmoothTime = 0.1f; // 보간 속도
-    private Vector2 smoothVelocity; // SmoothDamp용 내부 변수
-
-    public StateMachine<PlayerStateTypes> stateMachine = new StateMachine<PlayerStateTypes>();
-
-    public bool jumpCooling;
-    public bool isSprintJump;
-    public bool isSprinting;
-
-
-    public bool IsCurrentState(PlayerStateTypes state)
-    {
-        return stateMachine.CurState == stateMachine.stateDic[state];
-    }
+    [SerializeField] PlayerInputReader _inputReader;
+    public PlayerInputData Input => _inputReader.Data;
 
     private void Awake() => Init();
 
-
+    
     private void Update()
     {
-        HandleSight(); // 화면 회전은 isControllLocked로 부터 자유로움
+        _fsm.HandleInput();
+        _fsm.UpdateLogic();
+    }
 
-
-        UpdateStateCondition();
-
-        stateMachine.Update();
-
-        SmoothDir = Vector2.SmoothDamp(
-            SmoothDir,
-            InputDir,
-            ref smoothVelocity,
-            SmoothTime
-        );
+    private void LateUpdate()
+    {
+        // 이번 프레임에 사용한 Pressed/Released 플래그들 초기화
+        _inputReader.BeginFrame();
     }
 
     private void FixedUpdate()
     {
-        HandleMove();
+        //HandleMove();
+        _fsm.FixedUpdateLogic();
+        Cc.GroundCheck();
+        Cc.HeadCheck();
     }
 
     private void OnDisable()
     {
-        if (dm != null)
-            dm.loadedDataGroup.Unsubscribe(LoadPlayerData);
+        if (Manager.data != null)
+            Manager.data.loadedDataGroup.Unsubscribe(LoadPlayerData);
 
-        Debug.Log("왜 비활성화됨?");
-        InputActionsDelete();
     }
 
     private void Init()
     {
-        pm = PlayerManager.Instance;
-        dm = DataManager.Instance;
-        pm.instancePlayer = this;
-        Status.Init();
+        rb = GetComponent<Rigidbody>();
 
-        View = GetComponent<PlayerView>();
+        // Status & Model & View 초기화
+        Manager.player.instancePlayer = this;
+        Model.Init();
+        View ??= GetComponentInChildren<PlayerView>();
         Cc = GetComponent<ColliderController>();
 
-        InputActionsInit();
-        StateMachineInit();
+        // 상태머신 초기화
+        _fsm = new PlayerStateMachine();
+        StateDic = new();
+        InitStateDictionary();
+        var startState = StateDic[PlayerStateType.Idle];
+        _fsm.Initialize(startState);
 
         // 데이터 로드할 때 Status를 로드한 데이터로 교체
-        dm.loadedDataGroup.Subscribe(LoadPlayerData);
+        Manager.data.loadedDataGroup.Subscribe(LoadPlayerData);
+
+        // bodyParts의 Model <-> View 연결
+        Bind();
+    }
+
+    public void InitStateDictionary()
+    {
+        StateDic.Add(PlayerStateType.Idle, new PlayerIdleState(this, _fsm));
+        StateDic.Add(PlayerStateType.Move, new PlayerMoveState(this, _fsm));
+        StateDic.Add(PlayerStateType.Roll, new PlayerRollState(this, _fsm));
+        StateDic.Add(PlayerStateType.Jump, new PlayerJumpState(this, _fsm));
+        StateDic.Add(PlayerStateType.Fall, new PlayerFallState(this, _fsm));
+    }
+
+    public void Bind()
+    {
+        Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
+
+        // 신체 부위 데이터 구독
+        foreach (var kvp in Model.GetBodyPartsDic())
+        {
+            var bodyPart = kvp.Value;
+            Panel_PartState partStateUI = playerStatusUI.dic_PartStatePanels[bodyPart.type];
+
+            if (partStateUI != null)
+            {
+                // UI연동
+                partStateUI.initMaxHp = bodyPart.InitMaxHp;
+                partStateUI.UpdateHP_View(bodyPart.Hp.Value);
+                partStateUI.UpdateCurrentMaxHP_View(bodyPart.CurrentMaxHp.Value);
+
+                // UI 이벤트 구독
+                bodyPart.Hp.Subscribe(partStateUI.UpdateHP_View);
+                bodyPart.CurrentMaxHp.Subscribe(partStateUI.UpdateCurrentMaxHP_View);
+
+                // 부위마다 체력 변화에 전체 부위 체력을 합산 계산하는 함수 구독
+                bodyPart.Hp.Subscribe(Model.CalculateCurrentHPSum);
+                bodyPart.CurrentMaxHp.Subscribe(Model.CalculateCurrentMaxHPSum);
+
+                // 1회 초기화
+                bodyPart.Init();
+            }
+        }
+
+        // 체력 합산 수치 UI구독
+        Model.SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
+        Model.SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
+
+
+        // 배터리 수치 UI 구독
+        Model.CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
+        Model.MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
+
+        // 정신력 수치 UI 구독
+        Model.CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
+
+        // 배터리, 정신력 1회 초기화
+        var initBatteryMax = Manager.data.CapacityTable.FindByKey("Battery").Max;
+        var initWillMax = Manager.data.CapacityTable.FindByKey("Will").Max;
+
+        playerStatusUI.state_Battery.initMax = initBatteryMax;
+        playerStatusUI.state_WillPower.initMax = initWillMax;
+        playerStatusUI.state_Battery.UpdateMaxStateNumb_View(initBatteryMax);
+        playerStatusUI.state_WillPower.UpdateMaxStateNumb_View(initWillMax);
     }
 
     private void LoadPlayerData(SaveDataGroup saveDataGroup)
     {
         // 플레이어 데이터 동기화
-        Status = saveDataGroup.playerStatusData;
+        Model = saveDataGroup.playerStatusData;
 
-        Status.Init_Load();
+        Model.Init_Load();
 
         // 인벤토리 Model 동기화
-        Status.inventory.model = saveDataGroup.inventoryModel;
+        Model.inventory.model = saveDataGroup.inventoryModel;
 
         // Model 내부 슬롯 리스트(5종) 내부의 SlotData 안 아이템(SO)의 Key데이터를 Item으로 재변환 후 배치시키기
-        Status.inventory.model.LoadSlotData(saveDataGroup);
-
-        
+        Model.inventory.model.LoadSlotData(saveDataGroup);
 
         // 배치 완료 후 뷰 업데이트
         //Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
-        Status.inventory.UpdateUI();
-
-        Debug.Log("플레이어 데이터 구독자 함수 완료");
+        Model.inventory.UpdateUI();
     }
-
-    public void StateMachineInit()
-    {
-        stateMachine.stateDic.Add(PlayerStateTypes.Idle, new Player_Idle(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Move, new Player_Move(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Sprint, new Player_Sprint(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Jump, new Player_Jump(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Fall, new Player_Fall(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Crouch, new Player_Crouch(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Attack, new Player_Attack(this));
-        //
-        stateMachine.stateDic.Add(PlayerStateTypes.Damaged, new Player_Damaged(this));
-        stateMachine.stateDic.Add(PlayerStateTypes.Dead, new Player_Dead(this));
-
-        stateMachine.CurState = stateMachine.stateDic[PlayerStateTypes.Idle];
-    }
-
-    private void InputActionsInit()
-    {
-        // 조작 불가능 상태로 만들 때 액션들의 Enable 상태를 껐다 켜주는 식으로 진행하자
-
-        // 플레이어 조작 맵
-        var playerControlMap = GetComponent<PlayerInput>().actions.FindActionMap("Player");
-
-        // 1. 자유 카메라
-        freeCamAction = playerControlMap.FindAction("FreeCamMod");
-        freeCamAction.Enable();
-        freeCamAction.performed += HandleFreeCam;
-        freeCamAction.canceled += HandleFreeCam;
-
-        // 2. 상호 작용
-        interactAction = playerControlMap.FindAction("Interaction");
-        interactAction.Enable();
-        interactAction.performed += HandleInteract;
-
-        /*// 조준 (포커싱)
-        AimingAction = playerControlMap.FindAction("Aiming");
-        AimingAction.Enable();
-        AimingAction.performed += HandleAiming;
-        AimingAction.canceled += HandleAiming;*/
-
-
-        // 3. 달리기 액션
-        sprintAction = playerControlMap.FindAction("Sprint");
-        sprintAction.Enable();
-        sprintAction.performed += HandleSprint;
-        sprintAction.canceled += HandleSprint;
-
-        // 4. 점프 액션
-        jumpAction = playerControlMap.FindAction("Jump");
-        jumpAction.Enable();
-        jumpAction.performed += HandleJump;
-        jumpAction.canceled += HandleJump;
-
-
-        // 5. 앉기 액션
-        crouchAction = playerControlMap.FindAction("Crouch");
-        crouchAction.Enable();
-        crouchAction.performed += HandleCrouch;
-        crouchAction.canceled += HandleCrouch;
-
-        // 6. 공격 액션
-        attackAction = playerControlMap.FindAction("Attack");
-        attackAction.Enable();
-        attackAction.performed += HandleAttack;
-        attackAction.canceled += HandleAttack;
-
-        // 7. 인벤토리 열기(I)
-        inventoryOpenAction = playerControlMap.FindAction("Inventory");
-        inventoryOpenAction.Enable();
-        inventoryOpenAction.performed += OpenInventory;
-
-        // 8. 퀵슬롯 핫키
-        quickSlotActions = playerControlMap.FindAction("QuickSlots");
-        quickSlotActions.Enable();
-        quickSlotActions.performed += OnQuickSlotPerformed;
-
-        // 9. ESC 키 처리
-        escActions = playerControlMap.FindAction("ESC");
-        escActions.Enable();
-        escActions.performed += HandleESCKeyOnGameRuning;
-    }
-
-    private void InputActionsDelete()
-    {
-        // 1. 자유 카메라
-        freeCamAction.performed -= HandleFreeCam;
-        freeCamAction.canceled -= HandleFreeCam;
-
-        // 2. 상호작용
-        interactAction.performed -= HandleInteract;
-
-        /*AimingAction.performed -= HandleAiming;
-        AimingAction.canceled -= HandleAiming;*/
-
-        // 3. 달리기 액션
-        sprintAction.performed -= HandleSprint;
-        sprintAction.canceled -= HandleSprint;
-
-
-        // 4. 점프 액션
-        jumpAction.performed -= HandleJump;
-        jumpAction.canceled -= HandleJump;
-
-        // 5. 앉기 액션
-        crouchAction.performed -= HandleCrouch;
-        crouchAction.canceled -= HandleCrouch;
-
-        // 6. 공격 액션
-        attackAction.performed -= HandleAttack;
-        attackAction.canceled -= HandleAttack;
-
-        // 7. 인벤토리 열기(I)
-        attackAction.performed -= OpenInventory;
-
-        // 8. 퀵슬롯 핫키
-        quickSlotActions.performed -= OnQuickSlotPerformed;
-
-        // 9. ESC 키 처리
-        escActions.performed -= HandleESCKeyOnGameRuning;
-
-    }
-
-    #region InputAction 처리
-    public void OnMove(InputValue value)
-    {
-        InputDir = value.Get<Vector2>();
-    }
-
-    public void OnRotate(InputValue value)
-    {
-        Vector2 mouseDir = value.Get<Vector2>();
-        mouseDir.y *= -1;
-        MouseInputDir = mouseDir * Status.MouseSensitivity;
-    }
-    public void OnZoomInOut(InputValue value)
-    {
-        Vector2 scroll = value.Get<Vector2>();
-        ZoomSet(scroll.y);
-    }
-    public void ZoomSet(float y)
-    {
-        if (y < 0)
-        {
-            if (currentZoomIndex < TPS_Cameras.Length - 1)
-            {
-                // 현재 카메라 끄기
-                TPS_Cameras[currentZoomIndex].gameObject.SetActive(false);
-
-                // 다음 단계 카메라 켜기
-                currentZoomIndex++;
-                TPS_Cameras[currentZoomIndex].gameObject.SetActive(true);
-            }
-        }
-        else if (y > 0)
-        {
-            if (currentZoomIndex > 0)
-            {
-                TPS_Cameras[currentZoomIndex].gameObject.SetActive(false);
-
-                currentZoomIndex--;
-                TPS_Cameras[currentZoomIndex].gameObject.SetActive(true);
-            }
-        }
-    }
-
-    public void HandleFreeCam(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            isFreeCamModInput = true;
-            View.FreeCamSet(true);
-        }
-
-        else if (context.canceled)
-            isFreeCamModInput = false;
-    }
-
-    /*public void HandleAiming(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            isAimingInput = true;
-            View.animator.SetBool("IsAiming", true);
-        }
-        else if (context.canceled)
-        {
-            isAimingInput = false;
-            View.animator.SetBool("IsAiming", false);
-        }
-    }*/
-
-    public void HandleSprint(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            isSprintInput = true;
-        else if (context.canceled)
-            isSprintInput = false;
-    }
-    public void HandleJump(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            isJumpInput = true;
-        if (context.canceled)
-            isJumpInput = false;
-    }
-
-    public void HandleCrouch(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (!isCrouchToggle)
-                isCrouchToggle = true;
-            else
-            {
-                if (!Cc.GetIsHeadTouchedState())
-                {
-                    isCrouchToggle = false;
-                }
-            }
-        }
-
-    }
-
-    public void HandleAttack(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            isAttackInput = true;
-        if (context.canceled)
-            isAttackInput = false;
-    }
-
-    public void HandleInteract(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            Interact();
-    }
-
-    public void OpenInventory(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-            UIManager.Instance.inventoryGroup.inventoryView.TryOpenInventory();
-    }
-
-    public void HandleESCKeyOnGameRuning(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            if (UIManager.Instance.GetActivedPanelStack().Count > 0)
-            {
-                UIManager.Instance.ClosePanel();
-            }
-            // 패널이 다 닫힌 상태에서 esc를 누르면
-            else
-            {
-                Debug.Log("일시정지 및 옵션패널 활성화");
-            }
-        }
-
-    }
-
-    private void OnQuickSlotPerformed(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            // 디지털 키 값 검사 (Keyboard.current.digit1Key.wasPressedThisFrame 등)
-            if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectQuickSlot(1);
-            if (Keyboard.current.digit2Key.wasPressedThisFrame) SelectQuickSlot(2);
-            if (Keyboard.current.digit3Key.wasPressedThisFrame) SelectQuickSlot(3);
-            if (Keyboard.current.digit4Key.wasPressedThisFrame) SelectQuickSlot(4);
-        }
-    }
-    private void SelectQuickSlot(int index)
-    {
-        Debug.Log($"Selected quick slot {index}");
-        UIManager.Instance.inventoryGroup.quickSlotParent.SelectQuickSlot(index - 1);
-        // 손에 드는 아이템 교체
-    }
-    #endregion
-
-    #region InputFlag들에 따른 상태 전환 조건 관리
-    public void UpdateStateCondition()
-    {
-        // 죽음 상태에선 처리 안함
-        if (IsCurrentState(PlayerStateTypes.Dead)) return;
-
-        // 데미지를 받으면
-        if (IsCurrentState(PlayerStateTypes.Damaged))
-        {
-            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]); return;
-        }
-
-
-        // 바닥 체크가 없어지면 Fall상태로 전환
-        if (!Cc.GetIsGroundState())
-        {
-            stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Fall]); return;
-        }
-
-        // 현재 공중 상태라면
-        if (IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall))
-        {
-            // 점프 진행중일 때 (Idle로 안돌아감)
-            if (IsCurrentState(PlayerStateTypes.Jump)) return;
-
-            // 바닥 체크되면 일반 상태or이동 상태 전환
-
-            if (Cc.GetIsGroundState())
-            {
-                if (isSprintInput && isMoveInput) { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]); return; }
-                else if (isMoveInput) { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]); return; }
-                else { stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]); return; }
-            }
-
-        }
-
-        // 바닥 상태라면
-        else
-        {
-            // => Attack 조건 : 1. 입력값 존재 
-            if (isAttackInput)
-            {
-                //Debug.Log("공격입력값 때문에 일로 들어옴");
-                // 2. 일반 & 기본 이동 상태일 때 가능
-                if (IsCurrentState(PlayerStateTypes.Idle) || IsCurrentState(PlayerStateTypes.Move)
-                    || IsCurrentState(PlayerStateTypes.Sprint))
-                {
-                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
-                }
-                // 3. 앉음 상태 & 머리위에 장애물이 막지 않은 상태일 때 가능
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
-                {
-                    if (!Cc.GetIsHeadTouchedState())
-                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Attack]);
-                }
-                // 공격 상태일 때 공격 계속 누르면 연속공격 가능  (일반 상태 or 무브 상태로)
-                else if (IsCurrentState(PlayerStateTypes.Attack))
-                {
-                    return;
-                    /*if (stateMachine.LastState == stateMachine.stateDic[PlayerStateTypes.Move])
-                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
-                    else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);*/
-                }
-            }
-
-
-            // => Jump 조건 : 1. 입력값 존재
-            else if (isJumpInput)
-            {
-                // 2. 공격 상태에선 점프 실행 안함
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
-                // 3. 앉은 상태라면 머리위에 뭔가 없어야됨.
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
-                {
-                    if (!Cc.GetIsHeadTouchedState())
-                    {
-                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
-                        isSprintJump = false;
-                    }
-                }
-                else
-                {
-                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Jump]);
-                }
-            }
-
-            // => Sprint 조건 : 1. 입력값 존재
-            else if (isSprintInput)
-            {
-                // 2. 공격상태면 달리기 상태 전환 안됨
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
-
-                // 3. 앉은 상태라면 머리위에 뭔가 없어야됨.
-                else if (IsCurrentState(PlayerStateTypes.Crouch))
-                {
-                    if (!Cc.GetIsHeadTouchedState())
-                        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]);
-                }
-                else
-                {
-                    stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Sprint]);
-                }
-            }
-            // => Crouch
-            else if (isCrouchToggle)
-            {
-                // 2. 공격상태면 앉기 상태 전환 안됨
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
-                else stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Crouch]);
-            }
-            // => Move
-            else if (isMoveInput)
-            {
-                // 이동의 경우 애니메이션 setbool을 컨트롤러에서 하자
-                // 2. 공격상태면 이동 상태 전환 안됨
-                if (IsCurrentState(PlayerStateTypes.Attack)) return;
-                stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Move]);
-            }
-            // => Idle
-            else
-            {
-                stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Idle]);
-            }
-        }
-
-    }
-
-    #endregion
-
-    #region 플레이어 조작 기능 & 상호작용 관리
-
-    public void HandleMove()
-    {
-        // 컨트롤 락 걸리면 이동 로직 중지
-        if (Status.isControllLocked) return;
-        if (CameraManager.Instance.cinemachineBrain.IsBlending) return;
-
-
-        float moveSpeed;
-        if (IsCurrentState(PlayerStateTypes.Crouch)) moveSpeed = pm.CrouchSpeed;
-        else if (isSprinting /*IsCurrentState(PlayerStateTypes.Sprint) || 
-            ((IsCurrentState(PlayerStateTypes.Jump) || IsCurrentState(PlayerStateTypes.Fall)) && isSprinting)*/ )
-            moveSpeed = Status.SprintSpeed;
-        else moveSpeed = Status.MoveSpeed;
-
-        Vector3 getMoveDir;
-
-        // 사이드 뷰 들어가면
-        if (CameraManager.Instance.activeSideView)
-        {
-            SideView_Camera sideViewCam = CameraManager.Instance.sideViewCamera;
-            getMoveDir = View.GetMoveDir_SideCamMode(InputDir, sideViewCam.front, sideViewCam.right);
-        }
-        else if (isFreeCamModInput)
-            getMoveDir = View.GetMoveDirection(InputDir, true);
-        else
-            getMoveDir = View.GetMoveDirection(InputDir);
-
-
-        Vector3 moveVec = View.SetMove(getMoveDir, moveSpeed);
-        View.moveDir = moveVec;
-        View.facingDir = moveVec;
-
-        if (InputDir != Vector3.zero)
-        {
-            View.animator.SetBool("IsMove", true);
-            isMoveInput = true;
-        }
-        else
-        {
-            View.animator.SetBool("IsMove", false);
-            isMoveInput = false;
-        }
-    }
-
-    public void HandleSight()
-    {
-        // 사이드 캠 활성화 상태에선 화면회전은 정지
-        if (CameraManager.Instance.activeSideView)
-        {
-            View.SetAvatarRotation(View.facingDir, pm.RotateSpeed);
-            return;
-        }
-
-        Vector3 camRotateDir = View.SetAimRotation(MouseInputDir, pm.MinPitch, pm.MaxPitch);
-
-        Vector3 avatarDir;
-
-        // 프리캠 모드 => 플레이어의 이동 방향으로 아바타의 방향 맞춰주기
-        if (isFreeCamModInput) avatarDir = View.facingDir;
-        // 제 자리에 멈춰서서 프리캠 모드가 아니라면, 공격 도중이라면 =>  아바타가 플레이어의 화면을 향해 응시
-        else if (!isMoveInput || IsCurrentState(PlayerStateTypes.Attack)) avatarDir = camRotateDir;
-        else avatarDir = View.moveDir;
-
-
-
-        // 컨트롤 락 걸리면 아바타 회전은 정지
-        if (Status.isControllLocked) return;
-        View.SetAvatarRotation(avatarDir, pm.RotateSpeed);
-
-
-
-        // Attack 상태일 때만.
-        if (stateMachine.CurState == stateMachine.stateDic[PlayerStateTypes.Attack])
-        {
-            View.animator.SetFloat("MoveX", SmoothDir.x);
-            View.animator.SetFloat("MoveZ", SmoothDir.y);
-        }
-    }
-
-    public void CrouchToggleChange(bool value)
-    {
-        isCrouchToggle = value;
-    }
-
-    public void Attack()
+   
+    // Controller에서는 Attack의 시점만 판단. Attack의 결과는 View에서 주먹 콜라이더 펀치 또는 무기 콜라이더 휘두르기/찌르기 로 구분해서 실행
+    public void TryAttack() 
     {
         Debug.Log("어택 실행됨");
 
-        IDamagable[] damagables = Cc.GetDamagablesInRange();
-        if (damagables.Length < 1) return;
+        float finalDamage = Model.Damage;
 
-        float finalDamage = Status.Damage;
-
-        if (Status.onHandItem != null)
-        {
-
-            if (Status.onHandItem is Item_Weapon weapon)
-            {
-                finalDamage += weapon.Damage;
-            }
-           
-        }
-
-        foreach (IDamagable damagable in damagables)
-        {
-
-            damagable.TakeDamage(finalDamage, transform);
-        }
+        // View의 animator에서 공격 애니메이션을 실행
+        // 애니메이션 이벤트에서 무기를 휘두르는 or 주먹을 뻗는 시점에서 공격 히트박스 활성화
+        // 기본 히트박스 -> 주먹
+        // 무기 히트박스 -> 무기 인스턴스 별로 프리펩에 설정해두기
     }
 
-    public void Interact()
+    public void TryInteract()
     {
         IInteractable interactable = Cc.InteractableObj;
 
@@ -662,68 +178,47 @@ public class PlayerController : MonoBehaviour, IDamagable
             interactable.Interact();
     }
 
-    public void KnockBack(Transform transform, float force)
+    public void ApplyKnockBack(HitInfo hitInfo)
     {
-        // 플레이어와 공격자의 방향 벡터를 얻기(dir)     ##주의: 방향 벡터의 Y값을 빼서 평면상의 벡터 방향으로 설정
-        Vector3 basicDir = this.transform.position - transform.position;
-        Vector3 basicDirToVector2 = new Vector3(basicDir.x, 0, basicDir.z);
-
         // 공격 방향 + 위로 살짝 합친 벡터를 방향으로 함
-        Vector3 finalKnockBackDir = (basicDirToVector2.normalized + Vector3.up * 0.3f).normalized;
+        Vector3 finalKnockBackDir = (hitInfo.KnockbackDir + Vector3.up * 0.3f).normalized;
 
-        GetComponent<Rigidbody>().AddForce(finalKnockBackDir * force, ForceMode.Impulse);
-
+        GetComponent<Rigidbody>().AddForce(finalKnockBackDir * hitInfo.KnockbackPower, ForceMode.Impulse);
     }
 
-    public void TakeDamage(float damage, Transform transform)
+    public void TakeDamage(HitInfo hitInfo)
     {
         // 무적 상태라면 return;
-        if (Status.isInvincible) return;
+        if (Model.isInvincible) return;
         // 이미 피격 상태라면 X
-        if (IsCurrentState(PlayerStateTypes.Damaged)) return;
+        /*if (IsCurrentState(PlayerStateTypes.Damaged)) return;
 
         // 죽음 상태라면 실행X
-        if (IsCurrentState(PlayerStateTypes.Dead)) return;
+        if (IsCurrentState(PlayerStateTypes.Dead)) return;*/
 
-        // 활성 상태인 신체 부위 중 랜덤 선택
-        List<BodyPart> bodyPart = Status.GetBodyPartsList();
-        List<BodyPart> activeBodyPart = new List<BodyPart>();
+        // Model에서 데미지 계산 & 죽음 판단
+        Model.TakeDamage(hitInfo.Damage);
 
-        foreach (BodyPart part in bodyPart)
-        {
-            // 활성 상태인 파츠들로 리스트 새로 생성
-            if (part.Activate.Value)
-                activeBodyPart.Add(part);
-        }
+        // View에서 넉백 & 피격 애니메이션 + SFX & VFX 실행
 
-        if (activeBodyPart.Count > 1)
-        {
-            // 부위 랜덤 데미지
-            int r = Random.Range(1, activeBodyPart.Count);
-            activeBodyPart[r].TakeDamage(damage);
-        }
-        else if (activeBodyPart.Count > 0)
-        {
-            // 머리만 남은 상태면 머리에 데미지
-            activeBodyPart[0].TakeDamage(damage);
-        }
+        // 넉백 물리처리
+        ApplyKnockBack(hitInfo);
 
-        KnockBack(transform, pm.knockBackForce_Init);
 
-        Status.CheckCriticalState();
-        stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]);
-        StartCoroutine(InvincibleRoutine(pm.DamagedInvincibleTime));
+        //
+        //stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]);
+        StartCoroutine(InvincibleRoutine(Manager.player.DamagedInvincibleTime));
     }
 
     public IEnumerator InvincibleRoutine(float time)
     {
-        Status.isInvincible = true;
+        Model.isInvincible = true;
 
         // TODO : 플레이어 피격 이펙트 or 셰이더 실행
 
         yield return new WaitForSeconds(time);
 
-        Status.isInvincible = false;
+        Model.isInvincible = false;
 
         // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
     }
@@ -736,8 +231,6 @@ public class PlayerController : MonoBehaviour, IDamagable
         this.transform.position = transform.position;
         this.transform.rotation = transform.rotation;
     }
-    #endregion
-
 
     public void UpdateHandItem(Item item)
     {
@@ -745,10 +238,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         {
             if (onHandInstance != null) Destroy(onHandInstance);
 
-            Status.onHandItem = null;
+            Model.onHandItem = null;
             // 장착 해제 효과
-            View.animator.SetBool("Equip_Swing", false);
-            View.animator.SetBool("Equip_Thrust", false);
+            View.Animator.SetBool("Equip_Swing", false);
+            View.Animator.SetBool("Equip_Thrust", false);
         }
         else
         {
@@ -758,21 +251,21 @@ public class PlayerController : MonoBehaviour, IDamagable
             Debug.Log("소환");
             onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
-            Status.onHandItem = item;
+            Model.onHandItem = item;
 
             // 아이템 장착 효과
             if (item is Item_Weapon weapon)
             {
                 if (weapon.attackType == WeaponAttackType.Swing)
                 {
-                    View.animator.SetBool("Equip_Swing", true);
-                    View.animator.SetBool("Equip_Thrust", false);
+                    View.Animator.SetBool("Equip_Swing", true);
+                    View.Animator.SetBool("Equip_Thrust", false);
 
                 }
                 else if (weapon.attackType == WeaponAttackType.Thrust)
                 {
-                    View.animator.SetBool("Equip_Thrust", true);
-                    View.animator.SetBool("Equip_Swing", false);
+                    View.Animator.SetBool("Equip_Thrust", true);
+                    View.Animator.SetBool("Equip_Swing", false);
                 }
             }
             else if (item is Item_Throwing throwings)

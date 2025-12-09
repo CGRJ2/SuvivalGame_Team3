@@ -4,7 +4,7 @@ public partial class DataManager
 {
     private const string _survivalStatCsvPath = "Data/SurvivalStats";
 
-    public CsvTable<CapacityData> CapacityTable { get; private set; }
+    public CsvTable<SurvivalStatData> CapacityTable { get; private set; }
     public CsvTable<BatteryConsumeData> BatteryConsumeTable { get; private set; }
     public CsvTable<BatteryRecoverData> BatteryRecoverTable { get; private set; }
     public CsvTable<WillConsumeData> WillConsumeTable { get; private set; }
@@ -15,7 +15,7 @@ public partial class DataManager
         var text = Resources.Load<TextAsset>(_survivalStatCsvPath).text;
         var sections = CsvParser.ParseSections(text);
 
-        CapacityTable = CsvTable<CapacityData>.FromRows(sections["Capacity"]);
+        CapacityTable = CsvTable<SurvivalStatData>.FromRows(sections["SurvivalStats"]);
         BatteryConsumeTable = CsvTable<BatteryConsumeData>.FromRows(sections["BatteryConsume"]);
         BatteryRecoverTable = CsvTable<BatteryRecoverData>.FromRows(sections["BatteryRecover"]);
         WillConsumeTable = CsvTable<WillConsumeData>.FromRows(sections["WillConsume"]);
@@ -24,12 +24,12 @@ public partial class DataManager
 }
 
 // 생존 수치 최대/최소값 데이터
-public class CapacityData : ICsvRecord
+public class SurvivalStatData : ICsvRecord
 {
     public string Id;
     public float Max;
     public float Min;
-    public float ReduceAmount;
+    public float ReducePerTick;
 
 
     public void FromCsvRow(CsvRow row)
@@ -37,7 +37,7 @@ public class CapacityData : ICsvRecord
         Id = row["ID"];
         Max = row.GetFloat("Max");
         Min = row.GetFloat("Min");
-        ReduceAmount = row.GetFloat("ReduceAmount");
+        ReducePerTick = row.GetFloat("ReducePerTick");
     }
 
     public string GetKey() => Id;
@@ -49,7 +49,6 @@ public class BatteryConsumeData : ICsvRecord
 {
     public string Id;
     public float Amount;
-
 
     public void FromCsvRow(CsvRow row)
     {

@@ -9,6 +9,6 @@ public class Item_NewBattery : Item_Consumable
     // 배터리 교체 효과
     public void Battery_Init()
     {
-        PlayerManager.Instance.instancePlayer.Status.InitBattery();
+        PlayerManager.Instance.instancePlayer.Model.InitBattery();
     }
 }

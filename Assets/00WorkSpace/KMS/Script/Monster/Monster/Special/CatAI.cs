@@ -92,12 +92,14 @@ public class CatAI : BaseMonster
     {
         var player = GetTarget()?.GetComponent<PlayerController>();
         if (player == null) return false;
-        return !player.IsCurrentState(PlayerStateTypes.Crouch) && !player.IsCurrentState(PlayerStateTypes.Idle);
+        //return !player.IsCurrentState(PlayerStateTypes.Crouch) && !player.IsCurrentState(PlayerStateTypes.Idle);
+        return true;
     }
     public bool IsPlayerInDetectionRange()
     {
         if (playerTransform == null) return false;
-        return !GetComponent<PlayerController>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
+        //return !GetComponent<PlayerController>()?.IsCurrentState(PlayerStateTypes.Idle) ?? false;
+        return true;
     }
     public bool IsInDetectionRange(Transform target)
     {

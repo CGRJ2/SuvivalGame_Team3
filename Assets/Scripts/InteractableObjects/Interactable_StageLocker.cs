@@ -19,7 +19,7 @@ public class Interactable_StageLocker : InteractableBase
             int requiredCount = chainedStageData.unlockCondition.needItemList[i].count;
 
             // 인벤토리 내 해당 조건 체크 (아이템 종류 & 개수)
-            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Status.inventory;
+            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Model.inventory;
             int owned = playerInventory.model.GetOwnedItemCount(requiredItem);
             Debug.Log($"{requiredItem.itemName}의 현재 인식 개수 : {owned}");
 

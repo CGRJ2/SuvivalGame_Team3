@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,7 +67,7 @@ private void ApplyKnockback(GameObject player)
         if (playerController != null && playerRb != null)
         {
             // 플레이어 이동 일시적으로 비활성화
-            playerController.Status.isControllLocked = true;
+            playerController.Model.isControllLocked = true;
 
             // 현재 플레이어 속도 초기화
             playerRb.velocity = Vector3.zero;
@@ -93,7 +93,7 @@ private void ApplyKnockback(GameObject player)
         yield return new WaitForSeconds(delay);
 
         // 플레이어 이동 다시 활성화
-        playerController.Status.isControllLocked = false;
+        playerController.Model.isControllLocked = false;
     }
 
     private IEnumerator DeactivateAndRespawn()
@@ -117,4 +117,4 @@ private void ApplyKnockback(GameObject player)
             trapVisualAndCollisionObject.SetActive(active);
         }
     }
-}
+}*/

@@ -15,32 +15,31 @@ public class PlayerModel : IDisposable
     public ObservableProperty<float> SumCurrentHP = new ObservableProperty<float>();
     public ObservableProperty<float> SumCurrentMaxHP = new ObservableProperty<float>();
 
-    [Header("신체 부위 데이터")]
-    [SerializeField] private List<BodyPart> bodyParts;
+    
+    private Dictionary<BodyPartType, BodyPart> _bodyPartsDic = new();
 
-    [field: Header("플레이어 스탯 정보")]
-    [field: SerializeField] public float MoveSpeed { get; set; }
+    [field: Header("플레이어 스탯 런타임 데이터")]
+    [field: SerializeField] public float WalkSpeed { get; set; }
     [field: SerializeField] public float SprintSpeed { get; set; }
+    [field: SerializeField] public float RotateSpeed { get; set; }
+    [field: SerializeField] public float CrouchSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
     [field: SerializeField] public float Damage { get; set; }
 
     // 인벤토리 데이터
     [HideInInspector] public InventoryPresenter inventory;
 
-    [Header("디버프 상태")]
-    public bool ApplyDebuff_CraftSpeed;
-    public bool ApplyDebuff_SprintSpeed;
-    public bool ApplyDebuff_LockWeaponUse;
-    public bool ApplyDebuff_LockSprint;
-    public bool ApplyDebuff_LockAttack;
-    public bool ApplyDebuff_HeadDotDamage;
-
     [Header("무적 상태 (피격 후 또는 컷씬 도중)")]
     public bool isInvincible;
 
     [Header("조작 가능/불가 상태")]
-    public bool isControllLocked; // 고양이한테 물리거나 주인한테 잡힐 때 사용
+    public bool isControllLocked;
 
+
+
+    // 상태와 함께 쓰일 플래그
+    public bool IsCrouching { get; private set; }
+    public bool IsSprinting { get; private set; }
 
 
     [Header("설정된 마우스 감도(구현x)")]
@@ -48,26 +47,40 @@ public class PlayerModel : IDisposable
     public float MouseSensitivity { get { return mouseSensitivity; } private set { mouseSensitivity = value; } }
 
 
+    public bool IsDead;
+    public event Action OnDied;
+    
+    public bool IsFaint;
+    public event Action OnFaint;
+
+    public bool IsGrounded; // 이 놈들은 Status로 분리하는게 좋을 듯
+    public bool IsRolling;
+    public bool IsLanding;
+
+
+    public bool IsInvincible;
+
+
     // 플레이어 데이터 초기 상태
     public void Init()
     {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        PlayerManager pm = PlayerManager.Instance;
-
         // 정신력 초기화
-        CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
+        CurrentWillPower.Value = Manager.data.CapacityTable.FindByKey("Will").Max;
 
         // 배터리 초기화
         InitBattery();
 
-        MouseSensitivity = pm.mouseSensitivity_Init;
+        // 스탯 초기화
+        var initStatTable = Manager.data.PlayerStatsTable;
+        WalkSpeed   = initStatTable.FindByKey("MoveSpeed").InitValue;
+        SprintSpeed = initStatTable.FindByKey("SprintSpeed").InitValue;
+        RotateSpeed = initStatTable.FindByKey("RotateSpeed").InitValue;
+        CrouchSpeed = initStatTable.FindByKey("CrouchSpeed").InitValue;
+        JumpForce   = initStatTable.FindByKey("JumpForce").InitValue;
+        Damage      = initStatTable.FindByKey("Damage").InitValue;
 
-        Damage = pm.damage_Init;
-        MoveSpeed = pm.moveSpeed_Init;
-        SprintSpeed = pm.sprintSpeed_Init;
-        JumpForce = pm.jumpForce_Init;
-
-        Init_Load();
+        // 신체 부위 초기화
+        BodyPartsInit();
 
         // 인벤토리 초기화
         inventory = new InventoryPresenter();
@@ -77,238 +90,123 @@ public class PlayerModel : IDisposable
     public void Init_Load()
     {
         BodyPartsInit();
-
-        CurrentBattery.Subscribe(PlayerManager.Instance.PlayerFaint);
     }
 
 
     // 플레이어 죽고 리스폰 할 때 초기화
-    public void Init_AfterDead()
+    public void Respawn_Dead()
     {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-
         // 정신력, 배터리만 최대로 맞춰주기
-        CurrentWillPower.Value = ssm.willPowerSystem.MaxWillPower_Init;
+        CurrentWillPower.Value = Manager.data.CapacityTable.FindByKey("Will").Max;
         InitBattery();
 
         // 감소한 최대 체력으로 설정
-        BodyPartsInit_AfterDead();
+        BodyPartsInitInRespawn();
     }
 
     // 플레이어 기절 후 리스폰 할 때 초기화
-    public void Init_AfterFaint()
+    public void Respawn_Faint()
     {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-
-        Debug.Log("충전 왜 안돼");
+        var batteryFixedData = Manager.data.CapacityTable.FindByKey("Battery");
+        var reduceAmount = batteryFixedData.ReducePerTick;
+        var min = batteryFixedData.Min;
 
         // 최대 배터리 감소
-        Debug.Log($"[MaxBattery.Value]1 : {MaxBattery.Value}");
-
-        if (MaxBattery.Value - ssm.batterySystem.MaxBatteryReduceAfterFaint > ssm.batterySystem.MinBatteryLimit)
-            MaxBattery.Value -= ssm.batterySystem.MaxBatteryReduceAfterFaint;
+        if (MaxBattery.Value - reduceAmount > min)
+            MaxBattery.Value -= reduceAmount;
         else
-            MaxBattery.Value = ssm.batterySystem.MinBatteryLimit;
+            MaxBattery.Value = min;
 
-        Debug.Log($"[MaxBattery.Value]2 : {MaxBattery.Value}");
         CurrentBattery.Value = MaxBattery.Value;
     }
-
-
+    
+    // 신체 부위별 인스턴스 생성
     public void BodyPartsInit()
     {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
         Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
-        List<BodyPart> tempBodyParts = new List<BodyPart>();
 
-        // 신체 부위 별 최대 체력 따로 변수 만들어서 설정하자.
+        var bodyStatsTable = Manager.data.BodyStatsTable;
+        string bodyKey = "";
 
-        // 머리
-        BodyPart head = new BodyPart(BodyPartTypes.Head, ssm.bodyPartSystem.HeadMaxHP_Init);
-        head.Activate.Subscribe(Dead);
-        tempBodyParts.Add(head);
-        // UI연동
-        playerStatusUI.head.initMaxHp = ssm.bodyPartSystem.HeadMaxHP_Init;
-        /// 구독
-        head.Hp.Subscribe(playerStatusUI.head.UpdateHP_View);
-        head.CurrentMaxHp.Subscribe(playerStatusUI.head.UpdateCurrentMaxHP_View);
-        head.Hp.Subscribe(CalculateCurrentHPSum);
-        head.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
-        /// 업데이트
-        playerStatusUI.head.UpdateHP_View(head.Hp.Value);
-        playerStatusUI.head.UpdateCurrentMaxHP_View(head.CurrentMaxHp.Value);
-        //
-
-
-        // 왼팔
-        BodyPart leftArm = new BodyPart(BodyPartTypes.LeftArm, ssm.bodyPartSystem.ArmMaxHP_Init);
-        leftArm.Activate.Subscribe(Debuff_CraftSpeed);
-        tempBodyParts.Add(leftArm);
-        // UI연동
-        playerStatusUI.leftArm.initMaxHp = ssm.bodyPartSystem.ArmMaxHP_Init;
-        /// 구독
-        leftArm.Hp.Subscribe(playerStatusUI.leftArm.UpdateHP_View);
-        leftArm.CurrentMaxHp.Subscribe(playerStatusUI.leftArm.UpdateCurrentMaxHP_View);
-        leftArm.Hp.Subscribe(CalculateCurrentHPSum);
-        leftArm.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
-        /// 업데이트
-        playerStatusUI.leftArm.UpdateHP_View(leftArm.Hp.Value);
-        playerStatusUI.leftArm.UpdateCurrentMaxHP_View(leftArm.CurrentMaxHp.Value);
-        //
-
-
-        // 오른팔
-        BodyPart rightArm = new BodyPart(BodyPartTypes.RightArm, ssm.bodyPartSystem.ArmMaxHP_Init);
-        rightArm.Activate.Subscribe(Debuff_LockWeaponUse);
-        tempBodyParts.Add(rightArm);
-        // UI연동
-        playerStatusUI.rightArm.initMaxHp = ssm.bodyPartSystem.ArmMaxHP_Init;
-        /// 구독
-        rightArm.Hp.Subscribe(playerStatusUI.rightArm.UpdateHP_View);
-        rightArm.CurrentMaxHp.Subscribe(playerStatusUI.rightArm.UpdateCurrentMaxHP_View);
-        rightArm.Hp.Subscribe(CalculateCurrentHPSum);
-        rightArm.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
-        /// 업데이트
-        playerStatusUI.rightArm.UpdateHP_View(rightArm.Hp.Value);
-        playerStatusUI.rightArm.UpdateCurrentMaxHP_View(rightArm.CurrentMaxHp.Value);
-        //
-
-
-        // 왼다리
-        BodyPart leftLeg = new BodyPart(BodyPartTypes.LeftLeg, ssm.bodyPartSystem.LegMaxHP_Init);
-        leftLeg.Activate.Subscribe(Debuff_SprintSpeed);
-        tempBodyParts.Add(leftLeg);
-        // UI연동
-        playerStatusUI.leftLeg.initMaxHp = ssm.bodyPartSystem.LegMaxHP_Init;
-        /// 구독
-        leftLeg.Hp.Subscribe(playerStatusUI.leftLeg.UpdateHP_View);
-        leftLeg.CurrentMaxHp.Subscribe(playerStatusUI.leftLeg.UpdateCurrentMaxHP_View);
-        leftLeg.Hp.Subscribe(CalculateCurrentHPSum);
-        leftLeg.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
-        /// 업데이트
-        playerStatusUI.leftLeg.UpdateHP_View(leftLeg.Hp.Value);
-        playerStatusUI.leftLeg.UpdateCurrentMaxHP_View(leftLeg.CurrentMaxHp.Value);
-        //
-
-
-        // 오른다리
-        BodyPart rightLeg = new BodyPart(BodyPartTypes.RightLeg, ssm.bodyPartSystem.LegMaxHP_Init);
-        rightLeg.Activate.Subscribe(Debuff_SprintSpeed);
-        tempBodyParts.Add(rightLeg);
-        // UI연동
-        playerStatusUI.rightLeg.initMaxHp = ssm.bodyPartSystem.LegMaxHP_Init;
-        /// 구독
-        rightLeg.Hp.Subscribe(playerStatusUI.rightLeg.UpdateHP_View);
-        rightLeg.CurrentMaxHp.Subscribe(playerStatusUI.rightLeg.UpdateCurrentMaxHP_View);
-        rightLeg.Hp.Subscribe(CalculateCurrentHPSum);
-        rightLeg.CurrentMaxHp.Subscribe(CalculateCurrentMaxHPSum);
-        /// 업데이트
-        playerStatusUI.rightLeg.UpdateHP_View(rightLeg.Hp.Value);
-        playerStatusUI.rightLeg.UpdateCurrentMaxHP_View(rightLeg.CurrentMaxHp.Value);
-        //
-
-        
-        // 신체 데이터 초기화
-        bodyParts = tempBodyParts;
-
-        // 체력 합산 수치 UI구독
-        SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
-        SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
-        playerStatusUI.state_HpSum.initMax = ssm.GetInitBodyPartsHPSum();
-
-        // 배터리 수치 UI 구독
-        CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
-        MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
-        playerStatusUI.state_Battery.initMax = ssm.batterySystem.InitMaxBattery;
-        playerStatusUI.state_Battery.UpdateMaxStateNumb_View(ssm.batterySystem.InitMaxBattery);
-
-        // 정신력 수치 UI 구독
-        CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
-        playerStatusUI.state_WillPower.UpdateMaxStateNumb_View(ssm.willPowerSystem.MaxWillPower_Init);
-
-        CalculateCurrentHPSum(0);
-        CalculateCurrentMaxHPSum(0);
-    }
-
-    // 디버프 효과들
-    public void Debuff_CraftSpeed(bool isActive)
-    {
-        // 파츠가 비활성화 되면
-        if (!isActive)
+        for (int i = 0; i < Enum.GetValues(typeof(BodyPartType)).Length; i++)
         {
-            // 디버프 적용
-            ApplyDebuff_CraftSpeed = true;
-        }
-        else
-            ApplyDebuff_CraftSpeed = false;
-
-
-    }
-    public void Debuff_LockWeaponUse(bool isActive)
-    {
-        // 파츠가 비활성화 되면
-        if (!isActive)
-        {
-            // 디버프 적용
-            ApplyDebuff_LockWeaponUse = true;
-        }
-        else
-            ApplyDebuff_LockWeaponUse = false;
-    }
-    public void Debuff_SprintSpeed(bool isActive)
-    {
-        // 파츠가 비활성화 되면
-        if (!isActive)
-        {
-            // 디버프 적용
-            ApplyDebuff_SprintSpeed = true;
-        }
-        else
-            ApplyDebuff_SprintSpeed = false;
-    }
-    //
-
-
-    public void BodyPartsInit_AfterDead()
-    {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-        for (int i = 0; i < bodyParts.Count; i++)
-        {
-            switch (bodyParts[i].type)
+            switch ((BodyPartType)i)
             {
-                case BodyPartTypes.Head:
-                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.HeadMaxHPReduce_AD > ssm.bodyPartSystem.MinHeadMaxHPLimit)
-                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.HeadMaxHPReduce_AD;
-                    else
-                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinHeadMaxHPLimit;
+                case BodyPartType.Head:
+                    bodyKey = "HeadHP";
                     break;
 
-                case BodyPartTypes.LeftArm:
-                case BodyPartTypes.RightArm:
-                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.ArmMaxHPReduce_AD> ssm.bodyPartSystem.MinArmMaxHPLimit)
-                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.ArmMaxHPReduce_AD;
-                    else
-                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinArmMaxHPLimit;
+                case BodyPartType.LeftArm:
+                case BodyPartType.RightArm:
+                    bodyKey = "ArmHP";
                     break;
 
-                case BodyPartTypes.LeftLeg:
-                case BodyPartTypes.RightLeg:
-                    if (bodyParts[i].CurrentMaxHp.Value - ssm.bodyPartSystem.LegMaxHPReduce_AD> ssm.bodyPartSystem.MinLegMaxHPLimit)
-                        bodyParts[i].CurrentMaxHp.Value -= ssm.bodyPartSystem.LegMaxHPReduce_AD;
-                    else
-                        bodyParts[i].CurrentMaxHp.Value = ssm.bodyPartSystem.MinLegMaxHPLimit;
+                case BodyPartType.LeftLeg:
+                case BodyPartType.RightLeg:
+                    bodyKey = "LegHP";
+                    break;
+
+                default: bodyKey = "";
                     break;
             }
-            bodyParts[i].Hp = bodyParts[i].CurrentMaxHp;
-        }
 
+            if (string.IsNullOrWhiteSpace(bodyKey))
+            {
+                Debug.LogError($"테이블에 존재하지 않는 신체부위 타입 존재: {(BodyPartType)i}");
+                break;
+            }
+
+            var bodyPartData = bodyStatsTable.FindByKey(bodyKey);
+            var reduceAmount = bodyPartData.ReduceAmount;
+            var maxHP = bodyPartData.Max;
+            var minHp = bodyPartData.Min;
+
+            BodyPart bodyPart = new BodyPart((BodyPartType)i, maxHP);
+            _bodyPartsDic[(BodyPartType)i] = bodyPart;
+        }
+    }
+
+    // 사망 후 신체부위 최대 내구도 감소
+    public void BodyPartsInitInRespawn()
+    {
+        var bodyStatsTable = Manager.data.BodyStatsTable;
+        string bodyKey = "";
+
+        foreach (var kvp in _bodyPartsDic)
+        {
+            switch (kvp.Key)
+            {
+                case BodyPartType.Head:
+                    bodyKey = "HeadHP";
+                    break;
+
+                case BodyPartType.LeftArm:
+                case BodyPartType.RightArm:
+                    bodyKey = "ArmHP";
+                    break;
+
+                case BodyPartType.LeftLeg:
+                case BodyPartType.RightLeg:
+                    bodyKey = "LegHP";
+                    break;
+            }
+
+            var bodyPartData = bodyStatsTable.FindByKey(bodyKey);
+            var reduceAmount = bodyPartData.ReduceAmount;
+            var minHp = bodyPartData.Min;
+
+            if (_bodyPartsDic[kvp.Key].CurrentMaxHp.Value - reduceAmount > minHp)
+                _bodyPartsDic[kvp.Key].CurrentMaxHp.Value -= reduceAmount;
+            else
+                _bodyPartsDic[kvp.Key].CurrentMaxHp.Value = minHp;
+
+            _bodyPartsDic[kvp.Key].Hp = _bodyPartsDic[kvp.Key].CurrentMaxHp;
+        }
     }
 
     public void InitBattery()
     {
-        SuvivalSystemManager ssm = SuvivalSystemManager.Instance;
-
-        MaxBattery.Value = ssm.batterySystem.InitMaxBattery;
+        MaxBattery.Value = Manager.data.CapacityTable.FindByKey("Battery").Max;
         CurrentBattery.Value = MaxBattery.Value;
     }
 
@@ -319,80 +217,136 @@ public class PlayerModel : IDisposable
         else CurrentBattery.Value = MaxBattery.Value;
     }
 
-    public List<BodyPart> GetBodyPartsList()
+    public Dictionary<BodyPartType, BodyPart> GetBodyPartsDic()
     {
-        return bodyParts;
+        return _bodyPartsDic;
     }
 
-    // 몸 부위 중 2개 이상이 비활성화 상태일 때 디버프 효과 적용
-    public void CheckCriticalState()
-    {
-        BodyPart leftArm = GetPart(BodyPartTypes.LeftArm);
-        BodyPart rightArm = GetPart(BodyPartTypes.RightArm);
-        BodyPart leftLeg = GetPart(BodyPartTypes.LeftLeg);
-        BodyPart rightLeg = GetPart(BodyPartTypes.RightLeg);
-
-        // 두 팔 모두 비활성화 상태일 때 => 공격 제한 디버프 활성화
-        if (!leftArm.Activate.Value && !rightArm.Activate.Value) ApplyDebuff_LockAttack = true;
-        else ApplyDebuff_LockAttack = false;
-
-        // 두 다리 모두 비활성화 상태일 때 => 달리기 제한 디버프 활성화
-        if (!leftLeg.Activate.Value && !rightLeg.Activate.Value) ApplyDebuff_LockSprint = true;
-        else ApplyDebuff_LockSprint = false;
-
-        // 머리 제외, 모든 부위가 비활성화 상태일 때 => 머리에 도트 데미지 디버프 활성화
-        if (!leftLeg.Activate.Value && !rightLeg.Activate.Value && !leftArm.Activate.Value && !rightArm.Activate.Value)
-            ApplyDebuff_HeadDotDamage = true;
-    }
-
-    public BodyPart GetPart(BodyPartTypes partType)
-    {
-        return bodyParts.Find(p => p.type == partType);
-    }
-
-
+    // 모든 부위의 현재 체력의 합을 Model 필드의 SumCurrentHP로 환산해주는 함수
     public void CalculateCurrentHPSum(float hp)
     {
         float sumHP = 0;
-        foreach (BodyPart bodyPart in bodyParts)
+        foreach (var kvp in _bodyPartsDic)
         {
-            sumHP += bodyPart.Hp.Value;
+            sumHP += kvp.Value.Hp.Value;
         }
         SumCurrentHP.Value = sumHP;
     }
+
+    // 모든 부위의 최대 체력의 합을 Model 필드의 SumCurrentMaxHP로 환산해주는 함수
     public void CalculateCurrentMaxHPSum(float hp)
     {
         float sumMaxHP = 0;
-        foreach (BodyPart bodyPart in bodyParts)
+        foreach (var kvp in _bodyPartsDic)
         {
-            sumMaxHP += bodyPart.CurrentMaxHp.Value;
+            sumMaxHP += kvp.Value.CurrentMaxHp.Value;
         }
         SumCurrentMaxHP.Value = sumMaxHP;
     }
 
-    public void Dead(bool isActive)
+    public void Tick(float tickDuration)
     {
-        if (!isActive)
+        if (IsDead || IsFaint) return;
+        if (CurrentBattery.Value > 0)
         {
-            PlayerManager.Instance.PlayerDead();
+            var idleBatteryConsume = Manager.data.BatteryConsumeTable.FindByKey("Idle");
+            if (CurrentBattery.Value - idleBatteryConsume.Amount > 0f)
+            {
+                CurrentBattery.Value -= idleBatteryConsume.Amount;
+            }
+            else
+            {
+                CurrentBattery.Value = 0f;
+                Faint();
+            }
         }
-            
+    }
+
+    //  부위 판정 시스템
+    public void TakeDamage(float damage)
+    {
+        // 죽음 상태라면 데미지 계산 실행X
+        if (IsDead) return;
+
+        // 활성 상태인 신체 부위 중 랜덤 선택 -> 이것도 피격 부위 데미지 주는걸로 구현해볼까...
+        List<BodyPart> activeBodyPart = new List<BodyPart>();
+
+        // 활성 상태인 파츠들로 리스트 새로 생성 (이미 파괴된 부위를 제외하기 위함)
+        foreach (var kvp in _bodyPartsDic)
+        {
+            if (kvp.Value.Activate.Value)
+                activeBodyPart.Add(kvp.Value);
+        }
+
+        // 활성 상태 부위 랜덤 데미지
+        if (activeBodyPart.Count > 0)
+        {
+            int r = UnityEngine.Random.Range(1, activeBodyPart.Count);
+            activeBodyPart[r].TakeDamage(damage);
+        }
+
+        // 전체 체력 or 머리 체력이 0 이하면  사망
+        if (SumCurrentHP.Value <= 0 || _bodyPartsDic[BodyPartType.Head].Hp.Value <= 0)
+            Die();
+    }
+
+    public void Die()
+    {
+        if (IsDead) return;
+        IsDead = true;
+        OnDied?.Invoke();
+    }
+
+    // => 배터리가 0이 되었을 때 호출
+    public void Faint()
+    {
+        if (IsFaint) return;
+        IsFaint = true;
+        OnFaint?.Invoke();
+    }
+
+    public void SetCrouch(bool crouch)
+    {
+        IsCrouching = crouch;
+
+        // 규칙: 웅크렸으면 스프린트는 해제
+        if (crouch)
+            IsSprinting = false;
+    }
+
+    public void SetSprint(bool sprint)
+    {
+        // 규칙: 웅크린 상태에서는 스프린트 금지
+        if (IsCrouching && sprint)
+            return;
+
+        IsSprinting = sprint;
+    }
+
+    public float GetCurrentMoveSpeed()
+    {
+        if (IsCrouching) return CrouchSpeed;
+        if (IsSprinting) return SprintSpeed;
+        return WalkSpeed;
+    }
+
+    public void ResetFlagsOnAirborne()
+    {
+        IsCrouching = false;
+        IsSprinting = false;
     }
 
     public void Dispose()
     {
-        CurrentWillPower.UnsbscribeAll();
-        CurrentBattery.UnsbscribeAll();
-        MaxBattery.UnsbscribeAll();
-        SumCurrentHP.UnsbscribeAll();
-        SumCurrentMaxHP.UnsbscribeAll();
+        CurrentWillPower.UnsubscribeAll();
+        CurrentBattery.UnsubscribeAll();
+        MaxBattery.UnsubscribeAll();
+        SumCurrentHP.UnsubscribeAll();
+        SumCurrentMaxHP.UnsubscribeAll();
     }
 }
-public enum PlayerStateTypes
-{
-    Idle, Attack, Damaged, Dead, Move, Sprint, Jump, Fall, Crouch //Exhausted,
-}
-public enum BodyPartTypes
+
+public enum BodyPartType
 {
     Head, LeftArm, RightArm, LeftLeg, RightLeg
 }

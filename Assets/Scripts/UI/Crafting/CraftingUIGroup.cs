@@ -74,7 +74,7 @@ public class CraftingUIGroup : UIGroup
         if (currentSelectedRecipe != null)
         {
             //Debug.LogWarning("제작 실행");
-            InventoryPresenter playerInventroy = PlayerManager.Instance.instancePlayer.Status.inventory;
+            InventoryPresenter playerInventroy = PlayerManager.Instance.instancePlayer.Model.inventory;
 
             // 인벤토리에 결과 아이템 추가하기
             playerInventroy.AddItem(currentSelectedRecipe.RecipeData.resultItem);

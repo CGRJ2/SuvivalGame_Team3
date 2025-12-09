@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Panel_PartState : MonoBehaviour
 {
+    public BodyPartType partType;
     public float initMaxHp;
 
     [Header("부위 HUD 이미지 체인")]

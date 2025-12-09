@@ -86,7 +86,7 @@ public class Interactable_Farming : InteractableBase, ISpawnable
 
             case FarmingType.AddToInventory_Immediately:
                 // 플레이어 인벤토리로 들어감
-                pc.Status.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
+                pc.Model.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
                 DeactiveAfterFarmingDone();
                 break;
 
@@ -94,7 +94,7 @@ public class Interactable_Farming : InteractableBase, ISpawnable
                 // 애니메이션 먼저 실행.
                 // 애니메이션 진행 완료 후 실행
                 // 플레이어 인벤토리로 들어감
-                pc.Status.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
+                pc.Model.inventory.AddItem(dropInfo.dropItem, dropInfo.dropCount);
                 DeactiveAfterFarmingDone();
                 break;
         }

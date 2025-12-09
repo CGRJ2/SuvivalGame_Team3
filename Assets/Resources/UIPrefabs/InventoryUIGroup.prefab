@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050dd33b94bde434a8613ed5c4e18398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 1
   initMaxHp: 0
   imageInHUD: {fileID: 0}
   image: {fileID: 2336088815515534451}
@@ -703,11 +704,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd37547f31368eb498ba8bec80c6ae17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 0}
-  leftArm: {fileID: 0}
-  leftLeg: {fileID: 0}
-  rightArm: {fileID: 0}
-  rightLeg: {fileID: 0}
   state_HpSum: {fileID: 0}
   state_Battery: {fileID: 0}
   state_WillPower: {fileID: 0}
@@ -1438,6 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050dd33b94bde434a8613ed5c4e18398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 4
   initMaxHp: 0
   imageInHUD: {fileID: 0}
   image: {fileID: 2875039278341942161}
@@ -1918,6 +1915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050dd33b94bde434a8613ed5c4e18398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 0
   initMaxHp: 0
   imageInHUD: {fileID: 0}
   image: {fileID: 3676309872140372777}
@@ -5509,11 +5507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd37547f31368eb498ba8bec80c6ae17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 8708005995609217230}
-  leftArm: {fileID: 5464376157987111696}
-  leftLeg: {fileID: 5993279875228694146}
-  rightArm: {fileID: 1330468050304750590}
-  rightLeg: {fileID: 671886356497870130}
   state_HpSum: {fileID: 14237396488656033}
   state_Battery: {fileID: 6756626403750131051}
   state_WillPower: {fileID: 9210431033022685905}
@@ -9999,6 +9992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050dd33b94bde434a8613ed5c4e18398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 3
   initMaxHp: 0
   imageInHUD: {fileID: 0}
   image: {fileID: 8215951659829136412}
@@ -12508,6 +12502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050dd33b94bde434a8613ed5c4e18398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partType: 2
   initMaxHp: 0
   imageInHUD: {fileID: 0}
   image: {fileID: 6605269499078137684}

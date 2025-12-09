@@ -10,14 +10,15 @@ public class Item_HealingHP : Item_Consumable
 
     public void Hp_HealingCriticalPart()
     {
-        PlayerModel ps = PlayerManager.Instance.instancePlayer.Status;
+        PlayerModel ps = PlayerManager.Instance.instancePlayer.Model;
 
         // 데미지를 가장 많이 입은 바디 파트 찾기
-        List<BodyPart> bodyParts = ps.GetBodyPartsList();
+        var bodyParts = ps.GetBodyPartsDic();
         BodyPart lowestBodyPart = null;
         int nowPartDamaged = 0;
-        foreach (BodyPart bodyPart in bodyParts)
+        foreach (var kvp in bodyParts)
         {
+            var bodyPart = kvp.Value;
             // 체력이 닳아 있는 상태라면
             if (bodyPart.CurrentMaxHp.Value- bodyPart.Hp.Value > nowPartDamaged)
             {

@@ -20,9 +20,9 @@ public class SideViewTrigger : MonoBehaviour
 
         cm.SwitchSideViewCamera(true);
 
-        cm.sideViewCamera.front = front;
-        cm.sideViewCamera.right = right;
-        cm.sideViewCamera.virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = followOffset;
+        cm.SideViewCamera.front = front;
+        cm.SideViewCamera.right = right;
+        cm.SideViewCamera.virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = followOffset;
     }
 
     private void OnTriggerExit(Collider other)

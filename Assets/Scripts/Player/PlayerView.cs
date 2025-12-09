@@ -2,125 +2,57 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    [field: SerializeField] public Transform TPSView_CameraFocusTransform { get; private set; }
-    [field: SerializeField] public Transform SideView_CameraFocusTransform { get; private set; }
-    [SerializeField] public Transform avatar;
+    public Animator Animator;
+    private PlayerController controller;
 
-    [HideInInspector] public Animator animator;
+    float _locomotionAnimSpeed;
+    [SerializeField] float _locomotionAnimLerpSpeed;
 
-    Rigidbody rb;
-    Vector2 currentRotation;
-    [HideInInspector] public Vector3 moveDir;
-    [HideInInspector] public Vector3 facingDir;
+    public string IsGroundedHash = "IsGrounded";
+    public string JumpHash       = "Jump";
+    public string IsRollingHash  = "IsRolling";
+    public string IsLandingHash  = "IsLanding";
+    public string IsFallingHash  = "IsFalling";
+    
 
-    Vector3 freeCamForward;
-    Vector3 freeCamRight;
-
-
-    private void Start()
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        animator = avatar.GetComponent<Animator>();
+        Animator ??= GetComponent<Animator>();
+        controller = GetComponentInParent<PlayerController>();
     }
 
-    #region 플레이어 이동 관련
-    // WASD이동 결과 출력 (플레이어 Position)
-    public Vector3 SetMove(Vector3 getMoveDir, float moveSpeed)
+    public void UpdateLocomotionAnim(float planarSpeed, float walkSpeed, float sprintSpeed)
     {
-        Vector3 moveDirection = getMoveDir;
+        float target = 0f;
 
-        Vector3 velocity = rb.velocity;
-        velocity.x = moveDirection.x * moveSpeed;
-        velocity.z = moveDirection.z * moveSpeed;
-
-        rb.velocity = velocity;
-
-
-
-        return moveDirection;
-    }
-
-    public void Jump(float jumpForce)
-    {
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    // WASD이동 결과 출력 (아바타 방향 맞추기)
-    public void SetAvatarRotation(Vector3 direction, float rotateSpeed)
-    {
-        if (direction == Vector3.zero) return;
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        avatar.rotation = Quaternion.Lerp(avatar.rotation, targetRotation, rotateSpeed * Time.deltaTime);
-    }
-
-    // 마우스 이동 결과 출력 (카메라 origin 회전)
-    public Vector3 SetAimRotation(Vector2 MouseDirection, float _minPitch, float _maxPitch)
-    {
-        // Vector2 inputDir = GetMouseDirection();
-
-        // // X방향 회전은 각도 제한 없음.
-        currentRotation.x += MouseDirection.x;
-
-        currentRotation.y = Mathf.Clamp(
-            currentRotation.y + MouseDirection.y,
-            _minPitch,
-            _maxPitch
-            );
-
-        TPSView_CameraFocusTransform.rotation = Quaternion.Euler(0, currentRotation.x, 0);
-
-        // y 회전 제한
-        Vector3 currentEuler = TPSView_CameraFocusTransform.localEulerAngles;
-        TPSView_CameraFocusTransform.localEulerAngles = new Vector3(currentRotation.y, currentEuler.y, currentEuler.z);
-
-        Vector3 rotateDirVector = TPSView_CameraFocusTransform.forward;
-        rotateDirVector.y = 0;
-        return rotateDirVector.normalized;
-    }
-
-    public Vector3 GetMoveDirection(Vector2 inputDir)
-    {
-        Vector3 right = TPSView_CameraFocusTransform.right;
-        Vector3 forward = TPSView_CameraFocusTransform.forward;
-        right.y = 0;
-        forward.y = 0;
-
-        Vector3 direction =
-           (right.normalized * inputDir.x) +
-           (forward.normalized * inputDir.y);
-
-        return direction.normalized;
-    }
-    public Vector3 GetMoveDirection(Vector2 inputDir, bool freeCamMod)
-    {
-        if (freeCamMod)
+        // 1) 0 ~ WalkSpeed 구간  =>  0 ~ 1 (Idle ~ Walk)
+        if (planarSpeed <= walkSpeed)
         {
-            Vector3 direction =
-            (freeCamRight * inputDir.x) +
-            (freeCamForward * inputDir.y);
-            return direction.normalized;
+            target = Mathf.InverseLerp(0f, walkSpeed, planarSpeed); // 0 ~ 1
         }
-        else return Vector3.zero;
-    }
-    public Vector3 GetMoveDir_SideCamMode(Vector2 inputDir, Vector3 forward, Vector3 right)
-    {
-        Vector3 direction =
-            (right * inputDir.x) +
-            (forward * inputDir.y);
-        return direction.normalized;
+        // 2) WalkSpeed ~ SprintSpeed 구간  =>  1 ~ 2 (Walk ~ Sprint)
+        else
+        {
+            if (sprintSpeed <= walkSpeed + 0.01f) sprintSpeed = walkSpeed + 0.01f; // sprint == walk 인 상황 방지용
+
+            float t01 = Mathf.InverseLerp(walkSpeed, sprintSpeed, planarSpeed);
+            target = 1f + t01; // 1 ~ 2
+        }
+
+        // 부드럽게 보간
+        _locomotionAnimSpeed = Mathf.Lerp(
+            _locomotionAnimSpeed,
+            target,
+            _locomotionAnimLerpSpeed * Time.deltaTime
+        );
+
+        Animator.SetFloat("Speed", _locomotionAnimSpeed);
     }
 
-    public void FreeCamSet(bool isActive)
+    public void OnLandAnimationFinished()
     {
-        freeCamForward = TPSView_CameraFocusTransform.forward;
-        freeCamForward.y = 0;
-        freeCamForward.Normalize();
-        freeCamRight = TPSView_CameraFocusTransform.right;
-        freeCamRight.y = 0;
-        freeCamRight.Normalize();
-        
+        Animator.SetBool("IsLanding", false);
+        controller.Model.IsLanding = false; // 여기만 예외로 Model에 직접 접근하는게 나을 듯? 애니메이션 이벤트니까...
+        // controller 안에 OnLand 함수를 만들어서, 그 안에 Model의 플래그를 변경하는게 깔끔할 거 같긴 한데
     }
-    #endregion
 }

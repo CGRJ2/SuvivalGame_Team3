@@ -73,7 +73,7 @@ public class RecipeRequiresPanel : MonoBehaviour
             int requiredCount = selectedRecipe.RecipeData.requiredItems[i].count;
 
             // 인벤토리 내 해당 조건 아이템 보유 수량
-            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Status.inventory;
+            InventoryPresenter playerInventory = PlayerManager.Instance.instancePlayer.Model.inventory;
             int owned = playerInventory.model.GetOwnedItemCount(requiredItem);
 
             // 재료 슬롯에 현재 재료 조건 데이터 넣어주기

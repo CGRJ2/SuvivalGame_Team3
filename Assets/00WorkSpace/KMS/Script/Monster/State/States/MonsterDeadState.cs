@@ -27,7 +27,7 @@ public class MonsterDeadState : IMonsterState
         {
             Debug.LogWarning($"[{monster.name}] Dead 상태 진입 요청 → 그러나 isDead == false");
         }
-        PlayerManager.Instance.instancePlayer.Status.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_MonsterSlay);
+        //PlayerManager.Instance.instancePlayer.Model.ChargeBattery(SuvivalSystemManager.Instance.batterySystem.RecoverAmount_MonsterSlay);
 
 
         monster.view.Animator.SetBool("IsMove", false);

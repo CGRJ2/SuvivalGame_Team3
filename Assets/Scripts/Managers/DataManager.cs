@@ -41,9 +41,9 @@ public partial class DataManager : Singleton<DataManager>
         SaveDataGroup instanceSaveDataGroup = new SaveDataGroup()
         {
             currentPosition = PlayerManager.Instance.instancePlayer.transform.position,
-            playerStatusData = PlayerManager.Instance.instancePlayer.Status,
-            inventoryModel = PlayerManager.Instance.instancePlayer.Status.inventory.model,
-            slotDataListsData = PlayerManager.Instance.instancePlayer.Status.inventory.model.SaveSlotItemData(),
+            playerStatusData = PlayerManager.Instance.instancePlayer.Model,
+            inventoryModel = PlayerManager.Instance.instancePlayer.Model.inventory.model,
+            slotDataListsData = PlayerManager.Instance.instancePlayer.Model.inventory.model.SaveSlotItemData(),
             currentTimeData = DailyManager.Instance.currentTimeData,
             stageUnlockData = StageManager.Instance.GetStageUnlockSaveData(),
             baseCampData = BaseCampManager.Instance.baseCampData,

@@ -4,5 +4,13 @@ using UnityEngine;
 
 public interface IDamagable
 {
-    public void TakeDamage(float damage, Transform attackerTransform);
+    public void TakeDamage(HitInfo hitInfo);
+}
+
+public struct HitInfo
+{
+    public float Damage;
+    public Vector3 KnockbackDir;
+    public float KnockbackPower;
+    public Transform Attacker;
 }

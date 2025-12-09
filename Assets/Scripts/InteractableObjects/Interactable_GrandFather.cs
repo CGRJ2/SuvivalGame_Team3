@@ -42,7 +42,7 @@ public class Interactable_GrandFather : InteractableBase
         
         if (isUsed) return;
         isUsed = true;
-        PlayerManager.Instance.instancePlayer.Status.CurrentWillPower.Value += recoverAmount;
+        PlayerManager.Instance.instancePlayer.Model.CurrentWillPower.Value += recoverAmount;
         UIManager.Instance.popUpUIGroup.interactableUI.tmp_InteractionMessage.text = recoverMessage;
     }
 

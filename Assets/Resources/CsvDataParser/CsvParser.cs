@@ -13,7 +13,7 @@ public static class CsvParser
         if (string.IsNullOrWhiteSpace(text))
             return result;
 
-        var lines = text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        var lines = text.Split('\n');
 
         foreach (var line in lines)
         {
@@ -29,7 +29,7 @@ public static class CsvParser
     }
 
     // 한 Csv파일에 섹션이 여러 개인 경우 
-    // 섹션 별로 데이터맵 분리 파싱하여 파싱하는 함수 (컬럼 수가 각기 달라도 대응)
+    // 섹션 별로 Rows로 분리해 키로 저장하는 함수 (컬럼 수가 각기 달라도 대응)
     public static Dictionary<string, List<string[]>> ParseSections(string text)
     {
         var result = new Dictionary<string, List<string[]>>();
@@ -68,7 +68,7 @@ public static class CsvParser
             }
 
             if (allEmpty)
-                rows.Add(Array.Empty<string>()); // 쉼표만 있는 줄 (",,,," 같은 것) -> 빈 줄로 취급
+                rows.Add(Array.Empty<string>()); // 쉼표만 있는 줄 (",,,,") -> 빈 줄로 취급
             else
                 rows.Add(cols);
         }
@@ -95,7 +95,6 @@ public static class CsvParser
                     if (string.IsNullOrWhiteSpace(currentSectionKey))
                     {
                         currentSectionKey = rows[i][0]; // 섹션의 두번째 행 1열이 섹션 이름
-                        Debug.Log($"{currentSectionKey} 키 저장");
                     }
                     // 세번째 행부터 데이터 저장
                     else
@@ -180,7 +179,7 @@ public interface ICsvRecord
     // CsvRow를 받아서 자기 필드를 채우는 메서드
     void FromCsvRow(CsvRow row);
 
-    // 보통 ID 정수나 문자열 키
+    // ID(문자열 키)
     string GetKey();
 }
 
@@ -199,15 +198,15 @@ public class CsvTable<T> where T : ICsvRecord, new()
     }
 
     // 섹션 rows를 그대로 넣는 함수
-    public static CsvTable<T> FromRows(List<string[]> raw)
+    public static CsvTable<T> FromRows(List<string[]> rows)
     {
         var table = new CsvTable<T>();
 
-        if (raw == null || raw.Count == 0)
+        if (rows == null || rows.Count == 0)
             return table;
 
         // 첫번째 줄(raw[0]) : 헤더
-        var headerRow = raw[0];
+        var headerRow = rows[0];
         var headerIndex = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase); // 대소문자 구분 X
         for (int i = 0; i < headerRow.Length; i++)
         {
@@ -217,9 +216,9 @@ public class CsvTable<T> where T : ICsvRecord, new()
         }
 
         // raw[1]~ : 데이터
-        for (int i = 1; i < raw.Count; i++)
+        for (int i = 1; i < rows.Count; i++)
         {
-            var row = new CsvRow(headerIndex, raw[i]);
+            var row = new CsvRow(headerIndex, rows[i]);
 
             var record = new T();
             record.FromCsvRow(row);

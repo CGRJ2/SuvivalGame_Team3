@@ -55,12 +55,12 @@ public class PlayerManager : Singleton<PlayerManager>
         Panel_FadeInOut dayOffSavePanel = UIManager.Instance.popUpUIGroup.dayOffSavePanel;
         dayOffSavePanel.PopMessage_FadeInOut();
 
-        instancePlayer.Status.isControllLocked = true;
+        instancePlayer.Model.isControllLocked = true;
 
         // 페이드 인이 시작될 즈음까지 대기
         yield return new WaitUntil(() => dayOffSavePanel.isOpenStandBy);
 
-        instancePlayer.Status.isControllLocked = false;
+        instancePlayer.Model.isControllLocked = false;
 
         // 다음날 오전 9시로 이동
         DailyManager.Instance.currentTimeData.CurrentDay.Value += 1;
@@ -75,14 +75,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
 
 
-    // => 배터리가 0이 되었을 때 호출
-    public void PlayerFaint(float currentBattery)
-    {
-        if (instancePlayer.IsCurrentState(PlayerStateTypes.Dead)) return;
-        if (currentBattery > 0) return;
-        instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Dead]);
-        StartCoroutine(WaitUntilFaintPanelClose());
-    }
+    
     private IEnumerator WaitUntilFaintPanelClose()
     {
         // 죽음 애니메이션 시작
@@ -104,10 +97,10 @@ public class PlayerManager : Singleton<PlayerManager>
         DailyManager.Instance.currentTimeData.TZ_State.Value = TimeZoneState.Morning;
 
         // 배터리 최대량 감소
-        instancePlayer.Status.Init_AfterFaint();
+        instancePlayer.Model.Respawn_Faint();
 
         // 일반 상태로 전환
-        instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);
+        //instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);
 
         // 몬스터 & 파밍오브젝트 초기화
         StageManager.Instance.InitSpawnerRoutines();
@@ -121,11 +114,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
 
     // => 머리 내구도가 0이 되었을 때 호출
-    public void PlayerDead()
+    /*public void PlayerDead()
     {
         instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Dead]);
         StartCoroutine(WaitUntilDeadPanelClose());
-    }
+    }*/
 
     private IEnumerator WaitUntilDeadPanelClose()
     {
@@ -141,10 +134,10 @@ public class PlayerManager : Singleton<PlayerManager>
         dm.LoadData(0);
 
         // 부위별 최대 내구도 깎고 시작
-        instancePlayer.Status.Init_AfterDead();
+        instancePlayer.Model.Respawn_Dead();
 
         // 일반 상태로 전환
-        instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);
+        //instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);
 
         // 최근 임시텐트 있다면 파괴
         if (BaseCampManager.Instance.currentTempCampInstance != null)

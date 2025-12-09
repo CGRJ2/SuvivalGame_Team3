@@ -34,7 +34,7 @@ public class ObservableProperty<T>
         _onValueChanged.RemoveListener(action);
     }
 
-    public void UnsbscribeAll()
+    public void UnsubscribeAll()
     {
         _onValueChanged.RemoveAllListeners();
     }

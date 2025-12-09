@@ -1,14 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Panel_PlayerStatus : MonoBehaviour
 {
-    [Header("파츠 정보 필드")]
-    public Panel_PartState head;
-    public Panel_PartState leftArm;
-    public Panel_PartState leftLeg;
-    public Panel_PartState rightArm;
-    public Panel_PartState rightLeg;
+    public Dictionary<BodyPartType, Panel_PartState> dic_PartStatePanels = new();
 
     [Header("생존 수치 필드")]
     public Panel_SuvivalState state_HpSum;
@@ -23,10 +19,11 @@ public class Panel_PlayerStatus : MonoBehaviour
 
     public void Init()
     {
-        head.SetColors(defaultColor, damagedColor, deactiveColor);
-        leftArm.SetColors(defaultColor, damagedColor, deactiveColor);
-        leftLeg.SetColors(defaultColor, damagedColor, deactiveColor);
-        rightArm.SetColors(defaultColor, damagedColor, deactiveColor);
-        rightLeg.SetColors(defaultColor, damagedColor, deactiveColor);
+        var panels = GetComponentsInChildren<Panel_PartState>();
+        foreach(var panel in panels)
+        {
+            dic_PartStatePanels.Add(panel.partType, panel);
+            panel.SetColors(defaultColor, damagedColor, deactiveColor);
+        }
     }
 }
