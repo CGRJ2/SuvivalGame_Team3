@@ -270,6 +270,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 251739151}
   _locomotionAnimLerpSpeed: 10
+  IsGroundedHash: IsGrounded
+  JumpHash: Jump
+  AttackHash: Attack
+  IsRollingHash: IsRolling
+  IsLandingHash: IsLanding
+  IsFallingHash: IsFalling
+  IsCrouchingHash: IsCrouching
 --- !u!95 &251739151 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8962290099749422521, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
@@ -458,6 +465,7 @@ GameObject:
   - component: {fileID: 607994394}
   - component: {fileID: 607994393}
   - component: {fileID: 607994392}
+  - component: {fileID: 607994395}
   m_Layer: 3
   m_Name: TPS Camera(default)
   m_TagString: Untagged
@@ -550,6 +558,18 @@ Transform:
   - {fileID: 1417832762}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &607994395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607994391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea9a61a5bd462447a9a2e7b03f3c867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1029820488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,6 +1545,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 251739149}
     - target: {fileID: 4681144148690998647, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      propertyPath: <Model>k__BackingField.mouseSensitivity
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4681144148690998647, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
       propertyPath: <TPSView_CameraFocusTransform>k__BackingField
       value: 
       objectReference: {fileID: 4854306666710730456}
@@ -1747,6 +1771,14 @@ PrefabInstance:
     - target: {fileID: 6403865991112175247, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
       propertyPath: m_Name
       value: TpsCamPivot(TPSCameraController)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635004818492625376, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      propertyPath: crouchColiderHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6635004818492625376, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
+      propertyPath: crouchColiderCenter.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7617150217708771105, guid: ab7b9f04789033a419d3a2f3ae42ffcd, type: 3}
       propertyPath: m_Name

@@ -6,27 +6,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
-    [field: SerializeField] public Transform TPSView_CameraFocusTransform { get; private set; }
-    [field: SerializeField] public Transform SideView_CameraFocusTransform { get; private set; }
-    public Transform handTransform;
-    [HideInInspector] public GameObject onHandInstance;
-
     [field: SerializeField] public PlayerModel Model { get; private set; }
     [field: SerializeField] public PlayerView View { get; private set; }
-    public ColliderController Cc { get; private set; }
-    public Rigidbody rb;
+    public ColliderController cc { get; private set; }
+    public Rigidbody rb { get; private set; }
 
     // 상태 머신
     private PlayerStateMachine _fsm;
     public Dictionary<PlayerStateType, PlayerState> StateDic;
 
-
+    // 입력 처리 (InputSystem 처리)
     [SerializeField] PlayerInputReader _inputReader;
     public PlayerInputData Input => _inputReader.Data;
 
+
+    // 손에 장착한 아이템 << Model로 이동하는게 맞는 듯
+    public Transform handTransform;
+    [HideInInspector] public GameObject onHandInstance;
+
+
     private void Awake() => Init();
 
-    
     private void Update()
     {
         _fsm.HandleInput();
@@ -43,8 +43,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         //HandleMove();
         _fsm.FixedUpdateLogic();
-        Cc.GroundCheck();
-        Cc.HeadCheck();
+        cc.GroundCheck();
+        cc.HeadCheck();
     }
 
     private void OnDisable()
@@ -60,9 +60,10 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // Status & Model & View 초기화
         Manager.player.instancePlayer = this;
+        Model = new();
         Model.Init();
         View ??= GetComponentInChildren<PlayerView>();
-        Cc = GetComponent<ColliderController>();
+        cc ??= GetComponent<ColliderController>();
 
         // 상태머신 초기화
         _fsm = new PlayerStateMachine();
@@ -85,6 +86,12 @@ public class PlayerController : MonoBehaviour, IDamagable
         StateDic.Add(PlayerStateType.Roll, new PlayerRollState(this, _fsm));
         StateDic.Add(PlayerStateType.Jump, new PlayerJumpState(this, _fsm));
         StateDic.Add(PlayerStateType.Fall, new PlayerFallState(this, _fsm));
+        StateDic.Add(PlayerStateType.Attack, new PlayerAttackState(this, _fsm));
+    }
+
+    public PlayerState GetState(PlayerStateType stateType)
+    {
+        return StateDic[stateType];
     }
 
     public void Bind()
@@ -172,7 +179,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     public void TryInteract()
     {
-        IInteractable interactable = Cc.InteractableObj;
+        IInteractable interactable = cc.InteractableObj;
 
         if (interactable != null)
             interactable.Interact();
@@ -191,10 +198,10 @@ public class PlayerController : MonoBehaviour, IDamagable
         // 무적 상태라면 return;
         if (Model.isInvincible) return;
         // 이미 피격 상태라면 X
-        /*if (IsCurrentState(PlayerStateTypes.Damaged)) return;
+        //if (_fsm.CurState is PlayerHitState) return;
 
         // 죽음 상태라면 실행X
-        if (IsCurrentState(PlayerStateTypes.Dead)) return;*/
+        //if (_fsm.CurState is PlayerDeadState) return;
 
         // Model에서 데미지 계산 & 죽음 판단
         Model.TakeDamage(hitInfo.Damage);

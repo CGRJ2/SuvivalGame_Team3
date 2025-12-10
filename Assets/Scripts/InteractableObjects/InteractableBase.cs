@@ -39,7 +39,7 @@ public class InteractableBase : MonoBehaviour, IInteractable
 
             // 플레이어 상호작용 Obj에 추가
             pc = other.GetComponent<PlayerController>();
-            pc.Cc.InteractableObj = this;
+            pc.cc.InteractableObj = this;
             ShowInteractableUI();
         }
     }
@@ -54,12 +54,12 @@ public class InteractableBase : MonoBehaviour, IInteractable
                 pc = other.GetComponent<PlayerController>();
 
                 // 플레이어 상호작용 Obj에 이미 추가되어 있는 상태라면 return
-                if (pc.Cc.InteractableObj == this as IInteractable) return;
+                if (pc.cc.InteractableObj == this as IInteractable) return;
 
                 // 플레이어 상호작용 Obj에 빈자리가 생기면 추가
-                else if (pc.Cc.InteractableObj == null)
+                else if (pc.cc.InteractableObj == null)
                 {
-                    pc.Cc.InteractableObj = this;
+                    pc.cc.InteractableObj = this;
                     ShowInteractableUI();
                 }
             }
@@ -84,9 +84,9 @@ public class InteractableBase : MonoBehaviour, IInteractable
             // 만약 플레이어 상호작용 Obj에 자신이 할당되어있다면 할당 해제 후 상호작용UI 끄기
             if (pc != null)
             {
-                if (pc.Cc.InteractableObj == this as IInteractable)
+                if (pc.cc.InteractableObj == this as IInteractable)
                 {
-                    pc.Cc.InteractableObj = null;
+                    pc.cc.InteractableObj = null;
                     pc = null;
                     CloseInteractableUI();
                 }

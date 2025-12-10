@@ -28,8 +28,8 @@ public class SideView_Camera : MonoBehaviour
         pc = PlayerManager.Instance.instancePlayer;
 
         // 사이드뷰 카메라 초기화
-        virtualCamera.Follow = pc.SideView_CameraFocusTransform;
-        virtualCamera.LookAt = pc.SideView_CameraFocusTransform;
+        virtualCamera.Follow = Manager.camera.SideViewCamera.transform;
+        virtualCamera.LookAt = Manager.camera.SideViewCamera.transform;
     }
 
     

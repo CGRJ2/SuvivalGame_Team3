@@ -8,6 +8,7 @@ public class CameraManager : Singleton<CameraManager>
     public CinemachineVirtualCamera TpsViewCamera;
 
     public bool activeSideView;
+    private void Awake() => Init();
 
     public void Init()
     {

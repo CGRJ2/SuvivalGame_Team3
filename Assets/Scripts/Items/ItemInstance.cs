@@ -54,7 +54,7 @@ public class ItemInstance : InteractableBase
         pc.Model.inventory.AddItem(item, count);
 
         // 인터랙터블 상태 해제
-        pc.Cc.InteractableObj = null;
+        pc.cc.InteractableObj = null;
 
         // 임시 파괴 (오브젝트 풀 패턴으로 대체 필요)
         Destroy(gameObject);

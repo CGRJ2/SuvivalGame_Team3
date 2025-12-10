@@ -58,7 +58,7 @@ public abstract class PlayerGroundedState : PlayerAliveState
 
         var input = controller.Input;
         // 1) 더 이상 땅이 아니면 => 떨어지기 시작
-        if (!controller.Cc.IsGroundedSensor)    // 실제 땅 여부 체크
+        if (!controller.cc.IsGroundedSensor)    // 실제 땅 여부 체크
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
             return;
@@ -77,11 +77,46 @@ public abstract class PlayerGroundedState : PlayerAliveState
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Jump]);
             return;
         }
+
+        // 4) 공격
+        if (input.AttackPressed && !Status.IsRolling && !Status.IsLanding)
+        {
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Attack]);
+            return;
+        }
+
+        // 5) 앉기 입력 처리 (상태 전환 없음)
+        HandleCrouch(input);
     }
 
     public override void FixedUpdateLogic()
     {
         base.FixedUpdateLogic();
+    }
+
+    // 앉음 상태 처리
+    protected void HandleCrouch(PlayerInputData input)
+    {
+        bool wantCrouch = input.CrouchHeld;
+
+        // 1) 앉기 시작
+        if (wantCrouch && !Status.IsCrouching)
+        {
+            Status.IsCrouching = true;
+            controller.cc.SetColliderCrouch();
+            View.Animator.SetBool(View.IsCrouchingHash, true);
+        }
+        // 2) 일어나기
+        else if (!wantCrouch && Status.IsCrouching)
+        {
+            // 머리 위 막혀 있으면 그대로 유지
+            if (controller.cc.IsHeadBlockedSensor)
+                return;
+
+            Status.IsCrouching = false;
+            controller.cc.SetColliderDefault();
+            View.Animator.SetBool(View.IsCrouchingHash, false);
+        }
     }
 }
 
@@ -94,6 +129,15 @@ public abstract class PlayerAirborneState : PlayerAliveState
         base.Enter();
 
         // 공중 상태에 들어올 때 공통 처리
+        
+        // Crouch 상태였다면 Crouch 해제
+        if (Status.IsCrouching)
+        {
+            Status.IsCrouching = false;
+            controller.cc.SetColliderDefault();
+            View.Animator.SetBool(View.IsCrouchingHash, false);
+        }
+
         Status.IsGrounded = false;
         View.Animator.SetBool(View.IsGroundedHash, false);
         View.Animator.SetBool(View.IsLandingHash, false); // 공중 상태 진입 직후에는 착지 플래그 초기화
@@ -131,7 +175,6 @@ public abstract class PlayerAirborneState : PlayerAliveState
     }
 }
 #endregion
-
 
 #region Alive/Grounded-SubState
 // Grounded 하위 계층 상태들
@@ -178,7 +221,6 @@ public class PlayerIdleState : PlayerGroundedState
         base.HandleInput();
     }
 }
-
 public class PlayerMoveState : PlayerGroundedState
 {
     public PlayerMoveState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine) { }
@@ -209,7 +251,7 @@ public class PlayerMoveState : PlayerGroundedState
         if (moveInput.sqrMagnitude > 1f)
             moveInput.Normalize();
 
-        Transform cam = controller.TPSView_CameraFocusTransform;
+        Transform cam = Manager.camera.TpsViewCamera.transform;
 
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
@@ -220,8 +262,14 @@ public class PlayerMoveState : PlayerGroundedState
 
         Vector3 moveDirWorld = camForward * moveInput.y + camRight * moveInput.x;
 
-        // Sprint와 Crouch입력에 대응한 speed 연산
-        float speed = input.SprintHeld ? locoModel.SprintSpeed : locoModel.WalkSpeed;
+        // Crouch / Sprint 에 따라 속도 선택
+        float speed;
+        if (Status.IsCrouching)
+            speed = locoModel.CrouchSpeed;
+        else if (input.SprintHeld)
+            speed = locoModel.SprintSpeed;
+        else
+            speed = locoModel.WalkSpeed;
 
         Vector3 vel = moveDirWorld * speed;
         vel.y = rb.velocity.y;
@@ -250,8 +298,6 @@ public class PlayerMoveState : PlayerGroundedState
         base.HandleInput();
     }
 }
-
-
 public class PlayerRollState : PlayerGroundedState
 {
     private float _rollDuration = 0.5f;    // 구르기 전체 시간
@@ -268,6 +314,14 @@ public class PlayerRollState : PlayerGroundedState
 
         if (stateMachine.CurState != this) return;
 
+        // Crouch 상태였다면 일어나고 구르기
+        if (Status.IsCrouching)
+        {
+            Status.IsCrouching = false;
+            controller.cc.SetColliderDefault(); // 구르기 시에 Stand 콜라이더로 만드는게 맞을까? 구르기용 히트박스를 새로 정해둬야할듯
+            View.Animator.SetBool(View.IsCrouchingHash, false);
+        }
+
         _elapsed = 0f;
 
         var rb = controller.rb;
@@ -276,7 +330,7 @@ public class PlayerRollState : PlayerGroundedState
 
         // 1) 구르기 방향 결정
         Vector2 moveInput = input.Move;
-        Transform cam = controller.TPSView_CameraFocusTransform;
+        Transform cam = Manager.camera.TpsViewCamera.transform;
         Transform avatarTrans = controller.View.transform;
 
         if (moveInput.sqrMagnitude < 0.01f)
@@ -452,7 +506,7 @@ public class PlayerFallState : PlayerAirborneState
         base.FixedUpdateLogic();
 
         var rb = controller.rb;
-        var cc = controller.Cc;
+        var cc = controller.cc;
 
         // 낙하 중 일때만 착지 판정 주기
         if (cc.IsGroundedSensor && rb.velocity.y <= 0f)
@@ -471,15 +525,91 @@ public class PlayerFallState : PlayerAirborneState
         base.HandleInput();
     }
 }
+#endregion
+
+#region Alive/Attack-SubState
+public class PlayerAttackState : PlayerAliveState
+{
+    public PlayerAttackState(PlayerController controller, PlayerStateMachine stateMachine)
+        : base(controller, stateMachine) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        if (stateMachine.CurState != this) return;
+
+        // 앉은 상태였다면 일어나고 공격
+        if (Status.IsCrouching)
+        {
+            Status.IsCrouching = false;
+            controller.cc.SetColliderDefault();
+            View.Animator.SetBool(View.IsCrouchingHash, false);
+        }
+
+        // 이동 정지 (y속도는 유지)
+        var rb = controller.rb;
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
+
+        // 이동 애니메이션 파라메터 초기화
+        View.InitLocomotionAnime();
+
+
+        View.Animator.ResetTrigger(View.AttackHash);
+        View.Animator.SetTrigger(View.AttackHash);
+    }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        if (stateMachine.CurState != this) return;
+
+        // 공격 중에 난간에서 떨어지면 => Fall
+        if (!controller.cc.IsGroundedSensor)
+        {
+            Status.IsGrounded = false;
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
+            return;
+        }
+    }
+
+    public void QuitAttack()
+    {
+        // 이동 입력 있으면 Move, 없으면 Idle
+        var input = controller.Input;
+        if (input.Move.sqrMagnitude > 0.01f)
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Move]);
+        else
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Idle]);
+    }
+
+    public override void FixedUpdateLogic()
+    {
+        // 공격 중에는 이동 물리 추가 시 이곳에. 공격 할 때 살짝 전진하는 느낌?
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+}
 
 
 #endregion
 
-#region Alive-Hit
+#region Alive/Hit-SubState
 
 
 
 #endregion
 
+public class PlayerDeadState : PlayerState
+{
+    protected PlayerDeadState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine) { }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+    }
+}
 
 

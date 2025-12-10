@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable] // 세이브 & 로드 가능
 public class PlayerModel : IDisposable
 {
+    // 여기서도 저장&불러오기가 가능한 런타임 데이터 클래스로 나눠주어야 할 듯
+
     [Header("장착 중인 아이템")]
     public Item onHandItem;
 
@@ -35,17 +37,9 @@ public class PlayerModel : IDisposable
     [Header("조작 가능/불가 상태")]
     public bool isControllLocked;
 
-
-
-    // 상태와 함께 쓰일 플래그
-    public bool IsCrouching { get; private set; }
-    public bool IsSprinting { get; private set; }
-
-
     [Header("설정된 마우스 감도(구현x)")]
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
     public float MouseSensitivity { get { return mouseSensitivity; } private set { mouseSensitivity = value; } }
-
 
     public bool IsDead;
     public event Action OnDied;
@@ -53,10 +47,13 @@ public class PlayerModel : IDisposable
     public bool IsFaint;
     public event Action OnFaint;
 
-    public bool IsGrounded; // 이 놈들은 Status로 분리하는게 좋을 듯
+    // 상태가 별도로 있지만 조건 체크를 위한 플래그
+    public bool IsGrounded; 
     public bool IsRolling;
-    public bool IsLanding;
 
+    // 상태와 함께 쓰일 플래그 (별도 상태 없음)
+    public bool IsCrouching;
+    public bool IsLanding;
 
     public bool IsInvincible;
 
@@ -303,37 +300,6 @@ public class PlayerModel : IDisposable
         if (IsFaint) return;
         IsFaint = true;
         OnFaint?.Invoke();
-    }
-
-    public void SetCrouch(bool crouch)
-    {
-        IsCrouching = crouch;
-
-        // 규칙: 웅크렸으면 스프린트는 해제
-        if (crouch)
-            IsSprinting = false;
-    }
-
-    public void SetSprint(bool sprint)
-    {
-        // 규칙: 웅크린 상태에서는 스프린트 금지
-        if (IsCrouching && sprint)
-            return;
-
-        IsSprinting = sprint;
-    }
-
-    public float GetCurrentMoveSpeed()
-    {
-        if (IsCrouching) return CrouchSpeed;
-        if (IsSprinting) return SprintSpeed;
-        return WalkSpeed;
-    }
-
-    public void ResetFlagsOnAirborne()
-    {
-        IsCrouching = false;
-        IsSprinting = false;
     }
 
     public void Dispose()

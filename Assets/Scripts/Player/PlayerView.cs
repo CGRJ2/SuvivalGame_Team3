@@ -8,17 +8,26 @@ public class PlayerView : MonoBehaviour
     float _locomotionAnimSpeed;
     [SerializeField] float _locomotionAnimLerpSpeed;
 
+    public string SpeedHash = "Speed";
     public string IsGroundedHash = "IsGrounded";
     public string JumpHash       = "Jump";
+    public string AttackHash       = "Attack";
     public string IsRollingHash  = "IsRolling";
     public string IsLandingHash  = "IsLanding";
     public string IsFallingHash  = "IsFalling";
+    public string IsCrouchingHash = "IsCrouching";
     
 
     private void Awake()
     {
         Animator ??= GetComponent<Animator>();
         controller = GetComponentInParent<PlayerController>();
+    }
+
+    public void InitLocomotionAnime()
+    {
+        _locomotionAnimSpeed = 0f;
+        Animator.SetFloat(SpeedHash, 0f);
     }
 
     public void UpdateLocomotionAnim(float planarSpeed, float walkSpeed, float sprintSpeed)
@@ -46,13 +55,24 @@ public class PlayerView : MonoBehaviour
             _locomotionAnimLerpSpeed * Time.deltaTime
         );
 
-        Animator.SetFloat("Speed", _locomotionAnimSpeed);
+        Animator.SetFloat(SpeedHash, _locomotionAnimSpeed);
     }
 
     public void OnLandAnimationFinished()
     {
-        Animator.SetBool("IsLanding", false);
+        Animator.SetBool(IsLandingHash, false);
         controller.Model.IsLanding = false; // 여기만 예외로 Model에 직접 접근하는게 나을 듯? 애니메이션 이벤트니까...
         // controller 안에 OnLand 함수를 만들어서, 그 안에 Model의 플래그를 변경하는게 깔끔할 거 같긴 한데
+    }
+
+    public void OnAttackAnimationStarted()
+    {
+
+    }
+
+    public void OnAttackAnimationFinished()
+    {
+        var attackState = controller.GetState(PlayerStateType.Attack) as PlayerAttackState;
+        attackState.QuitAttack();
     }
 }
