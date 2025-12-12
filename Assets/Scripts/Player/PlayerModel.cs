@@ -17,7 +17,7 @@ public class PlayerModel : IDisposable
     public ObservableProperty<float> SumCurrentHP = new ObservableProperty<float>();
     public ObservableProperty<float> SumCurrentMaxHP = new ObservableProperty<float>();
 
-    
+
     private Dictionary<BodyPartType, BodyPart> _bodyPartsDic = new();
 
     [field: Header("플레이어 스탯 런타임 데이터")]
@@ -27,12 +27,10 @@ public class PlayerModel : IDisposable
     [field: SerializeField] public float CrouchSpeed { get; set; }
     [field: SerializeField] public float JumpForce { get; set; }
     [field: SerializeField] public float Damage { get; set; }
+    [field: SerializeField] public float Knockback { get; set; }
 
     // 인벤토리 데이터
     [HideInInspector] public InventoryPresenter inventory;
-
-    [Header("무적 상태 (피격 후 또는 컷씬 도중)")]
-    public bool isInvincible;
 
     [Header("조작 가능/불가 상태")]
     public bool isControllLocked;
@@ -43,12 +41,12 @@ public class PlayerModel : IDisposable
 
     public bool IsDead;
     public event Action OnDied;
-    
+
     public bool IsFaint;
     public event Action OnFaint;
 
     // 상태가 별도로 있지만 조건 체크를 위한 플래그
-    public bool IsGrounded; 
+    public bool IsGrounded;
     public bool IsRolling;
 
     // 상태와 함께 쓰일 플래그 (별도 상태 없음)
@@ -57,6 +55,16 @@ public class PlayerModel : IDisposable
 
     public bool IsInvincible;
 
+    public AttackType CurAttackType // 손에 무기 없으면 default, 무기 있으면 무기의 공격 타입에 맞게 반환.
+    {
+        get
+        {
+            if (onHandItem != null && onHandItem is Item_Weapon weapon) 
+                return weapon.AttackType;
+            else
+                return AttackType.Punch;
+        }
+    }
 
     // 플레이어 데이터 초기 상태
     public void Init()
@@ -75,6 +83,7 @@ public class PlayerModel : IDisposable
         CrouchSpeed = initStatTable.FindByKey("CrouchSpeed").InitValue;
         JumpForce   = initStatTable.FindByKey("JumpForce").InitValue;
         Damage      = initStatTable.FindByKey("Damage").InitValue;
+        Knockback   = initStatTable.FindByKey("KnockBackForce").InitValue;
 
         // 신체 부위 초기화
         BodyPartsInit();
@@ -116,7 +125,7 @@ public class PlayerModel : IDisposable
 
         CurrentBattery.Value = MaxBattery.Value;
     }
-    
+
     // 신체 부위별 인스턴스 생성
     public void BodyPartsInit()
     {
@@ -143,7 +152,8 @@ public class PlayerModel : IDisposable
                     bodyKey = "LegHP";
                     break;
 
-                default: bodyKey = "";
+                default:
+                    bodyKey = "";
                     break;
             }
 

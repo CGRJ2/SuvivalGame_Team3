@@ -1,10 +1,9 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
-public class PlayerController : MonoBehaviour, IDamagable
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [field: SerializeField] public PlayerModel Model { get; private set; }
     [field: SerializeField] public PlayerView View { get; private set; }
@@ -18,9 +17,19 @@ public class PlayerController : MonoBehaviour, IDamagable
     // 입력 처리 (InputSystem 처리)
     [SerializeField] PlayerInputReader _inputReader;
     public PlayerInputData Input => _inputReader.Data;
+    
+    [SerializeField] Hitbox _defaultHitbox;
+    public Hitbox CurrentHitbox // 무기 장착 상태에 따른 히트박스 반환
+    {
+        get
+        {
+            if (Model.onHandItem is Item_Weapon weapon && weapon.Hitbox != null)
+                return weapon.Hitbox;
+            else
+                return _defaultHitbox;
+        }
+    }
 
-
-    // 손에 장착한 아이템 << Model로 이동하는게 맞는 듯
     public Transform handTransform;
     [HideInInspector] public GameObject onHandInstance;
 
@@ -29,8 +38,13 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        _fsm.HandleInput();
+        if (!Model.isControllLocked)
+        {
+            _fsm.HandleInput();
+            HandleInGameInput();
+        }
         _fsm.UpdateLogic();
+        HandleUiInput();
     }
 
     private void LateUpdate()
@@ -41,7 +55,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void FixedUpdate()
     {
-        //HandleMove();
         _fsm.FixedUpdateLogic();
         cc.GroundCheck();
         cc.HeadCheck();
@@ -51,7 +64,6 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (Manager.data != null)
             Manager.data.loadedDataGroup.Unsubscribe(LoadPlayerData);
-
     }
 
     private void Init()
@@ -77,6 +89,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 
         // bodyParts의 Model <-> View 연결
         Bind();
+
+        _defaultHitbox.Init(transform);
     }
 
     public void InitStateDictionary()
@@ -87,6 +101,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         StateDic.Add(PlayerStateType.Jump, new PlayerJumpState(this, _fsm));
         StateDic.Add(PlayerStateType.Fall, new PlayerFallState(this, _fsm));
         StateDic.Add(PlayerStateType.Attack, new PlayerAttackState(this, _fsm));
+        StateDic.Add(PlayerStateType.Hit, new PlayerHitState(this, _fsm));
     }
 
     public PlayerState GetState(PlayerStateType stateType)
@@ -163,73 +178,104 @@ public class PlayerController : MonoBehaviour, IDamagable
         //Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
         Model.inventory.UpdateUI();
     }
-   
-    // Controller에서는 Attack의 시점만 판단. Attack의 결과는 View에서 주먹 콜라이더 펀치 또는 무기 콜라이더 휘두르기/찌르기 로 구분해서 실행
-    public void TryAttack() 
+
+    public void HandleInGameInput()
     {
-        Debug.Log("어택 실행됨");
+        HandleInteract(); // 이것도 아마 상태로 넘어갈듯? 애니메이션과 동작 제한이 있으니..
+    }
+    public void HandleUiInput()
+    {
+        HandleInventory();
+        HandleQuickSlot();
+        HandleEsc();
+    }
+    private void HandleInteract()
+    {
+        if (Input.InteractionPressed)
+        {
+            IInteractable interactable = cc.InteractableObj;
 
-        float finalDamage = Model.Damage;
-
-        // View의 animator에서 공격 애니메이션을 실행
-        // 애니메이션 이벤트에서 무기를 휘두르는 or 주먹을 뻗는 시점에서 공격 히트박스 활성화
-        // 기본 히트박스 -> 주먹
-        // 무기 히트박스 -> 무기 인스턴스 별로 프리펩에 설정해두기
+            if (interactable != null)
+                interactable.Interact();
+        }
     }
 
-    public void TryInteract()
+    private void HandleInventory()
     {
-        IInteractable interactable = cc.InteractableObj;
-
-        if (interactable != null)
-            interactable.Interact();
+        if (Input.InventoryPressed)
+        {
+            Manager.ui.inventoryGroup.inventoryView.TryOpenInventory();
+        }
     }
 
-    public void ApplyKnockBack(HitInfo hitInfo)
+    private void HandleQuickSlot()
     {
-        // 공격 방향 + 위로 살짝 합친 벡터를 방향으로 함
-        Vector3 finalKnockBackDir = (hitInfo.KnockbackDir + Vector3.up * 0.3f).normalized;
-
-        GetComponent<Rigidbody>().AddForce(finalKnockBackDir * hitInfo.KnockbackPower, ForceMode.Impulse);
+        if (Input.QuickSlotIndexPressed != -1)
+            Manager.ui.inventoryGroup.quickSlotParent.SelectQuickSlot(Input.QuickSlotIndexPressed);
     }
 
-    public void TakeDamage(HitInfo hitInfo)
+    private void HandleEsc()
+    {
+        if (Input.EscPressed)
+        {
+            var ui = Manager.ui;
+            if (ui.GetActivedPanelStack().Count > 0)
+            {
+                ui.ClosePanel();
+            }
+            else
+            {
+                Debug.Log("열린 패널 없는 상태에서 Esc 누름 / 일시정지 옵션 패널 열기");
+            }
+        }
+    }
+
+
+    // 애니메이션 보조 스크립트
+    public void OnLandAnimationFinished()
+    {
+        Model.IsLanding = false;
+    }
+
+    public void OnAttackAnimationStarted()
+    {
+        CurrentHitbox.SetActive(true);
+    }
+
+    public void OnAttackAnimationFinished()
+    {
+        CurrentHitbox.SetActive(false);
+
+        if (_fsm.CurState is PlayerAttackState attack)  // 공격 상태에서 이미 벗어난 경우 그대로 놔두기 (ex. 공격 도중 낙하 or 피격)
+            attack.QuitAttack();
+    }
+
+    // 피격 받음
+    public void TakeDamage(HitInfo hit)
     {
         // 무적 상태라면 return;
-        if (Model.isInvincible) return;
-        // 이미 피격 상태라면 X
-        //if (_fsm.CurState is PlayerHitState) return;
-
-        // 죽음 상태라면 실행X
-        //if (_fsm.CurState is PlayerDeadState) return;
+        if (Model.IsInvincible) return;
 
         // Model에서 데미지 계산 & 죽음 판단
-        Model.TakeDamage(hitInfo.Damage);
-
-        // View에서 넉백 & 피격 애니메이션 + SFX & VFX 실행
-
-        // 넉백 물리처리
-        ApplyKnockBack(hitInfo);
+        Model.TakeDamage(hit.Damage);
 
 
-        //
-        //stateMachine.ChangeState(stateMachine.stateDic[PlayerStateTypes.Damaged]);
-        StartCoroutine(InvincibleRoutine(Manager.player.DamagedInvincibleTime));
+        if (Model.IsDead) // 죽으면 넉백 & 피격 애니 실행 x
+        {
+            // 죽음 애니 / 상태 전환 / SFX & VFX 실행
+            // _fsm.ChangeState(StateDic[PlayerStateType.Dead]);
+            return;
+        } 
+        else
+        {
+            // View에서 넉백 & 피격 애니메이션 + SFX & VFX 실행
+
+            // HitInfo 캐싱 및 Hit 상태 전환
+            var hitState = StateDic[PlayerStateType.Hit] as PlayerHitState;
+            hitState.CashingHitInfo(hit);
+            _fsm.ChangeState(hitState);
+        }
     }
-
-    public IEnumerator InvincibleRoutine(float time)
-    {
-        Model.isInvincible = true;
-
-        // TODO : 플레이어 피격 이펙트 or 셰이더 실행
-
-        yield return new WaitForSeconds(time);
-
-        Model.isInvincible = false;
-
-        // TODO : 플레이어 피격 이펙트 or 셰이더 초기화
-    }
-
 
     // 단순 위치만 이동해주기
     public void Respawn(Transform transform)
@@ -246,9 +292,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (onHandInstance != null) Destroy(onHandInstance);
 
             Model.onHandItem = null;
+            
             // 장착 해제 효과
-            View.Animator.SetBool("Equip_Swing", false);
-            View.Animator.SetBool("Equip_Thrust", false);
         }
         else
         {
@@ -260,24 +305,11 @@ public class PlayerController : MonoBehaviour, IDamagable
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
             Model.onHandItem = item;
 
-            // 아이템 장착 효과
-            if (item is Item_Weapon weapon)
+            // 무기라면 히트박스 설정
+            if (Model.onHandItem is Item_Weapon weapon)
             {
-                if (weapon.attackType == WeaponAttackType.Swing)
-                {
-                    View.Animator.SetBool("Equip_Swing", true);
-                    View.Animator.SetBool("Equip_Thrust", false);
-
-                }
-                else if (weapon.attackType == WeaponAttackType.Thrust)
-                {
-                    View.Animator.SetBool("Equip_Thrust", true);
-                    View.Animator.SetBool("Equip_Swing", false);
-                }
-            }
-            else if (item is Item_Throwing throwings)
-            {
-
+                weapon.Hitbox = onHandInstance.GetComponentInChildren<Hitbox>();
+                weapon.Hitbox.Init(transform);
             }
         }
     }

@@ -8,15 +8,17 @@ public class PlayerView : MonoBehaviour
     float _locomotionAnimSpeed;
     [SerializeField] float _locomotionAnimLerpSpeed;
 
-    public string SpeedHash = "Speed";
-    public string IsGroundedHash = "IsGrounded";
-    public string JumpHash       = "Jump";
-    public string AttackHash       = "Attack";
-    public string IsRollingHash  = "IsRolling";
-    public string IsLandingHash  = "IsLanding";
-    public string IsFallingHash  = "IsFalling";
-    public string IsCrouchingHash = "IsCrouching";
-    
+    public readonly int SpeedHash       = Animator.StringToHash("Speed");
+    public readonly int IsGroundedHash  = Animator.StringToHash("IsGrounded");
+    public readonly int JumpHash        = Animator.StringToHash("Jump");
+    public readonly int AttackHash      = Animator.StringToHash("Attack");
+    public readonly int AttackTypeHash  = Animator.StringToHash("AttackType");
+    public readonly int IsRollingHash   = Animator.StringToHash("IsRolling");
+    public readonly int IsLandingHash   = Animator.StringToHash("IsLanding");
+    public readonly int IsFallingHash   = Animator.StringToHash("IsFalling");
+    public readonly int IsCrouchingHash = Animator.StringToHash("IsCrouching");
+    public readonly int HitHash         = Animator.StringToHash("Hit");
+
 
     private void Awake()
     {
@@ -61,18 +63,16 @@ public class PlayerView : MonoBehaviour
     public void OnLandAnimationFinished()
     {
         Animator.SetBool(IsLandingHash, false);
-        controller.Model.IsLanding = false; // 여기만 예외로 Model에 직접 접근하는게 나을 듯? 애니메이션 이벤트니까...
-        // controller 안에 OnLand 함수를 만들어서, 그 안에 Model의 플래그를 변경하는게 깔끔할 거 같긴 한데
+        controller.OnLandAnimationFinished();
     }
 
     public void OnAttackAnimationStarted()
     {
-
+        controller.OnAttackAnimationStarted();
     }
 
     public void OnAttackAnimationFinished()
     {
-        var attackState = controller.GetState(PlayerStateType.Attack) as PlayerAttackState;
-        attackState.QuitAttack();
+        controller.OnAttackAnimationFinished();
     }
 }

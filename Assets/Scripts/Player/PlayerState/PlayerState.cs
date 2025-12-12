@@ -528,10 +528,14 @@ public class PlayerFallState : PlayerAirborneState
 #endregion
 
 #region Alive/Attack-SubState
+
+public enum AttackType { Punch, Slash, Thrust, OverHead }
+
 public class PlayerAttackState : PlayerAliveState
 {
     public PlayerAttackState(PlayerController controller, PlayerStateMachine stateMachine)
         : base(controller, stateMachine) { }
+
 
     public override void Enter()
     {
@@ -546,6 +550,10 @@ public class PlayerAttackState : PlayerAliveState
             View.Animator.SetBool(View.IsCrouchingHash, false);
         }
 
+        Status.isControllLocked = true;
+
+        controller.CurrentHitbox.Configure(Status.Damage, Status.Knockback, 1f, 1f);
+
         // 이동 정지 (y속도는 유지)
         var rb = controller.rb;
         rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
@@ -553,9 +561,14 @@ public class PlayerAttackState : PlayerAliveState
         // 이동 애니메이션 파라메터 초기화
         View.InitLocomotionAnime();
 
-
-        View.Animator.ResetTrigger(View.AttackHash);
+        View.Animator.SetInteger(View.AttackTypeHash, (int)Status.CurAttackType);
         View.Animator.SetTrigger(View.AttackHash);
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        Status.isControllLocked = false;
+        controller.CurrentHitbox.SetActive(false); // 혹시 켜져 있으면 꺼주기
     }
 
     public override void UpdateLogic()
@@ -586,11 +599,6 @@ public class PlayerAttackState : PlayerAliveState
     {
         // 공격 중에는 이동 물리 추가 시 이곳에. 공격 할 때 살짝 전진하는 느낌?
     }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
 }
 
 
@@ -598,7 +606,100 @@ public class PlayerAttackState : PlayerAliveState
 
 #region Alive/Hit-SubState
 
+public class PlayerHitState : PlayerAliveState
+{
+    private float _remainStun;
+    private float _remainInvincible;
+    private HitInfo _cashedHitInfo;
+    public PlayerHitState(PlayerController c, PlayerStateMachine sm) : base(c, sm) { }
 
+    public override void Enter()
+    {
+        base.Enter();
+        if (stateMachine.CurState != this) return;
+
+        var hit = _cashedHitInfo;  // Controller가 저장해둔 hit
+
+        // 피격 후 경직 & 무적 시간
+        _remainStun = Mathf.Max(0.05f, hit.HitStun); // 최소 0.05초
+        _remainInvincible = hit.IFrame;
+
+        if (_remainInvincible > 0f)
+            Status.IsInvincible = true;
+
+        // 컨트롤 잠금
+        Status.isControllLocked = true;
+
+        // 넉백 1회 적용
+        ApplyKnockback(hit);
+
+        // 애니 재생
+        View.Animator.ResetTrigger(View.HitHash);
+        View.Animator.SetTrigger(View.HitHash);
+    }
+
+    private void ApplyKnockback(HitInfo hit)
+    {
+        var rb = controller.rb;
+
+        Vector3 dir = (rb.position - hit.HitPoint);
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.0001f) dir = -controller.transform.forward;
+        dir.Normalize();
+
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f); // xz 초기화
+        rb.AddForce(dir * hit.KnockbackPower, ForceMode.VelocityChange);
+    }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        if (stateMachine.CurState != this) return;
+
+        // 무적 타이머 감소
+        if (_remainInvincible > 0f)
+        {
+            _remainInvincible -= Time.deltaTime;
+            if (_remainInvincible <= 0f)
+                Status.IsInvincible = false;
+        }
+
+        // 경직 타이머 감소
+        _remainStun -= Time.deltaTime;
+        if (_remainStun > 0f)
+            return;
+
+        // 경직 끝 => 상태 복귀
+        Status.isControllLocked = false;
+
+        // 복귀 규칙
+        if (!controller.cc.IsGroundedSensor)
+        {
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
+            return;
+        }
+
+        var input = controller.Input;
+        if (input.Move.sqrMagnitude > 0.01f)
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Move]);
+        else
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Idle]);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        Status.isControllLocked = false;
+
+        // 혹시 무적 상태가 남아있다면 정리
+        Status.IsInvincible = false;
+    }
+
+    public void CashingHitInfo(HitInfo hit)
+    {
+        _cashedHitInfo = hit;
+    }
+}
 
 #endregion
 

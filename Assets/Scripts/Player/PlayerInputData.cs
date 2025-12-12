@@ -38,6 +38,7 @@ public sealed class PlayerInputData
     public bool RollPressed { get; set; }
     public bool InteractionPressed { get; set; }
     public bool InventoryPressed { get; set; }
+    public bool EscPressed { get; set; }
 
     // Äü½½·Ô: 1~4 Áß ¹æ±Ý ´­¸° ½½·Ô ÀÎµ¦½º (-1ÀÌ¸é ¾øÀ½)
     public int QuickSlotIndexPressed { get; set; } = -1;
@@ -57,6 +58,8 @@ public sealed class PlayerInputData
         InteractionPressed  = false;
 
         InventoryPressed    = false;
+
+        EscPressed          = false;
 
         QuickSlotIndexPressed = -1;
     }

@@ -90,7 +90,7 @@ public class BossMonster : BaseMonster
 
         if (target != null)
         {
-            var dmg = target.GetComponent<IDamagable>();
+            var dmg = target.GetComponent<IDamageable>();
             Vector3 direction = (target.position - transform.position).normalized;
             //if (dmg != null) dmg.TakeDamage(damage, transform);
         }
@@ -118,7 +118,7 @@ public class BossMonster : BaseMonster
 
         if (target != null)
         {
-            var dmg = target.GetComponent<IDamagable>();
+            var dmg = target.GetComponent<IDamageable>();
             Vector3 direction = (target.position - transform.position).normalized;
            // if (dmg != null) dmg.TakeDamage(damage, transform);
         }
@@ -151,7 +151,7 @@ public class BossMonster : BaseMonster
         Collider[] hits = Physics.OverlapBox(boxCenter, boxHalfExtents, boxRotation, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
         {
-            var dmg = hit.GetComponent<IDamagable>();
+            var dmg = hit.GetComponent<IDamageable>();
             //if (dmg != null)
             //    dmg.TakeDamage((int)pattern.damage, transform);
         }
@@ -180,7 +180,7 @@ public class BossMonster : BaseMonster
         Collider[] hits = Physics.OverlapSphere(center, radius, LayerMask.GetMask("Player"));
         foreach (var hit in hits)
         {
-            var dmg = hit.GetComponent<IDamagable>();
+            var dmg = hit.GetComponent<IDamageable>();
             //if (dmg != null)
             //    dmg.TakeDamage((int)pattern.damage, transform);
         }
@@ -201,7 +201,7 @@ public class BossMonster : BaseMonster
             float hitAngle = Mathf.Acos(dot) * Mathf.Rad2Deg;
             if (hitAngle <= angle)
             {
-                var dmg = hit.GetComponent<IDamagable>();
+                var dmg = hit.GetComponent<IDamageable>();
                 //if (dmg != null)
                 //    dmg.TakeDamage((int)pattern.damage, transform);
             }
@@ -221,7 +221,7 @@ public class BossMonster : BaseMonster
 
     void OnTriggerEnter(Collider other)
     {
-        var target = other.GetComponent<IDamagable>();
+        var target = other.GetComponent<IDamageable>();
         //if (target != null && currentPattern != null)
         //    target.TakeDamage((int)currentPattern.damage, transform);
     }

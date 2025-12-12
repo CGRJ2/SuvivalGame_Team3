@@ -140,12 +140,10 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
 
     public void OnQuickSlots(InputAction.CallbackContext context)
     {
-        if (!context.started) return;
+        //if (!context.started) return; // 왜 context.started 가 False로만 뜨지?
 
-        // 어떤 키(1~4)가 눌렸는지 구분.
-        // binding index, control path 등으로 판별
-        // 여기선 간단히 key code 비교 예시:
-        var controlPath = context.control.path; // e.g. "<Keyboard>/1"
+        // 어떤 키(1~4)가 눌렸는지 구분
+        var controlPath = context.control.path; // "<Keyboard>/1"
 
         if (controlPath.EndsWith("/1"))
             Data.QuickSlotIndexPressed = 0;
@@ -159,7 +157,8 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
 
     public void OnESC(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        if (context.started)
+            Data.EscPressed = true;
     }
 
     #endregion

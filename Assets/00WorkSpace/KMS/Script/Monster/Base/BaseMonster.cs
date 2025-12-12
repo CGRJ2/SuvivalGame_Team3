@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
+public abstract class BaseMonster : MonoBehaviour, IDamageable, ISpawnable
 {
     // 이 값들을 설정하면 매니저 없이도 프리팹만으로 동작 테스트 가능
     // 초기화 시점: Start()
@@ -68,7 +68,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
     [SerializeField] LayerMask attackableLayerMask;
     [SerializeField] float rayRadius_Attack;
     [SerializeField] Vector3 offset_Attack;
-    public IDamagable playerInRange;
+    public IDamageable playerInRange;
 
     public float RotationSpeed => rotationSpeed;
 
@@ -183,7 +183,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
     void OnCollisionEnter(Collision collision)
     {
-        var damageable = collision.gameObject.GetComponent<IDamagable>();
+        var damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
             //damageable.TakeDamage(data.CollisionDamage, transform);
@@ -196,11 +196,11 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
 
         Collider[] cols = Physics.OverlapSphere(origin, rayRadius_Attack, attackableLayerMask);
         cols = cols.Where(c => !c.isTrigger).ToArray();
-        List<IDamagable> damagables = new List<IDamagable>();
+        List<IDamageable> damagables = new List<IDamageable>();
 
         foreach (Collider col in cols)
         {
-            damagables.Add(col.GetComponent<IDamagable>());
+            damagables.Add(col.GetComponent<IDamageable>());
         }
 
         if (damagables.Count > 0)
@@ -222,7 +222,7 @@ public abstract class BaseMonster : MonoBehaviour, IDamagable, ISpawnable
         Debug.Log(playerInRange);
         if (playerInRange != null)
         {
-            var damageable = target.GetComponent<IDamagable>();
+            var damageable = target.GetComponent<IDamageable>();
             /*if (damageable != null)
                 damageable.TakeDamage(attackPower, transform);*/
         }

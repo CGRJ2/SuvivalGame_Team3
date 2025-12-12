@@ -7,8 +7,9 @@ using UnityEngine;
 public class Item_Weapon : Item, IEquipable
 {
     [field: SerializeField] public int Damage { get; private set; } = 1;
-    public WeaponAttackType attackType;
-    
+    [field: SerializeField] public int Knockback { get; private set; } = 1;
+    public AttackType AttackType;
+    [HideInInspector] public Hitbox Hitbox;
 
     protected override void OnEnable()
     {

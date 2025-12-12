@@ -32,6 +32,6 @@ public enum PlayerStateType
 {
     Idle, Move, Roll, Attack,
     Jump, Fall, AirAttack,
-    GroundHit, AirHit, BackHit,
+    Hit,
     Dead
 }
