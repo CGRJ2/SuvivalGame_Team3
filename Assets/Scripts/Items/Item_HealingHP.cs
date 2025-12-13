@@ -13,7 +13,7 @@ public class Item_HealingHP : Item_Consumable
         PlayerModel ps = PlayerManager.Instance.instancePlayer.Model;
 
         // 데미지를 가장 많이 입은 바디 파트 찾기
-        var bodyParts = ps.GetBodyPartsDic();
+        var bodyParts = ps.Survival.GetBodyPartsDic();
         BodyPart lowestBodyPart = null;
         int nowPartDamaged = 0;
         foreach (var kvp in bodyParts)

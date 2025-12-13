@@ -72,16 +72,16 @@ public class SuvivalSystemManager : Singleton<SuvivalSystemManager>
 
             if (DailyManager.Instance.currentTimeData.TZ_State.Value == TimeZoneState.Night)
             {
-                if (pc.Model.CurrentWillPower.Value - willConsume_Night > 0)
-                    pc.Model.CurrentWillPower.Value -= willConsume_Night;
-                else pc.Model.CurrentWillPower.Value = 0;
+                if (pc.Model.Survival.CurrentWillPower.Value - willConsume_Night > 0)
+                    pc.Model.Survival.CurrentWillPower.Value -= willConsume_Night;
+                else pc.Model.Survival.CurrentWillPower.Value = 0;
 
             }
             else
             {
-                if (pc.Model.CurrentWillPower.Value - willConsume_Idle > 0)
-                    pc.Model.CurrentWillPower.Value -= willConsume_Idle;
-                else pc.Model.CurrentWillPower.Value = 0;
+                if (pc.Model.Survival.CurrentWillPower.Value - willConsume_Idle > 0)
+                    pc.Model.Survival.CurrentWillPower.Value -= willConsume_Idle;
+                else pc.Model.Survival.CurrentWillPower.Value = 0;
             }
         }
     }

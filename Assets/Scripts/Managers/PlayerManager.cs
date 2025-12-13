@@ -55,12 +55,12 @@ public class PlayerManager : Singleton<PlayerManager>
         Panel_FadeInOut dayOffSavePanel = UIManager.Instance.popUpUIGroup.dayOffSavePanel;
         dayOffSavePanel.PopMessage_FadeInOut();
 
-        instancePlayer.Model.isControllLocked = true;
+        instancePlayer.Model.IsControllLocked = true;
 
         // 페이드 인이 시작될 즈음까지 대기
         yield return new WaitUntil(() => dayOffSavePanel.isOpenStandBy);
 
-        instancePlayer.Model.isControllLocked = false;
+        instancePlayer.Model.IsControllLocked = false;
 
         // 다음날 오전 9시로 이동
         DailyManager.Instance.currentTimeData.CurrentDay.Value += 1;
@@ -97,7 +97,7 @@ public class PlayerManager : Singleton<PlayerManager>
         DailyManager.Instance.currentTimeData.TZ_State.Value = TimeZoneState.Morning;
 
         // 배터리 최대량 감소
-        instancePlayer.Model.Respawn_Faint();
+        instancePlayer.Model.FaintRespawn();
 
         // 일반 상태로 전환
         //instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);
@@ -134,7 +134,7 @@ public class PlayerManager : Singleton<PlayerManager>
         dm.LoadData(0);
 
         // 부위별 최대 내구도 깎고 시작
-        instancePlayer.Model.Respawn_Dead();
+        instancePlayer.Model.DeadRespawn();
 
         // 일반 상태로 전환
         //instancePlayer.stateMachine.ChangeState(instancePlayer.stateMachine.stateDic[PlayerStateTypes.Idle]);

@@ -11,6 +11,6 @@ public class Item_ChargeBattery : Item_Consumable
     // 회복 아이템 사용 효과 (배터리)
     public void Battery_Healing()
     {
-        PlayerManager.Instance.instancePlayer.Model.ChargeBattery(ChargeAmount);
+        PlayerManager.Instance.instancePlayer.Model.Survival.ChargeBattery(ChargeAmount);
     }
 }

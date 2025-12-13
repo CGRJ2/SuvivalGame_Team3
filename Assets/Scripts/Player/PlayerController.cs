@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
@@ -23,7 +21,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         get
         {
-            if (Model.onHandItem is Item_Weapon weapon && weapon.Hitbox != null)
+            if (Model.Combat.HandedItem is Item_Weapon weapon && weapon.Hitbox != null)
                 return weapon.Hitbox;
             else
                 return _defaultHitbox;
@@ -38,7 +36,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (!Model.isControllLocked)
+        if (!Model.IsControllLocked)
         {
             _fsm.HandleInput();
             HandleInGameInput();
@@ -49,6 +47,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void LateUpdate()
     {
+        // 일시 정지 상태가 아니라면
+        Model.Tick(1f); // 초당 생존 수치 소모 루틴 실행
+
         // 이번 프레임에 사용한 Pressed/Released 플래그들 초기화
         _inputReader.BeginFrame();
     }
@@ -114,7 +115,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
 
         // 신체 부위 데이터 구독
-        foreach (var kvp in Model.GetBodyPartsDic())
+        foreach (var kvp in Model.Survival.GetBodyPartsDic())
         {
             var bodyPart = kvp.Value;
             Panel_PartState partStateUI = playerStatusUI.dic_PartStatePanels[bodyPart.type];
@@ -131,8 +132,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                 bodyPart.CurrentMaxHp.Subscribe(partStateUI.UpdateCurrentMaxHP_View);
 
                 // 부위마다 체력 변화에 전체 부위 체력을 합산 계산하는 함수 구독
-                bodyPart.Hp.Subscribe(Model.CalculateCurrentHPSum);
-                bodyPart.CurrentMaxHp.Subscribe(Model.CalculateCurrentMaxHPSum);
+                bodyPart.Hp.Subscribe(Model.Survival.CalculateCurrentHPSum);
+                bodyPart.CurrentMaxHp.Subscribe(Model.Survival.CalculateCurrentMaxHPSum);
 
                 // 1회 초기화
                 bodyPart.Init();
@@ -140,16 +141,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         // 체력 합산 수치 UI구독
-        Model.SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
-        Model.SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
+        Model.Survival.SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
+        Model.Survival.SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
 
 
         // 배터리 수치 UI 구독
-        Model.CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
-        Model.MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
+        Model.Survival.CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
+        Model.Survival.MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
 
         // 정신력 수치 UI 구독
-        Model.CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
+        Model.Survival.CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
 
         // 배터리, 정신력 1회 초기화
         var initBatteryMax = Manager.data.CapacityTable.FindByKey("Battery").Max;
@@ -259,7 +260,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         // Model에서 데미지 계산 & 죽음 판단
         Model.TakeDamage(hit.Damage);
 
-
         if (Model.IsDead) // 죽으면 넉백 & 피격 애니 실행 x
         {
             // 죽음 애니 / 상태 전환 / SFX & VFX 실행
@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (onHandInstance != null) Destroy(onHandInstance);
 
-            Model.onHandItem = null;
+            Model.Combat.HandedItem = null;
             
             // 장착 해제 효과
         }
@@ -303,10 +303,10 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("소환");
             onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
-            Model.onHandItem = item;
+            Model.Combat.HandedItem = item;
 
             // 무기라면 히트박스 설정
-            if (Model.onHandItem is Item_Weapon weapon)
+            if (Model.Combat.HandedItem is Item_Weapon weapon)
             {
                 weapon.Hitbox = onHandInstance.GetComponentInChildren<Hitbox>();
                 weapon.Hitbox.Init(transform);

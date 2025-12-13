@@ -11,6 +11,6 @@ public class Item_BodyPart : Item_Consumable
     public void Hp_Init()
     {
         PlayerModel ps = PlayerManager.Instance.instancePlayer.Model;
-        ps.GetBodyPartsDic()[targetPart].Init();
+        ps.Survival.GetBodyPartsDic()[targetPart].Init();
     }
 }

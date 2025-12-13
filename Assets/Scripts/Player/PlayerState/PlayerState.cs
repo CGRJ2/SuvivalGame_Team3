@@ -213,7 +213,7 @@ public class PlayerIdleState : PlayerGroundedState
         v.z = 0f;
         rb.velocity = v;
 
-        var locoModel = controller.Model;
+        var locoModel = controller.Model.Locomotion;
         View.UpdateLocomotionAnim(0f, locoModel.WalkSpeed, locoModel.SprintSpeed);
     }
     public override void HandleInput()
@@ -245,7 +245,7 @@ public class PlayerMoveState : PlayerGroundedState
         base.FixedUpdateLogic();
         var rb = controller.rb;
         var input = controller.Input;
-        var locoModel = controller.Model;
+        var locoModel = controller.Model.Locomotion;
 
         Vector2 moveInput = input.Move;
         if (moveInput.sqrMagnitude > 1f)
@@ -435,7 +435,7 @@ public class PlayerJumpState : PlayerAirborneState
         base.Enter();
 
         var rb = controller.rb;
-        var locoModel = controller.Model;
+        var locoModel = controller.Model.Locomotion;
 
         // 점프 시 기존 y속도 초기화 후 점프력 적용
         Vector3 v = rb.velocity;
@@ -529,13 +529,11 @@ public class PlayerFallState : PlayerAirborneState
 
 #region Alive/Attack-SubState
 
-public enum AttackType { Punch, Slash, Thrust, OverHead }
 
 public class PlayerAttackState : PlayerAliveState
 {
     public PlayerAttackState(PlayerController controller, PlayerStateMachine stateMachine)
         : base(controller, stateMachine) { }
-
 
     public override void Enter()
     {
@@ -550,9 +548,11 @@ public class PlayerAttackState : PlayerAliveState
             View.Animator.SetBool(View.IsCrouchingHash, false);
         }
 
-        Status.isControllLocked = true;
+        Status.IsControllLocked = true;
 
-        controller.CurrentHitbox.Configure(Status.Damage, Status.Knockback, 1f, 1f);
+        var attackData = Status.Combat.GetAttackData();
+        controller.CurrentHitbox.Configure(attackData.Damage, attackData.Knockback, attackData.HitStun, 0f);  // 몬스터는 무적 시간 없음(0f)
+        Debug.Log($"공격력: {attackData.Damage}");
 
         // 이동 정지 (y속도는 유지)
         var rb = controller.rb;
@@ -561,13 +561,13 @@ public class PlayerAttackState : PlayerAliveState
         // 이동 애니메이션 파라메터 초기화
         View.InitLocomotionAnime();
 
-        View.Animator.SetInteger(View.AttackTypeHash, (int)Status.CurAttackType);
+        View.Animator.SetInteger(View.AttackTypeHash, (int)attackData.AttackType);
         View.Animator.SetTrigger(View.AttackHash);
     }
     public override void Exit()
     {
         base.Exit();
-        Status.isControllLocked = false;
+        Status.IsControllLocked = false;
         controller.CurrentHitbox.SetActive(false); // 혹시 켜져 있으면 꺼주기
     }
 
@@ -628,7 +628,7 @@ public class PlayerHitState : PlayerAliveState
             Status.IsInvincible = true;
 
         // 컨트롤 잠금
-        Status.isControllLocked = true;
+        Status.IsControllLocked = true;
 
         // 넉백 1회 적용
         ApplyKnockback(hit);
@@ -670,7 +670,7 @@ public class PlayerHitState : PlayerAliveState
             return;
 
         // 경직 끝 => 상태 복귀
-        Status.isControllLocked = false;
+        Status.IsControllLocked = false;
 
         // 복귀 규칙
         if (!controller.cc.IsGroundedSensor)
@@ -689,7 +689,7 @@ public class PlayerHitState : PlayerAliveState
     public override void Exit()
     {
         base.Exit();
-        Status.isControllLocked = false;
+        Status.IsControllLocked = false;
 
         // 혹시 무적 상태가 남아있다면 정리
         Status.IsInvincible = false;
