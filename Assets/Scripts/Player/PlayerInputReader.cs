@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 
-[DefaultExecutionOrder(-100)] // ÄÁÆ®·Ñ·¯º¸´Ù ¸ÕÀú Update µÇµµ·Ï
+[DefaultExecutionOrder(-100)] // ì»¨íŠ¸ë¡¤ëŸ¬ë³´ë‹¤ ë¨¼ì € Update ë˜ë„ë¡
 public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public PlayerInputData Data { get; private set; } = new PlayerInputData();
@@ -19,17 +19,17 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
     private void OnEnable() => _actions.Enable();
     private void OnDisable() => _actions.Disable();
 
-    // ÄÁÆ®·Ñ·¯ Update Àü¿¡ ÇÑ ¹ø È£ÃâÇØ¼­ ÇÁ·¹ÀÓ ÇÃ·¡±× ÃÊ±âÈ­
-    public void BeginFrame()
+    // ì»¨íŠ¸ë¡¤ëŸ¬ LateUpdate ì— í•œ ë²ˆ í˜¸ì¶œí•´ì„œ í”„ë ˆì„ í”Œë˜ê·¸ ì´ˆê¸°í™”
+    public void EndFrame()
     {
         Data.ClearFrameFlags();
     }
 
-    #region IPlayerActions ±¸Çö
+    #region IPlayerActions êµ¬í˜„
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Move´Â Value(Vector2)ÀÌ´Ï±î started/performed/canceled ¸ğµÎ¿¡¼­ ÀĞ¾îµµ µÊ
+        // MoveëŠ” Value(Vector2)ì´ë‹ˆê¹Œ started/performed/canceled ëª¨ë‘ì—ì„œ ì½ì–´ë„ ë¨
         Data.Move = context.ReadValue<Vector2>();
     }
 
@@ -40,7 +40,7 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
 
     public void OnZoomInOut(InputAction.CallbackContext context)
     {
-        // ScrollÀº Vector2(º¸Åë (0, delta)) ÀÌ¶ó YÃà¸¸ ¾²´Â ½ÄÀ¸·Î ¸¹ÀÌ ¾¸
+        // Scrollì€ Vector2(ë³´í†µ (0, delta)) ì´ë¼ Yì¶•ë§Œ ì“°ëŠ” ì‹ìœ¼ë¡œ ë§ì´ ì”€
         var v = context.ReadValue<Vector2>();
         Data.ZoomDelta += v.y;
     }
@@ -73,7 +73,7 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
         }
     }
 
-    [SerializeField] private float rollTapThreshold = 0.2f; // 0.15~0.25 »çÀÌ Àû´çÈ÷
+    [SerializeField] private float rollTapThreshold = 0.2f; // 0.15~0.25 ì‚¬ì´ ì ë‹¹íˆ
     private float _sprintPressedTime;
     private bool _sprintIsHeld;
     public void OnSprint(InputAction.CallbackContext context)
@@ -88,7 +88,7 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
         {
             float heldTime = Time.time - _sprintPressedTime;
 
-            // ÂªÀº ÅÇ => ±¸¸£±â
+            // ì§§ì€ íƒ­ => êµ¬ë¥´ê¸°
             if (heldTime <= rollTapThreshold)
             {
                 Data.RollPressed = true;
@@ -129,7 +129,7 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
 
     public void OnFreeCamMod(InputAction.CallbackContext context)
     {
-        // ÇÊ¿äÇÏ¸é ³ªÁß¿¡ FreeCam¿ë Data¿¡ Ãß°¡
+        // í•„ìš”í•˜ë©´ ë‚˜ì¤‘ì— FreeCamìš© Dataì— ì¶”ê°€
     }
 
     public void OnInventory(InputAction.CallbackContext context)
@@ -140,9 +140,7 @@ public class PlayerInputReader : MonoBehaviour, PlayerInputActions.IPlayerAction
 
     public void OnQuickSlots(InputAction.CallbackContext context)
     {
-        //if (!context.started) return; // ¿Ö context.started °¡ False·Î¸¸ ¶ßÁö?
-
-        // ¾î¶² Å°(1~4)°¡ ´­·È´ÂÁö ±¸ºĞ
+        // ì–´ë–¤ í‚¤(1~4)ê°€ ëˆŒë ¸ëŠ”ì§€ êµ¬ë¶„
         var controlPath = context.control.path; // "<Keyboard>/1"
 
         if (controlPath.EndsWith("/1"))

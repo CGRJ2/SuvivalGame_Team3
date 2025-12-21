@@ -1,36 +1,35 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable] // ¼¼ÀÌºê & ·Îµå °¡´É
+[System.Serializable] // ì„¸ì´ë¸Œ & ë¡œë“œ ê°€ëŠ¥
 public class PlayerModel
 {
-    public PlayerLocomotionModel    Locomotion;     // ÇÃ·¹ÀÌ¾î ÀÌµ¿ °ü·Ã µ¥ÀÌÅÍ ¹× ±ÔÄ¢
-    public PlayerCombatModel        Combat;         // ÇÃ·¹ÀÌ¾î ÀüÅõ °ü·Ã µ¥ÀÌÅÍ ¹× ±ÔÄ¢
-    public PlayerSurvivalModel      Survival;       // ÇÃ·¹ÀÌ¾î »ıÁ¸ °ü·Ã µ¥ÀÌÅÍ ¹× ±ÔÄ¢
+    public PlayerLocomotionModel    Locomotion;     // í”Œë ˆì´ì–´ ì´ë™ ê´€ë ¨ ë°ì´í„° ë° ê·œì¹™
+    public PlayerCombatModel        Combat;         // í”Œë ˆì´ì–´ ì „íˆ¬ ê´€ë ¨ ë°ì´í„° ë° ê·œì¹™
+    public PlayerSurvivalModel      Survival;       // í”Œë ˆì´ì–´ ìƒì¡´ ê´€ë ¨ ë°ì´í„° ë° ê·œì¹™
 
-    [HideInInspector] public InventoryPresenter inventory;  // ÀÎº¥Åä¸® µ¥ÀÌÅÍ
+    [HideInInspector] public InventoryPresenter inventory;  // ì¸ë²¤í† ë¦¬ ë°ì´í„°
 
-    public bool IsControllLocked; // Á¶ÀÛ °¡´É/ºÒ°¡ »óÅÂ
+    public bool IsControllLocked; // ì¡°ì‘ ê°€ëŠ¥/ë¶ˆê°€ ìƒíƒœ
 
-    // Á×À½ & ±âÀı Ã³¸®´Â [ÀüÅõ]¿Í [»ıÁ¸]¿¡ ÀÇÇÑ °ÍÀÌ¹Ç·Î Çö À§Ä¡¿¡¼­ Ã³¸®
     public bool IsDead;
     public event Action OnDied;
 
     public bool IsFaint;
     public event Action OnFaint;
 
-    // »óÅÂ°¡ º°µµ·Î ÀÖÁö¸¸ Á¶°Ç Ã¼Å©¸¦ À§ÇÑ ÇÃ·¡±×
+    // ìƒíƒœê°€ ë³„ë„ë¡œ ìˆì§€ë§Œ ì¡°ê±´ ì²´í¬ë¥¼ ìœ„í•œ í”Œë˜ê·¸
     public bool IsGrounded;
     public bool IsRolling;
 
-    // »óÅÂ¿Í ÇÔ²² ¾²ÀÏ ÇÃ·¡±× (º°µµ »óÅÂ ¾øÀ½)
+    // ìƒíƒœì™€ í•¨ê»˜ ì“°ì¼ í”Œë˜ê·¸ (ë³„ë„ ìƒíƒœ ì—†ìŒ)
     public bool IsCrouching;
     public bool IsLanding;
 
     public bool IsInvincible;
 
-    // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ ÃÊ±â »óÅÂ
+    // í”Œë ˆì´ì–´ ë°ì´í„° ì´ˆê¸° ìƒíƒœ
     public void Init()
     {
         Locomotion  ??= new PlayerLocomotionModel();
@@ -41,35 +40,29 @@ public class PlayerModel
         Combat.Init();
         Survival.Init();
 
-        // ÀÎº¥Åä¸® ÃÊ±âÈ­
+        // ì¸ë²¤í† ë¦¬ ì´ˆê¸°í™”
         inventory = new InventoryPresenter();
     }
 
-    // µ¥ÀÌÅÍ ·Îµå ½Ã¿¡¸¸ ÃÊ±âÈ­ ÇÒ °Íµé
-    public void Init_Load()
-    {
-        //BodyPartsInit();
-    }
-
-    // ÇÃ·¹ÀÌ¾î Á×°í ¸®½ºÆù ÇÒ ¶§ ÃÊ±âÈ­
+    // í”Œë ˆì´ì–´ ì£½ê³  ë¦¬ìŠ¤í° í•  ë•Œ ì´ˆê¸°í™”
     public void DeadRespawn()
     {
-        // Á¤½Å·Â, ¹èÅÍ¸®¸¸ ÃÖ´ë·Î ¸ÂÃçÁÖ±â
+        // ì •ì‹ ë ¥, ë°°í„°ë¦¬ë§Œ ìµœëŒ€ë¡œ ë§ì¶°ì£¼ê¸°
         Survival.CurrentWillPower.Value = Manager.data.CapacityTable.FindByKey("Will").Max;
         Survival.InitBattery();
 
-        // °¨¼ÒÇÑ ÃÖ´ë Ã¼·ÂÀ¸·Î ¼³Á¤
+        // ê°ì†Œí•œ ìµœëŒ€ ì²´ë ¥ìœ¼ë¡œ ì„¤ì •
         Survival.BodyPartsInitInRespawn();
     }
 
-    // ÇÃ·¹ÀÌ¾î ±âÀı ÈÄ ¸®½ºÆù ÇÒ ¶§ ÃÊ±âÈ­
+    // í”Œë ˆì´ì–´ ê¸°ì ˆ í›„ ë¦¬ìŠ¤í° í•  ë•Œ ì´ˆê¸°í™”
     public void FaintRespawn()
     {
         var batteryFixedData = Manager.data.CapacityTable.FindByKey("Battery");
         var reduceAmount = batteryFixedData.ReducePerTick;
         var min = batteryFixedData.Min;
 
-        // ÃÖ´ë ¹èÅÍ¸® °¨¼Ò
+        // ìµœëŒ€ ë°°í„°ë¦¬ ê°ì†Œ
         if (Survival.MaxBattery.Value - reduceAmount > min)
             Survival.MaxBattery.Value -= reduceAmount;
         else
@@ -96,16 +89,16 @@ public class PlayerModel
         }
     }
 
-    //  ºÎÀ§ ·£´ı µ¥¹ÌÁö
+    //  ë¶€ìœ„ ëœë¤ ë°ë¯¸ì§€
     public void TakeDamage(float damage)
     {
-        // Á×À½ »óÅÂ¶ó¸é µ¥¹ÌÁö °è»ê ½ÇÇàX
+        // ì£½ìŒ ìƒíƒœë¼ë©´ ë°ë¯¸ì§€ ê³„ì‚° ì‹¤í–‰X
         if (IsDead) return;
 
-        // È°¼º »óÅÂÀÎ ½ÅÃ¼ ºÎÀ§ Áß ·£´ı ¼±ÅÃ -> ÀÌ°Íµµ ÇÇ°İ ºÎÀ§ µ¥¹ÌÁö ÁÖ´Â°É·Î ¸¸µé¾îº¼±î...
+        // í™œì„± ìƒíƒœì¸ ì‹ ì²´ ë¶€ìœ„ ì¤‘ ëœë¤ ì„ íƒ -> ì´ê²ƒë„ í”¼ê²© ë¶€ìœ„ ë°ë¯¸ì§€ ì£¼ëŠ”ê±¸ë¡œ ë§Œë“¤ì–´ë³¼ê¹Œ...
         List<BodyPart> activeBodyPart = new List<BodyPart>();
 
-        // È°¼º »óÅÂÀÎ ÆÄÃ÷µé·Î ¸®½ºÆ® »õ·Î »ı¼º (ÀÌ¹Ì ÆÄ±«µÈ ºÎÀ§¸¦ Á¦¿ÜÇÏ±â À§ÇÔ)
+        // í™œì„± ìƒíƒœì¸ íŒŒì¸ ë“¤ë¡œ ë¦¬ìŠ¤íŠ¸ ìƒˆë¡œ ìƒì„± (ì´ë¯¸ íŒŒê´´ëœ ë¶€ìœ„ë¥¼ ì œì™¸í•˜ê¸° ìœ„í•¨)
         var bodyPartsDic = Survival.GetBodyPartsDic();
         foreach (var kvp in bodyPartsDic)
         {
@@ -113,35 +106,30 @@ public class PlayerModel
                 activeBodyPart.Add(kvp.Value);
         }
 
-        // È°¼º »óÅÂ ºÎÀ§ ·£´ı µ¥¹ÌÁö
+        // í™œì„± ìƒíƒœ ë¶€ìœ„ ëœë¤ ë°ë¯¸ì§€
         if (activeBodyPart.Count > 0)
         {
             int r = UnityEngine.Random.Range(1, activeBodyPart.Count);
             activeBodyPart[r].TakeDamage(damage);
         }
 
-        // ÀüÃ¼ Ã¼·Â or ¸Ó¸® Ã¼·ÂÀÌ 0 ÀÌÇÏ¸é  »ç¸Á
+        // ì „ì²´ ì²´ë ¥ or ë¨¸ë¦¬ ì²´ë ¥ì´ 0 ì´í•˜ë©´  ì‚¬ë§
         if (Survival.SumCurrentHP.Value <= 0 || bodyPartsDic[BodyPartType.Head].Hp.Value <= 0)
             Die();
     }
 
-    public void Die()   // Controller¿¡¼­ ÀÌº¥Æ®¿¡ Dead»óÅÂ ÀüÈ¯ ¿¬°áÇØ¼­ Ã³¸®
+    public void Die()   // Controllerì—ì„œ ì´ë²¤íŠ¸ì— Deadìƒíƒœ ì „í™˜ ì—°ê²°í•´ì„œ ì²˜ë¦¬
     {
         if (IsDead) return;
         IsDead = true;
         OnDied?.Invoke();
     }
 
-    // => ¹èÅÍ¸®°¡ 0ÀÌ µÇ¾úÀ» ¶§ È£Ãâ
-    public void Faint() // Controller¿¡¼­ ÀÌº¥Æ®¿¡ Faint»óÅÂ ÀüÈ¯ ¿¬°áÇØ¼­ Ã³¸®
+    // => ë°°í„°ë¦¬ê°€ 0ì´ ë˜ì—ˆì„ ë•Œ í˜¸ì¶œ
+    public void Faint() // Controllerì—ì„œ ì´ë²¤íŠ¸ì— Faintìƒíƒœ ì „í™˜ ì—°ê²°í•´ì„œ ì²˜ë¦¬
     {
         if (IsFaint) return;
         IsFaint = true;
         OnFaint?.Invoke();
     }
-}
-
-public enum BodyPartType
-{
-    Head, LeftArm, RightArm, LeftLeg, RightLeg
 }

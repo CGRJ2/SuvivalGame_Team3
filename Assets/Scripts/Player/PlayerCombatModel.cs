@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 
 [Serializable]
 public class PlayerCombatModel
@@ -7,7 +7,7 @@ public class PlayerCombatModel
     private float _defaultKnockback;
     private float _defaultHitStun;
 
-    public Item HandedItem; // ¼Õ(È°¼ºÈ­µÈ Äü½½·Ô)¿¡ ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛ
+    public Item HandedItem; // ì†(í™œì„±í™”ëœ í€µìŠ¬ë¡¯)ì— ì¥ì°© ì¤‘ì¸ ì•„ì´í…œ
 
     public void Init()
     {

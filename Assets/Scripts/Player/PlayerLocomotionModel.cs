@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerLocomotionModel
 {
@@ -11,7 +9,7 @@ public class PlayerLocomotionModel
     [field: SerializeField] public float JumpForce { get; set; }
 
     
-    [Header("¼³Á¤µÈ ¸¶¿ì½º °¨µµ(¾ÆÁ÷ ±¸Çöx)")]
+    [Header("ì„¤ì •ëœ ë§ˆìš°ìŠ¤ ê°ë„(ì•„ì§ êµ¬í˜„x)")]
     [SerializeField][Range(0.1f, 2)] private float mouseSensitivity;
     public float MouseSensitivity { get { return mouseSensitivity; } private set { mouseSensitivity = value; } }
 

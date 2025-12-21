@@ -1,50 +1,50 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ÀåÄ¡/Å°º¸µå Á¾·ù¿Í ¹«°üÇÏ°Ô
-/// *ÇÃ·¹ÀÌ¾î°¡ Áö±İ ¾î¶² ÀÔ·Â »óÅÂÀÎÁö* ¸¸ ´ã¾ÆµÎ´Â µ¥ÀÌÅÍ
+/// ì¥ì¹˜/í‚¤ë³´ë“œ ì¢…ë¥˜ì™€ ë¬´ê´€í•˜ê²Œ
+/// *í”Œë ˆì´ì–´ê°€ ì§€ê¸ˆ ì–´ë–¤ ì…ë ¥ ìƒíƒœì¸ì§€* ë§Œ ë‹´ì•„ë‘ëŠ” ë°ì´í„°
 /// </summary>
 public sealed class PlayerInputData
 {
-    // **** ÀÌµ¿ / Ä«¸Ş¶ó ****
-    /// <summary>WASD, ¿ŞÂÊ ½ºÆ½ µî ¡æ ÀÌµ¿ º¤ÅÍ</summary>
+    // **** ì´ë™ / ì¹´ë©”ë¼ ****
+    /// WASD, ì™¼ìª½ ìŠ¤í‹± ë“± â†’ ì´ë™ ë²¡í„°
     public Vector2 Move { get; set; }
 
-    /// <summary>¸¶¿ì½º/¿À¸¥ÂÊ ½ºÆ½ ¡æ Ä«¸Ş¶ó È¸Àü</summary>
+    /// ë§ˆìš°ìŠ¤/ì˜¤ë¥¸ìª½ ìŠ¤í‹± â†’ ì¹´ë©”ë¼ íšŒì „
     public Vector2 Rotate { get; set; }
 
-    /// <summary>ÈÙ/Æ®¸®°Å</summary>
+    /// íœ /íŠ¸ë¦¬ê±°
     public float ZoomDelta { get; set; }
     
 
-    // **** ±âº» ¾×¼Ç ****
+    // **** ê¸°ë³¸ ì•¡ì…˜ ****
     // Jump
-    public bool JumpPressed { get; set; }   // ÀÌ¹ø ÇÁ·¹ÀÓ¿¡ ¸· ´­¸²
-    public bool JumpHeld { get; set; }   // ´©¸£°í ÀÖ´Â µ¿¾È true
-    public bool JumpReleased { get; set; }   // ÀÌ¹ø ÇÁ·¹ÀÓ¿¡ ¸· ¶À
+    public bool JumpPressed { get; set; }   // ì´ë²ˆ í”„ë ˆì„ì— ë§‰ ëˆŒë¦¼
+    public bool JumpHeld { get; set; }   // ëˆ„ë¥´ê³  ìˆëŠ” ë™ì•ˆ true
+    public bool JumpReleased { get; set; }   // ì´ë²ˆ í”„ë ˆì„ì— ë§‰ ë—Œ
 
     // Attack
     public bool AttackPressed { get; set; }
     public bool AttackHeld { get; set; }
     public bool AttackReleased { get; set; }
 
-    // ´©¸£°í ÀÖ´Â µ¿¾È µ¿ÀÛ
-    // Åä±Û/È¦µå µÑ ´Ù ¾µ ¼ö ÀÖ°Ô ¼öÁ¤ ÇÊ¿ä
+    // ëˆ„ë¥´ê³  ìˆëŠ” ë™ì•ˆ ë™ì‘
+    // í† ê¸€/í™€ë“œ ë‘˜ ë‹¤ ì“¸ ìˆ˜ ìˆê²Œ ìˆ˜ì • í•„ìš”
     public bool AimingHeld { get; set; }
     public bool SprintHeld { get; set; }
     public bool CrouchHeld { get; set; }
 
-    // ÇÑ ¹ø ´­¸²
+    // í•œ ë²ˆ ëˆŒë¦¼
     public bool RollPressed { get; set; }
     public bool InteractionPressed { get; set; }
     public bool InventoryPressed { get; set; }
     public bool EscPressed { get; set; }
 
-    // Äü½½·Ô: 1~4 Áß ¹æ±İ ´­¸° ½½·Ô ÀÎµ¦½º (-1ÀÌ¸é ¾øÀ½)
+    // í€µìŠ¬ë¡¯: 1~4 ì¤‘ ë°©ê¸ˆ ëˆŒë¦° ìŠ¬ë¡¯ ì¸ë±ìŠ¤ (-1ì´ë©´ ì—†ìŒ)
     public int QuickSlotIndexPressed { get; set; } = -1;
 
-    // **** ÇÁ·¹ÀÓ¸¶´Ù ÃÊ±âÈ­ÇÒ °Íµé ****
-    /// ÇÁ·¹ÀÓ¿¡ ´­¸²/¶¼Áü ÇÃ·¡±× ¸®¼Â
+    // **** í”„ë ˆì„ë§ˆë‹¤ ì´ˆê¸°í™”í•  ê²ƒë“¤ ****
+    /// í”„ë ˆì„ì— ëˆŒë¦¼/ë–¼ì§ í”Œë˜ê·¸ ë¦¬ì…‹
     public void ClearFrameFlags()
     {
         JumpPressed         = false;

@@ -1,25 +1,24 @@
-using System;
-using Unity.VisualScripting;
+ï»¿using System;
 
 [System.Serializable]
 public class BodyPart : IDisposable
 {
     public BodyPartType type;
-    // È°¼ºÈ­ »óÅÂ, ºñÈ°¼ºÈ­ ½Ã Ã¼·ÂÈ¸º¹ ºÒ°¡´É, 1Â÷È¸º¹ ½Ã ´Ù½Ã È°¼ºÈ­
+
+    // í™œì„±í™” ìƒíƒœ, ë¹„í™œì„±í™” ì‹œ ì²´ë ¥íšŒë³µ ë¶ˆê°€ëŠ¥, 1ì°¨íšŒë³µ ì‹œ ë‹¤ì‹œ í™œì„±í™”
     public ObservableProperty<bool> Activate = new ObservableProperty<bool>(); 
     public ObservableProperty<float> Hp = new ObservableProperty<float>();
     public ObservableProperty<float> CurrentMaxHp = new ObservableProperty<float>();
+
     public float InitMaxHp;
 
     public BodyPart(BodyPartType type, float maxHp)
     {
         this.type = type;
         this.InitMaxHp = maxHp;
-
-        //Init();
     }
    
-    // ÆÄÃ÷ Á¤º¸ ÃÊ±âÈ­ & ÆÄÃ÷ ±³Ã¼ ½Ã È£Ãâ ==> ±³Ã¼ÇÏ¸é ÇöÀçÃ¼·Â & ÃÖ´ë³»±¸µµ±îÁö ¿ø»óº¹±Í
+    // íŒŒì¸  ì •ë³´ ì´ˆê¸°í™” & íŒŒì¸  êµì²´ ì‹œ í˜¸ì¶œ ==> êµì²´í•˜ë©´ í˜„ì¬ì²´ë ¥ & ìµœëŒ€ë‚´êµ¬ë„ê¹Œì§€ ì›ìƒë³µê·€
     public void Init()
     {
         Hp.Value = InitMaxHp;
@@ -38,7 +37,7 @@ public class BodyPart : IDisposable
         else Hp.Value -= damage;
     }
 
-    // È¸º¹ È¿°ú => ÇöÀç ÃÖ´ë³»±¸µµ ±îÁö¸¸ È¸º¹ °¡´É
+    // íšŒë³µ íš¨ê³¼ => í˜„ì¬ ìµœëŒ€ë‚´êµ¬ë„ ê¹Œì§€ë§Œ íšŒë³µ ê°€ëŠ¥
     public void Repair(float amount)
     {
         if (Activate.Value == false) return;
@@ -47,7 +46,7 @@ public class BodyPart : IDisposable
         else Hp.Value += amount;
     }
 
-    // È¸º¹ °¡´É »óÅÂ·Î ¸¸µê
+    // íšŒë³µ ê°€ëŠ¥ ìƒíƒœë¡œ ë§Œë“¦
     public void QuickRepair(float maxHP_AfterQuickRepair)
     {
         Hp.Value = 1;

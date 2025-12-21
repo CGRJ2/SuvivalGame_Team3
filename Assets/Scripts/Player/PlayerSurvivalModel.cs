@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSurvivalModel : IDisposable
 {
-    [Header("ÇÃ·¹ÀÌ¾î »ıÁ¸ ¼öÄ¡ Á¤º¸")]
+    [Header("í”Œë ˆì´ì–´ ìƒì¡´ ìˆ˜ì¹˜ ì •ë³´")]
     public ObservableProperty<float> CurrentWillPower = new ObservableProperty<float>();
     public ObservableProperty<float> CurrentBattery = new ObservableProperty<float>();
     public ObservableProperty<float> MaxBattery = new ObservableProperty<float>();
@@ -16,17 +16,17 @@ public class PlayerSurvivalModel : IDisposable
 
     public void Init()
     {
-        // Á¤½Å·Â ÃÊ±âÈ­
+        // ì •ì‹ ë ¥ ì´ˆê¸°í™”
         CurrentWillPower.Value = Manager.data.CapacityTable.FindByKey("Will").Max;
 
-        // ¹èÅÍ¸® ÃÊ±âÈ­
+        // ë°°í„°ë¦¬ ì´ˆê¸°í™”
         InitBattery();
 
-        // ½ÅÃ¼ ºÎÀ§ ÃÊ±âÈ­
+        // ì‹ ì²´ ë¶€ìœ„ ì´ˆê¸°í™”
         BodyPartsInit();
     }
 
-    // ½ÅÃ¼ ºÎÀ§º° ÀÎ½ºÅÏ½º »ı¼º
+    // ì‹ ì²´ ë¶€ìœ„ë³„ ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
     public void BodyPartsInit()
     {
         Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
@@ -59,7 +59,7 @@ public class PlayerSurvivalModel : IDisposable
 
             if (string.IsNullOrWhiteSpace(bodyKey))
             {
-                Debug.LogError($"Å×ÀÌºí¿¡ Á¸ÀçÇÏÁö ¾Ê´Â ½ÅÃ¼ºÎÀ§ Å¸ÀÔ Á¸Àç: {(BodyPartType)i}");
+                Debug.LogError($"í…Œì´ë¸”ì— ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ì‹ ì²´ë¶€ìœ„ íƒ€ì… ì¡´ì¬: {(BodyPartType)i}");
                 break;
             }
 
@@ -73,7 +73,7 @@ public class PlayerSurvivalModel : IDisposable
         }
     }
 
-    // »ç¸Á ÈÄ ½ÅÃ¼ºÎÀ§ ÃÖ´ë ³»±¸µµ °¨¼Ò
+    // ì‚¬ë§ í›„ ì‹ ì²´ë¶€ìœ„ ìµœëŒ€ ë‚´êµ¬ë„ ê°ì†Œ
     public void BodyPartsInitInRespawn()
     {
         var bodyStatsTable = Manager.data.BodyStatsTable;
@@ -129,7 +129,7 @@ public class PlayerSurvivalModel : IDisposable
         return _bodyPartsDic;
     }
 
-    // ¸ğµç ºÎÀ§ÀÇ ÇöÀç Ã¼·ÂÀÇ ÇÕÀ» Model ÇÊµåÀÇ SumCurrentHP·Î È¯»êÇØÁÖ´Â ÇÔ¼ö
+    // ëª¨ë“  ë¶€ìœ„ì˜ í˜„ì¬ ì²´ë ¥ì˜ í•©ì„ Model í•„ë“œì˜ SumCurrentHPë¡œ í™˜ì‚°í•´ì£¼ëŠ” í•¨ìˆ˜
     public void CalculateCurrentHPSum(float hp)
     {
         float sumHP = 0;
@@ -140,7 +140,7 @@ public class PlayerSurvivalModel : IDisposable
         SumCurrentHP.Value = sumHP;
     }
 
-    // ¸ğµç ºÎÀ§ÀÇ ÃÖ´ë Ã¼·ÂÀÇ ÇÕÀ» Model ÇÊµåÀÇ SumCurrentMaxHP·Î È¯»êÇØÁÖ´Â ÇÔ¼ö
+    // ëª¨ë“  ë¶€ìœ„ì˜ ìµœëŒ€ ì²´ë ¥ì˜ í•©ì„ Model í•„ë“œì˜ SumCurrentMaxHPë¡œ í™˜ì‚°í•´ì£¼ëŠ” í•¨ìˆ˜
     public void CalculateCurrentMaxHPSum(float hp)
     {
         float sumMaxHP = 0;
@@ -158,4 +158,8 @@ public class PlayerSurvivalModel : IDisposable
         SumCurrentHP.UnsubscribeAll();
         SumCurrentMaxHP.UnsubscribeAll();
     }
+}
+public enum BodyPartType
+{
+    Head, LeftArm, RightArm, LeftLeg, RightLeg
 }

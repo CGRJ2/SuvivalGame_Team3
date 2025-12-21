@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 // RootState 
@@ -14,7 +14,7 @@ public abstract class PlayerState
         this.stateMachine = stateMachine;
     }
 
-    public virtual void Enter() { Debug.Log($"{stateMachine.CurState}»óÅÂ ÁøÀÔ"); }
+    public virtual void Enter() { Debug.Log($"{stateMachine.CurState}ìƒíƒœ ì§„ì…"); }
     public virtual void Exit() { }
     public virtual void HandleInput() { }
     public virtual void UpdateLogic() { }
@@ -31,7 +31,8 @@ public abstract class PlayerAliveState : PlayerState
 
         if (Status.IsDead)
         {
-            // TODO: DeadState·Î ÀüÈ¯
+            // DeadStateë¡œ ì „í™˜
+            stateMachine.ChangeState(controller.StateDic[PlayerStateType.Dead]);
         }
     }
 }
@@ -45,7 +46,7 @@ public abstract class PlayerGroundedState : PlayerAliveState
     {
         base.Enter();
 
-        // Áö»ó¿¡ µé¾î¿Ã ¶§ °øÅë Ã³¸®
+        // ì§€ìƒì— ë“¤ì–´ì˜¬ ë•Œ ê³µí†µ ì²˜ë¦¬
         Status.IsGrounded = true;
 
         View.Animator.SetBool(View.IsGroundedHash, true);
@@ -57,35 +58,35 @@ public abstract class PlayerGroundedState : PlayerAliveState
         base.UpdateLogic();
 
         var input = controller.Input;
-        // 1) ´õ ÀÌ»ó ¶¥ÀÌ ¾Æ´Ï¸é => ¶³¾îÁö±â ½ÃÀÛ
-        if (!controller.cc.IsGroundedSensor)    // ½ÇÁ¦ ¶¥ ¿©ºÎ Ã¼Å©
+        // 1) ë” ì´ìƒ ë•…ì´ ì•„ë‹ˆë©´ => ë–¨ì–´ì§€ê¸° ì‹œì‘
+        if (!controller.cc.IsGroundedSensor)    // ì‹¤ì œ ë•… ì—¬ë¶€ ì²´í¬
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
             return;
         }
 
-        // 2) ±¸¸£±â ÀÔ·Â Ã³¸®
+        // 2) êµ¬ë¥´ê¸° ì…ë ¥ ì²˜ë¦¬
         if (input.RollPressed && !Status.IsRolling)
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Roll]);
             return;
         }
 
-        // 3) Á¡ÇÁ ÀÔ·Â Ã³¸®
+        // 3) ì í”„ ì…ë ¥ ì²˜ë¦¬
         if (input.JumpPressed && !Status.IsRolling && !Status.IsLanding)
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Jump]);
             return;
         }
 
-        // 4) °ø°İ
+        // 4) ê³µê²©
         if (input.AttackPressed && !Status.IsRolling && !Status.IsLanding)
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Attack]);
             return;
         }
 
-        // 5) ¾É±â ÀÔ·Â Ã³¸® (»óÅÂ ÀüÈ¯ ¾øÀ½)
+        // 5) ì•‰ê¸° ì…ë ¥ ì²˜ë¦¬ (ìƒíƒœ ì „í™˜ ì—†ìŒ)
         HandleCrouch(input);
     }
 
@@ -94,22 +95,22 @@ public abstract class PlayerGroundedState : PlayerAliveState
         base.FixedUpdateLogic();
     }
 
-    // ¾ÉÀ½ »óÅÂ Ã³¸®
+    // ì•‰ìŒ ìƒíƒœ ì²˜ë¦¬
     protected void HandleCrouch(PlayerInputData input)
     {
         bool wantCrouch = input.CrouchHeld;
 
-        // 1) ¾É±â ½ÃÀÛ
+        // 1) ì•‰ê¸° ì‹œì‘
         if (wantCrouch && !Status.IsCrouching)
         {
             Status.IsCrouching = true;
             controller.cc.SetColliderCrouch();
             View.Animator.SetBool(View.IsCrouchingHash, true);
         }
-        // 2) ÀÏ¾î³ª±â
+        // 2) ì¼ì–´ë‚˜ê¸°
         else if (!wantCrouch && Status.IsCrouching)
         {
-            // ¸Ó¸® À§ ¸·Çô ÀÖÀ¸¸é ±×´ë·Î À¯Áö
+            // ë¨¸ë¦¬ ìœ„ ë§‰í˜€ ìˆìœ¼ë©´ ê·¸ëŒ€ë¡œ ìœ ì§€
             if (controller.cc.IsHeadBlockedSensor)
                 return;
 
@@ -128,9 +129,9 @@ public abstract class PlayerAirborneState : PlayerAliveState
     {
         base.Enter();
 
-        // °øÁß »óÅÂ¿¡ µé¾î¿Ã ¶§ °øÅë Ã³¸®
+        // ê³µì¤‘ ìƒíƒœì— ë“¤ì–´ì˜¬ ë•Œ ê³µí†µ ì²˜ë¦¬
         
-        // Crouch »óÅÂ¿´´Ù¸é Crouch ÇØÁ¦
+        // Crouch ìƒíƒœì˜€ë‹¤ë©´ Crouch í•´ì œ
         if (Status.IsCrouching)
         {
             Status.IsCrouching = false;
@@ -140,7 +141,7 @@ public abstract class PlayerAirborneState : PlayerAliveState
 
         Status.IsGrounded = false;
         View.Animator.SetBool(View.IsGroundedHash, false);
-        View.Animator.SetBool(View.IsLandingHash, false); // °øÁß »óÅÂ ÁøÀÔ Á÷ÈÄ¿¡´Â ÂøÁö ÇÃ·¡±× ÃÊ±âÈ­
+        View.Animator.SetBool(View.IsLandingHash, false); // ê³µì¤‘ ìƒíƒœ ì§„ì… ì§í›„ì—ëŠ” ì°©ì§€ í”Œë˜ê·¸ ì´ˆê¸°í™”
     }
 
     public override void UpdateLogic()
@@ -148,7 +149,7 @@ public abstract class PlayerAirborneState : PlayerAliveState
         base.UpdateLogic();
         var rb = controller.rb;
 
-        // 1) ¹Ù´Ú¿¡ ÂøÁöÇßÀ¸¸é => Idle / Move ·Î º¹±Í
+        // 1) ë°”ë‹¥ì— ì°©ì§€í–ˆìœ¼ë©´ => Idle / Move ë¡œ ë³µê·€
         if (Status.IsGrounded)
         {
             Vector2 move = controller.Input.Move;
@@ -160,9 +161,9 @@ public abstract class PlayerAirborneState : PlayerAliveState
             return;
         }
 
-        // 2) ¶³¾îÁö´Â ÁßÀÌ¶ó¸é => Fall »óÅÂ ÀüÈ¯
-        ///     y¼Óµµ°¡ <= 0ÀÏ ¶§ && Á¡ÇÁ ¾îÅÃ ¸ğ¼ÇÀÌ ³¡³µÀ» ¶§
-        if (rb.velocity.y <= 0f && !(this is PlayerFallState)) // [Á¡ÇÁ ¾îÅÃ] ¸ğ¼ÇÀÌ ³¡³µÀ» ¶§ Á¶°ÇºÎ Ãß°¡ ÇÊ¿ä
+        // 2) ë–¨ì–´ì§€ëŠ” ì¤‘ì´ë¼ë©´ => Fall ìƒíƒœ ì „í™˜
+        ///     yì†ë„ê°€ <= 0ì¼ ë•Œ && ì í”„ ì–´íƒ ëª¨ì…˜ì´ ëë‚¬ì„ ë•Œ
+        if (rb.velocity.y <= 0f && !(this is PlayerFallState)) // [ì í”„ ì–´íƒ] ëª¨ì…˜ì´ ëë‚¬ì„ ë•Œ ì¡°ê±´ë¶€ ì¶”ê°€ í•„ìš”
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
             return;
@@ -177,7 +178,7 @@ public abstract class PlayerAirborneState : PlayerAliveState
 #endregion
 
 #region Alive/Grounded-SubState
-// Grounded ÇÏÀ§ °èÃş »óÅÂµé
+// Grounded í•˜ìœ„ ê³„ì¸µ ìƒíƒœë“¤
 public class PlayerIdleState : PlayerGroundedState
 {
     public PlayerIdleState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine) { }
@@ -191,12 +192,12 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.UpdateLogic();
 
-        // °øÁß/Á×À½/ÇÇ°İ µî »óÀ§ »óÅÂ ÀüÈ¯ ¸ÕÀú Ã³¸®
+        // ê³µì¤‘/ì£½ìŒ/í”¼ê²© ë“± ìƒìœ„ ìƒíƒœ ì „í™˜ ë¨¼ì € ì²˜ë¦¬
         if (stateMachine.CurState != this) return;
 
         Vector2 move = controller.Input.Move;
 
-        // ÀÔ·Â µé¾î¿À¸é Move »óÅÂ·Î
+        // ì…ë ¥ ë“¤ì–´ì˜¤ë©´ Move ìƒíƒœë¡œ
         if (move.sqrMagnitude > 0.01f)
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Move]);
@@ -229,10 +230,10 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.UpdateLogic();
 
-        // °øÁß/Á×À½/ÇÇ°İ µî »óÀ§ »óÅÂ ÀüÈ¯ ¸ÕÀú Ã³¸®
+        // ê³µì¤‘/ì£½ìŒ/í”¼ê²© ë“± ìƒìœ„ ìƒíƒœ ì „í™˜ ë¨¼ì € ì²˜ë¦¬
         if (stateMachine.CurState != this) return;
 
-        // ÀÌµ¿ÀÔ·Â ¾øÀ¸¸é Idle ÀüÈ¯
+        // ì´ë™ì…ë ¥ ì—†ìœ¼ë©´ Idle ì „í™˜
         Vector2 move = controller.Input.Move;
         if (move.sqrMagnitude <= 0.01f)
         {
@@ -262,7 +263,7 @@ public class PlayerMoveState : PlayerGroundedState
 
         Vector3 moveDirWorld = camForward * moveInput.y + camRight * moveInput.x;
 
-        // Crouch / Sprint ¿¡ µû¶ó ¼Óµµ ¼±ÅÃ
+        // Crouch / Sprint ì— ë”°ë¼ ì†ë„ ì„ íƒ
         float speed;
         if (Status.IsCrouching)
             speed = locoModel.CrouchSpeed;
@@ -286,10 +287,10 @@ public class PlayerMoveState : PlayerGroundedState
         }
 
 
-        // ½ÇÁ¦ XZ ¼Óµµ
+        // ì‹¤ì œ XZ ì†ë„
         float planarSpeed = new Vector2(rb.velocity.x, rb.velocity.z).magnitude;
 
-        // Animator¿¡ Àü´Ş
+        // Animatorì— ì „ë‹¬
         View.UpdateLocomotionAnim(planarSpeed, locoModel.WalkSpeed, locoModel.SprintSpeed);
     }
 
@@ -300,12 +301,12 @@ public class PlayerMoveState : PlayerGroundedState
 }
 public class PlayerRollState : PlayerGroundedState
 {
-    private float _rollDuration = 0.5f;    // ±¸¸£±â ÀüÃ¼ ½Ã°£
-    private float _rollSpeed = 8f;         // ±¸¸£±â ¼Óµµ
+    private float _rollDuration = 0.5f;    // êµ¬ë¥´ê¸° ì „ì²´ ì‹œê°„
+    private float _rollSpeed = 8f;         // êµ¬ë¥´ê¸° ì†ë„
     private float _elapsed;
     private Vector3 _rollDirWorld;
 
-    bool IsInvincible => _elapsed >= 0.1f && _elapsed <= 0.35f; // ±¸¸£±â »óÅÂ Áß ¹«Àû ½Ã°£
+    bool IsInvincible => _elapsed >= 0.1f && _elapsed <= 0.35f; // êµ¬ë¥´ê¸° ìƒíƒœ ì¤‘ ë¬´ì  ì‹œê°„
 
     public PlayerRollState(PlayerController controller, PlayerStateMachine stateMachine) : base(controller, stateMachine) { }
     public override void Enter()
@@ -314,11 +315,11 @@ public class PlayerRollState : PlayerGroundedState
 
         if (stateMachine.CurState != this) return;
 
-        // Crouch »óÅÂ¿´´Ù¸é ÀÏ¾î³ª°í ±¸¸£±â
+        // Crouch ìƒíƒœì˜€ë‹¤ë©´ ì¼ì–´ë‚˜ê³  êµ¬ë¥´ê¸°
         if (Status.IsCrouching)
         {
             Status.IsCrouching = false;
-            controller.cc.SetColliderDefault(); // ±¸¸£±â ½Ã¿¡ Stand Äİ¶óÀÌ´õ·Î ¸¸µå´Â°Ô ¸ÂÀ»±î? ±¸¸£±â¿ë È÷Æ®¹Ú½º¸¦ »õ·Î Á¤ÇØµÖ¾ßÇÒµí
+            controller.cc.SetColliderDefault(); // êµ¬ë¥´ê¸° ì‹œì— Stand ì½œë¼ì´ë”ë¡œ ë§Œë“œëŠ”ê²Œ ë§ì„ê¹Œ? êµ¬ë¥´ê¸°ìš© íˆíŠ¸ë°•ìŠ¤ë¥¼ ìƒˆë¡œ ì •í•´ë‘¬ì•¼í• ë“¯
             View.Animator.SetBool(View.IsCrouchingHash, false);
         }
 
@@ -328,14 +329,14 @@ public class PlayerRollState : PlayerGroundedState
         var input = controller.Input;
         var loco = controller.Model;
 
-        // 1) ±¸¸£±â ¹æÇâ °áÁ¤
+        // 1) êµ¬ë¥´ê¸° ë°©í–¥ ê²°ì •
         Vector2 moveInput = input.Move;
         Transform cam = Manager.camera.TpsViewCamera.transform;
         Transform avatarTrans = controller.View.transform;
 
         if (moveInput.sqrMagnitude < 0.01f)
         {
-            // ÀÔ·Â ¾øÀ¸¸é ÇöÀç ¹Ù¶óº¸´Â ¹æÇâÀ¸·Î ±¸¸£±â
+            // ì…ë ¥ ì—†ìœ¼ë©´ í˜„ì¬ ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ êµ¬ë¥´ê¸°
             _rollDirWorld = avatarTrans.forward;
         }
         else
@@ -354,14 +355,14 @@ public class PlayerRollState : PlayerGroundedState
             _rollDirWorld.Normalize();
         }
 
-        // 2) Ä³¸¯ÅÍ ¹æÇâÀ» ·Ñ ¹æÇâÀ¸·Î ºü¸£°Ô ¸ÂÃß±â
+        // 2) ìºë¦­í„° ë°©í–¥ì„ ë¡¤ ë°©í–¥ìœ¼ë¡œ ë¹ ë¥´ê²Œ ë§ì¶”ê¸°
         if (_rollDirWorld.sqrMagnitude > 0.0001f)
         {
             avatarTrans.rotation = Quaternion.LookRotation(_rollDirWorld);
         }
 
-        // 3) ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¸ŞÅÍ Àû¿ë
-        /// Landing µµÁß ±¸¸£±â ½Ã, Landing °­Á¦ Á¾·á
+        // 3) ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë©”í„° ì ìš©
+        /// Landing ë„ì¤‘ êµ¬ë¥´ê¸° ì‹œ, Landing ê°•ì œ ì¢…ë£Œ
         Status.IsLanding = false;
         View.Animator.SetBool(View.IsLandingHash, false);
         
@@ -372,7 +373,7 @@ public class PlayerRollState : PlayerGroundedState
     {
         base.Exit();
 
-        // ·Ñ ³¡³ª¸é XZ ¼Óµµ Á¤¸® (¿øÇÏ¸é ¾à°£¸¸ ³²°Üµµ µÊ)
+        // ë¡¤ ëë‚˜ë©´ XZ ì†ë„ ì •ë¦¬ (ì›í•˜ë©´ ì•½ê°„ë§Œ ë‚¨ê²¨ë„ ë¨)
         var rb = controller.rb;
         Vector3 v = rb.velocity;
         v.x = 0f;
@@ -390,13 +391,13 @@ public class PlayerRollState : PlayerGroundedState
 
         _elapsed += Time.deltaTime;
 
-        // ±¸¸£±â µµÁß ¹«Àû ¿©ºÎ Model¿¡ ¹İ¿µ
+        // êµ¬ë¥´ê¸° ë„ì¤‘ ë¬´ì  ì—¬ë¶€ Modelì— ë°˜ì˜
         Status.IsInvincible = IsInvincible;
 
-        // ·Ñ ½Ã°£ ³¡³ª¸é Idle/Move·Î º¹±Í
+        // ë¡¤ ì‹œê°„ ëë‚˜ë©´ Idle/Moveë¡œ ë³µê·€
         if (_elapsed >= _rollDuration)
         {
-            // ÀÔ·Â ÀÖÀ¸¸é Move, ¾Æ´Ï¸é Idle
+            // ì…ë ¥ ìˆìœ¼ë©´ Move, ì•„ë‹ˆë©´ Idle
             if (controller.Input.Move.sqrMagnitude > 0.01f)
                 stateMachine.ChangeState(controller.StateDic[PlayerStateType.Move]);
             else
@@ -410,9 +411,9 @@ public class PlayerRollState : PlayerGroundedState
 
         var rb = controller.rb;
 
-        // ±¸¸£´Â µ¿¾È¿¡´Â ÀÏÁ¤ ¼Óµµ À¯Áö
+        // êµ¬ë¥´ëŠ” ë™ì•ˆì—ëŠ” ì¼ì • ì†ë„ ìœ ì§€
         Vector3 vel = _rollDirWorld * _rollSpeed;
-        vel.y = rb.velocity.y; // Áß·Â/Á¡ÇÁ Y¼Óµµ À¯Áö
+        vel.y = rb.velocity.y; // ì¤‘ë ¥/ì í”„ Yì†ë„ ìœ ì§€
         rb.velocity = vel;
     }
 
@@ -420,7 +421,7 @@ public class PlayerRollState : PlayerGroundedState
     {
         base.HandleInput();
 
-        // ±¸¸£±â µ¿¾È¿£ ´Ù¸¥ ÀÔ·Â ±İÁö? 
+        // êµ¬ë¥´ê¸° ë™ì•ˆì—” ë‹¤ë¥¸ ì…ë ¥ ê¸ˆì§€? 
     }
 }
 #endregion
@@ -437,7 +438,7 @@ public class PlayerJumpState : PlayerAirborneState
         var rb = controller.rb;
         var locoModel = controller.Model.Locomotion;
 
-        // Á¡ÇÁ ½Ã ±âÁ¸ y¼Óµµ ÃÊ±âÈ­ ÈÄ Á¡ÇÁ·Â Àû¿ë
+        // ì í”„ ì‹œ ê¸°ì¡´ yì†ë„ ì´ˆê¸°í™” í›„ ì í”„ë ¥ ì ìš©
         Vector3 v = rb.velocity;
         v.y = 0f;
         rb.velocity = v;
@@ -445,7 +446,7 @@ public class PlayerJumpState : PlayerAirborneState
         float jumpForce = locoModel.JumpForce;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç Æ®¸®°Å
+        // ì• ë‹ˆë©”ì´ì…˜ íŠ¸ë¦¬ê±°
         View.Animator.ResetTrigger(View.JumpHash);
         View.Animator.SetTrigger(View.JumpHash);
         View.Animator.SetBool(View.IsFallingHash, false);
@@ -461,7 +462,7 @@ public class PlayerJumpState : PlayerAirborneState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        // °øÁß/Á×À½/ÇÇ°İ µî »óÀ§ »óÅÂ ÀüÈ¯ ¸ÕÀú Ã³¸®
+        // ê³µì¤‘/ì£½ìŒ/í”¼ê²© ë“± ìƒìœ„ ìƒíƒœ ì „í™˜ ë¨¼ì € ì²˜ë¦¬
         if (stateMachine.CurState != this) return;
     }
 
@@ -495,10 +496,10 @@ public class PlayerFallState : PlayerAirborneState
     {
         base.UpdateLogic();
 
-        // °øÁß/Á×À½/ÇÇ°İ µî »óÀ§ »óÅÂ ÀüÈ¯ ¸ÕÀú Ã³¸®
+        // ê³µì¤‘/ì£½ìŒ/í”¼ê²© ë“± ìƒìœ„ ìƒíƒœ ì „í™˜ ë¨¼ì € ì²˜ë¦¬
         if (stateMachine.CurState != this) return;
 
-        // Àå½Ã°£ ³«ÇÏ ½Ã µ¥¹ÌÁö? ÇÊ¿äÇÏ¸é ³ÖÀÚ. ÀÌ°÷¿¡¼­ ½Ã°£ ÃøÁ¤ÇØ¼­ µ¥¹ÌÁö ¿¬»ê
+        // ì¥ì‹œê°„ ë‚™í•˜ ì‹œ ë°ë¯¸ì§€? í•„ìš”í•˜ë©´ ë„£ì. ì´ê³³ì—ì„œ ì‹œê°„ ì¸¡ì •í•´ì„œ ë°ë¯¸ì§€ ì—°ì‚°
     }
 
     public override void FixedUpdateLogic()
@@ -508,13 +509,13 @@ public class PlayerFallState : PlayerAirborneState
         var rb = controller.rb;
         var cc = controller.cc;
 
-        // ³«ÇÏ Áß ÀÏ¶§¸¸ ÂøÁö ÆÇÁ¤ ÁÖ±â
+        // ë‚™í•˜ ì¤‘ ì¼ë•Œë§Œ ì°©ì§€ íŒì • ì£¼ê¸°
         if (cc.IsGroundedSensor && rb.velocity.y <= 0f)
         {
             Status.IsGrounded = true;
             Status.IsLanding = true;
 
-            // ÂøÁö ¾Ö´Ï¸ŞÀÌ¼Ç ÇÃ·¡±× On
+            // ì°©ì§€ ì• ë‹ˆë©”ì´ì…˜ í”Œë˜ê·¸ On
             View.Animator.SetBool(View.IsLandingHash, true);
             View.Animator.SetBool(View.IsFallingHash, false);
         }
@@ -540,7 +541,7 @@ public class PlayerAttackState : PlayerAliveState
         base.Enter();
         if (stateMachine.CurState != this) return;
 
-        // ¾ÉÀº »óÅÂ¿´´Ù¸é ÀÏ¾î³ª°í °ø°İ
+        // ì•‰ì€ ìƒíƒœì˜€ë‹¤ë©´ ì¼ì–´ë‚˜ê³  ê³µê²©
         if (Status.IsCrouching)
         {
             Status.IsCrouching = false;
@@ -551,14 +552,14 @@ public class PlayerAttackState : PlayerAliveState
         Status.IsControllLocked = true;
 
         var attackData = Status.Combat.GetAttackData();
-        controller.CurrentHitbox.Configure(attackData.Damage, attackData.Knockback, attackData.HitStun, 0f);  // ¸ó½ºÅÍ´Â ¹«Àû ½Ã°£ ¾øÀ½(0f)
-        Debug.Log($"°ø°İ·Â: {attackData.Damage}");
+        controller.CurrentHitbox.Configure(attackData.Damage, attackData.Knockback, attackData.HitStun, 0f);  // ëª¬ìŠ¤í„°ëŠ” ë¬´ì  ì‹œê°„ ì—†ìŒ(0f)
+        Debug.Log($"ê³µê²©ë ¥: {attackData.Damage}");
 
-        // ÀÌµ¿ Á¤Áö (y¼Óµµ´Â À¯Áö)
+        // ì´ë™ ì •ì§€ (yì†ë„ëŠ” ìœ ì§€)
         var rb = controller.rb;
         rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
 
-        // ÀÌµ¿ ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¸ŞÅÍ ÃÊ±âÈ­
+        // ì´ë™ ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë©”í„° ì´ˆê¸°í™”
         View.InitLocomotionAnime();
 
         View.Animator.SetInteger(View.AttackTypeHash, (int)attackData.AttackType);
@@ -568,7 +569,7 @@ public class PlayerAttackState : PlayerAliveState
     {
         base.Exit();
         Status.IsControllLocked = false;
-        controller.CurrentHitbox.SetActive(false); // È¤½Ã ÄÑÁ® ÀÖÀ¸¸é ²¨ÁÖ±â
+        controller.CurrentHitbox.SetActive(false); // í˜¹ì‹œ ì¼œì ¸ ìˆìœ¼ë©´ êº¼ì£¼ê¸°
     }
 
     public override void UpdateLogic()
@@ -576,7 +577,7 @@ public class PlayerAttackState : PlayerAliveState
         base.UpdateLogic();
         if (stateMachine.CurState != this) return;
 
-        // °ø°İ Áß¿¡ ³­°£¿¡¼­ ¶³¾îÁö¸é => Fall
+        // ê³µê²© ì¤‘ì— ë‚œê°„ì—ì„œ ë–¨ì–´ì§€ë©´ => Fall
         if (!controller.cc.IsGroundedSensor)
         {
             Status.IsGrounded = false;
@@ -587,7 +588,7 @@ public class PlayerAttackState : PlayerAliveState
 
     public void QuitAttack()
     {
-        // ÀÌµ¿ ÀÔ·Â ÀÖÀ¸¸é Move, ¾øÀ¸¸é Idle
+        // ì´ë™ ì…ë ¥ ìˆìœ¼ë©´ Move, ì—†ìœ¼ë©´ Idle
         var input = controller.Input;
         if (input.Move.sqrMagnitude > 0.01f)
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Move]);
@@ -597,7 +598,7 @@ public class PlayerAttackState : PlayerAliveState
 
     public override void FixedUpdateLogic()
     {
-        // °ø°İ Áß¿¡´Â ÀÌµ¿ ¹°¸® Ãß°¡ ½Ã ÀÌ°÷¿¡. °ø°İ ÇÒ ¶§ »ìÂ¦ ÀüÁøÇÏ´Â ´À³¦?
+        // ê³µê²© ì¤‘ì—ëŠ” ì´ë™ ë¬¼ë¦¬ ì¶”ê°€ ì‹œ ì´ê³³ì—. ê³µê²© í•  ë•Œ ì‚´ì§ ì „ì§„í•˜ëŠ” ëŠë‚Œ?
     }
 }
 
@@ -618,22 +619,22 @@ public class PlayerHitState : PlayerAliveState
         base.Enter();
         if (stateMachine.CurState != this) return;
 
-        var hit = _cashedHitInfo;  // Controller°¡ ÀúÀåÇØµĞ hit
+        var hit = _cashedHitInfo;  // Controllerê°€ ì €ì¥í•´ë‘” hit
 
-        // ÇÇ°İ ÈÄ °æÁ÷ & ¹«Àû ½Ã°£
-        _remainStun = Mathf.Max(0.05f, hit.HitStun); // ÃÖ¼Ò 0.05ÃÊ
+        // í”¼ê²© í›„ ê²½ì§ & ë¬´ì  ì‹œê°„
+        _remainStun = Mathf.Max(0.05f, hit.HitStun); // ìµœì†Œ 0.05ì´ˆ
         _remainInvincible = hit.IFrame;
 
         if (_remainInvincible > 0f)
             Status.IsInvincible = true;
 
-        // ÄÁÆ®·Ñ Àá±İ
+        // ì»¨íŠ¸ë¡¤ ì ê¸ˆ
         Status.IsControllLocked = true;
 
-        // ³Ë¹é 1È¸ Àû¿ë
+        // ë„‰ë°± 1íšŒ ì ìš©
         ApplyKnockback(hit);
 
-        // ¾Ö´Ï Àç»ı
+        // ì• ë‹ˆ ì¬ìƒ
         View.Animator.ResetTrigger(View.HitHash);
         View.Animator.SetTrigger(View.HitHash);
     }
@@ -647,7 +648,7 @@ public class PlayerHitState : PlayerAliveState
         if (dir.sqrMagnitude < 0.0001f) dir = -controller.transform.forward;
         dir.Normalize();
 
-        rb.velocity = new Vector3(0f, rb.velocity.y, 0f); // xz ÃÊ±âÈ­
+        rb.velocity = new Vector3(0f, rb.velocity.y, 0f); // xz ì´ˆê¸°í™”
         rb.AddForce(dir * hit.KnockbackPower, ForceMode.VelocityChange);
     }
 
@@ -656,7 +657,7 @@ public class PlayerHitState : PlayerAliveState
         base.UpdateLogic();
         if (stateMachine.CurState != this) return;
 
-        // ¹«Àû Å¸ÀÌ¸Ó °¨¼Ò
+        // ë¬´ì  íƒ€ì´ë¨¸ ê°ì†Œ
         if (_remainInvincible > 0f)
         {
             _remainInvincible -= Time.deltaTime;
@@ -664,15 +665,15 @@ public class PlayerHitState : PlayerAliveState
                 Status.IsInvincible = false;
         }
 
-        // °æÁ÷ Å¸ÀÌ¸Ó °¨¼Ò
+        // ê²½ì§ íƒ€ì´ë¨¸ ê°ì†Œ
         _remainStun -= Time.deltaTime;
         if (_remainStun > 0f)
             return;
 
-        // °æÁ÷ ³¡ => »óÅÂ º¹±Í
+        // ê²½ì§ ë => ìƒíƒœ ë³µê·€
         Status.IsControllLocked = false;
 
-        // º¹±Í ±ÔÄ¢
+        // ë³µê·€ ê·œì¹™
         if (!controller.cc.IsGroundedSensor)
         {
             stateMachine.ChangeState(controller.StateDic[PlayerStateType.Fall]);
@@ -691,7 +692,7 @@ public class PlayerHitState : PlayerAliveState
         base.Exit();
         Status.IsControllLocked = false;
 
-        // È¤½Ã ¹«Àû »óÅÂ°¡ ³²¾ÆÀÖ´Ù¸é Á¤¸®
+        // í˜¹ì‹œ ë¬´ì  ìƒíƒœê°€ ë‚¨ì•„ìˆë‹¤ë©´ ì •ë¦¬
         Status.IsInvincible = false;
     }
 

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -8,16 +8,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     public ColliderController cc { get; private set; }
     public Rigidbody rb { get; private set; }
 
-    // »óÅÂ ¸Ó½Å
+    // ìƒíƒœ ë¨¸ì‹ 
     private PlayerStateMachine _fsm;
     public Dictionary<PlayerStateType, PlayerState> StateDic;
 
-    // ÀÔ·Â Ã³¸® (InputSystem Ã³¸®)
+    // ì…ë ¥ ì²˜ë¦¬ (InputSystem ì²˜ë¦¬)
     [SerializeField] PlayerInputReader _inputReader;
     public PlayerInputData Input => _inputReader.Data;
     
     [SerializeField] Hitbox _defaultHitbox;
-    public Hitbox CurrentHitbox // ¹«±â ÀåÂø »óÅÂ¿¡ µû¸¥ È÷Æ®¹Ú½º ¹İÈ¯
+    public Hitbox CurrentHitbox // ë¬´ê¸° ì¥ì°© ìƒíƒœì— ë”°ë¥¸ íˆíŠ¸ë°•ìŠ¤ ë°˜í™˜
     {
         get
         {
@@ -47,11 +47,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void LateUpdate()
     {
-        // ÀÏ½Ã Á¤Áö »óÅÂ°¡ ¾Æ´Ï¶ó¸é
-        Model.Tick(1f); // ÃÊ´ç »ıÁ¸ ¼öÄ¡ ¼Ò¸ğ ·çÆ¾ ½ÇÇà
+        // ì¼ì‹œ ì •ì§€ ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´
+        Model.Tick(1f); // ì´ˆë‹¹ ìƒì¡´ ìˆ˜ì¹˜ ì†Œëª¨ ë£¨í‹´ ì‹¤í–‰
 
-        // ÀÌ¹ø ÇÁ·¹ÀÓ¿¡ »ç¿ëÇÑ Pressed/Released ÇÃ·¡±×µé ÃÊ±âÈ­
-        _inputReader.BeginFrame();
+        // ì´ë²ˆ í”„ë ˆì„ì— ì‚¬ìš©í•œ Pressed/Released í”Œë˜ê·¸ë“¤ ì´ˆê¸°í™”
+        _inputReader.EndFrame();
     }
 
     private void FixedUpdate()
@@ -71,24 +71,24 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         rb = GetComponent<Rigidbody>();
 
-        // Status & Model & View ÃÊ±âÈ­
+        // Status & Model & View ì´ˆê¸°í™”
         Manager.player.instancePlayer = this;
         Model = new();
         Model.Init();
         View ??= GetComponentInChildren<PlayerView>();
         cc ??= GetComponent<ColliderController>();
 
-        // »óÅÂ¸Ó½Å ÃÊ±âÈ­
+        // ìƒíƒœë¨¸ì‹  ì´ˆê¸°í™”
         _fsm = new PlayerStateMachine();
         StateDic = new();
         InitStateDictionary();
         var startState = StateDic[PlayerStateType.Idle];
         _fsm.Initialize(startState);
 
-        // µ¥ÀÌÅÍ ·ÎµåÇÒ ¶§ Status¸¦ ·ÎµåÇÑ µ¥ÀÌÅÍ·Î ±³Ã¼
+        // ë°ì´í„° ë¡œë“œí•  ë•Œ Statusë¥¼ ë¡œë“œí•œ ë°ì´í„°ë¡œ êµì²´
         Manager.data.loadedDataGroup.Subscribe(LoadPlayerData);
 
-        // bodyPartsÀÇ Model <-> View ¿¬°á
+        // bodyPartsì˜ Model <-> View ì—°ê²°
         Bind();
 
         _defaultHitbox.Init(transform);
@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Panel_PlayerStatus playerStatusUI = Manager.ui.inventoryGroup.panel_PlayerStatus;
 
-        // ½ÅÃ¼ ºÎÀ§ µ¥ÀÌÅÍ ±¸µ¶
+        // ì‹ ì²´ ë¶€ìœ„ ë°ì´í„° êµ¬ë…
         foreach (var kvp in Model.Survival.GetBodyPartsDic())
         {
             var bodyPart = kvp.Value;
@@ -122,37 +122,37 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             if (partStateUI != null)
             {
-                // UI¿¬µ¿
+                // UIì—°ë™
                 partStateUI.initMaxHp = bodyPart.InitMaxHp;
                 partStateUI.UpdateHP_View(bodyPart.Hp.Value);
                 partStateUI.UpdateCurrentMaxHP_View(bodyPart.CurrentMaxHp.Value);
 
-                // UI ÀÌº¥Æ® ±¸µ¶
+                // UI ì´ë²¤íŠ¸ êµ¬ë…
                 bodyPart.Hp.Subscribe(partStateUI.UpdateHP_View);
                 bodyPart.CurrentMaxHp.Subscribe(partStateUI.UpdateCurrentMaxHP_View);
 
-                // ºÎÀ§¸¶´Ù Ã¼·Â º¯È­¿¡ ÀüÃ¼ ºÎÀ§ Ã¼·ÂÀ» ÇÕ»ê °è»êÇÏ´Â ÇÔ¼ö ±¸µ¶
+                // ë¶€ìœ„ë§ˆë‹¤ ì²´ë ¥ ë³€í™”ì— ì „ì²´ ë¶€ìœ„ ì²´ë ¥ì„ í•©ì‚° ê³„ì‚°í•˜ëŠ” í•¨ìˆ˜ êµ¬ë…
                 bodyPart.Hp.Subscribe(Model.Survival.CalculateCurrentHPSum);
                 bodyPart.CurrentMaxHp.Subscribe(Model.Survival.CalculateCurrentMaxHPSum);
 
-                // 1È¸ ÃÊ±âÈ­
+                // 1íšŒ ì´ˆê¸°í™”
                 bodyPart.Init();
             }
         }
 
-        // Ã¼·Â ÇÕ»ê ¼öÄ¡ UI±¸µ¶
+        // ì²´ë ¥ í•©ì‚° ìˆ˜ì¹˜ UIêµ¬ë…
         Model.Survival.SumCurrentHP.Subscribe(playerStatusUI.state_HpSum.UpdateStateNumb_View);
         Model.Survival.SumCurrentMaxHP.Subscribe(playerStatusUI.state_HpSum.UpdateMaxStateNumb_View);
 
 
-        // ¹èÅÍ¸® ¼öÄ¡ UI ±¸µ¶
+        // ë°°í„°ë¦¬ ìˆ˜ì¹˜ UI êµ¬ë…
         Model.Survival.CurrentBattery.Subscribe(playerStatusUI.state_Battery.UpdateStateNumb_View);
         Model.Survival.MaxBattery.Subscribe(playerStatusUI.state_Battery.UpdateMaxStateNumb_View);
 
-        // Á¤½Å·Â ¼öÄ¡ UI ±¸µ¶
+        // ì •ì‹ ë ¥ ìˆ˜ì¹˜ UI êµ¬ë…
         Model.Survival.CurrentWillPower.Subscribe(playerStatusUI.state_WillPower.UpdateStateNumb_View);
 
-        // ¹èÅÍ¸®, Á¤½Å·Â 1È¸ ÃÊ±âÈ­
+        // ë°°í„°ë¦¬, ì •ì‹ ë ¥ 1íšŒ ì´ˆê¸°í™”
         var initBatteryMax = Manager.data.CapacityTable.FindByKey("Battery").Max;
         var initWillMax = Manager.data.CapacityTable.FindByKey("Will").Max;
 
@@ -164,25 +164,19 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void LoadPlayerData(SaveDataGroup saveDataGroup)
     {
-        // ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ µ¿±âÈ­
+        // í”Œë ˆì´ì–´ ë°ì´í„° ë™ê¸°í™”
         Model = saveDataGroup.playerStatusData;
 
-        Model.Init_Load();
-
-        // ÀÎº¥Åä¸® Model µ¿±âÈ­
+        // ì¸ë²¤í† ë¦¬ Model ë™ê¸°í™”
         Model.inventory.model = saveDataGroup.inventoryModel;
-
-        // Model ³»ºÎ ½½·Ô ¸®½ºÆ®(5Á¾) ³»ºÎÀÇ SlotData ¾È ¾ÆÀÌÅÛ(SO)ÀÇ Keyµ¥ÀÌÅÍ¸¦ ItemÀ¸·Î Àçº¯È¯ ÈÄ ¹èÄ¡½ÃÅ°±â
         Model.inventory.model.LoadSlotData(saveDataGroup);
-
-        // ¹èÄ¡ ¿Ï·á ÈÄ ºä ¾÷µ¥ÀÌÆ®
-        //Status.inventory.SetView(UIManager.Instance.inventoryGroup.inventoryView);
         Model.inventory.UpdateUI();
     }
 
+    // ìƒíƒœì™€ ë³„ê°œì˜ ì…ë ¥ ì²˜ë¦¬
     public void HandleInGameInput()
     {
-        HandleInteract(); // ÀÌ°Íµµ ¾Æ¸¶ »óÅÂ·Î ³Ñ¾î°¥µí? ¾Ö´Ï¸ŞÀÌ¼Ç°ú µ¿ÀÛ Á¦ÇÑÀÌ ÀÖÀ¸´Ï..
+        HandleInteract(); // ì´ê²ƒë„ ì•„ë§ˆ ìƒíƒœë¡œ ë„˜ì–´ê°ˆë“¯? ì• ë‹ˆë©”ì´ì…˜ê³¼ ë™ì‘ ì œí•œì´ ìˆìœ¼ë‹ˆ..
     }
     public void HandleUiInput()
     {
@@ -200,7 +194,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 interactable.Interact();
         }
     }
-
     private void HandleInventory()
     {
         if (Input.InventoryPressed)
@@ -208,13 +201,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             Manager.ui.inventoryGroup.inventoryView.TryOpenInventory();
         }
     }
-
     private void HandleQuickSlot()
     {
         if (Input.QuickSlotIndexPressed != -1)
             Manager.ui.inventoryGroup.quickSlotParent.SelectQuickSlot(Input.QuickSlotIndexPressed);
     }
-
     private void HandleEsc()
     {
         if (Input.EscPressed)
@@ -226,13 +217,13 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
-                Debug.Log("¿­¸° ÆĞ³Î ¾ø´Â »óÅÂ¿¡¼­ Esc ´©¸§ / ÀÏ½ÃÁ¤Áö ¿É¼Ç ÆĞ³Î ¿­±â");
+                Debug.Log("ì—´ë¦° íŒ¨ë„ ì—†ëŠ” ìƒíƒœì—ì„œ Esc ëˆ„ë¦„ / ì¼ì‹œì •ì§€ ì˜µì…˜ íŒ¨ë„ ì—´ê¸°");
             }
         }
     }
 
 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç º¸Á¶ ½ºÅ©¸³Æ®
+    // ì• ë‹ˆë©”ì´ì…˜ ë³´ì¡° ìŠ¤í¬ë¦½íŠ¸
     public void OnLandAnimationFinished()
     {
         Model.IsLanding = false;
@@ -247,40 +238,33 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         CurrentHitbox.SetActive(false);
 
-        if (_fsm.CurState is PlayerAttackState attack)  // °ø°İ »óÅÂ¿¡¼­ ÀÌ¹Ì ¹ş¾î³­ °æ¿ì ±×´ë·Î ³öµÎ±â (ex. °ø°İ µµÁß ³«ÇÏ or ÇÇ°İ)
+        if (_fsm.CurState is PlayerAttackState attack)  // ê³µê²© ìƒíƒœì—ì„œ ì´ë¯¸ ë²—ì–´ë‚œ ê²½ìš° ê·¸ëŒ€ë¡œ ë†”ë‘ê¸° (ex. ê³µê²© ë„ì¤‘ ë‚™í•˜ or í”¼ê²©)
             attack.QuitAttack();
     }
 
-    // ÇÇ°İ ¹ŞÀ½
+    // í”¼ê²© ë°›ìŒ
     public void TakeDamage(HitInfo hit)
     {
-        // ¹«Àû »óÅÂ¶ó¸é return;
+        // ë¬´ì  ìƒíƒœë¼ë©´ return;
         if (Model.IsInvincible) return;
 
-        // Model¿¡¼­ µ¥¹ÌÁö °è»ê & Á×À½ ÆÇ´Ü
+        // Modelì—ì„œ ë°ë¯¸ì§€ ê³„ì‚° & ì£½ìŒ íŒë‹¨
         Model.TakeDamage(hit.Damage);
 
-        if (Model.IsDead) // Á×À¸¸é ³Ë¹é & ÇÇ°İ ¾Ö´Ï ½ÇÇà x
+        // Viewì—ì„œ ë„‰ë°± & í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ + SFX & VFX ì‹¤í–‰
+        if (!Model.IsDead) // ì£½ìœ¼ë©´ ë„‰ë°± & í”¼ê²© ì• ë‹ˆ ì‹¤í–‰ x
         {
-            // Á×À½ ¾Ö´Ï / »óÅÂ ÀüÈ¯ / SFX & VFX ½ÇÇà
-            // _fsm.ChangeState(StateDic[PlayerStateType.Dead]);
-            return;
-        } 
-        else
-        {
-            // View¿¡¼­ ³Ë¹é & ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç + SFX & VFX ½ÇÇà
-
-            // HitInfo Ä³½Ì ¹× Hit »óÅÂ ÀüÈ¯
+            // HitInfo ìºì‹± ë° Hit ìƒíƒœ ì „í™˜
             var hitState = StateDic[PlayerStateType.Hit] as PlayerHitState;
             hitState.CashingHitInfo(hit);
             _fsm.ChangeState(hitState);
         }
     }
 
-    // ´Ü¼ø À§Ä¡¸¸ ÀÌµ¿ÇØÁÖ±â
+    // ë‹¨ìˆœ ìœ„ì¹˜ë§Œ ì´ë™í•´ì£¼ê¸°
     public void Respawn(Transform transform)
     {
-        if (transform == null) { Debug.LogError("¸Å°³º¯¼ö TransformÀÌ nullÀÓ"); return; }
+        if (transform == null) { Debug.LogError("ë§¤ê°œë³€ìˆ˜ Transformì´ nullì„"); return; }
         this.transform.position = transform.position;
         this.transform.rotation = transform.rotation;
     }
@@ -293,19 +277,19 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             Model.Combat.HandedItem = null;
             
-            // ÀåÂø ÇØÁ¦ È¿°ú
+            // ì¥ì°© í•´ì œ íš¨ê³¼
         }
         else
         {
             if (onHandInstance != item.instancePrefab) Destroy(onHandInstance);
 
             onHandInstance = Instantiate(item.instancePrefab, handTransform);
-            Debug.Log("¼ÒÈ¯");
+            Debug.Log("ì†Œí™˜");
             onHandInstance.GetComponent<ItemInstance>().isUsed = true;
             onHandInstance.GetComponent<Rigidbody>().isKinematic = true;
             Model.Combat.HandedItem = item;
 
-            // ¹«±â¶ó¸é È÷Æ®¹Ú½º ¼³Á¤
+            // ë¬´ê¸°ë¼ë©´ íˆíŠ¸ë°•ìŠ¤ ì„¤ì •
             if (Model.Combat.HandedItem is Item_Weapon weapon)
             {
                 weapon.Hitbox = onHandInstance.GetComponentInChildren<Hitbox>();
@@ -313,6 +297,4 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class Hitbox : MonoBehaviour
@@ -13,8 +13,7 @@ public class Hitbox : MonoBehaviour
 
     bool _isActive;
 
-    readonly HashSet<IDamageable> _alreadyHit = new HashSet<IDamageable>(); // °ø°İ Áßº¹ ÆÇÁ¤À» ¸·±â À§ÇÔ
-    // ¿©±â¼­ HashSetÀ» ÀÌ¿ëÇÑ ÀÌÀ¯´Â?
+    readonly HashSet<IDamageable> _alreadyHit = new HashSet<IDamageable>(); // ê³µê²© ì¤‘ë³µ íŒì •ì„ ë§‰ê¸° ìœ„í•¨
 
     void Awake()
     {
@@ -42,7 +41,7 @@ public class Hitbox : MonoBehaviour
         _isActive = active;
         _collider.enabled = active;
 
-        // »õ ½ºÀ® ½ÃÀÛ => ¸ÂÃá ´ë»ó ÃÊ±âÈ­
+        // ìƒˆ ìŠ¤ìœ™ ì‹œì‘ => ë§ì¶˜ ëŒ€ìƒ ì´ˆê¸°í™”
         if (active)
             _alreadyHit.Clear();
     }
@@ -69,7 +68,7 @@ public class Hitbox : MonoBehaviour
             HitNormal = hitNormal,
             Damage = _damage,
             KnockbackPower = _knockback,
-            HitStun = _hitStun,   // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç ÁÖ±â¿¡ ¸ÂÃç¼­ º¯°æ
+            HitStun = _hitStun,   // í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì£¼ê¸°ì— ë§ì¶°ì„œ ë³€ê²½
             IFrame = _iFrame
         };
 

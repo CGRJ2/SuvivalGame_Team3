@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
-
 public class PlayerStateMachine
 {
     public PlayerState CurState;
